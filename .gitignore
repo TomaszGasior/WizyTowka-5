@@ -1,0 +1,9 @@
+# Third party libraries.
+code/system/thirdparty/*
+!code/system/thirdparty/.gitkeep
+
+# TODO file.
+/TODO.txt
+
+# Data files of development installation.
+# code/data
