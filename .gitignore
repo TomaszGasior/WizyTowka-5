@@ -3,7 +3,10 @@ code/system/thirdparty/*
 !code/system/thirdparty/.gitkeep
 
 # TODO file.
-/TODO.txt
+TODO.txt
+
+# Tests of newly created codes.
+code/system/tests.php
 
 # Data files of development installation.
 # code/data
