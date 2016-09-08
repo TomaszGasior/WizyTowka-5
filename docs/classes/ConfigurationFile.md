@@ -8,10 +8,10 @@ Implementuje również metodę `__debugInfo` dla funkcji `var_dump` (dostępne o
 
 Odczyt pliku następuje w konstruktorze. Zapis pliku następuje w destruktorze wyłącznie, gdy jakiekolwiek ustawienie zostanie zmodyfikowane bądź usunięte.
 
-##__construct($nazwaPliku)
+##`__construct($filename)`
 
-Jako `$nazwaPliku` podaj ścieżkę do pliku konfiguracyjnego w formacie JSON.
+Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
 
-##*static* createNew($nazwaPliku)
+##*static* `createNew($filename)`
 
-Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$nazwaPliku` podaj ścieżkę do pliku.
+Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$filename` przyjmuje ścieżkę do pliku.

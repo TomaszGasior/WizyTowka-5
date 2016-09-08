@@ -10,3 +10,4 @@ code/system/tests.php
 
 # Data files of development installation.
 # code/data
+code/data/config/errors.log
