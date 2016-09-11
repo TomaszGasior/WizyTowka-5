@@ -27,7 +27,6 @@ set_error_handler(__NAMESPACE__.'\\ErrorHandler::convertErrorToException');
 set_exception_handler(__NAMESPACE__.'\\ErrorHandler::handleException');
 
 
-
 if (defined(__NAMESPACE__.'\\INIT')) {
 	die('Comming soon…');
 }

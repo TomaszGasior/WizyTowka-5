@@ -1,0 +1,16 @@
+<phpunit
+	bootstrap="./code/system/init.php"
+	colors="true"
+	stopOnFailure="false">
+	<testsuites>
+		<testsuite name="WizyTówka">
+			<directory>./tests</directory>
+		</testsuite>
+	</testsuites>
+	<php>
+		<const name="DATA_DIR" value="./code/data"/>
+		<const name="FILES_DIR" value="./code/data/files"/>
+		<const name="CONFIG_DIR" value="./code/data/config"/>
+		<const name="SYSTEM_DIR" value="./code/system"/>
+	</php>
+</phpunit>

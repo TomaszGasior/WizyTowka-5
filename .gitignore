@@ -6,7 +6,7 @@ code/system/thirdparty/*
 TODO.txt
 
 # Tests of newly created codes.
-code/system/tests.php
+tests.php
 
 # Data files of development installation.
 # code/data

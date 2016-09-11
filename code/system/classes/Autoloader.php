@@ -25,6 +25,9 @@ class Autoloader
 
 	static public function autoload($fullyQualifiedName)
 	{
+		if (strpos($fullyQualifiedName, '\\') === false) {
+			return false;
+		}
 		list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
 
 		if (!isset(self::$_directories[$namespace])) {

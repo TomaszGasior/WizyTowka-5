@@ -15,7 +15,7 @@ class ConfigurationFile implements \IteratorAggregate
 	public function __construct($filename)
 	{
 		$this->_filename = $filename;
-		$this->_configuration = json_decode( file_get_contents($filename), true );
+		$this->_configuration = json_decode(file_get_contents($filename), true);
 	}
 
 	public function __destruct()
