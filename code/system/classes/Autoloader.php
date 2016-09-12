@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 class Autoloader
 {
-	static private $_directories = array();
+	static private $_directories = [];
 
 	static public function addNamespace($namespace, $pathToClasses)
 	{

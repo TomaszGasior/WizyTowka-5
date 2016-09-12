@@ -12,6 +12,8 @@ Odczyt pliku następuje w konstruktorze. Zapis pliku następuje w destruktorze w
 
 Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
 
+Jeżeli plik JSON nie istnieje, wystąpi błąd. Jeżeli dojdzie do błędu podczas parsowania pliku JSON, zostanie rzucony wyjątek.
+
 ##*static* `createNew($filename)`
 
 Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$filename` przyjmuje ścieżkę do pliku.

@@ -11,7 +11,8 @@ const VERSION        = '5.00';
 const VERSION_DATE   = '2016-09-01';
 const VERSION_STABLE = false;
 
-if (ini_get('register_globals') or ini_get('magic_quotes_gpc') or !function_exists('mb_internal_encoding')) {
+if (PHP_VERSION_ID < 50400 or !function_exists('mb_internal_encoding')
+	or ini_get('register_globals') or ini_get('magic_quotes_gpc')) {
 	die('WizyT&#243;wka content management system cannot be started. PHP configuration is invalid.');
 }
 

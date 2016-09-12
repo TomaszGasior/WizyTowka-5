@@ -9,13 +9,18 @@ namespace WizyTowka;
 class ConfigurationFile implements \IteratorAggregate
 {
 	private $_filename;
-	private $_configuration = array();
+	private $_configuration = [];
 	private $_wasChanged = false;
 
 	public function __construct($filename)
 	{
 		$this->_filename = $filename;
 		$this->_configuration = json_decode(file_get_contents($filename), true);
+
+		if (json_last_error() != JSON_ERROR_NONE) {
+			$this->_configuration = [];
+			throw new \Exception('Error during reading JSON config file: ' . json_last_error_msg() . '.');
+		}
 	}
 
 	public function __destruct()
@@ -26,6 +31,10 @@ class ConfigurationFile implements \IteratorAggregate
 				json_encode($this->_configuration, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE),
 				LOCK_EX
 			);
+
+			if (json_last_error() != JSON_ERROR_NONE) {
+				throw new \Exception('Error during writing JSON config file: ' . json_last_error_msg());
+			}
 		}
 	}
 
@@ -64,5 +73,24 @@ class ConfigurationFile implements \IteratorAggregate
 	static public function createNew($filename)
 	{
 		file_put_contents($filename, '{}');
+	}
+}
+
+
+// Poor json_last_error_msg() implementation for PHP versions older than 5.5.
+if (!function_exists('json_last_error_msg')) {
+	function json_last_error_msg()
+	{
+		$JSONErrorConstants = array_filter(get_defined_constants(), function($key){
+			return preg_match('/JSON_ERROR_.*/', $key);
+		}, ARRAY_FILTER_USE_KEY);
+
+		foreach ($JSONErrorConstants as $constantName => $constantValue) {
+			if ($constantValue == json_last_error()) {
+				return $constantName;
+			}
+		}
+
+		return 'undefined';
 	}
 }

@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 class ErrorHandler
 {
-	static private $_namedPHPErrors = array(
+	static private $_namedPHPErrors = [
 		2     => 'E_WARNING',
 		8     => 'E_NOTICE',
 		256   => 'E_USER_ERROR',
@@ -18,7 +18,7 @@ class ErrorHandler
 		4096  => 'E_RECOVERABLE_ERROR',
 		8192  => 'E_DEPRECATED',
 		16384 => 'E_USER_DEPRECATED'
-	);
+	];
 
 	// Warning: because of changes in PHP 7 we must not use type hint in $exception method argument to keep backward compatibility with older PHP versions.
 	// More informations here: http://php.net/manual/en/function.set-exception-handler.php
@@ -67,7 +67,7 @@ class ErrorHandler
 			"\nMessage: ", $exception->getMessage(),
 			"\nFile:    ", $exception->getFile(),
 			"\nLine:    ", $exception->getLine(),
-			"\n\nTrace:\n", $exception->getTraceAsString();
+			"\n\nTrace:\n", $exception->getTraceAsString(), "\n\n";
 	}
 
 	static private function printAsHTML($exception)
