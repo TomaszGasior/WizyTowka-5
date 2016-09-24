@@ -1,13 +1,12 @@
-# Third party libraries.
-code/system/thirdparty/*
-!code/system/thirdparty/.gitkeep
-
-# TODO file.
-TODO.txt
-
-# Tests of newly created codes.
-tests.php
 
 # Data files of development installation.
 # code/data
 code/data/config/errors.log
+
+# Third party libraries.
+code/system/thirdparty/*
+!code/system/thirdparty/.gitkeep
+
+# Private files.
+code/tests.php
+TODO.txt
