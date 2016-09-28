@@ -11,9 +11,9 @@ class Autoloader
 	static private $_directories = [];
 
 	static public function addNamespace($namespace, $pathToClasses)
-	{
+	{;
 		if (isset(self::$_directories[$namespace])) {
-			throw new \Exception('This namespace is already registered.');
+			throw new \Exception('This namespace is already registered.', 1);
 		}
 		self::$_directories[$namespace] = $pathToClasses;
 	}

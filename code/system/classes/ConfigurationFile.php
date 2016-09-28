@@ -19,7 +19,7 @@ class ConfigurationFile implements \IteratorAggregate
 
 		if (json_last_error() != JSON_ERROR_NONE) {
 			$this->_configuration = [];
-			throw new \Exception('Error during reading JSON config file: ' . json_last_error_msg() . '.');
+			throw new \Exception('Error during reading JSON config file: ' . json_last_error_msg() . '.', 2);
 		}
 	}
 
@@ -33,7 +33,7 @@ class ConfigurationFile implements \IteratorAggregate
 			);
 
 			if (json_last_error() != JSON_ERROR_NONE) {
-				throw new \Exception('Error during writing JSON config file: ' . json_last_error_msg());
+				throw new \Exception('Error during writing JSON config file: ' . json_last_error_msg(), 3);
 			}
 		}
 	}

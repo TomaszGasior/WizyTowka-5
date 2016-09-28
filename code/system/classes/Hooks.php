@@ -25,7 +25,7 @@ class Hooks
 	{
 		if (is_integer($position)) {
 			if (isset($hooks[$name][$position])) {
-				throw new \Exception('Callback cannot be added to ' . $name . ' hook in position ' . $position . '.');
+				throw new \Exception('Callback cannot be added to ' . $name . ' hook in position ' . $position . '.', 6);
 			}
 			else {
 				$hooks[$name][$position] = $callback;
@@ -72,7 +72,7 @@ class Hooks
 		$arguments = array_slice(func_get_args(), 1);
 
 		if (!isset($arguments[0])) {
-			throw new \Exception('Each filter must use one argument at least.');
+			throw new \Exception('Each filter must use one argument at least.', 5);
 			return;
 		}
 
@@ -100,11 +100,12 @@ class Hooks
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();
 				$givenArgsCount = count($arguments);
 				if ($requiredArgsCount > $givenArgsCount) {
-					throw new \Exception('Callback of ' . $name . ' hook in position ' . $position . ' expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.');
+					throw new \Exception('Callback of ' . $name . ' hook in position ' . $position . ' expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 4);
 				}
 				// When error is different, throw it again to default exception handler.
-				else
+				else {
 					throw $e;
+				}
 			}
 		}
 
