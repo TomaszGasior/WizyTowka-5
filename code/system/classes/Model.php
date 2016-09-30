@@ -8,20 +8,20 @@ namespace WizyTowka;
 
 abstract class Model implements \IteratorAggregate
 {
-	static private $_tableName = '';
-	static private $_tablePrimaryKey = 'id';
-	static private $_tableColumns = [];    // Must not contain primary key.
+	static protected $_tableName = '';
+	static protected $_tablePrimaryKey = 'id';
+	static protected $_tableColumns = [];    // Must not contain primary key.
 
 	private $_data = [];
-	private $_dataNotSavedYet = false;
+	private $_dataNewlyCreated;
 
 	public function __construct() {
+		$this->_data[static::$_tablePrimaryKey] = null;
 		foreach (static::$_tableColumns as $column) {
 			$this->_data[$column] = null;
 		}
-		$this->_data[static::$_tablePrimaryKey] = null;
 
-		$this->_dataNotSavedYet = true;
+		$this->_dataNewlyCreated = true;
 	}
 
 	public function __get($column)
@@ -55,21 +55,24 @@ abstract class Model implements \IteratorAggregate
 
 	public function save()
 	{
-		if ($this->_dataNotSavedYet) {
+		if ($this->_dataNewlyCreated) {
 			$parameters = array_map(function($column){ return ':' . $column; }, static::$_tableColumns);
 			$sqlQuery = 'INSERT INTO ' . static::$_tableName . '(' . implode(', ', static::$_tableColumns) . ') VALUES(' . implode(', ', $parameters) . ')';
 		}
 		else {
 			$columnAndParameterAssignments = array_map(function($column){ return $column . ' = :' . $column; }, static::$_tableColumns);
-			$sqlQuery = 'UPDATE ' . static::$_tableName . ' SET ' . implode(', ', $columnAndParameterAssignments) . 'WHERE ' . static::$_tablePrimaryKey . ' = ' . $this->_data[static::$_tablePrimaryKey];
+			$sqlQuery = 'UPDATE ' . static::$_tableName . ' SET ' . implode(', ', $columnAndParameterAssignments) . ' WHERE ' . static::$_tablePrimaryKey . ' = ' . $this->_data[static::$_tablePrimaryKey];
 		}
 
-		$statement = Database::pdo()->prepare($sqlQuery);
-		$execution = $statement->execute($this->_data);
+		$data = $this->_data;
+		unset($data[static::$_tablePrimaryKey]);
 
-		if ($execution and $this->_dataNotSavedYet) {
+		$statement = Database::pdo()->prepare($sqlQuery);
+		$execution = $statement->execute($data);
+
+		if ($execution and $this->_dataNewlyCreated) {
 			$this->_data[static::$_tablePrimaryKey] = Database::pdo()->lastInsertId(static::$_tablePrimaryKey);
-			$this->_dataNotSavedYet = false;
+			$this->_dataNewlyCreated = false;
 		}
 
 		$statement->closeCursor();
@@ -79,48 +82,71 @@ abstract class Model implements \IteratorAggregate
 
 	public function delete()
 	{
-		if ($this->_dataNotSavedYet) {
+		if ($this->_dataNewlyCreated) {
 			return;
 		}
 
-		$sqlQuery = 'DELETE FROM ' . static::$_tableName . ' WHERE ' . static::$_tablePrimaryKey . ' = ' . $this->_data[static::$_tablePrimaryKey];
-		$execution = Database::pdo()->exec($sqlQuery);
+		$sqlQuery = 'DELETE FROM ' . static::$_tableName . ' WHERE ' . static::$_tablePrimaryKey . ' = :id ';
 
-		return (boolean)$execution;
+		$statement = Database::pdo()->prepare($sqlQuery);
+		$execution = $statement->execute(['id' => $this->_data[static::$_tablePrimaryKey]]);
+
+		if ($execution) {
+			$this->_data[static::$_tablePrimaryKey] = null;
+			$this->_dataNewlyCreated = true;
+		}
+
+		$statement->closeCursor();
+
+		return $execution;
 	}
 
-	static protected function getByWhereCondition($sqlQueryWhere = null, array $parameters = [])
+	static protected function _getByWhereCondition($sqlQueryWhere = null, array $parameters = [], $mustBeOnlyOneRecord = false)
 	{
-		$sqlQuery = 'SELECT ' . static::$_tablePrimaryKey . ', ' . implode(static::$_tableColumns) . ' FROM ' . static::$_tableName;
+		$sqlQuery = 'SELECT ' . static::$_tablePrimaryKey . ', ' . implode(', ', static::$_tableColumns) . ' FROM ' . static::$_tableName;
 		if ($sqlQueryWhere) {
 			$sqlQuery .= ' WHERE ' . $sqlQueryWhere;
 		}
 
 		$statement = Database::pdo()->prepare($sqlQuery);
-		$statement->setFetchMode(PDO::FETCH_ASSOC);
+		$statement->setFetchMode(\PDO::FETCH_ASSOC); // Assoc mode is needed because of…
 		$execution = $statement->execute($parameters);
 
-		$thisClassName = __CLASS__;
-		$elements = [];
+		$thisClassName = get_called_class();
+		$elementsToReturn = [];
 
 		if ($execution) {
 			foreach ($statement as $record) {
 				$object = new $thisClassName;
-				$object->_data = $record;
-				$elements[] = $object;
+				$object->_data = $record;   // …assignment in this line.
+				$object->_dataNewlyCreated = false;
+
+				$elementsToReturn[] = $object;
 			}
 		}
 
-		return $elements;
+		if ($mustBeOnlyOneRecord) {
+			if (isset($elementsToReturn[0])) {
+				if (isset($elementsToReturn[1])) {
+					throw new \Exception('Database returned more than one record, when only one expected.', 10);
+				}
+				return $elementsToReturn[0];
+			}
+			else
+				return false;
+		}
+
+		return $elementsToReturn;
 	}
 
 	static public function getById($id)
 	{
-		return static::getByWhereCondition('id = :id', ['id' => $id])[0];
+		// This method uses table primary key. It is "id" by default.
+		return static::_getByWhereCondition(static::$_tablePrimaryKey.' = :id', ['id' => $id], true);
 	}
 
 	static public function getAll()
 	{
-		return static::getByWhereCondition();
+		return static::_getByWhereCondition();
 	}
 }
