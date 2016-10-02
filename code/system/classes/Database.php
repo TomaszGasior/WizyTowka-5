@@ -12,6 +12,11 @@ class Database
 
 	static public function connect($driver, $database, $host = null, $login = null, $password = null)
 	{
+		if (!empty(self::$_pdo)) {
+			throw new \Exception('Database connection is already started.', 11);
+			return;
+		}
+
 		switch ($driver) {
 			case 'sqlite':
 				self::$_pdo = new \PDO('sqlite:'.$database);
@@ -25,8 +30,12 @@ class Database
 				return;
 		}
 
-		self::$_pdo->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
 		self::$_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+	}
+
+	static public function disconnect()
+	{
+		self::$_pdo = null;
 	}
 
 	static public function pdo()

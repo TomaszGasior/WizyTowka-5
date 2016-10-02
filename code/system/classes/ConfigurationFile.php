@@ -67,7 +67,7 @@ class ConfigurationFile implements \IteratorAggregate
 
 	public function getIterator() // For IteratorAggregate interface.
 	{
-		return new ArrayIterator($this->_configuration);
+		return new \ArrayIterator($this->_configuration);
 	}
 
 	static public function createNew($filename)

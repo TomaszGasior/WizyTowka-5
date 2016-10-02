@@ -2,11 +2,11 @@
 
 /**
 * WizyTówka 5
-* Abstract class of database object model.
+* Abstract class of database object.
 */
 namespace WizyTowka;
 
-abstract class Model implements \IteratorAggregate
+abstract class DatabaseObject implements \IteratorAggregate
 {
 	static protected $_tableName = '';
 	static protected $_tablePrimaryKey = 'id';
@@ -50,7 +50,7 @@ abstract class Model implements \IteratorAggregate
 
 	public function getIterator() // For IteratorAggregate interface.
 	{
-		return new ArrayIterator($this->_data);
+		return new \ArrayIterator($this->_data);
 	}
 
 	public function save()
