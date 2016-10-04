@@ -15,8 +15,12 @@ class ConfigurationFile implements \IteratorAggregate
 	public function __construct($filename)
 	{
 		$this->_filename = $filename;
-		$this->_configuration = json_decode(file_get_contents($filename), true);
+		$this->_configuration = json_decode(file_get_contents($filename), true);  // Associative array.
 
+		if (!is_array($this->_configuration)) {
+			$this->_configuration = [];
+			throw new \Exception('Configuration file ' . $filename . ' does not contain array.', 12);
+		}
 		if (json_last_error() != JSON_ERROR_NONE) {
 			$this->_configuration = [];
 			throw new \Exception('Error during reading JSON config file: ' . json_last_error_msg() . '.', 2);
@@ -60,7 +64,7 @@ class ConfigurationFile implements \IteratorAggregate
 		$this->_configuration[$key] = $value;
 	}
 
-	public function __debugInfo() // For var_dump() since PHP 5.6.
+	public function s__debugInfo() // For var_dump() since PHP 5.6.
 	{
 		return $this->_configuration;
 	}
@@ -72,7 +76,7 @@ class ConfigurationFile implements \IteratorAggregate
 
 	static public function createNew($filename)
 	{
-		file_put_contents($filename, '{}');
+		file_put_contents($filename, json_encode([]));
 	}
 }
 

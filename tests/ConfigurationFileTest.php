@@ -26,7 +26,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 		WizyTowka\ConfigurationFile::createNew(self::$_filename);
 
 		$current  = file_get_contents(self::$_filename);
-		$expected = '{}';
+		$expected = json_encode([]);
 		$this->assertEquals($current, $expected);
 	}
 
