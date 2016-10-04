@@ -1,12 +1,24 @@
 <?php
 
+/**
+* WizyTówka 5 — unit test
+*/
 class DatabaseTest extends PHPUnit\Framework\TestCase
 {
-	static private $databaseFile = 'exampleSQLiteDatabase.db';
+	static private $_databaseFile = 'exampleSQLiteDatabase.db';
+
+	static public function tearDownAfterClass()
+	{
+		if (file_exists(self::$_databaseFile)) {
+			unlink(self::$_databaseFile);
+		}
+
+		WizyTowka\Database::disconnect();
+	}
 
 	/**
-	 * @expectedException        Exception
-	 * @expectedExceptionMessage Database connection was not established properly.
+	 * @expectedException     Exception
+	 * @expectedExceptionCode 9
 	 */
 	public function testPDOBeforeConnect()
 	{
@@ -15,9 +27,9 @@ class DatabaseTest extends PHPUnit\Framework\TestCase
 
 	public function testConnect()
 	{
-		WizyTowka\Database::connect('sqlite', self::$databaseFile);
+		WizyTowka\Database::connect('sqlite', self::$_databaseFile);
 
-		$this->assertTrue(file_exists(self::$databaseFile));
+		$this->assertTrue(file_exists(self::$_databaseFile));
 	}
 
 	public function testPDOAfterConnect()
@@ -35,14 +47,5 @@ class DatabaseTest extends PHPUnit\Framework\TestCase
 		$expected = '45';
 
 		$this->assertEquals($current, $expected);
-	}
-
-	static public function tearDownAfterClass()
-	{
-		if (file_exists(self::$databaseFile)) {
-			unlink(self::$databaseFile);
-		}
-
-		WizyTowka\Database::disconnect();
 	}
 }

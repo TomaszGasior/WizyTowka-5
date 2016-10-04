@@ -27,13 +27,11 @@ class ErrorHandler
 	{
 		self::addToLog($exception);
 
-		if (true) {  // This line will be changed later.
-			$isPlainText = !empty(array_filter(headers_list(), function($value){
-				return stripos($value, 'content-type')!== false and stripos($value, 'text/html')===false;
-				// Use plain text format for error message instead HTML, when 'content-type' HTTP header is set, but not contain 'text/html'.
-			}));
-			(PHP_SAPI == 'cli' or $isPlainText) ? self::printAsPlainText($exception) : self::printAsHTML($exception);
-		}
+		$isPlainText = !empty(array_filter(headers_list(), function($value){
+			return stripos($value, 'content-type')!== false and stripos($value, 'text/html')===false;
+			// Use plain text format for error message instead HTML, when 'content-type' HTTP header is set, but not contain 'text/html'.
+		}));
+		(PHP_SAPI == 'cli' or $isPlainText) ? self::printAsPlainText($exception) : self::printAsHTML($exception);
 	}
 
 	static public function convertErrorToException($number, $message, $file, $line)  // For set_error_handler().
@@ -43,12 +41,17 @@ class ErrorHandler
 
 	static private function addToLog($exception)
 	{
+		if (!defined('CONFIG_DIR')) {
+			return;
+			// CONFIG_DIR can be not defined when ErrorHandler is ran outside normal CMS code (in tests or utility scripts).
+		}
+
 		file_put_contents(
 			CONFIG_DIR . '/errors.log', (
 				"\n\n\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
-				( ($exception instanceof \ErrorException)
-					? "\nType:    " . self::$_namedPHPErrors[$exception->getSeverity()]
-					: "\nCode:    " . $exception->getCode()
+				"\nType:    " . ( ($exception instanceof \ErrorException)
+					? self::$_namedPHPErrors[$exception->getSeverity()]
+					: get_class($exception) . '  ' . ((empty($exception->getCode()))?'':$exception->getCode())
 				) .
 				"\nMessage: " . $exception->getMessage() .
 				"\nFile:    " . $exception->getFile() .
@@ -61,9 +64,10 @@ class ErrorHandler
 	static private function printAsPlainText($exception)
 	{
 		echo "\n\n", 'System encountered fatal error and executing must be interrupted.', "\n",
-			($exception instanceof \ErrorException)
-				? "\nType:    " . self::$_namedPHPErrors[$exception->getSeverity()]
-				: "\nCode:    " . $exception->getCode(),
+			"\nType:    " . ( ($exception instanceof \ErrorException)
+				? self::$_namedPHPErrors[$exception->getSeverity()]
+				: get_class($exception) . '  ' . ((empty($exception->getCode()))?'':$exception->getCode())
+			),
 			"\nMessage: ", $exception->getMessage(),
 			"\nFile:    ", $exception->getFile(),
 			"\nLine:    ", $exception->getLine(),
@@ -89,8 +93,11 @@ class ErrorHandler
 	<h1>Fatal error — WizyTówka <?= VERSION ?></h1>
 	<p>System encountered fatal error and executing must be interrupted.</p>
 	<dl>
-		<dt><?= ($isError = $exception instanceof \ErrorException) ? 'Type' : 'Code' ?></dt>
-		<dd><?= ($isError) ? self::$_namedPHPErrors[$exception->getSeverity()] : $exception->getCode() ?></dd>
+		<dt>Type</dt>
+		<dd><?= ( ($exception instanceof \ErrorException)
+				? self::$_namedPHPErrors[$exception->getSeverity()]
+				: get_class($exception) . ' &nbsp; ' . ((empty($exception->getCode()))?'':$exception->getCode())
+			) ?></dd>
 		<dt>Message</dt>
 		<dd><?= htmlspecialchars($exception->getMessage()) ?></dd>
 		<dt>File</dt>

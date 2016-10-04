@@ -13,7 +13,7 @@ class Database
 	static public function connect($driver, $database, $host = null, $login = null, $password = null)
 	{
 		if (!empty(self::$_pdo)) {
-			throw new \Exception('Database connection is already started.', 11);
+			throw new \Exception('Database connection is already started.', 7);
 			return;
 		}
 

@@ -1,30 +1,27 @@
 <?php
 
+/**
+* WizyTówka 5 — unit test
+*/
 class AutoloaderTest extends PHPUnit\Framework\TestCase
 {
-	static public $reflector;
-	static private $exampleNamespace = 'Namespace\\Example';
-
-	static public function setUpBeforeClass()
-	{
-		self::$reflector = new ReflectionClass('WizyTowka\\Autoloader');
-	}
+	static private $_exampleNamespace = 'Namespace\\Example';
 
 	public function testAddNamespace()
 	{
 		$exampleDirectory = __DIR__;
 
-		WizyTowka\Autoloader::addNamespace(self::$exampleNamespace, $exampleDirectory);
+		WizyTowka\Autoloader::addNamespace(self::$_exampleNamespace, $exampleDirectory);
 
-		$directoriesVariable = self::$reflector->getStaticProperties()['_directories'];
-		$this->assertEquals($directoriesVariable[self::$exampleNamespace], $exampleDirectory);
+		$directoriesVariable = (new ReflectionClass('WizyTowka\\Autoloader'))->getStaticProperties()['_directories'];
+		$this->assertEquals($directoriesVariable[self::$_exampleNamespace], $exampleDirectory);
 	}
 
 	public function testRemoveNamespace()
 	{
-		WizyTowka\Autoloader::removeNamespace(self::$exampleNamespace);
+		WizyTowka\Autoloader::removeNamespace(self::$_exampleNamespace);
 
-		$directoriesVariable = self::$reflector->getStaticProperties()['_directories'];
-		$this->assertFalse(isset($directoriesVariable[self::$exampleNamespace]));
+		$directoriesVariable = (new ReflectionClass('WizyTowka\\Autoloader'))->getStaticProperties()['_directories'];
+		$this->assertFalse(isset($directoriesVariable[self::$_exampleNamespace]));
 	}
 }

@@ -1,11 +1,11 @@
 <?php
 
 /**
- * @backupGlobals disabled
- */
+* WizyTówka 5 — unit test
+*/
 class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 {
-	static private $exampleClass;
+	static private $_exampleClass;
 
 	static public function setUpBeforeClass()
 	{
@@ -14,7 +14,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		WizyTowka\Database::executeSQL('CREATE TABLE exampleTable (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, column1 INTEGER, column2 TEXT); INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");');
 
 		// Example anonymous class that extends abstract DatabaseObject class. PHP 7 syntax.
-		self::$exampleClass = new class() extends WizyTowka\DatabaseObject
+		self::$_exampleClass = new class() extends WizyTowka\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTable';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -23,6 +23,11 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 				'column2',
 			];
 		};
+	}
+
+	static public function tearDownAfterClass()
+	{
+		WizyTowka\Database::disconnect();
 	}
 
 	// Helper function used to do convertion from object to array by foreach loop.
@@ -37,7 +42,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testGetAll()
 	{
-		$objectsArray = self::$exampleClass::getAll();
+		$objectsArray = self::$_exampleClass::getAll();
 
 		$current  = array_map([$this,'convertObjectToArray'], $objectsArray);
 		$expected = [
@@ -49,7 +54,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testGetById()
 	{
-		$object = self::$exampleClass::getById(2);
+		$object = self::$_exampleClass::getById(2);
 
 		$current  = $this->convertObjectToArray($object);
 		$expected = ['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'];
@@ -58,12 +63,12 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testSaveInsert()
 	{
-		$newObject = new self::$exampleClass;
+		$newObject = new self::$_exampleClass;
 		$newObject->column1 = '10';
 		$newObject->column2 = 'ten';
 		$newObject->save();
 
-		$object = self::$exampleClass::getById($newObject->primaryKey);  // Primary key field is set after save() operation.
+		$object = self::$_exampleClass::getById($newObject->primaryKey);  // Primary key field is set after save() operation.
 
 		$current  = $this->convertObjectToArray($object);
 		$expected = ['primaryKey' => '3', 'column1' => '10', 'column2' => 'ten'];
@@ -72,12 +77,12 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testSaveUpdate()
 	{
-		$editedObject = self::$exampleClass::getById(1);
+		$editedObject = self::$_exampleClass::getById(1);
 		$editedObject->column1 = '1024';
 		$editedObject->column2 = 'one thousand twenty four';
 		$editedObject->save();
 
-		$object = self::$exampleClass::getById(1);
+		$object = self::$_exampleClass::getById(1);
 
 		$current  = $this->convertObjectToArray($object);
 		$expected = ['primaryKey' => '1', 'column1' => '1024', 'column2' => 'one thousand twenty four'];
@@ -86,26 +91,21 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testDelete()
 	{
-		$removedObject = self::$exampleClass::getById(1);
+		$removedObject = self::$_exampleClass::getById(1);
 		$removedObject->delete();
 
-		$object = self::$exampleClass::getById(1);
+		$object = self::$_exampleClass::getById(1);
 
 		$this->assertFalse($object);
 	}
 
 	/**
-	 * @expectedException        Exception
-	 * @expectedExceptionMessage Primary key cannot be edited.
+	 * @expectedException     Exception
+	 * @expectedExceptionCode 10
 	 */
 	public function testDoNotEditPrimaryKey()
 	{
-		$object = new self::$exampleClass;
+		$object = new self::$_exampleClass;
 		$object->primaryKey = 1;
-	}
-
-	static public function tearDownAfterClass()
-	{
-		WizyTowka\Database::disconnect();
 	}
 }

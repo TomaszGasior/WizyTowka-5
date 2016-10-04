@@ -1,13 +1,26 @@
 <?php
 
+/**
+* WizyTówka 5 — unit test
+*/
 class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 {
-	static private $errorLogPath = 'code/data/config/errors.log';
+	static private $_errorLogPath = 'code/data/config/errors.log';
 
 	static public function setUpBeforeClass()
 	{
-		if (file_exists(self::$errorLogPath)) {
-			rename(self::$errorLogPath, self::$errorLogPath.'.bak');
+		if (file_exists(self::$_errorLogPath)) {
+			rename(self::$_errorLogPath, self::$_errorLogPath.'.bak');
+		}
+	}
+
+	static public function tearDownAfterClass()
+	{
+		if (file_exists(self::$_errorLogPath)) {
+			unlink(self::$_errorLogPath);
+		}
+		if (file_exists(self::$_errorLogPath.'.bak')) {
+			rename(self::$_errorLogPath.'.bak', self::$_errorLogPath);
 		}
 	}
 
@@ -27,17 +40,7 @@ class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 
 		WizyTowka\ErrorHandler::handleException(new Exception($exceptionMessage, 8));
 
-		$errorLog = file_get_contents(self::$errorLogPath);
+		$errorLog = file_get_contents(self::$_errorLogPath);
 		$this->assertContains($exceptionMessage, $errorLog);
-	}
-
-	static public function tearDownAfterClass()
-	{
-		if (file_exists(self::$errorLogPath)) {
-			unlink(self::$errorLogPath);
-		}
-		if (file_exists(self::$errorLogPath.'.bak')) {
-			rename(self::$errorLogPath.'.bak', self::$errorLogPath);
-		}
 	}
 }

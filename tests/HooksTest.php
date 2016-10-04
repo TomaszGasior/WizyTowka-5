@@ -1,5 +1,8 @@
 <?php
 
+/**
+* WizyTówka 5 — unit test
+*/
 class HooksTest extends PHPUnit\Framework\TestCase
 {
 	public function testRunAction()
@@ -66,8 +69,8 @@ class HooksTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException              Exception
-	 * @expectedExceptionMessageRegExp /Callback of .+ hook in position \d+ expect \d+ required arguments, \d+ given/
+	 * @expectedException     Exception
+	 * @expectedExceptionCode 4
 	 */
 	public function testInvalidCallbackArguments()
 	{

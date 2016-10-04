@@ -33,7 +33,7 @@ class ConfigurationFile implements \IteratorAggregate
 			);
 
 			if (json_last_error() != JSON_ERROR_NONE) {
-				throw new \Exception('Error during writing JSON config file: ' . json_last_error_msg(), 3);
+				throw new \Exception('Error during writing JSON config file: ' . json_last_error_msg() . '.', 3);
 			}
 		}
 	}

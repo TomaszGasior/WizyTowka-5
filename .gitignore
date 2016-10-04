@@ -9,4 +9,4 @@ code/system/thirdparty/*
 
 # Private files.
 code/tests.php
-TODO.txt
+others/TODO.txt

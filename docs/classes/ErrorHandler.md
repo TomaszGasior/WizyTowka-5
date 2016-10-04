@@ -12,16 +12,16 @@ Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Jeśli 
 
 ##*static* `convertErrorToException($number, $message, $file, $line)`
 
-Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `\ErrorException`. Przeznaczona do zarejestrowania przez `set_error_handler()`.
+Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `ErrorException`. Przeznaczona do zarejestrowania przez `set_error_handler()`.
 
-##*static private* `addToLog(Throwable $exception)`
+##*static private* `addToLog($exception)`
 
 Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on domyślnie w folderze `data/config/errors.log`.
 
-##*static private* `printAsPlainText(Throwable $exception)`
+##*static private* `printAsPlainText($exception)`
 
 Wyświetla informacje o błędzie w formie zwykłego tekstu.
 
-##*static private* `printAsHTML(Throwable $exception)`
+##*static private* `printAsHTML($exception)`
 
 Wyświetla informacje o błędzie w formie strony HTML.

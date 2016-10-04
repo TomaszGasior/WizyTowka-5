@@ -1,6 +1,6 @@
 #Database
 
-Menadżer połączenia z bazą danych. Umożliwia zainicjowanie połączenia z obsługiwanym systemem bazodanowym za pośrednictwem PDO oraz pobranie obiektu PDO w celu wykonywania operacji na bazie.
+Menadżer połączenia z bazą danych. Umożliwia zainicjowanie połączenia z obsługiwanym systemem bazodanowym za pośrednictwem PDO oraz pobranie obiektu klasy `PDO` w celu wykonywania operacji na bazie.
 
 ##*static* `connect($driver, $database, $host = null, $login = null, $password = null)`
 
