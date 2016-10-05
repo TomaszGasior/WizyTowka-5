@@ -2,13 +2,13 @@
 
 /**
 * WizyTówka 5
-* This script reads source code, finds all CMS exceptions, finds deprecated and duplicated codes.
+* This script reads source code, finds all CMS exceptions, deprecated and duplicated codes.
 */
 namespace WizyTowka;
 
 
 const SYSTEM_DIR = __DIR__ . '/../code/system';
-include_once SYSTEM_DIR . '/init.php';
+include SYSTEM_DIR . '/init.php';
 
 
 function findExceptions()
