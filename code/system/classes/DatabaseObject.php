@@ -32,7 +32,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function __set($column, $value)
 	{
 		if ($column == static::$_tablePrimaryKey) {
-			throw new \Exception('Primary key cannot be edited.', 10);
+			throw new WTException('Primary key cannot be edited.', 10);
 			return;
 		}
 		$this->_data[$column] = $value;
@@ -128,7 +128,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		if ($mustBeOnlyOneRecord) {
 			if (isset($elementsToReturn[0])) {
 				if (isset($elementsToReturn[1])) {
-					throw new \Exception('Database returned more than one record, when only one expected.', 11);
+					throw new WTException('Database returned more than one record, when only one expected.', 11);
 				}
 				return $elementsToReturn[0];
 			}
