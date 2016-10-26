@@ -6,12 +6,17 @@ Konkretna instancja klasy dziedziczącej po klasie `DatabaseObject` jest repreze
 Stworzenie nowego rekordu polega na utworzeniu nowej instancji klasy (zwyczajnie, za pomocą operatora `new`). Pobranie istniejących w bazie rekordów polega na użyciu statycznych metod `getAll()` lub `getById()` zwracających tablicę z przygotowanymi instancjami klasy bądź przygotowaną instancję klasy.
 Klasy dziedziczące mogą oferować inne sposoby pobierania rekordów z wykorzystaniem klauzuli `WHERE` języka SQL za pośrednictwem chronionej metody `_getByWhereCondition()`.
 
-**Klasy dziedziczące muszą nadpisywać statyczne chronione pola `$_tableName`, `$_tablePrimaryKey`, `$_tableColumns`.** `$_tableName` określa nazwę tabeli bazy danych, `$_tablePrimaryKey` definiuje nazwę kolumny klucza podstawowego (domyślnie `id`), `$_tableColumns` to tablica zawierająca nazwy kolumn tabeli (bez kolumny klucza podstawowego!).
+**Podstawowa konfiguracja klasy dziedziczącej polega na określeniu statycznych i chronionych pól:**
+
+- `$_tableName` — nazwa tabeli bazy danych;
+- `$_tableColumns` — tablica nazw poszczególnych kolumn tabeli (bez klucza podstawowego!);
+- `$_tablePrimaryKey` — nazwa kolumny klucza podstawowego, domyślnie `id`, opcjonalnie;
+- `$_tableEncodedColumns` — tablica nazw kolumn tabeli przechowujących obiekty zakodowane w formacie JSON (kod JSON jest automatycznie dekodowany przy odczycie i kodowany przy zapisie rekordu), opcjonalne.
+
+Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej klasy, należy rozpocząć połączenie z bazą danych za pomocą `Database::connect()`.
 
 Klasa `DatabaseObject` implementuje metody magiczne `__get`, `__set`, `__isset`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli.
 Implementuje również metodę `__debugInfo` dla funkcji `var_dump()` (dostępne od PHP 5.6).
-
-Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej klasy, należy rozpocząć połączenie z bazą danych za pomocą `Database::connect()`.
 
 ##`__construct()`
 

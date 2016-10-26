@@ -10,7 +10,8 @@ abstract class DatabaseObject implements \IteratorAggregate
 {
 	static protected $_tableName = '';
 	static protected $_tablePrimaryKey = 'id';
-	static protected $_tableColumns = [];    // Must not contain primary key.
+	static protected $_tableColumns = [];         // Must not contain primary key.
+	static protected $_tableEncodedColumns = [];  // Columns with objects encoded in JSON string.
 
 	private $_data = [];
 	private $_dataNewlyCreated;
@@ -18,7 +19,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function __construct() {
 		$this->_data[static::$_tablePrimaryKey] = null;
 		foreach (static::$_tableColumns as $column) {
-			$this->_data[$column] = null;
+			$this->_data[$column] = (in_array($column, static::$_tableEncodedColumns)) ? new \stdClass() : null;
 		}
 
 		$this->_dataNewlyCreated = true;
@@ -66,6 +67,13 @@ abstract class DatabaseObject implements \IteratorAggregate
 
 		$data = $this->_data;
 		unset($data[static::$_tablePrimaryKey]);
+
+		foreach (static::$_tableEncodedColumns as $column) {
+			$data[$column] = json_encode($data[$column], JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE);
+		}
+		if (json_last_error() != JSON_ERROR_NONE) {
+			throw new WTException('Error during writing JSON string: ' . json_last_error_msg() . '.', 14);
+		}
 
 		$statement = Database::pdo()->prepare($sqlQuery);
 		$execution = $statement->execute($data);
@@ -117,6 +125,13 @@ abstract class DatabaseObject implements \IteratorAggregate
 
 		if ($execution) {
 			foreach ($statement as $record) {
+				foreach (static::$_tableEncodedColumns as $column) {
+					$record[$column] = json_decode($record[$column]);
+				}
+				if (json_last_error() != JSON_ERROR_NONE) {
+					throw new WTException('Error during reading JSON string: ' . json_last_error_msg() . '.', 13);
+				}
+
 				$object = new $thisClassName;
 				$object->_data = $record;   // …assignment in this line.
 				$object->_dataNewlyCreated = false;

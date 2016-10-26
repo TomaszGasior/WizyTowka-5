@@ -6,14 +6,19 @@
 class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 {
 	static private $_exampleClass;
+	static private $_exampleJSONClass;
 
 	static public function setUpBeforeClass()
 	{
 		// Connect to SQLite database in memory. Prepare database structure and content.
 		WizyTowka\Database::connect('sqlite', ':memory:');
-		WizyTowka\Database::executeSQL('CREATE TABLE exampleTable (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, column1 INTEGER, column2 TEXT); INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");');
+		WizyTowka\Database::executeSQL('
+			CREATE TABLE exampleTable (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, column1 INTEGER, column2 TEXT);
+			INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");
+			CREATE TABLE exampleJSON (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, dataJSON TEXT);
+		');
 
-		// Example anonymous class that extends abstract DatabaseObject class. PHP 7 syntax.
+		// Example anonymous classes that extend abstract DatabaseObject class. PHP 7 syntax.
 		self::$_exampleClass = new class() extends WizyTowka\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTable';
@@ -21,6 +26,17 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 			static protected $_tableColumns = [
 				'column1',
 				'column2',
+			];
+		};
+		self::$_exampleJSONClass = new class() extends WizyTowka\DatabaseObject
+		{
+			static protected $_tableName = 'exampleJSON';
+			static protected $_tablePrimaryKey = 'primaryKey';
+			static protected $_tableColumns = [
+				'dataJSON',
+			];
+			static protected $_tableEncodedColumns = [
+				'dataJSON',
 			];
 		};
 	}
@@ -97,6 +113,32 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$object = self::$_exampleClass::getById(1);
 
 		$this->assertFalse($object);
+	}
+
+	public function testJSONEncoding()
+	{
+		$exampleData = [
+			'key1' => 'value1',
+			'key2' => 'value2',
+			'key3' => 'value3',
+			'key4' => 'value4',
+		];
+
+		$newObject = new self::$_exampleJSONClass;
+		foreach ($exampleData as $key => $value) {
+			$newObject->dataJSON->$key = $value;
+		}
+		$newObject->save();
+
+		$expected = (object)$exampleData;
+		$current = $newObject->dataJSON;
+		$this->assertEquals($current, $expected);
+
+		$object = self::$_exampleJSONClass::getById($newObject->primaryKey);
+
+		$expected = (object)$exampleData;
+		$current = $object->dataJSON;
+		$this->assertEquals($current, $expected);
 	}
 
 	/**
