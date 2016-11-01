@@ -22,8 +22,10 @@ class Database
 				self::$_pdo = new \PDO('sqlite:'.$database);
 				break;
 			case 'mysql':
+				self::$_pdo = new \PDO('mysql:host='.$host.';dbname='.$database.';charset=utf8', $login, $password);
+				break;
 			case 'pgsql':
-				self::$_pdo = new \PDO($driver.':host='.$host.';dbname='.$database.';charset=utf8', $login, $password);
+				self::$_pdo = new \PDO('pgsql:host='.$host.';dbname='.$database, $login, $password);
 				break;
 			default:
 				throw new WTException('Unsupported database type: ' . $driver . '.', 8);

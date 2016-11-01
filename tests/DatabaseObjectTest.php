@@ -6,7 +6,8 @@
 class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 {
 	static private $_exampleClass;
-	static private $_exampleJSONClass;
+	static private $_exampleClassJSON;
+	static private $_exampleClassTime;
 
 	static public function setUpBeforeClass()
 	{
@@ -14,8 +15,9 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		WizyTowka\Database::connect('sqlite', ':memory:');
 		WizyTowka\Database::executeSQL('
 			CREATE TABLE exampleTable (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, column1 INTEGER, column2 TEXT);
+			CREATE TABLE exampleTableJSON (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, dataJSON TEXT);
+			CREATE TABLE exampleTableTime (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, updatedAt INTEGER, insertedAt INTEGER);
 			INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");
-			CREATE TABLE exampleJSON (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, dataJSON TEXT);
 		');
 
 		// Example anonymous classes that extend abstract DatabaseObject class. PHP 7 syntax.
@@ -28,15 +30,30 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 				'column2',
 			];
 		};
-		self::$_exampleJSONClass = new class() extends WizyTowka\DatabaseObject
+		self::$_exampleClassJSON = new class() extends WizyTowka\DatabaseObject
 		{
-			static protected $_tableName = 'exampleJSON';
+			static protected $_tableName = 'exampleTableJSON';
 			static protected $_tablePrimaryKey = 'primaryKey';
 			static protected $_tableColumns = [
 				'dataJSON',
 			];
-			static protected $_tableEncodedColumns = [
+			static protected $_tableColumnsJSON = [
 				'dataJSON',
+			];
+		};
+		self::$_exampleClassTime = new class() extends WizyTowka\DatabaseObject
+		{
+			static protected $_tableName = 'exampleTableTime';
+			static protected $_tablePrimaryKey = 'primaryKey';
+			static protected $_tableColumns = [
+				'updatedAt',
+				'insertedAt',
+			];
+			static protected $_tableColumnsTimeAtInsert = [
+				'insertedAt',
+			];
+			static protected $_tableColumnsTimeAtUpdate = [
+				'updatedAt',
 			];
 		};
 	}
@@ -124,7 +141,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 			'key4' => 'value4',
 		];
 
-		$newObject = new self::$_exampleJSONClass;
+		$newObject = new self::$_exampleClassJSON;
 		foreach ($exampleData as $key => $value) {
 			$newObject->dataJSON->$key = $value;
 		}
@@ -134,10 +151,40 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$current = $newObject->dataJSON;
 		$this->assertEquals($current, $expected);
 
-		$object = self::$_exampleJSONClass::getById($newObject->primaryKey);
+		$object = self::$_exampleClassJSON::getById($newObject->primaryKey);
 
 		$expected = (object)$exampleData;
 		$current = $object->dataJSON;
+		$this->assertEquals($current, $expected);
+	}
+
+	public function testTimeAtInsert()
+	{
+		$newObject = new self::$_exampleClassTime;
+		$newObject->save();
+
+		$expected = time();
+		$current = $newObject->insertedAt;
+		$this->assertEquals($current, $expected);
+
+		$object = self::$_exampleClassTime::getById(1);
+
+		$current = $object->insertedAt;
+		$this->assertEquals($current, $expected);
+	}
+
+	public function testTimeAtUpdate()
+	{
+		$editedObject = self::$_exampleClassTime::getById(1);
+		$editedObject->save();
+
+		$expected = time();
+		$current = $editedObject->updatedAt;
+		$this->assertEquals($current, $expected);
+
+		$object1 = self::$_exampleClassTime::getById(1);
+
+		$current = $object1->updatedAt;
 		$this->assertEquals($current, $expected);
 	}
 
