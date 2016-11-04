@@ -19,7 +19,7 @@ class ConfigurationFile implements \IteratorAggregate
 
 		if (!is_array($this->_configuration)) {
 			$this->_configuration = [];
-			throw new WTException('Configuration file ' . $filename . ' does not contain array.', 12);
+			throw new WTException('Configuration file ' . $filename . ' does not contain array.', 4);
 		}
 		if (json_last_error() != JSON_ERROR_NONE) {
 			$this->_configuration = [];

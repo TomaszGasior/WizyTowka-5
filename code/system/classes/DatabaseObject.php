@@ -39,7 +39,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 			throw new WTException('Primary key cannot be edited.', 10);
 		}
 		elseif (in_array($column, static::$_tableColumnsJSON) and !is_object($value)) {
-			throw new WTException('JSON object cannot be replaced by non-object value.', 15);
+			throw new WTException('JSON object cannot be replaced by non-object value.', 12);
 		}
 
 		$this->_data[$column] = $value;

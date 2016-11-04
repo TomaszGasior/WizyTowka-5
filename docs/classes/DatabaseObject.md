@@ -17,16 +17,18 @@ Klasy dziedziczące mogą oferować inne sposoby pobierania rekordów z wykorzys
 
 Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej klasy, należy rozpocząć połączenie z bazą danych za pomocą `Database::connect()`.
 
-Klasa `DatabaseObject` implementuje metody magiczne `__get`, `__set`, `__isset`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli.
-Implementuje również metodę `__debugInfo` dla funkcji `var_dump()` (dostępne od PHP 5.6).
+Klasa `DatabaseObject` implementuje metody magiczne `__get()`, `__set()`, `__isset()`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli.
+Implementuje również metodę `__debugInfo()` dla funkcji `var_dump()` (dostępne od PHP 5.6).
 
 ##`__construct()`
 
-Tworzy nowy rekord tabeli. Wszystkie pola rekordu otrzymują domyślną wartość `null`.
+Tworzy nowy rekord tabeli. Wszystkie pola rekordu otrzymują domyślną wartość `null`. Kolumnom określonym w polu `$_tableColumnsJSON` przypisywany jest pusty obiekt (instancja klasy `stdClass`).
 
 ##`save()`
 
 Zapisuje rekord. Jeśli rekord jest nowo utworzonym rekordem, używane jest zapytanie SQL `INSERT`, a po pomyślnym dodaniu wartość klucza podstawowego jest uzupełniana. Jeśli rekord już istnieje, jest aktualizowany przy użyciu zapytania `UPDATE`.
+
+Przed zapisem wartości kolumn zdefiniowanych w polu `$_tableColumnsJSON` zamieniane są na ciąg w formacie JSON, a do pól określonych w `$_tableColumnsTimeAtInsert` lub `$_tableColumnsTimeAtUpdate`, w zależności od kontekstu, zapisywany jest aktualny uniksowy znacznik czasu. Jeśli przy zapisie kodu JSON wystąpi błąd, zostanie rzucony wyjątek #14.
 
 ##`delete()`
 
@@ -48,5 +50,6 @@ Metoda stanowiąca podstawę dla innych metod pobierających istniejące rekordy
 
 Argument `$sqlQueryWhere` określa fragment zapytania SQL umieszczony po klauzuli `WHERE`, może być pusty. Argument `$parameters` to tablica używana przez PDO do przypięcia wartości do odpowiadających parametrów obecnych w `$sqlQueryWhere`, może być pustą tablicą.
 
-Standardowo zwracana jest tablica rekordów (instancji klas), a jeśli rekordów brak — pusta tablica.
-Jeśli argument `$mustBeOnlyOneRecord` jest prawdą, zwracany jest tylko pierwszy rekord bądź fałsz, jeśli brak rekordów. Jednakże, gdy baza danych zwróci więcej niż jeden rekord, rzucany jest wyjątek.
+Standardowo zwracana jest tablica rekordów (instancji klas), a jeśli rekordów brak — pusta tablica. Jeśli argument `$mustBeOnlyOneRecord` jest prawdą, zwracany jest tylko pierwszy rekord bądź fałsz, jeśli brak rekordów. Jednakże, gdy baza danych zwróci więcej niż jeden rekord, rzucany jest wyjątek #11.
+
+Przy pobieraniu rekordów kolumny określone w `$_tableColumnsJSON` są dekodowane do obiektów (instancji klasy `stdClass`). Jeśli przy parsowaniu kodu JSON wystąpi błąd, zostanie rzucony wyjątek #13.

@@ -7,6 +7,14 @@
 			<directory>./tests</directory>
 		</testsuite>
 	</testsuites>
+	<filter>
+	  <whitelist>
+	    <directory>./code/system/classes</directory>
+	    <exclude>
+	    	<file>./code/system/init.php</file>
+	    </exclude>
+	  </whitelist>
+	</filter>
 	<php>
 		<const name="DATA_DIR" value="./code/data"/>
 		<const name="FILES_DIR" value="./code/data/files"/>

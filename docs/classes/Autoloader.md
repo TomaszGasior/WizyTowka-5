@@ -8,6 +8,8 @@ Automatyczna ładowarka klas z uprzednio zarejestrowanych przestrzeni nazw.
 
 Metoda ta dodaje wskazaną przez `$namespace` przestrzeń nazw do zbioru przestrzeni nazw obsługiwanych przez ładowarkę. Jako `$pathToClasses` podać należy ścieżkę do folderu gromadzącego pliki klas.
 
+Jeżeli podana przestrzeń nazw jest już zarejestrowana, rzucany jest wyjątek #1.
+
 ##*static* `removeNamespace($namespace)`
 
 Metoda usuwa wskazaną w `$namespace` przestrzeń nazw ze zbioru przestrzeni obsługiwanych przez ładowarkę.

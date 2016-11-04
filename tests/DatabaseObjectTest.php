@@ -189,7 +189,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException     Exception
+	 * @expectedException     WizyTowka\WTException
 	 * @expectedExceptionCode 10
 	 */
 	public function testDoNotEditPrimaryKey()

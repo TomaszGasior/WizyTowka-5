@@ -11,30 +11,19 @@ class Hooks
 	static private $_actions = [];
 	static private $_filters = [];
 
-	static public function addAction($name, callable $callback, $position = null)
+	static public function addAction($name, callable $callback)
 	{
-		self::_addHook(self::$_actions, $name, $callback, $position);
+		self::_addHook(self::$_actions, $name, $callback);
 	}
 
-	static public function addFilter($name, callable $callback, $position = null)
+	static public function addFilter($name, callable $callback)
 	{
-		self::_addHook(self::$_filters, $name, $callback, $position);
+		self::_addHook(self::$_filters, $name, $callback);
 	}
 
-	static private function _addHook(array &$hooks, $name, callable $callback, $position = null)
+	static private function _addHook(array &$hooks, $name, callable $callback)
 	{
-		if (is_integer($position)) {
-			if (isset($hooks[$name][$position])) {
-				throw new WTException('Callback cannot be added to ' . $name . ' hook in position ' . $position . '.', 6);
-			}
-			else {
-				$hooks[$name][$position] = $callback;
-				ksort($hooks[$name]);
-			}
-		}
-		else {
-			$hooks[$name][] = $callback;
-		}
+		$hooks[$name][] = $callback;
 	}
 
 	static public function removeAction($name, callable $callback)
@@ -53,9 +42,9 @@ class Hooks
 			return;
 		}
 
-		foreach ($hooks[$name] as $position => $iteratedCallback) {
+		foreach ($hooks[$name] as $key => $iteratedCallback) {
 			if ($iteratedCallback === $callback) {
-				unset($hooks[$name][$position]);
+				unset($hooks[$name][$key]);
 			}
 		}
 	}
@@ -72,22 +61,22 @@ class Hooks
 		$arguments = array_slice(func_get_args(), 1);
 
 		if (!isset($arguments[0])) {
-			throw new WTException('Each filter must use one argument at least.', 5);
+			throw new WTException('Each filter must use one argument at least.', 6);
 			return;
 		}
 
 		return self::_runHook(self::$_filters, $name, $arguments, true);
 	}
 
-	static private function _runHook(array &$hooks, $name, array $arguments, $keepAndReturnFirstArgument = false)
+	static private function _runHook(array &$hooks, $name, array $arguments, $keepFirstArgument = false)
 	{
 		if (!isset($hooks[$name])) {
-			return ($keepAndReturnFirstArgument) ? $arguments[0] : null;
+			return ($keepFirstArgument) ? $arguments[0] : null;
 		}
 
-		foreach ($hooks[$name] as $position => $callback) {
+		foreach ($hooks[$name] as $callback) {
 			try {
-				if ($keepAndReturnFirstArgument) {
+				if ($keepFirstArgument) {
 					$arguments[0] = call_user_func_array($callback, $arguments);
 				}
 				else {
@@ -100,7 +89,7 @@ class Hooks
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();
 				$givenArgsCount = count($arguments);
 				if ($requiredArgsCount > $givenArgsCount) {
-					throw new WTException('Callback of ' . $name . ' hook in position ' . $position . ' expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 4);
+					throw new WTException('Callback of ' . $name . ' hook expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 5);
 				}
 				// When error is different, throw it again to default exception handler.
 				else {
@@ -109,6 +98,6 @@ class Hooks
 			}
 		}
 
-		return ($keepAndReturnFirstArgument) ? $arguments[0] : null;
+		return ($keepFirstArgument) ? $arguments[0] : null;
 	}
 }

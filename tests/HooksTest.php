@@ -18,9 +18,9 @@ class HooksTest extends PHPUnit\Framework\TestCase
 		};
 		$randomText = uniqid();
 
-		WizyTowka\Hooks::addAction('exampleAction', $action2, 10);
-		WizyTowka\Hooks::addAction('exampleAction', $action3, 15);
-		WizyTowka\Hooks::addAction('exampleAction', $action1, 20);
+		WizyTowka\Hooks::addAction('exampleAction', $action2);
+		WizyTowka\Hooks::addAction('exampleAction', $action3);
+		WizyTowka\Hooks::addAction('exampleAction', $action1);
 
 		ob_start();
 		WizyTowka\Hooks::runAction('exampleAction', $randomText);
@@ -48,9 +48,9 @@ class HooksTest extends PHPUnit\Framework\TestCase
 		};
 		$randomText = uniqid();
 
-		WizyTowka\Hooks::addFilter('exampleFilter', $filter1, 30);
-		WizyTowka\Hooks::addFilter('exampleFilter', $filter2, 20);
-		WizyTowka\Hooks::addFilter('exampleFilter', $filter3, 10);
+		WizyTowka\Hooks::addFilter('exampleFilter', $filter3);
+		WizyTowka\Hooks::addFilter('exampleFilter', $filter2);
+		WizyTowka\Hooks::addFilter('exampleFilter', $filter1);
 
 		$returnedText = WizyTowka\Hooks::applyFilter('exampleFilter', $randomText);
 
@@ -69,8 +69,8 @@ class HooksTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException     Exception
-	 * @expectedExceptionCode 4
+	 * @expectedException     WizyTowka\WTException
+	 * @expectedExceptionCode 5
 	 */
 	public function testInvalidCallbackArguments()
 	{

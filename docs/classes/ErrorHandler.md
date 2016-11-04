@@ -14,6 +14,8 @@ Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Jeśli 
 
 Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `ErrorException`. Przeznaczona do zarejestrowania przez `set_error_handler()`.
 
+Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie jest uwzględniana wartość dyrektywy `error_reporting`.
+
 ##*static private* `addToLog($exception)`
 
 Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on domyślnie w folderze `data/config/errors.log`.

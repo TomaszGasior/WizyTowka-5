@@ -10,7 +10,7 @@ class WTExceptionTest extends PHPUnit\Framework\TestCase
 		$scriptOutput = shell_exec('php ' . __DIR__ . '/../others/ExceptionsList.php --exceptions-duplicates');
 		$exceptionsCodesDuplicates = json_decode($scriptOutput);
 
-		if ($exceptionsCodesDuplicates !== null) {
+		if ($exceptionsCodesDuplicates !== null) {  // Check whether ExceptionList.php script exists.
 			$this->assertEmpty($exceptionsCodesDuplicates, 'Code of exceptions is duplicated.');
 		}
 	}
