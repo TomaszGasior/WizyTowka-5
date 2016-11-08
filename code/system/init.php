@@ -16,7 +16,7 @@ if (PHP_VERSION_ID < 50400 or !function_exists('mb_internal_encoding')
 	die('WizyT&#243;wka content management system cannot be started. PHP configuration is invalid.');
 }
 
-setlocale(LC_ALL, 'pl_PL', 'pl_PL.UTF-8', 'pl');
+setlocale(LC_ALL, 'pl_PL.UTF-8', 'pl');
 date_default_timezone_set('Europe/Warsaw');
 mb_internal_encoding('UTF-8');
 
