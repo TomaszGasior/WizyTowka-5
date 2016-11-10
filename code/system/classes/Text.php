@@ -71,7 +71,7 @@ class Text
 	public function makeFragment($maxLength, $dots = '…')
 	{
 		if ($maxLength > 0 and $maxLength < $this->getLength()) {
-			$removeBrokenWord = ($this->getLetter($maxLength) != ' ');
+			$removeBrokenWord = ($this->getChar($maxLength) != ' ');
 			$this->cut($maxLength);
 
 			if ($removeBrokenWord and $lastSpace = mb_strrpos($this->_string, ' ')) {

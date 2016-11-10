@@ -1,6 +1,6 @@
 #Text
 
-Klasa przechowująca ciąg znaków (string) i zdolna do wykonywania na nim operacji. Wszystkie metody tej klasy opierają swoje działanie na multibajtowych funkcjach PHP służycych do operowania na stringach.
+Klasa przechowująca ciąg znaków (string) i zdolna do wykonywania na nim operacji. Wszystkie metody tej klasy opierają swoje działanie na multibajtowych funkcjach PHP służących do operowania na stringach.
 
 Klasa implementuje metodę `__debugInfo()` dła funkcji `var_dump()` oraz metodę `__toString()`, umożliwiając przekonwertowanie obiektu tej klasy na przechowywany ciąg znaków.
 
