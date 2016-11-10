@@ -33,7 +33,14 @@ class Autoloader
 		if (!isset(self::$_directories[$namespace])) {
 			return false;
 		}
-		include self::$_directories[$namespace] . '/' . $class . '.php';
+
+		$classPath = self::$_directories[$namespace] . '/' . $class . '.php';
+
+		if (!file_exists($classPath)) {
+			return false;
+		}
+
+		include $classPath;
 		return true;
 	}
 }

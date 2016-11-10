@@ -51,7 +51,7 @@ class ErrorHandler
 				"\n\n\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
 				"\nType:    " . ( ($exception instanceof \ErrorException)
 					? self::$_namedPHPErrors[$exception->getSeverity()]
-					: get_class($exception) . '  ' . ((empty($exception->getCode()))?'':$exception->getCode())
+					: get_class($exception) . ' #' . ((empty($exception->getCode()))?'':$exception->getCode())
 				) .
 				"\nMessage: " . $exception->getMessage() .
 				"\nFile:    " . $exception->getFile() .
@@ -66,7 +66,7 @@ class ErrorHandler
 		echo "\n\n", 'System encountered fatal error and executing must be interrupted.', "\n",
 			"\nType:    " . ( ($exception instanceof \ErrorException)
 				? self::$_namedPHPErrors[$exception->getSeverity()]
-				: get_class($exception) . '  ' . ((empty($exception->getCode()))?'':$exception->getCode())
+				: get_class($exception) . ' #' . ((empty($exception->getCode()))?'':$exception->getCode())
 			),
 			"\nMessage: ", $exception->getMessage(),
 			"\nFile:    ", $exception->getFile(),
@@ -96,7 +96,7 @@ class ErrorHandler
 		<dt>Type</dt>
 		<dd><?= ( ($exception instanceof \ErrorException)
 				? self::$_namedPHPErrors[$exception->getSeverity()]
-				: get_class($exception) . ' &nbsp; ' . ((empty($exception->getCode()))?'':$exception->getCode())
+				: get_class($exception) . ' #' . ((empty($exception->getCode()))?'':$exception->getCode())
 			) ?></dd>
 		<dt>Message</dt>
 		<dd><?= htmlspecialchars($exception->getMessage()) ?></dd>

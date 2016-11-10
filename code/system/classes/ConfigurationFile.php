@@ -17,13 +17,13 @@ class ConfigurationFile implements \IteratorAggregate
 		$this->_filename = $filename;
 		$this->_configuration = json_decode(file_get_contents($filename), true);  // Associative array.
 
-		if (!is_array($this->_configuration)) {
-			$this->_configuration = [];
-			throw new WTException('Configuration file ' . $filename . ' does not contain array.', 4);
-		}
 		if (json_last_error() != JSON_ERROR_NONE) {
 			$this->_configuration = [];
 			throw new WTException('Error during reading JSON config file: ' . json_last_error_msg() . '.', 2);
+		}
+		if (!is_array($this->_configuration)) {
+			$this->_configuration = [];
+			throw new WTException('Configuration file ' . $filename . ' does not contain array.', 4);
 		}
 	}
 
