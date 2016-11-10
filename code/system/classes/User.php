@@ -17,4 +17,9 @@ class User extends DatabaseObject
 	static protected $_tableColumnsTimeAtInsert = [
 		'createdTime',
 	];
+
+	static public function getByName($name)
+	{
+		return static::_getByWhereCondition('name = :name', ['name' => $name], true);
+	}
 }

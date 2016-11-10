@@ -34,4 +34,14 @@ class Page extends DatabaseObject
 	static protected $_tableColumnsTimeAtUpdate = [
 		'updatedTime',
 	];
+
+	static public function getBySlug($slug)
+	{
+		return static::_getByWhereCondition('slug = :slug', ['slug' => $slug], true);
+	}
+
+	static public function getByLanguageId($languageId)
+	{
+		return static::_getByWhereCondition('languageId = :languageId', ['languageId' => $languageId]);
+	}
 }

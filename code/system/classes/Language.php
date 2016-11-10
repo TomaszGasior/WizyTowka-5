@@ -13,4 +13,9 @@ class Language extends DatabaseObject
 		'name',
 		'slug',
 	];
+
+	static public function getBySlug($slug)
+	{
+		return static::_getByWhereCondition('slug = :slug', ['slug' => $slug], true);
+	}
 }
