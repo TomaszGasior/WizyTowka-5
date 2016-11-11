@@ -61,7 +61,7 @@ class Hooks
 		$arguments = array_slice(func_get_args(), 1);
 
 		if (!isset($arguments[0])) {
-			throw new WTException('Each filter must use one argument at least.', 6);
+			throw new Exception('Each filter must use one argument at least.', 6);
 			return;
 		}
 
@@ -89,7 +89,7 @@ class Hooks
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();
 				$givenArgsCount = count($arguments);
 				if ($requiredArgsCount > $givenArgsCount) {
-					throw new WTException('Callback of ' . $name . ' hook expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 5);
+					throw new Exception('Callback of ' . $name . ' hook expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 5);
 				}
 				// When error is different, throw it again to default exception handler.
 				else {

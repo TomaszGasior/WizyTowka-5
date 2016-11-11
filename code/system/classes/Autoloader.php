@@ -13,7 +13,7 @@ class Autoloader
 	static public function addNamespace($namespace, $pathToClasses)
 	{;
 		if (isset(self::$_directories[$namespace])) {
-			throw new WTException('This namespace is already registered.', 1);
+			throw new Exception('This namespace is already registered.', 1);
 		}
 		self::$_directories[$namespace] = $pathToClasses;
 	}
@@ -25,22 +25,15 @@ class Autoloader
 
 	static public function autoload($fullyQualifiedName)
 	{
-		if (strpos($fullyQualifiedName, '\\') === false) {
-			return false;
-		}
-		list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
+		// @ operator is used here only for better performance.
+
+		@list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
 
 		if (!isset(self::$_directories[$namespace])) {
 			return false;
 		}
 
-		$classPath = self::$_directories[$namespace] . '/' . $class . '.php';
-
-		if (!file_exists($classPath)) {
-			return false;
-		}
-
-		include $classPath;
-		return true;
+		$fileExists = @include self::$_directories[$namespace] . '/' . $class . '.php';
+		return ($fileExists === false) ? false : true;
 	}
 }

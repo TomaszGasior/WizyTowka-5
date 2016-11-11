@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class WTExceptionTest extends PHPUnit\Framework\TestCase
+class ExceptionTest extends PHPUnit\Framework\TestCase
 {
 	public function testDuplicatedExceptionsCodes()
 	{

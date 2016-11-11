@@ -20,9 +20,9 @@ function findExceptions()
 		$fileLines = file($filePath, FILE_SKIP_EMPTY_LINES);
 
 		foreach ($fileLines as $line) {
-			if (strpos($line, 'throw new WTException') !== false) {
+			if (strpos($line, 'throw new Exception') !== false) {
 				$exception = [];
-				$line = str_replace(['throw new WTException(', 'throw new WTException (', ');', ') ;'], null, trim($line));
+				$line = str_replace(['throw new Exception(', 'throw new Exception (', ');', ') ;'], null, trim($line));
 
 				list($exception['code'], $exception['message']) = array_map('trim', array_map('strrev', explode(',', strrev($line), 2)));
 				$exception['file'] = basename($filePath);

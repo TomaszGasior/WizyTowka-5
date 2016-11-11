@@ -36,7 +36,9 @@ class ErrorHandler
 
 	static public function convertErrorToException($number, $message, $file, $line)  // For set_error_handler().
 	{
-		throw new \ErrorException($message, 0, $number, $file, $line);
+		if (error_reporting() !== 0) { // Ignore error if @ operator was used.
+			throw new \ErrorException($message, 0, $number, $file, $line);
+		}
 	}
 
 	static private function addToLog($exception)
@@ -51,7 +53,7 @@ class ErrorHandler
 				"\n\n\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
 				"\nType:    " . ( ($exception instanceof \ErrorException)
 					? self::$_namedPHPErrors[$exception->getSeverity()]
-					: get_class($exception) . ' #' . ((empty($exception->getCode()))?'':$exception->getCode())
+					: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
 				) .
 				"\nMessage: " . $exception->getMessage() .
 				"\nFile:    " . $exception->getFile() .
@@ -66,7 +68,7 @@ class ErrorHandler
 		echo "\n\n", 'System encountered fatal error and executing must be interrupted.', "\n",
 			"\nType:    " . ( ($exception instanceof \ErrorException)
 				? self::$_namedPHPErrors[$exception->getSeverity()]
-				: get_class($exception) . ' #' . ((empty($exception->getCode()))?'':$exception->getCode())
+				: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
 			),
 			"\nMessage: ", $exception->getMessage(),
 			"\nFile:    ", $exception->getFile(),
@@ -96,7 +98,7 @@ class ErrorHandler
 		<dt>Type</dt>
 		<dd><?= ( ($exception instanceof \ErrorException)
 				? self::$_namedPHPErrors[$exception->getSeverity()]
-				: get_class($exception) . ' #' . ((empty($exception->getCode()))?'':$exception->getCode())
+				: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
 			) ?></dd>
 		<dt>Message</dt>
 		<dd><?= htmlspecialchars($exception->getMessage()) ?></dd>

@@ -19,11 +19,11 @@ class ConfigurationFile implements \IteratorAggregate
 
 		if (json_last_error() != JSON_ERROR_NONE) {
 			$this->_configuration = [];
-			throw new WTException('Error during reading JSON config file: ' . json_last_error_msg() . '.', 2);
+			throw new Exception('Error during reading JSON config file: ' . json_last_error_msg() . '.', 2);
 		}
 		if (!is_array($this->_configuration)) {
 			$this->_configuration = [];
-			throw new WTException('Configuration file ' . $filename . ' does not contain array.', 4);
+			throw new Exception('Configuration file ' . $filename . ' does not contain array.', 4);
 		}
 	}
 
@@ -37,7 +37,7 @@ class ConfigurationFile implements \IteratorAggregate
 			);
 
 			if (json_last_error() != JSON_ERROR_NONE) {
-				throw new WTException('Error during writing JSON config file: ' . json_last_error_msg() . '.', 3);
+				throw new Exception('Error during writing JSON config file: ' . json_last_error_msg() . '.', 3);
 			}
 		}
 	}

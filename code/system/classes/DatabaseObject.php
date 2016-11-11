@@ -36,10 +36,10 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function __set($column, $value)
 	{
 		if ($column == static::$_tablePrimaryKey) {
-			throw new WTException('Primary key cannot be edited.', 10);
+			throw new Exception('Primary key cannot be edited.', 10);
 		}
 		elseif (in_array($column, static::$_tableColumnsJSON) and !is_object($value)) {
-			throw new WTException('JSON object cannot be replaced by non-object value.', 12);
+			throw new Exception('JSON object cannot be replaced by non-object value.', 12);
 		}
 
 		$this->_data[$column] = $value;
@@ -87,7 +87,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		foreach (static::$_tableColumnsJSON as $column) {
 			$sqlParameters[$column] = json_encode($sqlParameters[$column], JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE);
 			if (json_last_error() != JSON_ERROR_NONE) {
-				throw new WTException('Error during writing JSON string: ' . json_last_error_msg() . '.', 14);
+				throw new Exception('Error during writing JSON string: ' . json_last_error_msg() . '.', 14);
 			}
 		}
 
@@ -140,12 +140,11 @@ abstract class DatabaseObject implements \IteratorAggregate
 		$statement->setFetchMode(\PDO::FETCH_NUM);   // Values must not be duplicated.
 		$execution = $statement->execute($parameters);
 
-		$thisClassName = get_called_class();
 		$elementsToReturn = [];
 
 		if ($execution) {
 			foreach ($statement as $record) {
-				$object = new $thisClassName;
+				$object = new static;
 				$object->_dataNewlyCreated = false;
 				$object->_data = array_combine($allColumnsNames, $record);
 				// Normally it is possible to use PDO::FETCH_NAMED fetch mode and $object->_data = $record syntax, but this is PostgreSQL workaround.
@@ -158,7 +157,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 					else {
 						$object->_data[$column] = json_decode($object->_data[$column]);
 						if (json_last_error() != JSON_ERROR_NONE) {
-							throw new WTException('Error during reading JSON string: ' . json_last_error_msg() . '.', 13);
+							throw new Exception('Error during reading JSON string: ' . json_last_error_msg() . '.', 13);
 						}
 					}
 				}
@@ -170,7 +169,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		if ($mustBeOnlyOneRecord) {
 			if (isset($elementsToReturn[0])) {
 				if (isset($elementsToReturn[1])) {
-					throw new WTException('Database returned more than one record, when only one expected.', 11);
+					throw new Exception('Database returned more than one record, when only one expected.', 11);
 				}
 				return $elementsToReturn[0];
 			}

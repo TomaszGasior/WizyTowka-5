@@ -13,7 +13,7 @@ class Database
 	static public function connect($driver, $database, $host = null, $login = null, $password = null)
 	{
 		if (!empty(self::$_pdo)) {
-			throw new WTException('Database connection is already started.', 7);
+			throw new Exception('Database connection is already started.', 7);
 			return;
 		}
 
@@ -28,7 +28,7 @@ class Database
 				self::$_pdo = new \PDO('pgsql:host='.$host.';dbname='.$database, $login, $password);
 				break;
 			default:
-				throw new WTException('Unsupported database type: ' . $driver . '.', 8);
+				throw new Exception('Unsupported database type: ' . $driver . '.', 8);
 				return;
 		}
 
@@ -43,7 +43,7 @@ class Database
 	static public function pdo()
 	{
 		if (empty(self::$_pdo)) {
-			throw new WTException('Database connection was not established properly.', 9);
+			throw new Exception('Database connection was not established properly.', 9);
 			return;
 		}
 		return self::$_pdo;

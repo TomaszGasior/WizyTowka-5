@@ -14,7 +14,7 @@ Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Jeśli 
 
 Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `ErrorException`. Przeznaczona do zarejestrowania przez `set_error_handler()`.
 
-Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie jest uwzględniana wartość dyrektywy `error_reporting`.
+Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie jest uwzględniana wartość dyrektywy `error_reporting`. Ignorowane są jedynie błędy, przy których wystąpieniu użyto [operatora kontroli błędów `@`](http://php.net/manual/en/language.operators.errorcontrol.php).
 
 ##*static private* `addToLog($exception)`
 
