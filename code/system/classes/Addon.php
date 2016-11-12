@@ -26,6 +26,15 @@ abstract class Addon
 		return isset($this->_config->$name);
 	}
 
+	public function __debugInfo() // For var_dump() since PHP 5.6.
+	{
+		return [
+			'name' => $this->_name,
+			'isFromSystem' => $this->_isFromSystem,
+			'config' => $this->_config,
+		];
+	}
+
 	public function getName()
 	{
 		return $this->_name;
@@ -43,10 +52,8 @@ abstract class Addon
 
 	static public function getByName($name)
 	{
-		$thisClassName = get_called_class();
 		$configFilePath = '/addons/' . static::$_addonsSubdir . '/' . $name . '/addon.conf';
-
-		$addonObject = new $thisClassName;
+		$addonObject = new static;
 
 		if (file_exists(DATA_DIR.$configFilePath)) {
 			$addonObject->_config = new ConfigurationFile(DATA_DIR.$configFilePath);
@@ -68,23 +75,21 @@ abstract class Addon
 
 	static public function getAll()
 	{
-		$userAddonsAndSystemAddons = [
-			glob(  DATA_DIR . '/addons/' . static::$_addonsSubdir . '/*/addon.conf'),
-			glob(SYSTEM_DIR . '/addons/' . static::$_addonsSubdir . '/*/addon.conf')
-		];
-		// Notice: if directory is empty glob() should return empty array, but it is possible to return false on some operating systems.
+		$addons = glob(
+			'{' . DATA_DIR . ',' . SYSTEM_DIR . '}/addons/' . static::$_addonsSubdir . '/*/addon.conf',
+			GLOB_BRACE
+		);
+		if ($addons === false) {
+			// Notice: if directory is empty glob() should return empty array, but it is possible to return false on some operating systems.
+			// More informations here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
+			return [];
+		}
+		$addons = array_unique(array_map(function($var){ return basename(dirname($var)); }, $addons));
 
 		$elementsToReturn = [];
-
-		foreach ($userAddonsAndSystemAddons as $addons) {
-			if (!empty($addons)) {
-				foreach ($addons as $fullConfigFilePath) {
-					$addonName = basename(dirname($fullConfigFilePath));
-					$elementsToReturn[] = static::getByName($addonName);
-				}
-			}
+		foreach ($addons as $addonName) {
+			$elementsToReturn[] = static::getByName($addonName);
 		}
-
 		return $elementsToReturn;
 	}
 }
