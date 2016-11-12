@@ -5,10 +5,12 @@
 */
 class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 {
-	static private $_errorLogPath = 'code/data/config/errors.log';
+	static private $_errorLogPath;
 
 	static public function setUpBeforeClass()
 	{
+		self::$_errorLogPath = CONFIG_DIR . '/errors.log';
+
 		if (file_exists(self::$_errorLogPath)) {
 			rename(self::$_errorLogPath, self::$_errorLogPath.'.bak');
 		}

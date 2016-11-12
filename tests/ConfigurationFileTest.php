@@ -16,9 +16,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 
 	static public function tearDownAfterClass()
 	{
-		if (file_exists(self::$_filename)) {
-			unlink(self::$_filename);
-		}
+		@unlink(self::$_filename);
 	}
 
 	public function testCreateNew()
