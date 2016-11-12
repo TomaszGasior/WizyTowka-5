@@ -1,4 +1,5 @@
-#*abstract* DatabaseObject
+*abstract* DatabaseObject
+===
 
 Klasa abstrakcyjna stanowiąca podstawę dla klas reprezentujących obiekty bazy danych. Innymi słowy, jest to ORM w uproszczonej formie. Umożliwia operacje CRUD — tworzenie, odczyt, zmianę i usuwanie rekordów.
 
@@ -20,31 +21,31 @@ Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej kla
 Klasa `DatabaseObject` implementuje metody magiczne `__get()`, `__set()`, `__isset()`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli.
 Implementuje również metodę `__debugInfo()` dla funkcji `var_dump()` (dostępne od PHP 5.6).
 
-##`__construct()`
+## `__construct()`
 
 Tworzy nowy rekord tabeli. Wszystkie pola rekordu otrzymują domyślną wartość `null`. Kolumnom określonym w polu `$_tableColumnsJSON` przypisywany jest pusty obiekt (instancja klasy `stdClass`).
 
-##`save()`
+## `save()`
 
 Zapisuje rekord. Jeśli rekord jest nowo utworzonym rekordem, używane jest zapytanie SQL `INSERT`, a po pomyślnym dodaniu wartość klucza podstawowego jest uzupełniana. Jeśli rekord już istnieje, jest aktualizowany przy użyciu zapytania `UPDATE`.
 
 Przed zapisem wartości kolumn zdefiniowanych w polu `$_tableColumnsJSON` zamieniane są na ciąg w formacie JSON, a do pól określonych w `$_tableColumnsTimeAtInsert` lub `$_tableColumnsTimeAtUpdate`, w zależności od kontekstu, zapisywany jest aktualny uniksowy znacznik czasu. Jeśli przy zapisie kodu JSON wystąpi błąd, zostanie rzucony wyjątek #14.
 
-##`delete()`
+## `delete()`
 
 Usuwa rekord. Po pomyślnym usunięciu z tabeli bazy danych, zachowując aktualne wartości pól (za wyjątkiem klucza podstawowego), staje się nowo utworzonym rekordem (jak za pomocą konstruktora; można go zapisać, by dodać go na nowo do tabeli z inną wartością klucza podstawowego).
 
 Nie można usunąć rekordu, jeśli jest nowo utworzony (jeszcze nie zapisany w bazie danych).
 
-##*static* `getAll()`
+## *static* `getAll()`
 
 Zwraca tablicę gromadzącą wszystkie rekordy tabeli (każdy rekord jest indywidualną instancją klasy).
 
-##*static* `getById($id)`
+## *static* `getById($id)`
 
 Zwraca rekord o wartości klucza podstawowego podanej w argumencie `$id` (instancję klasy). Jeśli taki rekord nie istnieje, zwraca fałsz.
 
-##*static protected* `_getByWhereCondition($sqlQueryWhere = null, $parameters = [], $mustBeOnlyOneRecord = false)`
+## *static protected* `_getByWhereCondition($sqlQueryWhere = null, $parameters = [], $mustBeOnlyOneRecord = false)`
 
 Metoda stanowiąca podstawę dla innych metod pobierających istniejące rekordy. Wykonuje zapytanie `SELECT` w celu pobrania rekordów, wykorzystując przy tym [przypinanie parametrów wejściowych PDO](http://php.net/manual/en/pdo.prepared-statements.php).
 

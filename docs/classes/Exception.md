@@ -1,4 +1,5 @@
-#Exception
+Exception
+===
 
 Własna klasa wyjątków systemu WizyTówka. Wszystkie rzucane przez system WizyTówka wyjątki są instancjami tej klasy. Klasa jest pusta i dziedziczy po klasie wbudowanej `Exception`.
 

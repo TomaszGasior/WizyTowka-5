@@ -1,66 +1,67 @@
-#Text
+Text
+===
 
 Klasa przechowująca ciąg znaków (string) i zdolna do wykonywania na nim operacji. Wszystkie metody tej klasy opierają swoje działanie na multibajtowych funkcjach PHP służących do operowania na stringach.
 
-Klasa implementuje metodę `__debugInfo()` dła funkcji `var_dump()` oraz metodę `__toString()`, umożliwiając przekonwertowanie obiektu tej klasy na przechowywany ciąg znaków.
+Klasa implementuje metodę `__debugInfo()` dla funkcji `var_dump()` oraz metodę `__toString()` — umożliwiając przekształcenie obiektu tej klasy na przechowywany ciąg znaków.
 
-Każda metoda, chyba że wskazano inaczej, zwraca instancję klasy (`$this` z wnętrzna klasy), dzięki czemu można tworzyć konstrukcję łańcuchową metod.
+Każda metoda, chyba że wskazano inaczej, zwraca instancję klasy (`$this` z wnętrza klasy), dzięki czemu można tworzyć konstrukcję łańcuchową metod.
 
-##`__construct($string)`
+## `__construct($string)`
 
 Konstruktor jako argument przyjmuje przechowywany ciąg znaków. Jeśli zawartość zmiennej `$string` nie jest typu `string`, następuje konwersja do tego typu.
 
-##`get()`
+## `get()`
 
 Zwraca przechowywany ciąg znaków.
 
 Zamiast tej metody można rzutować obiekt na typ `string` lub użyć względem obiektu polecenia `echo`.
 
-##`getChar($position)`
+## `getChar($position)`
 
-Zwraca jeden znak na pozycji określonej argumentem `$position`. Pozycje są numerowane od zera. 
+Zwraca jeden znak na pozycji określonej argumentem `$position`. Pozycje są numerowane od zera.
 
 Argument `$position` musi być dodatnią liczbą całkowitą.
 
-##`getLength()`
+## `getLength()`
 
 Zwraca długość przechowywanego ciągu znaków.
 
-##`lowercase()`
+## `lowercase()`
 
 Zmienia wielkość liter przechowywanego tekstu na małe.
 
-##`uppercase()`
+## `uppercase()`
 
 Zmienia wielkość liter przechowywanego tekstu na duże.
 
-##`cut($length)`
+## `cut($length)`
 
 Ucina przechowywany ciąg znaków do określonej w `$length` długości. Jeśli liczba jest ujemna, ucina od końca.
 
-##`makeFragment($maxLength, $dots = '…')`
+## `makeFragment($maxLength, $dots = '…')`
 
-Zamienia przechowywany ciąg znaków na wycinek zawierający fragment oryginalnego ciągu znaków o długości nieprzekraczającej `$maxLength` oraz doklejoną po nim zawartosć argumentu `$dots`.
+Zamienia przechowywany ciąg znaków na wycinek zawierający fragment oryginalnego ciągu znaków o długości nieprzekraczającej `$maxLength` oraz doklejoną po nim zawartość argumentu `$dots`.
 
 Jeżeli podczas odcinania fragmentu ostatnie słowo zostanie uszkodzone, zostanie usunięte.
 
 Argument `$maxLength` musi być dodatnią liczbą całkowitą.
 
-##`makeMiddleFragment($maxLength, $dots = ' … ')`
+## `makeMiddleFragment($maxLength, $dots = ' … ')`
 
-Zamienia przechowywany ciąg znaków na wycinek zawierający początkowy fragment oryginalnego ciągu znaków o długości nieprzekraczającej połowy `$maxLength`, końcowy fragment oryginalnego ciągu znaków o długości nieprzekraczającej połowy `$maxLength` oraz doklejoną pomiędzy tymi fragmentami zawartosć argumentu `$dots`.
+Zamienia przechowywany ciąg znaków na wycinek zawierający początkowy fragment oryginalnego ciągu znaków o długości nieprzekraczającej połowy `$maxLength`, końcowy fragment oryginalnego ciągu znaków o długości nieprzekraczającej połowy `$maxLength` oraz doklejoną pomiędzy tymi fragmentami zawartość argumentu `$dots`.
 
 Jeżeli podczas odcinania fragmentu graniczne słowo zostanie uszkodzone, zostanie usunięte.
 
 Argument `$maxLength` musi być dodatnią liczbą całkowitą.
 
-##`makeSlug()`
+## `makeSlug()`
 
 Zamienia przechowywany ciąg znaków na identyfikator, który może zostać bezpiecznie użyty jako nazwa pliku w systemie operacyjnym bądź fragment adresu URL.
 
-Spacje są zamieniane na minusy, ich duplikaty są usuwane. Polskie znaki diakrytyczne są zamieniane na ich odpowiedniki z tablicy ASCII. Wszystkie nieporządane znaki są usuwane.
+Spacje są zamieniane na minusy, ich duplikaty są usuwane. Polskie znaki diakrytyczne są zamieniane na ich odpowiedniki z tablicy ASCII. Wszystkie niepożądane znaki są usuwane.
 
-##`formatAsDate($format = '%Y-%m-%d %H:%M:%S')`
+## `formatAsDate($format = '%Y-%m-%d %H:%M:%S')`
 
 Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym w argumencie `$format`.
 

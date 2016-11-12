@@ -1,4 +1,5 @@
-#ConfigurationFile
+ConfigurationFile
+===
 
 Klasa gromadząca różne konfiguracje przechowywane w plikach JSON.
 
@@ -10,12 +11,12 @@ Odczyt pliku następuje w konstruktorze. Zapis pliku następuje w destruktorze w
 
 Plik JSON powinien zawierać tablicę wartości, inaczej przy odczycie zostanie rzucony wyjątek #4.
 
-##`__construct($filename)`
+## `__construct($filename)`
 
 Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
 
 Jeżeli plik JSON nie istnieje, wystąpi błąd. Jeżeli dojdzie do błędu podczas parsowania pliku JSON, zostanie rzucony wyjątek #2.
 
-##*static* `createNew($filename)`
+## *static* `createNew($filename)`
 
 Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$filename` przyjmuje ścieżkę do pliku. Jeżeli plik istnieje, zostanie nadpisany.
