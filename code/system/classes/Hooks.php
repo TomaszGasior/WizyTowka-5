@@ -62,7 +62,6 @@ class Hooks
 
 		if (!isset($arguments[0])) {
 			throw new Exception('Each filter must use one argument at least.', 6);
-			return;
 		}
 
 		return self::_runHook(self::$_filters, $name, $arguments, true);

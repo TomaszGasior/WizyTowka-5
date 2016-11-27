@@ -14,7 +14,6 @@ class Database
 	{
 		if (!empty(self::$_pdo)) {
 			throw new Exception('Database connection is already started.', 7);
-			return;
 		}
 
 		switch ($driver) {
@@ -29,7 +28,6 @@ class Database
 				break;
 			default:
 				throw new Exception('Unsupported database type: ' . $driver . '.', 8);
-				return;
 		}
 
 		self::$_pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -44,13 +42,15 @@ class Database
 	{
 		if (empty(self::$_pdo)) {
 			throw new Exception('Database connection was not established properly.', 9);
-			return;
 		}
 		return self::$_pdo;
 	}
 
 	static public function executeSQL($sql)
 	{
+		if (empty(self::$_pdo)) {
+			throw new Exception('Database connection was not established properly.', 10);
+		}
 		return self::$_pdo->exec($sql);
 	}
 }

@@ -17,14 +17,14 @@ Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `
 
 Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie jest uwzględniana wartość dyrektywy `error_reporting`. Ignorowane są jedynie błędy, przy których wystąpieniu użyto [operatora kontroli błędów `@`](http://php.net/manual/en/language.operators.errorcontrol.php).
 
-## *static private* `addToLog($exception)`
+## *static private* `_addToLog($exception)`
 
 Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on domyślnie w folderze `data/config/errors.log`.
 
-## *static private* `printAsPlainText($exception)`
+## *static private* `_printAsPlainText($exception)`
 
 Wyświetla informacje o błędzie w formie zwykłego tekstu.
 
-## *static private* `printAsHTML($exception)`
+## *static private* `_printAsHTML($exception)`
 
 Wyświetla informacje o błędzie w formie strony HTML.

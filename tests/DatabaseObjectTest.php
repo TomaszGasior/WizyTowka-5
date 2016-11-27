@@ -64,7 +64,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	}
 
 	// Helper function used to do convertion from object to array by foreach loop.
-	private function convertObjectToArray($obj)
+	private function _convertObjectToArray($obj)
 	{
 		$arr = [];
 		foreach ($obj as $key => $value) {
@@ -77,7 +77,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	{
 		$objectsArray = self::$_exampleClass::getAll();
 
-		$current  = array_map([$this,'convertObjectToArray'], $objectsArray);
+		$current  = array_map([$this,'_convertObjectToArray'], $objectsArray);
 		$expected = [
 			['primaryKey' => '1', 'column1' => '100', 'column2' => 'hundred'],
 			['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'],
@@ -89,7 +89,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	{
 		$object = self::$_exampleClass::getById(2);
 
-		$current  = $this->convertObjectToArray($object);
+		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'];
 		$this->assertEquals($current, $expected);
 	}
@@ -103,7 +103,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$object = self::$_exampleClass::getById($newObject->primaryKey);  // Primary key field is set after save() operation.
 
-		$current  = $this->convertObjectToArray($object);
+		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '3', 'column1' => '10', 'column2' => 'ten'];
 		$this->assertEquals($current, $expected);
 	}
@@ -117,7 +117,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$object = self::$_exampleClass::getById(1);
 
-		$current  = $this->convertObjectToArray($object);
+		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '1', 'column1' => '1024', 'column2' => 'one thousand twenty four'];
 		$this->assertEquals($current, $expected);
 	}
@@ -190,7 +190,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	/**
 	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 10
+	 * @expectedExceptionCode 15
 	 */
 	public function testDoNotEditPrimaryKey()
 	{

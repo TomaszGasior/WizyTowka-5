@@ -25,13 +25,13 @@ class ErrorHandler
 
 	static public function handleException($exception)  // For set_exception_handler().
 	{
-		self::addToLog($exception);
+		self::_addToLog($exception);
 
 		$isPlainText = !empty(array_filter(headers_list(), function($value){
 			return stripos($value, 'content-type')!== false and stripos($value, 'text/html')===false;
 			// Use plain text format for error message instead HTML, when 'content-type' HTTP header is set, but not contain 'text/html'.
 		}));
-		(PHP_SAPI == 'cli' or $isPlainText) ? self::printAsPlainText($exception) : self::printAsHTML($exception);
+		(PHP_SAPI == 'cli' or $isPlainText) ? self::_printAsPlainText($exception) : self::_printAsHTML($exception);
 	}
 
 	static public function convertErrorToException($number, $message, $file, $line)  // For set_error_handler().
@@ -41,7 +41,7 @@ class ErrorHandler
 		}
 	}
 
-	static private function addToLog($exception)
+	static private function _addToLog($exception)
 	{
 		if (!defined('CONFIG_DIR')) {
 			return;
@@ -63,7 +63,7 @@ class ErrorHandler
 		);
 	}
 
-	static private function printAsPlainText($exception)
+	static private function _printAsPlainText($exception)
 	{
 		echo "\n\n", 'System encountered fatal error and executing must be interrupted.', "\n",
 			"\nType:    " . ( ($exception instanceof \ErrorException)
@@ -76,7 +76,7 @@ class ErrorHandler
 			"\n\nTrace:\n", $exception->getTraceAsString(), "\n\n";
 	}
 
-	static private function printAsHTML($exception)
+	static private function _printAsHTML($exception)
 	{
 		?><!doctype html><meta charset="utf-8"><title>Fatal error</title>
 <style>

@@ -36,7 +36,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function __set($column, $value)
 	{
 		if ($column == static::$_tablePrimaryKey) {
-			throw new Exception('Primary key cannot be edited.', 10);
+			throw new Exception('Primary key cannot be edited.', 15);
 		}
 		elseif (in_array($column, static::$_tableColumnsJSON) and !is_object($value)) {
 			throw new Exception('JSON object cannot be replaced by non-object value.', 12);
