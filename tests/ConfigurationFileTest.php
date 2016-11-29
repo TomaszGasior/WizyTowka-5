@@ -41,14 +41,36 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 		$this->assertEquals($current, $expected);
 	}
 
+	/**
+	 * @expectedException     WizyTowka\Exception
+	 * @expectedExceptionCode 19
+	 */
+	public function testWriteWhenReadOnly()
+	{
+		$config = new WizyTowka\ConfigurationFile(self::$_filename, true);
+
+		foreach (self::$_exampleData as $key => $value) {
+			$config->$key = $value;
+		}
+	}
+
 	public function testRead()
 	{
 		$config = new WizyTowka\ConfigurationFile(self::$_filename);
 
-		foreach (self::$_exampleData as $key => $value) {
-			$current  = $config->$key;
-			$expected = $value;
+		foreach ($config as $key => $value) {
+			$current  = $value;
+			$expected = self::$_exampleData[$key];
 			$this->assertEquals($current, $expected);
 		}
+	}
+
+	public function testCountable()
+	{
+		$config = new WizyTowka\ConfigurationFile(self::$_filename);
+
+		$current  = count($config);
+		$expected = 5;
+		$this->assertEquals($current, $expected);
 	}
 }

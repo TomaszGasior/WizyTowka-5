@@ -39,7 +39,7 @@ class Hooks
 	static private function _removeHook(array &$hooks, $name, callable $callback)
 	{
 		if (!isset($hooks[$name])) {
-			return;
+			throw new Exception('Hook named ' . $name . ' does not exists.', 20);
 		}
 
 		foreach ($hooks[$name] as $key => $iteratedCallback) {

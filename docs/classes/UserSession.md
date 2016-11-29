@@ -9,26 +9,26 @@ WAI to hasz sha512 z ciągu znaków złożonego z informacji o przeglądarce i u
 
 Menadżer przed użyciem powinien zostać zainicjowany przy użyciu metody `setup()`.
 
-## `setup()`
+## *static* `setup()`
 
 Inicjuje menadżera sesji użytkownika. Jeśli sesja straciła ważność lub WAI jest niewłaściwy, sesja jest niszczona.
 
-## `logIn($userId, $sessionDuration)`
+## *static* `logIn($userId, $sessionDuration)`
 
 Dokonuje zalogowania użytkownika o identyfikatorze określonym w argumencie `$userId`. Argument `$sessionDuration` określa czas trwania sesji użytkownika w sekundach.
 
 Jeżeli użytkownik już jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek #17.
 
-## `logOut()`
+## *static* `logOut()`
 
 Wylogowuje aktualnie zalogowanego użytkownika.
 
 Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek #18.
 
-## `isLoggedIn()`
+## *static* `isLoggedIn()`
 
 Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jest.
 
-## `getUserId()`
+## *static* `getUserId()`
 
 Zwraca identyfikator zalogowanego użytkownika, bądź fałsz, jeśli użytkownik nie jest zalogowany.

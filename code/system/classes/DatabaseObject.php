@@ -19,7 +19,8 @@ abstract class DatabaseObject implements \IteratorAggregate
 	private $_data = [];
 	private $_dataNewlyCreated;
 
-	public function __construct() {
+	public function __construct()
+	{
 		$this->_data[static::$_tablePrimaryKey] = null;
 		foreach (static::$_tableColumns as $column) {
 			$this->_data[$column] = (in_array($column, static::$_tableColumnsJSON)) ? new \stdClass : null;
@@ -55,9 +56,12 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return $this->_data;
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function &getIterator() // For IteratorAggregate interface.
 	{
-		return new \ArrayIterator($this->_data);
+		foreach ($this->_data as $key => &$value) {
+			yield $key => $value;
+		}
+		// Reference is used to allow foreach syntax like it: foreach($object as &$value) { ... }.
 	}
 
 	public function save()

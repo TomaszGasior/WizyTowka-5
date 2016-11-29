@@ -19,6 +19,8 @@ Działa identycznie jak `Hooks::addAction()`, lecz dodaje filtr.
 
 Usuwa akcję ze zbioru akcji zaczepionych do miejsca określonego nazwą w argumencie `$name`. W argumencie `$callback` należy określić usuwaną funkcję bądź metodę.
 
+Jeżeli zbiór `$name` nie istnieje, jest rzucany wyjątek #20.
+
 ## *static* `removeFilter($name, $callback)`
 
 Działa jak `Hooks::removeAction()`, lecz usuwa filtr.

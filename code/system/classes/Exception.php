@@ -14,6 +14,6 @@ class Exception extends \Exception
 			throw new \Exception('Exception must have code.');
 		}
 
-		call_user_func_array([get_parent_class($this), '__construct'], func_get_args());
+		call_user_func_array([parent::class, '__construct'], func_get_args());
 	}
 }

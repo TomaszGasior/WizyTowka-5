@@ -6,15 +6,17 @@
 */
 namespace WizyTowka;
 
-class ConfigurationFile implements \IteratorAggregate
+class ConfigurationFile implements \IteratorAggregate, \Countable
 {
 	private $_filename;
 	private $_configuration = [];
 	private $_wasChanged = false;
+	private $_readOnly = false;
 
-	public function __construct($filename)
+	public function __construct($filename, $readOnly = false)
 	{
 		$this->_filename = $filename;
+		$this->_readOnly = (boolean)$readOnly;
 		$this->_configuration = json_decode(file_get_contents($filename), true);  // Associative array.
 
 		if (json_last_error() != JSON_ERROR_NONE) {
@@ -42,6 +44,21 @@ class ConfigurationFile implements \IteratorAggregate
 		}
 	}
 
+	public function __get($key)
+	{
+		return $this->_configuration[$key];
+	}
+
+	public function __set($key, $value)
+	{
+		if ($this->_readOnly) {
+			throw new Exception('Configuration file ' . $this->_filename . ' is opened as read only.', 19);
+		}
+
+		$this->_wasChanged = true;
+		$this->_configuration[$key] = $value;
+	}
+
 	public function __isset($key)
 	{
 		return isset($this->_configuration[$key]);
@@ -53,48 +70,26 @@ class ConfigurationFile implements \IteratorAggregate
 		unset($this->_configuration[$key]);
 	}
 
-	public function __get($key)
-	{
-		return $this->_configuration[$key];
-	}
-
-	public function __set($key, $value)
-	{
-		$this->_wasChanged = true;
-		$this->_configuration[$key] = $value;
-	}
-
 	public function __debugInfo() // For var_dump() since PHP 5.6.
 	{
 		return $this->_configuration;
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function &getIterator() // For IteratorAggregate interface.
 	{
-		return new \ArrayIterator($this->_configuration);
+		foreach ($this->_configuration as $key => &$value) {
+			yield $key => $value;
+		}
+		// Reference is used to allow foreach syntax like it: foreach($object as &$value) { ... }.
+	}
+
+	public function count()  // For Countable interface.
+	{
+		return count($this->_configuration);
 	}
 
 	static public function createNew($filename)
 	{
 		file_put_contents($filename, json_encode([]));
-	}
-}
-
-
-// Poor json_last_error_msg() implementation for PHP versions older than 5.5.
-if (!function_exists('json_last_error_msg')) {
-	function json_last_error_msg()
-	{
-		$JSONErrorConstants = array_filter(get_defined_constants(), function($key){
-			return preg_match('/JSON_ERROR_.*/', $key);
-		}, ARRAY_FILTER_USE_KEY);
-
-		foreach ($JSONErrorConstants as $constantName => $constantValue) {
-			if ($constantValue == json_last_error()) {
-				return $constantName;
-			}
-		}
-
-		return 'undefined';
 	}
 }
