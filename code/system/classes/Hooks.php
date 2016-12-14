@@ -49,17 +49,13 @@ class Hooks
 		}
 	}
 
-	static public function runAction($name)
+	static public function runAction($name, ...$arguments)
 	{
-		$arguments = array_slice(func_get_args(), 1);
-
 		self::_runHook(self::$_actions, $name, $arguments);
 	}
 
-	static public function applyFilter($name)
+	static public function applyFilter($name, ...$arguments)
 	{
-		$arguments = array_slice(func_get_args(), 1);
-
 		if (!isset($arguments[0])) {
 			throw new Exception('Each filter must use one argument at least.', 6);
 		}
@@ -83,8 +79,8 @@ class Hooks
 				}
 			}
 			catch (\ErrorException $e) {
-				// When you call function without required number of arguments, PHP emits E_WARNING error that will be converted to \ErrorException by our ErrorHandler.
-				// We would check whether number of given $arguments match to number of callback required arguments.
+				// When you call function without required number of arguments, PHP emits E_WARNING error that will be converted
+				// to \ErrorException. We would check whether number of given $arguments match to number of callback required arguments.
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();
 				$givenArgsCount = count($arguments);
 				if ($requiredArgsCount > $givenArgsCount) {

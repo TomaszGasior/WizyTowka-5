@@ -22,4 +22,4 @@ Zwraca instancję klasy `PDO` stworzoną podczas inicjowania połączenia z baz�
 
 ## *static* `executeSQL($sql)`
 
-Umożliwia wykonanie dowolnego zapytania SQL za pośrednictwem metody `exec()` obiektu klasy `PDO`. Zwraca wartość zwracaną przez tę metodę (liczbę zmodyfikowanych rekordów lub fałsz). Jeśli połączenie nie zostało jeszcze rozpoczęte, zostanie rzucony wyjątek #10.
+Umożliwia wykonanie dowolnego zapytania SQL za pośrednictwem metody `PDO::exec()`. Zwraca wartość zwracaną przez tę metodę (liczbę zmodyfikowanych rekordów lub fałsz).

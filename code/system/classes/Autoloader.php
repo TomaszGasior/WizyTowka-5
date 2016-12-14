@@ -25,15 +25,23 @@ class Autoloader
 
 	static public function autoload($fullyQualifiedName)
 	{
-		// @ operator is used here only for better performance.
-
 		@list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
 
 		if (!isset(self::$_directories[$namespace])) {
 			return false;
 		}
 
-		$fileExists = @include self::$_directories[$namespace] . '/' . $class . '.php';
-		return ($fileExists === false) ? false : true;
+		try {
+			include self::$_directories[$namespace] . '/' . $class . '.php';
+			return true;
+		} catch (\ErrorException $e) {
+			if ($e->getFile() == __FILE__) {
+				return false;
+			}
+			throw $e;
+		}
+		// If file does not exists, include command emits E_WARNING. We want to avoid file_exists() to limit operations on file system
+		// for better performance. We try to include file and catch PHP error converted to \ErrorException. If error was encountered
+		// in this class (this PHP file), file does not exists. Otherwise, we should throw exception again to default exception handler.
 	}
 }

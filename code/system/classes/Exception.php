@@ -8,12 +8,12 @@ namespace WizyTowka;
 
 class Exception extends \Exception
 {
-	public function __construct()
+	public function __construct(...$arguments)
 	{
-		if (func_num_args() < 2) {
+		if (count($arguments) < 2) {
 			throw new \Exception('Exception must have code.');
 		}
 
-		call_user_func_array([parent::class, '__construct'], func_get_args());
+		call_user_func_array([parent::class, '__construct'], $arguments);
 	}
 }

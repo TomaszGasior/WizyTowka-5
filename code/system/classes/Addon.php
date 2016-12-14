@@ -26,7 +26,7 @@ abstract class Addon
 		return isset($this->_config->$name);
 	}
 
-	public function __debugInfo() // For var_dump() since PHP 5.6.
+	public function __debugInfo()
 	{
 		return [
 			'name' => $this->_name,
@@ -80,7 +80,7 @@ abstract class Addon
 			GLOB_BRACE
 		);
 		if ($addons === false) {
-			// Notice: if directory is empty glob() should return empty array, but it is possible to return false on some operating systems.
+			// Notice: if directory is empty, glob() should return empty array, but it is possible to return false on some operating systems.
 			// More informations here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
 			return [];
 		}

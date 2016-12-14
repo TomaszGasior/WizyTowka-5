@@ -22,4 +22,4 @@ const SYSTEM_DIR = __DIR__ . '/system';
 
 
 const INIT = 1;
-include SYSTEM_DIR . '/init.php';
+require SYSTEM_DIR . '/init.php';

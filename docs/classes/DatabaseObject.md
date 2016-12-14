@@ -18,8 +18,7 @@ Klasy dziedziczące mogą oferować inne sposoby pobierania rekordów z wykorzys
 
 Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej klasy, należy rozpocząć połączenie z bazą danych za pomocą `Database::connect()`.
 
-Klasa `DatabaseObject` implementuje metody magiczne `__get()`, `__set()`, `__isset()`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli.
-Implementuje również metodę `__debugInfo()` dla funkcji `var_dump()` (dostępne od PHP 5.6).
+Klasa `DatabaseObject` implementuje metody magiczne `__get()`, `__set()`, `__isset()`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli. Implementuje również metodę `__debugInfo()` dla funkcji `var_dump()`.
 
 ## `__construct()`
 

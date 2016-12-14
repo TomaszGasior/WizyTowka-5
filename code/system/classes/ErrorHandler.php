@@ -20,8 +20,8 @@ class ErrorHandler
 		16384 => 'E_USER_DEPRECATED'
 	];
 
-	// Warning: because of changes in PHP 7 we must not use type hint in $exception method argument to keep backward compatibility with older PHP versions.
-	// More informations here: http://php.net/manual/en/function.set-exception-handler.php
+	// Warning: because of changes in PHP 7 we must not use type hint in $exception argument to keep backward compatibility with PHP 5.6.
+	// More informations here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.set-exception-handler
 
 	static public function handleException($exception)  // For set_exception_handler().
 	{
@@ -36,16 +36,16 @@ class ErrorHandler
 
 	static public function convertErrorToException($number, $message, $file, $line)  // For set_error_handler().
 	{
-		if (error_reporting() !== 0) { // Ignore error if @ operator was used.
+		if (error_reporting() !== 0) {  // Ignore error if @ operator was used.
 			throw new \ErrorException($message, 0, $number, $file, $line);
 		}
 	}
 
 	static private function _addToLog($exception)
 	{
-		if (!defined('CONFIG_DIR')) {
+		if (!defined(__NAMESPACE__.'\\CONFIG_DIR')) {
 			return;
-			// CONFIG_DIR can be not defined when ErrorHandler is ran outside normal CMS code (in tests or utility scripts).
+			// CONFIG_DIR can be not defined, when ErrorHandler is ran outside normal CMS code (in tests or utility scripts).
 		}
 
 		file_put_contents(

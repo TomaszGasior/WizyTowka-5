@@ -7,7 +7,9 @@ Klasa dziedzicząca po tej klasie jest abstrakcyjną reprezentacją rodzaju doda
 
 Klasa implementuje metody `__get()` i `__isset()`, umożliwiając operowanie na opcjach konfiguracyjnych dodatku jak na polach obiektu. Udostępnia też metodę `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
 
-Konstruktor tej klasy jest prywatny — nie można tworzyć nowych dodatków z wnętrza kodu. Aby pobrać instancję klasy konkretnego typu dodatku należy użyć metody statycznej `getByName()` lub `getAll()`.
+## *private* `__construct()`
+
+Konstruktor jest prywatny — nie można tworzyć nowych dodatków z wnętrza kodu. Aby pobrać instancję klasy konkretnego typu dodatku należy użyć metody statycznej `getByName()` lub `getAll()`.
 
 ## `getName()`
 
@@ -15,9 +17,9 @@ Zwraca nazwę dodatku (dokładniej: nazwę podfolderu danego dodatku znajdujące
 
 ## `isFromSystem()`
 
-Zwraca prawdę, jeśli dodatek jest integralnym elementem systemu WizyTówka i znajduje się w folderze systemu (domyślnie `system`; pełna ścieżka to `(katalog systemu)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `system/addons/themes/systemtheme`).
+Zwraca prawdę, jeśli dodatek jest integralnym elementem systemu WizyTówka i znajduje się w folderze systemu (domyślnie `system`; pełna ścieżka to `(katalog systemu)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `system/addons/themes/exampletheme`).
 
-Zwraca fałsz, jeśli dodatek nie jest elementem systemu WizyTówka i znajduje się w folderze danych witryny (domyślnie `data`; pełna ścieżka to `(katalog danych)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `data/addons/themes/systemtheme`).
+Zwraca fałsz, jeśli dodatek nie jest elementem systemu WizyTówka i znajduje się w folderze danych witryny (domyślnie `data`; pełna ścieżka to `(katalog danych)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `data/addons/themes/exampletheme`).
 
 ## `isFromUser()`
 

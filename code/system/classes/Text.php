@@ -15,7 +15,7 @@ class Text
 		$this->_string = (string)$string;
 	}
 
-	public function __debugInfo() // For var_dump() since PHP 5.6.
+	public function __debugInfo()
 	{
 		return [$this->_string];
 	}

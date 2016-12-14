@@ -22,7 +22,7 @@ namespace
 		static public function setUpBeforeClass()
 		{
 			// Prepare session configuration file for test only.
-			self::$_sessionsConfigFile = CONFIG_DIR . '/sessions.conf';
+			self::$_sessionsConfigFile = WizyTowka\CONFIG_DIR . '/sessions.conf';
 			if (file_exists(self::$_sessionsConfigFile)) {
 				rename(self::$_sessionsConfigFile, self::$_sessionsConfigFile.'.bak');
 			}

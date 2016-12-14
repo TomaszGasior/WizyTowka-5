@@ -51,7 +51,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return isset($this->_data[$column]);
 	}
 
-	public function __debugInfo() // For var_dump() since PHP 5.6.
+	public function __debugInfo()
 	{
 		return $this->_data;
 	}

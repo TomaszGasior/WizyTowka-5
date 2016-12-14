@@ -32,3 +32,13 @@ Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jes
 ## *static* `getUserId()`
 
 Zwraca identyfikator zalogowanego użytkownika, bądź fałsz, jeśli użytkownik nie jest zalogowany.
+
+## *static private* `_generateWAI($userId)`
+
+Metoda generuje ciąg znaków WAI używany do zidentyfikowania środowiska (przeglądarki internetowej) używanego przy zalogowaniu.
+
+WAI to hasz sha512 z ciągu znaków złożonego z informacji o przeglądarce i użytkowniku (m.in. user agent i adres IP). WAI to skrót od „where am I?”.
+
+## *static private* `_getSessionsConfig()`
+
+Używana wewnętrznie metoda pobierająca zawartość pliku konfiguracyjnego `sessions.conf`. Plik ten przechowuje informacje o sesjach użytkowników.

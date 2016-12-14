@@ -16,9 +16,9 @@
 	  </whitelist>
 	</filter>
 	<php>
-		<const name="DATA_DIR" value="./code/data"/>
-		<const name="FILES_DIR" value="./code/data/files"/>
-		<const name="CONFIG_DIR" value="./code/data/config"/>
-		<const name="SYSTEM_DIR" value="./code/system"/>
+		<const name="WizyTowka\DATA_DIR" value="./code/data"/>
+		<const name="WizyTowka\FILES_DIR" value="./code/data/files"/>
+		<const name="WizyTowka\CONFIG_DIR" value="./code/data/config"/>
+		<const name="WizyTowka\SYSTEM_DIR" value="./code/system"/>
 	</php>
 </phpunit>

@@ -9,7 +9,7 @@ class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 
 	static public function setUpBeforeClass()
 	{
-		self::$_errorLogPath = CONFIG_DIR . '/errors.log';
+		self::$_errorLogPath = getcwd() . '/' . WizyTowka\CONFIG_DIR . '/errors.log';
 
 		if (file_exists(self::$_errorLogPath)) {
 			rename(self::$_errorLogPath, self::$_errorLogPath.'.bak');

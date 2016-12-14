@@ -8,4 +8,4 @@ namespace WizyTowka;
 
 
 const ADMIN_PANEL = 1;
-include 'index.php';
+require 'index.php';

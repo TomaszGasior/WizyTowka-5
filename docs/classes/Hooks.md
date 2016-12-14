@@ -13,7 +13,7 @@ Dodaje akcję do zbioru akcji zaczepionych do miejsca określonego nazwą w argu
 
 ## *static* `addFilter($name, $callback)`
 
-Działa identycznie jak `Hooks::addAction()`, lecz dodaje filtr.
+Działa identycznie jak `addAction()`, lecz dodaje filtr.
 
 ## *static* `removeAction($name, $callback)`
 
@@ -23,7 +23,7 @@ Jeżeli zbiór `$name` nie istnieje, jest rzucany wyjątek #20.
 
 ## *static* `removeFilter($name, $callback)`
 
-Działa jak `Hooks::removeAction()`, lecz usuwa filtr.
+Działa jak `removeAction()`, lecz usuwa filtr.
 
 ## *static* `runAction($name, $arg1, $arg2, …)`
 
@@ -33,6 +33,18 @@ Jeżeli któryś z callbacków ma liczbę wymaganych argumentów większą niż 
 
 ## *static* `applyFilter($name, $arg1, $arg2, …)`
 
-Działa podobnie jak `Hooks::runAction()` — uruchamia wszystkie filtry przypisane do miejsca zaczepienia `$name`. Jest jednak ważna różnica. Jako że filtry z założenia mają modyfikować wartość, wymagane jest podane co najmniej jednego argumentu przekazywanego filtrom. Jego wartość zmodyfikowana przez filtry jest zwracana.
+Działa podobnie jak `runAction()` — uruchamia wszystkie filtry przypisane do miejsca zaczepienia `$name`. Jest jednak ważna różnica. Jako że filtry z założenia mają modyfikować wartość, wymagane jest podane co najmniej jednego argumentu przekazywanego filtrom. Jego wartość zmodyfikowana przez filtry jest zwracana.
 
 Jeżeli nie zostanie podany choć jeden argument, zostanie rzucony wyjątek #6.
+
+## *static private* `_addHook(array &$hooks, $name, callable $callback)`
+
+Wewnętrznie dodaje hak (filtr lub akcję) do odpowiedniej tablicy haków. Metoda jest wywoływana przez metody `addAction()` i `addFilter()`.
+
+## *static private* `_removeHook(array &$hooks, $name, callable $callback)`
+
+Wewnętrznie usuwa hak (filtr lub akcję) z odpowiedniej tablicy haków. Metoda jest wywoływana przez metody `removeAction()` i `removeFilter()`.
+
+## *static private* `_runHook(array &$hooks, $name, array $arguments, $keepFirstArgument = false)`
+
+Dokonuje faktycznego uruchomienia haka (filtra lub akcji). Metoda jest wywoływana przez metody `runAction()` i `applyFilter()`.

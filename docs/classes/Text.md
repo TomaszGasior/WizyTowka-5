@@ -3,7 +3,7 @@ Text
 
 Klasa przechowująca ciąg znaków (string) i zdolna do wykonywania na nim operacji. Wszystkie metody tej klasy opierają swoje działanie na multibajtowych funkcjach PHP służących do operowania na stringach.
 
-Klasa implementuje metodę `__debugInfo()` dla funkcji `var_dump()` oraz metodę `__toString()` — umożliwiając przekształcenie obiektu tej klasy na przechowywany ciąg znaków.
+Klasa implementuje metodę `__debugInfo()` dla funkcji `var_dump()`, a także metodę `__toString()`, umożliwiając przekształcenie obiektu tej klasy na przechowywany ciąg znaków.
 
 Każda metoda, chyba że wskazano inaczej, zwraca instancję klasy (`$this` z wnętrza klasy), dzięki czemu można tworzyć konstrukcję łańcuchową metod.
 

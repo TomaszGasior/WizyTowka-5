@@ -48,9 +48,6 @@ class Database
 
 	static public function executeSQL($sql)
 	{
-		if (empty(self::$_pdo)) {
-			throw new Exception('Database connection was not established properly.', 10);
-		}
-		return self::$_pdo->exec($sql);
+		return self::pdo()->exec($sql);
 	}
 }

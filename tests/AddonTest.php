@@ -11,9 +11,9 @@ class AddonTest extends PHPUnit\Framework\TestCase
 
 	static public function setUpBeforeClass()
 	{
-		// // Example addons directories.
-		self::$_addonDirectorySystem = SYSTEM_DIR . '/addons/exampleAddonType';
-		self::$_addonDirectoryData   =   DATA_DIR . '/addons/exampleAddonType';
+		// Example addons directories.
+		self::$_addonDirectorySystem = WizyTowka\SYSTEM_DIR . '/addons/exampleAddonType';
+		self::$_addonDirectoryData   = WizyTowka\DATA_DIR   . '/addons/exampleAddonType';
 		@mkdir(self::$_addonDirectoryData);
 		@mkdir(self::$_addonDirectorySystem);
 
@@ -27,7 +27,7 @@ class AddonTest extends PHPUnit\Framework\TestCase
 		@mkdir(self::$_addonDirectorySystem . '/nameCollision');
 		WizyTowka\ConfigurationFile::createNew(self::$_addonDirectorySystem . '/nameCollision/addon.conf');
 
-		// Example addon class that extends Addon class. PHP7 syntax.
+		// Example addon class that extends Addon class. PHP 7 syntax.
 		self::$_exampleAddonType = new class() extends WizyTowka\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
@@ -71,14 +71,14 @@ class AddonTest extends PHPUnit\Framework\TestCase
 
 	static public function tearDownAfterClass()
 	{
-		@unlink(self::$_addonDirectoryData  . '/dataAddon/addon.conf');
-		@rmdir(self::$_addonDirectoryData   . '/dataAddon');
-		@unlink(self::$_addonDirectorySystem. '/systemAddon/addon.conf');
-		@rmdir(self::$_addonDirectorySystem . '/systemAddon');
-		@unlink(self::$_addonDirectoryData  . '/nameCollision/addon.conf');
-		@rmdir(self::$_addonDirectoryData   . '/nameCollision');
-		@unlink(self::$_addonDirectorySystem. '/nameCollision/addon.conf');
-		@rmdir(self::$_addonDirectorySystem . '/nameCollision');
+		@unlink(self::$_addonDirectoryData   . '/dataAddon/addon.conf');
+		@rmdir( self::$_addonDirectoryData   . '/dataAddon');
+		@unlink(self::$_addonDirectorySystem . '/systemAddon/addon.conf');
+		@rmdir( self::$_addonDirectorySystem . '/systemAddon');
+		@unlink(self::$_addonDirectoryData   . '/nameCollision/addon.conf');
+		@rmdir( self::$_addonDirectoryData   . '/nameCollision');
+		@unlink(self::$_addonDirectorySystem . '/nameCollision/addon.conf');
+		@rmdir( self::$_addonDirectorySystem . '/nameCollision');
 
 		@rmdir(self::$_addonDirectoryData);
 		@rmdir(self::$_addonDirectorySystem);
