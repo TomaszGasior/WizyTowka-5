@@ -31,7 +31,7 @@ namespace
 
 		static public function setUpBeforeClass()
 		{
-			// Example anonymous classes with controllers. PHP 7 syntax.
+			// Example controller in anonymous class. PHP 7 syntax.
 			self::$_exampleClass = new class() extends WizyTowka\Controller
 			{
 				// public function POSTQuery();

@@ -1,4 +1,3 @@
-
 # Data files of development installation.
 # code/data
 code/data/config/errors.log
@@ -6,6 +5,10 @@ code/data/config/errors.log
 # Third party libraries.
 code/system/thirdparty/*
 !code/system/thirdparty/.gitkeep
+
+# Third party assets.
+code/system/assets/thirdparty/*
+!code/system/assets/thirdparty/.gitkeep
 
 # Private files.
 code/tests.php

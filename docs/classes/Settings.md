@@ -1,5 +1,5 @@
 Settings
----
+===
 
 Klasa umożliwiająca dostęp do głównego pliku konfiguracyjnego systemu WizyTówka. Opiera swoje działanie na klasie `ConfigurationFile`. Nie ma potrzeby inicjacji klasy — plik konfiguracyjny zostanie załadowany automatycznie przed pierwszym użyciem.
 

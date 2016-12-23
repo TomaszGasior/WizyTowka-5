@@ -56,14 +56,14 @@ abstract class Addon
 		$addonObject = new static;
 
 		if (file_exists(DATA_DIR.$configFilePath)) {
-			$addonObject->_config = new ConfigurationFile(DATA_DIR.$configFilePath);
+			$addonObject->_config = new ConfigurationFile(DATA_DIR.$configFilePath, true); // Read only.
 			$addonObject->_name = $name;
 			$addonObject->_isFromSystem = false;
 
 			return $addonObject;
 		}
 		elseif (file_exists(SYSTEM_DIR.$configFilePath)) {
-			$addonObject->_config = new ConfigurationFile(SYSTEM_DIR.$configFilePath);
+			$addonObject->_config = new ConfigurationFile(SYSTEM_DIR.$configFilePath, true); // Read only.
 			$addonObject->_name = $name;
 			$addonObject->_isFromSystem = true;
 

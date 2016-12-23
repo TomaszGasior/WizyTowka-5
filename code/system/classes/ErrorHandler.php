@@ -43,29 +43,27 @@ class ErrorHandler
 
 	static private function _addToLog($exception)
 	{
-		if (!defined(__NAMESPACE__.'\\CONFIG_DIR')) {
-			return;
+		if (defined(__NAMESPACE__.'\\CONFIG_DIR')) {
 			// CONFIG_DIR can be not defined, when ErrorHandler is ran outside normal CMS code (in tests or utility scripts).
+			file_put_contents(
+				CONFIG_DIR . '/errors.log', (
+					"\n\n\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
+					"\nType:    " . ( ($exception instanceof \ErrorException)
+						? self::$_namedPHPErrors[$exception->getSeverity()]
+						: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
+					) .
+					"\nMessage: " . $exception->getMessage() .
+					"\nFile:    " . $exception->getFile() .
+					"\nLine:    " . $exception->getLine() .
+					"\nTrace: \n" . $exception->getTraceAsString()
+				), FILE_APPEND
+			);
 		}
-
-		file_put_contents(
-			CONFIG_DIR . '/errors.log', (
-				"\n\n\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
-				"\nType:    " . ( ($exception instanceof \ErrorException)
-					? self::$_namedPHPErrors[$exception->getSeverity()]
-					: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
-				) .
-				"\nMessage: " . $exception->getMessage() .
-				"\nFile:    " . $exception->getFile() .
-				"\nLine:    " . $exception->getLine() .
-				"\nTrace: \n" . $exception->getTraceAsString()
-			), FILE_APPEND
-		);
 	}
 
 	static private function _printAsPlainText($exception)
 	{
-		echo "\n\n", 'System encountered fatal error and executing must be interrupted.', "\n",
+		echo "\n\n", 'System encountered fatal error and execution must be interrupted.', "\n",
 			"\nType:    " . ( ($exception instanceof \ErrorException)
 				? self::$_namedPHPErrors[$exception->getSeverity()]
 				: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
@@ -78,9 +76,28 @@ class ErrorHandler
 
 	static private function _printAsHTML($exception)
 	{
-		?><!doctype html><meta charset="utf-8"><title>Fatal error</title>
+		if (defined(__NAMESPACE__.'\\CONFIG_DIR') and !Settings::get('systemShowErrors')) {
+			?><!doctype html><meta charset="utf-8">
 <style>
-	div.wtFaErr { color: #000; font: 16px /1.5em sans-serif; position: fixed; left: 0; right: 0; top: 0; bottom: 0; display: table; height: 100%; width: 100%; background: rgba( 0,0,0, 0.3 ); }
+	html, body { margin: 0; padding: 0; height: 100%; width: 100%; }
+	div.wtHiErr { color: #777; font: 30px sans-serif; display: table; width: 100%; height: 100%; }
+	div.wtHiErr > div { display: table-cell; vertical-align: middle; text-align: center; }
+	div.wtHiErr span { display: block; font-size: 300px; color: #000; }
+	@media (max-height: 500px), (max-width: 400px) {
+		div.wtHiErr span { font-size: 200px; }
+	}
+</style>
+<div class="wtHiErr"><div>
+	<p><span role="presentation">&#9785;</span>Przepraszamy za usterki.</p>
+	<!-- <?= get_class($exception) . ($exception->getCode() ? ' #'.$exception->getCode() : '') ?> -->
+</div></div>
+			<?php
+		}
+		else {
+			?><!doctype html><meta charset="utf-8">
+<style>
+	html, body { margin: 0; padding: 0; height: 100%; width: 100%; }
+	div.wtFaErr { color: #000; font: 16px /1.5em sans-serif; display: table; height: 100%; width: 100%; background: rgba( 0,0,0, 0.3 ); }
 	div.wtFaErr > div { display: table-cell; vertical-align: middle; }
 	div.wtFaErr section { border: 1px solid red; max-width: 700px; margin: auto; padding: 0.4em 1em; background: #fff; box-shadow: 0 0 9px rgba( 0,0,0, 0.4 ); }
 	div.wtFaErr h1 { font-size: 1.7em; margin-bottom: -0.4em; color: #ff0000; }
@@ -93,7 +110,7 @@ class ErrorHandler
 </style>
 <div class="wtFaErr"><div><section>
 	<h1>Fatal error — WizyTówka <?= VERSION ?></h1>
-	<p>System encountered fatal error and executing must be interrupted.</p>
+	<p>System encountered fatal error and execution must be interrupted.</p>
 	<dl>
 		<dt>Type</dt>
 		<dd><?= ( ($exception instanceof \ErrorException)
@@ -113,5 +130,6 @@ class ErrorHandler
 		</dd>
 	</dl>
 </section></div></div><?php
+		}
 	}
 }

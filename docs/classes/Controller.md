@@ -1,5 +1,5 @@
 *abstract* Controller
----
+===
 
 Klasa abstrakcyjna będąca podstawą dla kontrolerów. W systemie WizyTówka kontroler zajmuje się obsługą żądania: renderowaniem strony za pomocą szablonów, filtrowaniem i obsługą żądań POST oraz wykonywaniem wynikających z kontekstu zadań za pośrednictwem innych klas narzędziowych.
 
