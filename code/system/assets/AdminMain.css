@@ -13,8 +13,7 @@ html, body {
 	width: 100%;
 	margin: 0;
 	padding: 0;
-
-	font: 16px /1.5 "Lato", "Segoe UI", "Tahoma", sans-serif;
+	box-sizing: border-box;
 }
 html {
 	overflow-y: scroll;
@@ -22,6 +21,10 @@ html {
 
 	color: #000;
 	background: #E1E1E1;
+	font: 16px /1.5 "Lato", "Segoe UI", "Tahoma", sans-serif;
+}
+body {
+	padding: 1px 2em;
 }
 
 a:link, a:visited {
@@ -61,6 +64,8 @@ a:focus:not(:hover):not(:active) {
 
 .centered {
 	display: table;
+	width: 100%;
+	height: 100%;
 }
 .centered > * {
 	display: table-cell;
@@ -108,8 +113,48 @@ input[disabled], textarea[disabled], select[disabled] {
 	background: #E9E9E9;
 }
 
+input[type="checkbox"], input[type="radio"] {
+	width: auto;
+	height: auto;
+	padding: 0;
+	border: none;
+
+	position: absolute;
+	opacity: 0;
+}
+
+input[type="checkbox"] + label:before, input[type="radio"] + label:before {
+	font-family: 'icomoon_wt' !important;
+	font-size: 1.1em;
+	margin-right: 0.5em;
+	line-height: 0;
+	vertical-align: -2px;
+	color: #426FA3;
+}
+input[type="checkbox"]:focus + label:before, input[type="radio"]:focus + label:before {
+	outline: 2px solid #50BCFF;
+	outline-offset: 1px;
+	color: #008AE0;
+}
+input[type="checkbox"]:active + label:before, input[type="radio"]:active + label:before {
+	opacity: 0.5;
+}
+
+input[type="checkbox"] + label:before {
+	content: "\ea53";
+}
+input[type="checkbox"]:checked + label:before {
+	content: "\ea52";
+}
+input[type="radio"] + label:before {
+	content: "\ea56";
+}
+input[type="radio"]:checked + label:before {
+	content: "\ea55";
+}
+
 textarea {
-	min-width: 170px;
+	min-height: 5em;
 	resize: vertical;
 }
 
@@ -125,7 +170,7 @@ select::-ms-expand {
 }
 @supports (-moz-user-select: none) {
 	select {
-		color: rgba(0,0,0,0);
+		color: rgba(0,0,0,0);   /* Remove dotted border inside select in Firefox. */
 		text-shadow: -3px 0 0 #000;
 	}
 }
@@ -164,26 +209,30 @@ button[disabled] {
 }
 
 
-/* Header. */
+/* Admin panel and login form common styles. */
 
 header#header h1 {
 	line-height: 0;
 	overflow: hidden;
 	height: 60px;
+	margin: 0;
+	text-indent: -9999px;
 
-	background: url('WTLogo.svg') 16px 22px no-repeat;
-	background-color: #232323;  /*@sidebarBackground*/
+	background: #232323 url('WTLogo.svg') no-repeat;   /*@sidebarBackground*/
 }
 
-
-/* Admin panel — basic styles. */
-
-div.adminPanel {
-	max-width: 1000px;
+div.adminPanel, div.loginForm {
 	margin: 2em auto;
 
 	box-shadow: 0 0 5px rgba(0,0,0, 0.4);
 	background: #FFFFFF;
+}
+
+
+/* Main container — admin panel. */
+
+div.adminPanel {
+	max-width: 1000px;
 }
 div.adminPanel > div {
 	height: 600px;
@@ -218,7 +267,7 @@ div.adminPanel a.a11yJumpLink:focus {
 }
 
 div.adminPanel header#header h1 {
-	text-indent: -9999px;
+	background-position: 16px 22px;
 	width: 210px;  /*@sidebarWidth*/
 }
 div.adminPanel header#header ul {
@@ -295,91 +344,19 @@ nav#navigation li.iAdd a:before {
 }
 
 
-/* Menu icons from icon font. */
+/* Main container — login form. */
 
-header#header li a:before, nav#navigation li a:before, ul.elementsList ul li a:before {
-	font-family: 'icomoon_wt' !important;
-	padding-right: 0.5em;
-	vertical-align: -1px;
-
-	line-height: 0;
-	font-weight: normal;
+div.loginForm {
+	max-width: 500px;
 }
 
-.iEdit > *:before {
-	content: "\e906";
+div.loginForm header#header h1 {
+	background-position: center 26px;
+	padding-bottom: 0.5em;
 }
-.iDrafts > *:before {
-	content: "\e924";
-}
-.iPages > *:before {
-	content: "\e926";
-}
-.iFiles > *:before {
-	content: "\e927";
-}
-.iFilesEditor > *:before {
-	content: "\e930";
-}
-.iBackup > *:before {
-	content: "\e95e";
-}
-.iUser > *:before {
-	content: "\e971";
-}
-.iUsers > *:before {
-	content: "\e972";
-}
-.iCustomization > *:before {
-	content: "\e992";
-}
-.iSettings > *:before {
-	content: "\e994";
-}
-.iDelete > *:before {
-	content: "\e9ac";
-}
-.iMenus > *:before {
-	content: "\e9ba";
-}
-.iWebsite > *:before {
-	content: "\e9ca";
-}
-.iShow > *:before {
-	content: "\e9ce";
-}
-.iHide > *:before {
-	content: "\e9d1";
-}
-.iWarning > *:before {
-	content: "\ea07";
-}
-.iAdd > *:before {
-	content: "\ea0a";
-}
-.iInformations > *:before {
-	content: "\ea0c";
-}
-.iLogout > *:before {
-	content: "\ea13";
-}
-.iUpdates > *:before {
-	content: "\ea2e";
-}
-.iCheckboxChecked > *:before {
-	content: "\ea52";
-}
-.iCheckboxUnchecked > *:before {
-	content: "\ea53";
-}
-.iRadioChecked > *:before {
-	content: "\ea55";
-}
-.iRadioUnchecked > *:before {
-	content: "\ea56";
-}
-.iWidgets > *:before {
-	content: "\ea72";
+
+div.loginForm main header {
+	margin-top: 1.5em;
 }
 
 
@@ -440,7 +417,7 @@ main h3 {
 }
 
 
-/* Message. */
+/* Messages. */
 
 @keyframes messageFading {
 	to {
@@ -508,45 +485,32 @@ p.information:before {
 }
 
 
-/* Form definition list. */
+/* Forms fieldsets. */
 
-dl.form {
-	margin: 1em 0;
-}
-dl.form:after {   /*clearFix*/
-	content: '.';
-	opacity: 0;
-	overflow: hidden;
-	height: 1px;
+form fieldset {
+	border: 0;
+	padding: 0;
 
-	display: block;
-	clear: both;
+	margin: -0.3em 0;
 }
 
-dl.form > dt, dl.form > dd {
-	width: 50%;
-	float: left;
+form fieldset > div {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
 
-	box-sizing: border-box;
-	margin: 0;
+	margin: 0.5em 0;
 }
-dl.form > dt {
-	clear: both;
-
-	padding: 0.24em 1.25em 0 0;
-}
-dl.form > dd {
-	padding-bottom: 0.6em;
-}
-dl.form > dd:last-of-type {
-	padding-bottom: 0;
+form fieldset > div > label:first-child, form fieldset > div > span:last-child {
+	display: table-cell;
+	vertical-align: middle;
 }
 
-dl.form > dt label {
-	display: block;
-}
-dl.form > dt label:after {
+form label:first-child:after {
 	content: ":";
+}
+form label:last-child {
+	display: block;
 }
 
 
@@ -661,4 +625,95 @@ ul.elementsList.tilesView li > ul li:not(:first-child) a {
 }
 ul.elementsList.tilesView li > ul li a:before {
 	display: none;
+}
+
+
+/* Menu icons from icon font. */
+
+header#header li a:before,
+nav#navigation li a:before,
+ul.elementsList ul li a:before,
+main > header ul li a:before {
+	font-family: 'icomoon_wt' !important;
+	padding-right: 0.5em;
+	vertical-align: -1px;
+
+	line-height: 0;
+	font-weight: normal;
+}
+
+.iEdit > *:before {
+	content: "\e906";
+}
+.iDrafts > *:before {
+	content: "\e924";
+}
+.iPages > *:before {
+	content: "\e926";
+}
+.iFiles > *:before {
+	content: "\e927";
+}
+.iFilesEditor > *:before {
+	content: "\e930";
+}
+.iBackup > *:before {
+	content: "\e95e";
+}
+.iUser > *:before {
+	content: "\e971";
+}
+.iUsers > *:before {
+	content: "\e972";
+}
+.iCustomization > *:before {
+	content: "\e992";
+}
+.iSettings > *:before {
+	content: "\e994";
+}
+.iDelete > *:before {
+	content: "\e9ac";
+}
+.iMenus > *:before {
+	content: "\e9ba";
+}
+.iWebsite > *:before {
+	content: "\e9ca";
+}
+.iShow > *:before {
+	content: "\e9ce";
+}
+.iHide > *:before {
+	content: "\e9d1";
+}
+.iWarning > *:before {
+	content: "\ea07";
+}
+.iAdd > *:before {
+	content: "\ea0a";
+}
+.iInformations > *:before {
+	content: "\ea0c";
+}
+.iLogout > *:before {
+	content: "\ea13";
+}
+.iUpdates > *:before {
+	content: "\ea2e";
+}
+.iCheckboxChecked > *:before {
+	content: "\ea52";
+}
+.iCheckboxUnchecked > *:before {
+	content: "\ea53";
+}
+.iRadioChecked > *:before {
+	content: "\ea55";
+}
+.iRadioUnchecked > *:before {
+	content: "\ea56";
+}
+.iWidgets > *:before {
+	content: "\ea72";
 }

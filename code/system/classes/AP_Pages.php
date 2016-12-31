@@ -16,10 +16,12 @@ class AP_Pages extends AdminPanel
 
 	public function POSTQuery()
 	{
-		$this->_tplMessage = 'Zmiany zostały zapisane.';
+		$this->_apMessage = 'Zmiany zostały zapisane.';
 	}
 
 	protected function _output()
 	{
+		$this->_apContextMenu->add('Edycja', '#', 'iEdit');
+		$this->_apContextMenu->add('Ustawienia', '#', 'iSettings');
 	}
 }
