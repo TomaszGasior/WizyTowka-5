@@ -43,11 +43,23 @@ Dodaje zewnętrzny arkusz stylów do nagłówka. Do ścieżki/nazwy pliku okreś
 
 Opcjonalny argument `$media` umożliwia określenie reguły `@media`, dokładniej: argumentu `media` znacznika `<link rel="stylesheet">`.
 
+## `removeStyle($styleFileName)`
+
+Usuwa wszystkie arkusze stylów z nazwą pliku określoną w argumencie `$styleFileName`.
+
+Uwaga: ścieżka jest ignorowana. Wystarczy zgodność samej nazwy pliku, by arkusz stylów został usunięty.
+
 ## `addScript($scriptPath, $asyncInsteadDefer = false)`
 
 Dodaje zewnętrzny skrypt JavaScript do nagłówka. Do ścieżki/nazwy pliku określonej argumentem `$stylePath` dodawana jest ścieżka wskazana za pomocą metody `setAssetsPath()`.
 
 Domyślnie skrypty zewnętrzne otrzymują atrybut `defer`. Opcjonalny argument `$asyncInsteadDefer` ustawiony na prawdę umożliwia zastąpienie tego atrybutu atrybutem `async`.
+
+## `removeScript($scriptFileName)`
+
+Usuwa wszystkie skrypty z nazwą pliku określoną w argumencie `$scriptFileName`.
+
+Uwaga: ścieżka jest ignorowana. Wystarczy zgodność samej nazwy pliku, by skrypt został usunięty.
 
 ## `addInlineStyle($styleCode)`
 

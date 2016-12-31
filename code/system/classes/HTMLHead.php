@@ -64,12 +64,34 @@ class HTMLHead
 		return $this;
 	}
 
+	public function removeStyle($styleFileName)
+	{
+		foreach ($this->_styles as $key => $style) {
+			if (basename($style[0]) == $styleFileName) {
+				unset($this->_styles[$key]);
+			}
+		}
+
+		return $this;
+	}
+
 	public function addScript($scriptPath, $asyncInsteadDefer = false)
 	{
 		$this->_scripts[] = [
 			($this->_assetsPath) ? $this->_assetsPath.'/'.$scriptPath : $scriptPath,
 			$asyncInsteadDefer
 		];
+
+		return $this;
+	}
+
+	public function removeScript($scriptFileName)
+	{
+		foreach ($this->_scripts as $key => $script) {
+			if (basename($script[0]) == $scriptFileName) {
+				unset($this->_scripts[$key]);
+			}
+		}
 
 		return $this;
 	}

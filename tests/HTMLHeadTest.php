@@ -72,4 +72,31 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$expected .= '<meta name="keywords" content="html, lesson, tutorial, coding, website, programming">';
 		$this->assertEquals($expected, $current);
 	}
+
+	public function testAssetsRemoving()
+	{
+		$object = new WizyTowka\HTMLHead;
+		$object->setTitle('Example');
+
+		$object->setAssetsPath('');
+		$object->addStyle('style1.css');
+		$object->addStyle('style2.css');
+		$object->setAssetsPath('example/example');
+		$object->addStyle('style1.css');
+
+		$object->setAssetsPath('');
+		$object->addScript('script1.js');
+		$object->addScript('script2.js');
+		$object->setAssetsPath('example/something/else');
+		$object->addScript('script1.js');
+
+		$object->removeStyle('style1.css');
+		$object->removeScript('script1.js');
+
+		$current = (string)$object;
+		$expected = '<title>Example</title>';
+		$expected .= '<link rel="stylesheet" href="style2.css">';
+		$expected .= '<script src="script2.js" defer></script>';
+		$this->assertEquals($expected, $current);
+	}
 }
