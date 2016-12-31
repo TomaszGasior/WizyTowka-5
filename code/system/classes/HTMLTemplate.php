@@ -90,8 +90,18 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		}
 
 		$include = function(&$___variables___, $___template___) {
-			extract($___variables___, EXTR_SKIP | EXTR_REFS);
-			include $___template___;
+			try {
+				ob_start();
+				extract($___variables___, EXTR_SKIP | EXTR_REFS);
+				include $___template___;
+				ob_end_flush();
+			}
+			catch (\Exception $e) {  // Throwable should be used in PHP 7.
+				ob_end_clean();
+				echo '<br><b>Template rendering error.</b><br>',
+					 'Message: ', $e->getMessage(), '<br>',
+					 'File: ', basename($e->getFile()), ':', $e->getLine(), '<br>';
+			}
 		};
 		$include = $include->bindTo(null);
 		// Anonymous function is used here to isolate $this and local variables.

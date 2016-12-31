@@ -44,3 +44,5 @@ Jeśli argument `$templateName` jest określony, używany jest szablon o wskazan
 Jeśli nazwa szablonu nie zostanie w ogóle określona, zostanie rzucony wyjątek #22.
 
 Aby zwrócić wyrenderowany szablon np. celem zapisania go do zmiennej, należy zamiast wywołania metody `render()`, rzutować obiekt na ciąg znaków.
+
+Uwaga: jeśli wewnątrz kodu szablonu zostanie rzucony wyjątek, zostanie on obsłużony wewnętrznie przez metodę. Szablon nie zostanie wtedy w ogóle wyrenderowany, a w jego miejscu pojawi się uproszczony komunikat o błędzie.
