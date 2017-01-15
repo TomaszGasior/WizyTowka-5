@@ -13,9 +13,9 @@ class Page extends DatabaseObject
 		'slug',
 		'contentType',
 		'title',
-		'titleMenu',
 		'titleHead',
 		'description',
+		'isDraft',
 		'contents',
 		'settings',
 		'userId',
@@ -35,13 +35,30 @@ class Page extends DatabaseObject
 		'updatedTime',
 	];
 
-	static public function getBySlug($slug)
+	static public function getAll()
 	{
-		return static::_getByWhereCondition('slug = :slug', ['slug' => $slug], true);
+		return static::_getByWhereCondition('isDraft = 0');
+	}
+	// This method overwrites DatabaseObject::getAll().
+	// Page::getAll() returns public pages, Page::getAllDrafts() returns pages with draft status.
+
+	static public function getAllDrafts()
+	{
+		return static::_getByWhereCondition('isDraft = 1');
 	}
 
 	static public function getByLanguageId($languageId)
 	{
-		return static::_getByWhereCondition('languageId = :languageId', ['languageId' => $languageId]);
+		return static::_getByWhereCondition('isDraft = 0 AND languageId = :languageId', ['languageId' => $languageId]);
+	}
+
+	static public function getDraftsByLanguageId($languageId)
+	{
+		return static::_getByWhereCondition('isDraft = 1 AND languageId = :languageId', ['languageId' => $languageId]);
+	}
+
+	static public function getBySlug($slug)
+	{
+		return static::_getByWhereCondition('slug = :slug', ['slug' => $slug], true);
 	}
 }
