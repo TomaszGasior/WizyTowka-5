@@ -14,7 +14,7 @@ class AP_Login extends Controller  /* Do not extends AdminPanel abstract class. 
 
 	public function __construct()
 	{
-		if (UserSession::isLoggedIn()) {
+		if (SessionManager::isLoggedIn()) {
 			$this->_redirect(AdminPanel::URL('pages'));
 		}
 

@@ -62,7 +62,7 @@ if (defined(__NAMESPACE__.'\\INIT')) {
 		}
 
 		/* User session manager. */
-		UserSession::setup();
+		SessionManager::setup();
 
 		/* Controller: administration panel. */
 		if (defined(__NAMESPACE__.'\\ADMIN_PANEL')) {

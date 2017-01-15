@@ -6,7 +6,7 @@
 */
 namespace WizyTowka;
 
-class UserSession
+class SessionManager
 {
 	static private $_cookieName = 'WTCMSSession';
 
@@ -38,7 +38,7 @@ class UserSession
 
 	static public function logIn($userId, $sessionDuration)
 	{
-		if (!self::$_started or self::isLoggedIn()) {
+		if (!self::$_started or self::isUserLoggedIn()) {
 			throw new Exception('User session manager cannot log in user.', 17);
 		}
 
@@ -57,7 +57,7 @@ class UserSession
 
 	static public function logOut()
 	{
-		if (!self::$_started or !self::isLoggedIn()) {
+		if (!self::$_started or !self::isUserLoggedIn()) {
 			throw new Exception('User session manager cannot log out user.', 18);
 		}
 
@@ -70,7 +70,7 @@ class UserSession
 		self::$_currentUserId = false;
 	}
 
-	static public function isLoggedIn()
+	static public function isUserLoggedIn()
 	{
 		return (self::$_currentUserId) ? true : false;
 	}

@@ -1,5 +1,5 @@
-UserSession
----
+SessionManager
+===
 
 Menadżer sesji użytkownika. Zarządza sesją, umożliwia zalogowanie i wylogowanie użytkownika.
 
@@ -25,7 +25,7 @@ Wylogowuje aktualnie zalogowanego użytkownika.
 
 Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek #18.
 
-## *static* `isLoggedIn()`
+## *static* `isUserLoggedIn()`
 
 Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jest.
 
