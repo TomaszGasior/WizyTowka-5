@@ -27,9 +27,9 @@ class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException        ErrorException
-	 * @expectedExceptionMessage Example error
-	 */
+	* @expectedException        ErrorException
+	* @expectedExceptionMessage Example error
+	*/
 	public function testConvertErrorToException()
 	{
 		WizyTowka\ErrorHandler::convertErrorToException(E_WARNING, 'Example error', 'examplefile.txt', 1);

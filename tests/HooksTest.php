@@ -69,9 +69,9 @@ class HooksTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 5
-	 */
+	* @expectedException     WizyTowka\Exception
+	* @expectedExceptionCode 5
+	*/
 	public function testInvalidCallbackArguments()
 	{
 		$function = function($requiredArgument1, $requiredArgument2, $requiredArgument3) {

@@ -24,12 +24,12 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->text('Example field', 'name', 'value');
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Example field</label>';
-		$expected .= '<span><input type="text" name="name" value="value" id="f0"></span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<label for="f0">Example field</label>'
+		          . '<span><input type="text" name="name" value="value" id="f0"></span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -39,12 +39,12 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->number('Example field', 'name', 8.5, ['min' => 5, 'max' => '10']);
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Example field</label>';
-		$expected .= '<span><input min="5" max="10" type="number" name="name" value="8.5" id="f0"></span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<label for="f0">Example field</label>'
+		          . '<span><input min="5" max="10" type="number" name="name" value="8.5" id="f0"></span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -54,12 +54,12 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->password('Example field', 'name', ['required' => true, 'disabled' => false]);
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Example field</label>';
-		$expected .= '<span><input required type="password" name="name" id="f0"></span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<label for="f0">Example field</label>'
+		          . '<span><input required type="password" name="name" id="f0"></span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -70,16 +70,16 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->checkbox('Example checkbox', 'name_2', false);
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<input type="checkbox" name="name_1" checked id="f0">';
-		$expected .= '<label for="f0">Example checkbox</label>';
-		$expected .= '</div>';
-		$expected .= '<div>';
-		$expected .= '<input type="checkbox" name="name_2" id="f1">';
-		$expected .= '<label for="f1">Example checkbox</label>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<input type="checkbox" name="name_1" checked id="f0">'
+		          . '<label for="f0">Example checkbox</label>'
+		          . '</div>'
+		          . '<div>'
+		          . '<input type="checkbox" name="name_2" id="f1">'
+		          . '<label for="f1">Example checkbox</label>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -92,20 +92,20 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->option('I use Mac OS', 'operating_system', 'mac_os', $selectedValue);  // "option" is an alias of "radio".
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<input type="radio" name="operating_system" value="windows" id="f0">';
-		$expected .= '<label for="f0">I use Windows</label>';
-		$expected .= '</div>';
-		$expected .= '<div>';
-		$expected .= '<input type="radio" name="operating_system" value="linux" checked id="f1">';
-		$expected .= '<label for="f1">I use Linux</label>';
-		$expected .= '</div>';
-		$expected .= '<div>';
-		$expected .= '<input type="radio" name="operating_system" value="mac_os" id="f2">';
-		$expected .= '<label for="f2">I use Mac OS</label>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<input type="radio" name="operating_system" value="windows" id="f0">'
+		          . '<label for="f0">I use Windows</label>'
+		          . '</div>'
+		          . '<div>'
+		          . '<input type="radio" name="operating_system" value="linux" checked id="f1">'
+		          . '<label for="f1">I use Linux</label>'
+		          . '</div>'
+		          . '<div>'
+		          . '<input type="radio" name="operating_system" value="mac_os" id="f2">'
+		          . '<label for="f2">I use Mac OS</label>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -115,14 +115,14 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->textarea('Example field', 'name', "Line 1.\nLine 2.\nLine 3.");
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Example field</label>';
-		$expected .= '<span><textarea name="name" id="f0">';
-		$expected .= "Line 1.\nLine 2.\nLine 3.";
-		$expected .= '</textarea></span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<label for="f0">Example field</label>'
+		          . '<span><textarea name="name" id="f0">'
+		          . "Line 1.\nLine 2.\nLine 3."
+		          . '</textarea></span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -136,16 +136,16 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		]);
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Select your OS</label>';
-		$expected .= '<span><select name="operating_system" id="f0">';
-		$expected .= '<option value="windows">Windows</option>';
-		$expected .= '<option value="linux" selected>Linux</option>';
-		$expected .= '<option value="mac_os">Mac OS</option>';
-		$expected .= '</select></span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<label for="f0">Select your OS</label>'
+		          . '<span><select name="operating_system" id="f0">'
+		          . '<option value="windows">Windows</option>'
+		          . '<option value="linux" selected>Linux</option>'
+		          . '<option value="mac_os">Mac OS</option>'
+		          . '</select></span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -159,19 +159,19 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		]);
 
 		$current = (string)$object;
-		$expected = '<fieldset>';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Select your OS</label>';
-		$expected .= '<span>';
-		$expected .= '<datalist id="hints0">';
-		$expected .= '<option>Windows</option>';
-		$expected .= '<option>Linux</option>';
-		$expected .= '<option>Mac OS</option>';
-		$expected .= '</datalist>';
-		$expected .= '<input type="text" name="operating_system" value="" id="f0" list="hints0">';
-		$expected .= '</span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset>'
+		          . '<div>'
+		          . '<label for="f0">Select your OS</label>'
+		          . '<span>'
+		          . '<datalist id="hints0">'
+		          . '<option>Windows</option>'
+		          . '<option>Linux</option>'
+		          . '<option>Mac OS</option>'
+		          . '</datalist>'
+		          . '<input type="text" name="operating_system" value="" id="f0" list="hints0">'
+		          . '</span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -185,16 +185,16 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
 		$object->remove('name_2');
 
 		$current = (string)$object;
-		$expected = '<fieldset class="exampleCSSClass">';
-		$expected .= '<div>';
-		$expected .= '<label for="f0">Example field 1.</label>';
-		$expected .= '<span><input type="text" name="name_1" value="value" id="f0"></span>';
-		$expected .= '</div>';
-		$expected .= '<div>';
-		$expected .= '<label for="f1">Example field 3.</label>';
-		$expected .= '<span><input type="text" name="name_3" value="value" id="f1"></span>';
-		$expected .= '</div>';
-		$expected .= '</fieldset>';
+		$expected = '<fieldset class="exampleCSSClass">'
+		          . '<div>'
+		          . '<label for="f0">Example field 1.</label>'
+		          . '<span><input type="text" name="name_1" value="value" id="f0"></span>'
+		          . '</div>'
+		          . '<div>'
+		          . '<label for="f1">Example field 3.</label>'
+		          . '<span><input type="text" name="name_3" value="value" id="f1"></span>'
+		          . '</div>'
+		          . '</fieldset>';
 		$this->assertEquals($expected, $current);
 	}
 }

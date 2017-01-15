@@ -14,12 +14,12 @@ class HTMLMenuTest extends PHPUnit\Framework\TestCase
 		$object->add('Bing', 'http://bing.com', null, 2);
 
 		$current = (string)$object;
-		$expected = '<ul class="exampleCSSClass">';
-		$expected .= '<li class="google"><a href="http://google.com">Google</a></li>';
-		$expected .= '<li><a href="http://bing.com">Bing</a></li>';
-		$expected .= '<li><a href="http://yahoo.com" target="_blank">Yahoo</a></li>';
-		$expected .= '<li><a href="http://facebook.com">Facebook</a></li>';
-		$expected .= '</ul>';
+		$expected = '<ul class="exampleCSSClass">'
+		          . '<li class="google"><a href="http://google.com">Google</a></li>'
+		          . '<li><a href="http://bing.com">Bing</a></li>'
+		          . '<li><a href="http://yahoo.com" target="_blank">Yahoo</a></li>'
+		          . '<li><a href="http://facebook.com">Facebook</a></li>'
+		          . '</ul>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -36,23 +36,23 @@ class HTMLMenuTest extends PHPUnit\Framework\TestCase
 		$object->add('Webpage 2', 'http://example.com');
 
 		$current = (string)$object;
-		$expected = '<ul>';
-		$expected .= '<li><a href="http://example.org">Webpage 1</a></li>';
-		$expected .= '<li>Files';
-		$expected .= '<ul>';
-		$expected .= '<li><a href="file1.html">File 1</a></li>';
-		$expected .= '<li><a href="file2.html">File 2</a></li>';
-		$expected .= '<li><a href="file3.html">File 3</a></li>';
-		$expected .= '</ul>';
-		$expected .= '</li>';
-		$expected .= '<li><a href="http://example.com">Webpage 2</a></li>';
-		$expected .= '</ul>';
+		$expected = '<ul>'
+		          . '<li><a href="http://example.org">Webpage 1</a></li>'
+		          . '<li>Files'
+		          . '<ul>'
+		          . '<li><a href="file1.html">File 1</a></li>'
+		          . '<li><a href="file2.html">File 2</a></li>'
+		          . '<li><a href="file3.html">File 3</a></li>'
+		          . '</ul>'
+		          . '</li>'
+		          . '<li><a href="http://example.com">Webpage 2</a></li>'
+		          . '</ul>';
 	}
 
 	/**
-	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 26
-	 */
+	* @expectedException     WizyTowka\Exception
+	* @expectedExceptionCode 26
+	*/
 	public function testAddWrongObject()
 	{
 		$object = new WizyTowka\HTMLMenu;
@@ -69,10 +69,10 @@ class HTMLMenuTest extends PHPUnit\Framework\TestCase
 		$object->remove('File 2');
 
 		$current = (string)$object;
-		$expected = '<ul>';
-		$expected .= '<li><a href="file1.html">File 1</a></li>';
-		$expected .= '<li><a href="file3.html">File 3</a></li>';
-		$expected .= '</ul>';
+		$expected = '<ul>'
+		          . '<li><a href="file1.html">File 1</a></li>'
+		          . '<li><a href="file3.html">File 3</a></li>'
+		          . '</ul>';
 		$this->assertEquals($expected, $current);
 	}
 }

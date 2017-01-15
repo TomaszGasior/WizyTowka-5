@@ -94,9 +94,9 @@ EOL;
 	}
 
 	/**
-	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 22
-	 */
+	* @expectedException     WizyTowka\Exception
+	* @expectedExceptionCode 22
+	*/
 	public function testRenderWithoutName()
 	{
 		$object = new WizyTowka\HTMLTemplate;

@@ -12,7 +12,8 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->setTitle('Title of page');
 
 		$current = (string)$object;
-		$expected = '<base href="http://example.org">' . '<title>Title of page</title>';
+		$expected = '<base href="http://example.org">'
+		          . '<title>Title of page</title>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -29,10 +30,10 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->addInlineScript('alert("hey!")');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>';
-		$expected .= '<script src="example/assetsDir/script.js" defer></script>';
-		$expected .= '<script src="script.js" async></script>';
-		$expected .= '<script>alert("hey!")</script>';
+		$expected = '<title>Example</title>'
+		          . '<script src="example/assetsDir/script.js" defer></script>'
+		          . '<script src="script.js" async></script>'
+		          . '<script>alert("hey!")</script>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -49,10 +50,10 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->addInlineStyle('body{color:red;}');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>';
-		$expected .= '<link rel="stylesheet" href="example/assetsDir/stylesheet.css">';
-		$expected .= '<link rel="stylesheet" href="stylesheet.css" media="all and (max-width: 900px)">';
-		$expected .= '<style>body{color:red;}</style>';
+		$expected = '<title>Example</title>'
+		          . '<link rel="stylesheet" href="example/assetsDir/stylesheet.css">'
+		          . '<link rel="stylesheet" href="stylesheet.css" media="all and (max-width: 900px)">'
+		          . '<style>body{color:red;}</style>';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -66,10 +67,10 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->setHttpEquiv('refresh', '0; url=http://example.org');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>';
-		$expected .= '<meta http-equiv="refresh" content="0; url=http://example.org">';
-		$expected .= '<meta name="description" content="HTML tutorial: &quot;&lt;HEAD&gt;&quot; tag examples">';
-		$expected .= '<meta name="keywords" content="html, lesson, tutorial, coding, website, programming">';
+		$expected = '<title>Example</title>'
+		          . '<meta http-equiv="refresh" content="0; url=http://example.org">'
+		          . '<meta name="description" content="HTML tutorial: &quot;&lt;HEAD&gt;&quot; tag examples">'
+		          . '<meta name="keywords" content="html, lesson, tutorial, coding, website, programming">';
 		$this->assertEquals($expected, $current);
 	}
 
@@ -94,9 +95,9 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->removeScript('script1.js');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>';
-		$expected .= '<link rel="stylesheet" href="style2.css">';
-		$expected .= '<script src="script2.js" defer></script>';
+		$expected = '<title>Example</title>'
+		          . '<link rel="stylesheet" href="style2.css">'
+		          . '<script src="script2.js" defer></script>';
 		$this->assertEquals($expected, $current);
 	}
 }

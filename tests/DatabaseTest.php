@@ -17,9 +17,9 @@ class DatabaseTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 9
-	 */
+	* @expectedException     WizyTowka\Exception
+	* @expectedExceptionCode 9
+	*/
 	public function testPDOBeforeConnect()
 	{
 		WizyTowka\Database::pdo();

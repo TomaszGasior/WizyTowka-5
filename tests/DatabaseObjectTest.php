@@ -205,9 +205,9 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 15
-	 */
+	* @expectedException     WizyTowka\Exception
+	* @expectedExceptionCode 15
+	*/
 	public function testDoNotEditPrimaryKey()
 	{
 		$object = new self::$_exampleClass;

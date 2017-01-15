@@ -80,9 +80,9 @@ namespace
 		//  * Method stop executing by exit(), so assertion is placed in shutdown function and tests are ran in separate proccesses.
 
 		/**
-		 * @runInSeparateProcess
-		   @covers    WizyTowka\Controller::URL
-		 */
+		* @runInSeparateProcess
+		* @covers    WizyTowka\Controller::URL
+		*/
 		public function testRedirectWithControllerURL()
 		{
 			$controller = new self::$_exampleClass;
@@ -104,8 +104,8 @@ namespace
 		}
 
 		/**
-		 * @runInSeparateProcess
-		 */
+		* @runInSeparateProcess
+		*/
 		public function testRedirectWithFullURL()
 		{
 			$controller = new self::$_exampleClass;
