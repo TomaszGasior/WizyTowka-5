@@ -132,6 +132,22 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$this->assertFalse($object);
 	}
 
+	public function testClone()
+	{
+		$originalObject = self::$_exampleClass::getById(2);
+		$clonedObject   = clone $originalObject;
+
+		$this->assertNull($clonedObject->primaryKey); // Cloned object should be treated as newly created, primary key field should be empty.
+
+		$clonedObject->save();
+
+		$object = self::$_exampleClass::getById($clonedObject->primaryKey);  // Primary key field is set after save() operation.
+
+		$current  = $this->_convertObjectToArray($object);
+		$expected = ['primaryKey' => '4', 'column1' => '1000', 'column2' => 'thousand'];
+		$this->assertEquals($current, $expected);
+	}
+
 	public function testJSONEncoding()
 	{
 		$exampleData = [

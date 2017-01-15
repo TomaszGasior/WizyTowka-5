@@ -24,6 +24,10 @@ Klasa `DatabaseObject` implementuje metody magiczne `__get()`, `__set()`, `__iss
 
 Tworzy nowy rekord tabeli. Wszystkie pola rekordu otrzymują domyślną wartość `null`. Kolumnom określonym w polu `$_tableColumnsJSON` przypisywany jest pusty obiekt (instancja klasy `stdClass`).
 
+## `__clone()`
+
+Tworzy nowy rekord tabeli z dotychczasowymi danymi. Innymi słowy, przy klonowaniu obiektu jego kopia jest traktowana jako nowo utworzony rekord (kasowana jest wartość klucza podstawowego).
+
 ## `save()`
 
 Zapisuje rekord. Jeśli rekord jest nowo utworzonym rekordem, używane jest zapytanie SQL `INSERT`, a po pomyślnym dodaniu wartość klucza podstawowego jest uzupełniana. Jeśli rekord już istnieje, jest aktualizowany przy użyciu zapytania `UPDATE`.

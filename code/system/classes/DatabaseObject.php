@@ -29,6 +29,12 @@ abstract class DatabaseObject implements \IteratorAggregate
 		$this->_dataNewlyCreated = true;
 	}
 
+	public function __clone()
+	{
+		$this->_data[static::$_tablePrimaryKey] = null;
+		$this->_dataNewlyCreated = true;
+	}
+
 	public function __get($column)
 	{
 		return $this->_data[$column];
@@ -83,20 +89,29 @@ abstract class DatabaseObject implements \IteratorAggregate
 			$sqlQuery = 'UPDATE ' . static::$_tableName . ' SET ' . implode(', ', $columnAndParameterAssignments) . ' WHERE ' . static::$_tablePrimaryKey . ' = :' . static::$_tablePrimaryKey;
 		}
 
-		$sqlParameters = $this->_data;
+		$sqlQueryData = $this->_data;
 
 		if ($this->_dataNewlyCreated) {
-			unset($sqlParameters[static::$_tablePrimaryKey]);  // Remove primary key from INSERT query parameters.
+			unset($sqlQueryData[static::$_tablePrimaryKey]);  // Remove primary key from INSERT query parameters.
+		}
+		foreach ($sqlQueryData as &$value) {
+			if (is_bool($value)) {
+				$value = (integer)$value;
+				// This line converts boolean values to integers. PostgreSQL has BOOLEAN type, but is not used for compatibility.
+				// MySQL and SQLite have not BOOLEAN data type and store logical values as 0/1 integer.
+				// PDOStatement::execute() converts each value to string. "true" bool value is converted to "1", "false" to empty string.
+				// It is needed to convert "false" bool value to "0" to avoid errors of data type and for data consistency.
+			}
 		}
 		foreach (static::$_tableColumnsJSON as $column) {
-			$sqlParameters[$column] = json_encode($sqlParameters[$column], JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE);
+			$sqlQueryData[$column] = json_encode($sqlQueryData[$column], JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE);
 			if (json_last_error() != JSON_ERROR_NONE) {
 				throw new Exception('Error during writing JSON string: ' . json_last_error_msg() . '.', 14);
 			}
 		}
 
 		$statement = Database::pdo()->prepare($sqlQuery);
-		$execution = $statement->execute($sqlParameters);
+		$execution = $statement->execute($sqlQueryData);
 
 		if ($execution and $this->_dataNewlyCreated) {
 			$this->_data[static::$_tablePrimaryKey] = Database::pdo()->lastInsertId(static::$_tablePrimaryKey);
@@ -111,7 +126,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function delete()
 	{
 		if ($this->_dataNewlyCreated) {
-			return;
+			return false;
 		}
 
 		$sqlQuery = 'DELETE FROM ' . static::$_tableName . ' WHERE ' . static::$_tablePrimaryKey . ' = :id';
@@ -186,7 +201,6 @@ abstract class DatabaseObject implements \IteratorAggregate
 
 	static public function getById($id)
 	{
-		// This method uses table primary key. It is "id" by default.
 		return static::_getByWhereCondition(static::$_tablePrimaryKey.' = :id', ['id' => $id], true);
 	}
 
