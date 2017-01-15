@@ -11,6 +11,10 @@ Metoda ta dodaje wskazaną przez `$namespace` przestrzeń nazw do zbioru przestr
 
 Jeżeli podana przestrzeń nazw jest już zarejestrowana, rzucany jest wyjątek #1.
 
+## *static* `namespaceExists($namespace)`
+
+Jeśli przestrzeń nazw `$namespace` została dodana do ładowarki, zwraca prawdę, w innym wypadku — fałsz.
+
 ## *static* `removeNamespace($namespace)`
 
 Metoda usuwa wskazaną w `$namespace` przestrzeń nazw ze zbioru przestrzeni obsługiwanych przez ładowarkę.

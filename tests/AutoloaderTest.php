@@ -5,23 +5,32 @@
 */
 class AutoloaderTest extends PHPUnit\Framework\TestCase
 {
-	static private $_exampleNamespace = 'Namespace\\Example';
+	static private $_exampleNamespace = 'Example\\SubExample';
+	static private $_examplePath = './path/to/classes';
 
 	public function testAddNamespace()
 	{
-		$exampleDirectory = __DIR__;
+		$this->assertFalse(
+			WizyTowka\Autoloader::namespaceExists(self::$_exampleNamespace)
+		);
 
-		WizyTowka\Autoloader::addNamespace(self::$_exampleNamespace, $exampleDirectory);
+		WizyTowka\Autoloader::addNamespace(self::$_exampleNamespace, self::$_examplePath);
 
-		$directoriesVariable = (new ReflectionClass('WizyTowka\\Autoloader'))->getStaticProperties()['_directories'];
-		$this->assertEquals($directoriesVariable[self::$_exampleNamespace], $exampleDirectory);
+		$this->assertTrue(
+			WizyTowka\Autoloader::namespaceExists(self::$_exampleNamespace)
+		);
 	}
 
 	public function testRemoveNamespace()
 	{
-		WizyTowka\Autoloader::removeNamespace(self::$_exampleNamespace);
+		$this->assertTrue(
+			WizyTowka\Autoloader::namespaceExists(self::$_exampleNamespace)
+		);
 
-		$directoriesVariable = (new ReflectionClass('WizyTowka\\Autoloader'))->getStaticProperties()['_directories'];
-		$this->assertFalse(isset($directoriesVariable[self::$_exampleNamespace]));
+		WizyTowka\Autoloader::removeNamespace(self::$_exampleNamespace, self::$_examplePath);
+
+		$this->assertFalse(
+			WizyTowka\Autoloader::namespaceExists(self::$_exampleNamespace)
+		);
 	}
 }

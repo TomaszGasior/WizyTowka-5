@@ -23,6 +23,11 @@ class Autoloader
 		unset(self::$_directories[$namespace]);
 	}
 
+	static public function namespaceExists($namespace)
+	{
+		return isset(self::$_directories[$namespace]);
+	}
+
 	static public function autoload($fullyQualifiedName)
 	{
 		@list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
