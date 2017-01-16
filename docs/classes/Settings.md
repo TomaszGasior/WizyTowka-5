@@ -14,3 +14,5 @@ Jeżeli plik konfiguracyjny jest uszkodzony, zostanie rzucony wyjątek #10.
 ## *static* `getDefault($option = null)`
 
 Metoda działa identycznie jak metoda `get()`, lecz w kontekście domyślnego pliku konfiguracyjnego systemu, a nie konfiguracji bieżącej. Domyślny plik konfiguracyjny otwierany jest w trybie tylko do odczytu.
+
+Jeżeli zwrócona wartość jest równa `__INSTALLER__` oznacza to, że dane ustawienie jest definiowane podczas instalacji systemu WizyTówka i domyślnie nie posiada żadnej sensownej wartości.

@@ -2,8 +2,7 @@
 
 /**
 * WizyTówka 5
-* Generates SQL file for database schema converted from "code/system/defaults/schema.sql".
-  It will be removed in the future.
+* This script generates SQL file for database schema converted from "code/system/defaults/schema.sql".
 */
 namespace WizyTowka;
 

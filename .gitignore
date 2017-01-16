@@ -1,6 +1,6 @@
-# Data files of development installation.
-# code/data
-code/data/config/errors.log
+# Config files of development installation.
+code/data/config/*
+!code/data/config/.gitkeep
 
 # Third party libraries.
 code/system/thirdparty/*
