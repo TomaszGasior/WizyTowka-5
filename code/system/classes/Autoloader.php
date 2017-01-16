@@ -11,11 +11,12 @@ class Autoloader
 	static private $_directories = [];
 
 	static public function addNamespace($namespace, $pathToClasses)
-	{;
+	{
 		if (isset(self::$_directories[$namespace])) {
-			throw new Exception('This namespace is already registered.', 1);
+			return false;
 		}
 		self::$_directories[$namespace] = $pathToClasses;
+		return true;
 	}
 
 	static public function removeNamespace($namespace)
