@@ -65,8 +65,8 @@ namespace
 		}
 
 		/**
-		 * @expectedException     WizyTowka\Exception
-		 * @expectedExceptionCode 21
+		 * @expectedException     WizyTowka\ControllerException
+		 * @expectedExceptionCode 1
 		 */
 		public function testPOSTQuery()
 		{

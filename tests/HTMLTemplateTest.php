@@ -94,8 +94,8 @@ EOL;
 	}
 
 	/**
-	* @expectedException     WizyTowka\Exception
-	* @expectedExceptionCode 22
+	* @expectedException     WizyTowka\HTMLTemplateException
+	* @expectedExceptionCode 1
 	*/
 	public function testRenderWithoutName()
 	{

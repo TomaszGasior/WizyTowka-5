@@ -10,7 +10,7 @@ class Website extends Controller
 {
 	public function output()
 	{
-		echo 'Wkrótce…';
+		echo 'Wkrótce… ';
 	}
 
 	static public function URL($target, $arguments = [])
@@ -21,7 +21,7 @@ class Website extends Controller
 		}
 
 		if (isset($arguments['id'])) {
-			throw new Exception('Argument of website URL must not have key named "id".', 24);
+			throw ControllerException::unallowedKeyInURLArgument('id');
 		}
 		if (!$pretty = Settings::get('websitePrettyLinks')) {
 			$arguments['id'] = $slug;

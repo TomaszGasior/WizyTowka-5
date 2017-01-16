@@ -21,11 +21,11 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 
 		if (json_last_error() != JSON_ERROR_NONE) {
 			$this->_configuration = [];
-			throw new Exception('Error during reading JSON config file: ' . json_last_error_msg() . '.', 2);
+			throw ConfigurationFileException::JSONError($filename);
 		}
 		if (!is_array($this->_configuration)) {
 			$this->_configuration = [];
-			throw new Exception('Configuration file ' . $filename . ' does not contain array.', 4);
+			throw ConfigurationFileException::invalidArray($filename);
 		}
 	}
 
@@ -39,7 +39,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 			);
 
 			if (json_last_error() != JSON_ERROR_NONE) {
-				throw new Exception('Error during writing JSON config file: ' . json_last_error_msg() . '.', 3);
+				throw ConfigurationFileException::JSONError($this->_filename);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 	public function __set($key, $value)
 	{
 		if ($this->_readOnly) {
-			throw new Exception('Configuration file ' . $this->_filename . ' is opened as read only.', 19);
+			throw ConfigurationFileException::writingWhenReadOnly($this->_filename);
 		}
 
 		$this->_wasChanged = true;
@@ -91,5 +91,21 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 	static public function createNew($filename)
 	{
 		file_put_contents($filename, json_encode([]));
+	}
+}
+
+class ConfigurationFileException extends Exception
+{
+	static public function JSONError($filename)
+	{
+		return new self('Error "' . json_last_error_msg() . '" during JSON operation on configuration file: ' . $filename . '.', 1);
+	}
+	static public function invalidArray($filename)
+	{
+		return new self('Configuration file ' . $filename . ' does not contain array.', 2);
+	}
+	static public function writingWhenReadOnly($filename)
+	{
+		return new self('Configuration file ' . $filename . ' is opened as read only.', 3);
 	}
 }

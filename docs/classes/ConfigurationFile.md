@@ -7,13 +7,15 @@ Implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umo
 
 Odczyt pliku następuje w konstruktorze. Zapis pliku następuje w destruktorze wyłącznie, gdy jakiekolwiek ustawienie zostanie zmodyfikowane bądź usunięte.
 
-Plik JSON powinien zawierać tablicę wartości, inaczej przy odczycie zostanie rzucony wyjątek #4.
-
 ## `__construct($filename, $readOnly = false)`
 
-Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON. Argument `$readOnly` powinien być typu `boolean` i określa, czy konfiguracja jest tylko do odczytu. Wtedy, jeśli nastąpi próba zmiany wartości ustawienia, zostanie rzucony wyjątek #19.
+Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
 
-Jeżeli plik JSON nie istnieje, wystąpi błąd. Jeżeli dojdzie do błędu podczas parsowania pliku JSON, zostanie rzucony wyjątek #2.
+Argument `$readOnly` powinien być typu logicznego i określa, czy konfiguracja jest tylko do odczytu. Wtedy, jeśli nastąpi próba zmiany wartości ustawienia, zostanie rzucony wyjątek `ConfigurationFileException` #3.
+
+Jeżeli plik JSON nie istnieje, wystąpi błąd. Jeżeli dojdzie do błędu podczas parsowania pliku JSON, zostanie rzucony wyjątek `ConfigurationFileException` #1.
+
+Plik JSON powinien zawierać tablicę wartości, inaczej przy odczycie zostanie rzucony wyjątek `ConfigurationFileException` #2.
 
 ## *static* `createNew($filename)`
 

@@ -39,7 +39,7 @@ class Hooks
 	static private function _removeHook(array &$hooks, $name, callable $callback)
 	{
 		if (!isset($hooks[$name])) {
-			throw new Exception('Hook named ' . $name . ' does not exists.', 20);
+			throw HooksException::hookDoesNotExist($name);
 		}
 
 		foreach ($hooks[$name] as $key => $iteratedCallback) {
@@ -57,7 +57,7 @@ class Hooks
 	static public function applyFilter($name, ...$arguments)
 	{
 		if (!isset($arguments[0])) {
-			throw new Exception('Each filter must use one argument at least.', 6);
+			throw HooksException::filterRequiresArgument();
 		}
 
 		return self::_runHook(self::$_filters, $name, $arguments, true);
@@ -84,7 +84,7 @@ class Hooks
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();
 				$givenArgsCount = count($arguments);
 				if ($requiredArgsCount > $givenArgsCount) {
-					throw new Exception('Callback of ' . $name . ' hook expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 5);
+					throw HooksException::hookWrongArgumentsCount($name, $requiredArgsCount, $givenArgsCount);
 				}
 				// When error is different, throw it again to default exception handler.
 				else {
@@ -94,5 +94,21 @@ class Hooks
 		}
 
 		return ($keepFirstArgument) ? $arguments[0] : null;
+	}
+}
+
+class HooksException extends Exception
+{
+	static public function hookWrongArgumentsCount($hookName, $requiredArgsCount, $givenArgsCount)
+	{
+		return new self('Callback of ' . $hookName . ' hook expect ' . $requiredArgsCount . ' required arguments, ' . $givenArgsCount . ' given.', 1);
+	}
+	static public function hookDoesNotExist($hookName)
+	{
+		return new self('Hook named ' . $hookName . ' does not exists.', 2);
+	}
+	static public function filterRequiresArgument()
+	{
+		return new self('Filter always requires one argument at least.', 3);
 	}
 }

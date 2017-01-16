@@ -69,8 +69,8 @@ class HooksTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	* @expectedException     WizyTowka\Exception
-	* @expectedExceptionCode 5
+	* @expectedException     WizyTowka\HooksException
+	* @expectedExceptionCode 1
 	*/
 	public function testInvalidCallbackArguments()
 	{

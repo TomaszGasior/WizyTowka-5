@@ -16,7 +16,7 @@ class SessionManager
 	static public function setup()
 	{
 		if (self::$_started) {
-			throw new Exception('User session manager is already started.', 16);
+			throw SessionManagerException::alreadyStarted();
 		}
 		self::$_started = true;
 
@@ -39,7 +39,7 @@ class SessionManager
 	static public function logIn($userId, $sessionDuration)
 	{
 		if (!self::$_started or self::isUserLoggedIn()) {
-			throw new Exception('User session manager cannot log in user.', 17);
+			throw SessionManagerException::wrongState();
 		}
 
 		$session['userId'] = $userId;
@@ -58,7 +58,7 @@ class SessionManager
 	static public function logOut()
 	{
 		if (!self::$_started or !self::isUserLoggedIn()) {
-			throw new Exception('User session manager cannot log out user.', 18);
+			throw SessionManagerException::wrongState();
 		}
 
 		$sessionsConfig = self::_getSessionsConfig();
@@ -94,5 +94,17 @@ class SessionManager
 	static private function _getSessionsConfig()
 	{
 		return new ConfigurationFile(CONFIG_DIR.'/sessions.conf');
+	}
+}
+
+class SessionManagerException extends Exception
+{
+	static public function alreadyStarted()
+	{
+		return new self('User session manager is already started.', 1);
+	}
+	static public function wrongState()
+	{
+		return new self('User session manager is not started yet or user session is in wrong state.', 2);
 	}
 }

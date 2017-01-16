@@ -25,7 +25,7 @@ class HTMLMenu
 	public function add($label, $content, $CSSClass = null, $position = null, $newTab = false)
 	{
 		if (is_object($content) and (!($content instanceof $this) or $content === $this)) {
-			throw new Exception('As content argument for menu element you must pass string with URL address or other instance of ' . static::class . ' class.', 26);
+			throw HTMLMenuException::notValidContentValue();
 		}
 
 		$this->_elements[] = [
@@ -80,5 +80,13 @@ class HTMLMenu
 		echo '</ul>';
 
 		return ob_get_clean();
+	}
+}
+
+class HTMLMenuException extends Exception
+{
+	static public function notValidContentValue()
+	{
+		return new self('As content argument for menu element you must pass string with URL address or other instance of this class.', 1);
 	}
 }

@@ -14,11 +14,7 @@ class Settings
 	static public function get($option = null)
 	{
 		if (empty(self::$_settings)) {
-			try {
-				self::$_settings = new ConfigurationFile(CONFIG_DIR . '/settings.conf');
-			} catch (\Exception $e) {
-				throw new Exception('Main configuration file is corrupted. You should check file syntax, replace this file with default or reinstall CMS.', 10);
-			}
+			self::$_settings = new ConfigurationFile(CONFIG_DIR . '/settings.conf');
 		}
 
 		return ($option) ? self::$_settings->$option : self::$_settings;

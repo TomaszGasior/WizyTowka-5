@@ -32,7 +32,7 @@ Tworzy nowy rekord tabeli z dotychczasowymi danymi. Innymi słowy, przy klonowan
 
 Zapisuje rekord. Jeśli rekord jest nowo utworzonym rekordem, używane jest zapytanie SQL `INSERT`, a po pomyślnym dodaniu wartość klucza podstawowego jest uzupełniana. Jeśli rekord już istnieje, jest aktualizowany przy użyciu zapytania `UPDATE`.
 
-Przed zapisem wartości kolumn zdefiniowanych w polu `$_tableColumnsJSON` zamieniane są na ciąg w formacie JSON, a do pól określonych w `$_tableColumnsTimeAtInsert` lub `$_tableColumnsTimeAtUpdate`, w zależności od kontekstu, zapisywany jest aktualny uniksowy znacznik czasu. Jeśli przy zapisie kodu JSON wystąpi błąd, zostanie rzucony wyjątek #14.
+Przed zapisem wartości kolumn zdefiniowanych w polu `$_tableColumnsJSON` zamieniane są na ciąg w formacie JSON, a do pól określonych w `$_tableColumnsTimeAtInsert` lub `$_tableColumnsTimeAtUpdate`, w zależności od kontekstu, zapisywany jest aktualny uniksowy znacznik czasu. Jeśli przy zapisie kodu JSON wystąpi błąd, zostanie rzucony wyjątek `DatabaseObjectException` #3.
 
 ## `delete()`
 
@@ -54,6 +54,6 @@ Metoda stanowiąca podstawę dla innych metod pobierających istniejące rekordy
 
 Argument `$sqlQueryWhere` określa fragment zapytania SQL umieszczony po klauzuli `WHERE`, może być pusty. Argument `$parameters` to tablica używana przez PDO do przypięcia wartości do odpowiadających parametrów obecnych w `$sqlQueryWhere`, może być pustą tablicą.
 
-Standardowo zwracana jest tablica rekordów (instancji klas), a jeśli rekordów brak — pusta tablica. Jeśli argument `$mustBeOnlyOneRecord` jest prawdą, zwracany jest tylko pierwszy rekord bądź fałsz, jeśli brak rekordów. Jednakże, gdy baza danych zwróci więcej niż jeden rekord, rzucany jest wyjątek #11.
+Standardowo zwracana jest tablica rekordów (instancji klas), a jeśli rekordów brak — pusta tablica. Jeśli argument `$mustBeOnlyOneRecord` jest prawdą, zwracany jest tylko pierwszy rekord bądź fałsz, jeśli brak rekordów. Jednakże, gdy baza danych zwróci więcej niż jeden rekord, rzucany jest wyjątek `DatabaseObjectException` #4.
 
-Przy pobieraniu rekordów kolumny określone w `$_tableColumnsJSON` są dekodowane do obiektów (instancji klasy `stdClass`). Jeśli przy parsowaniu kodu JSON wystąpi błąd, zostanie rzucony wyjątek #13.
+Przy pobieraniu rekordów kolumny określone w `$_tableColumnsJSON` są dekodowane do obiektów (instancji klasy `stdClass`). Jeśli przy parsowaniu kodu JSON wystąpi błąd, zostanie rzucony wyjątek `DatabaseObjectException` #3.

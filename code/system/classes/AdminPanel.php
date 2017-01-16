@@ -89,7 +89,7 @@ abstract class AdminPanel extends Controller
 	static public function URL($target, $arguments = [])
 	{
 		if (isset($arguments['c'])) {
-			throw new Exception('Argument of admin panel URL must not have key named "c".', 25);
+			throw ControllerException::unallowedKeyInURLArgument('c');
 		}
 		$arguments = ['c' => $target] + $arguments;  // Adds "c" argument to begin of array for better readability.
 

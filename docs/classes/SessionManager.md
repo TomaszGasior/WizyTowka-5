@@ -13,17 +13,19 @@ Menadżer przed użyciem powinien zostać zainicjowany przy użyciu metody `setu
 
 Inicjuje menadżera sesji użytkownika. Jeśli sesja straciła ważność lub WAI jest niewłaściwy, sesja jest niszczona.
 
+Jeżeli menadżer sesji został już uruchomiony, metoda rzuca wyjątek `SessionManagerException` #1.
+
 ## *static* `logIn($userId, $sessionDuration)`
 
 Dokonuje zalogowania użytkownika o identyfikatorze określonym w argumencie `$userId`. Argument `$sessionDuration` określa czas trwania sesji użytkownika w sekundach.
 
-Jeżeli użytkownik już jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek #17.
+Jeżeli użytkownik już jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek `SessionManagerException` #2.
 
 ## *static* `logOut()`
 
 Wylogowuje aktualnie zalogowanego użytkownika.
 
-Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek #18.
+Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek `SessionManagerException` #2.
 
 ## *static* `isUserLoggedIn()`
 

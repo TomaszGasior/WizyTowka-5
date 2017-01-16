@@ -42,8 +42,8 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	 * @expectedException     WizyTowka\Exception
-	 * @expectedExceptionCode 19
+	 * @expectedException     WizyTowka\ConfigurationFileException
+	 * @expectedExceptionCode 3
 	 */
 	public function testWriteWhenReadOnly()
 	{

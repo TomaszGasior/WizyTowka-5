@@ -41,7 +41,7 @@ Metoda renderuje szablon — eksportuje zmienne do skryptu PHP szablonu, urucham
 
 Jeśli argument `$templateName` jest określony, używany jest szablon o wskazanej nazwie. W innym wypadku używany jest globalny szablon, którego nazwę określa się za pośrednictwem konstruktora bądź metody `setTemplate()`. Nazwa nie powinna zawierać rozszerzenia `.php`.
 
-Jeśli nazwa szablonu nie zostanie w ogóle określona, zostanie rzucony wyjątek #22.
+Jeśli nazwa szablonu nie zostanie w ogóle określona, zostanie rzucony wyjątek `HTMLTemplateException` #1.
 
 Aby zwrócić wyrenderowany szablon np. celem zapisania go do zmiennej, należy zamiast wywołania metody `render()`, rzutować obiekt na ciąg znaków.
 

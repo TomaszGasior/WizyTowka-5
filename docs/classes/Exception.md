@@ -1,8 +1,16 @@
 Exception
 ===
 
-Własna klasa wyjątków systemu WizyTówka. Wszystkie rzucane przez system WizyTówka wyjątki są instancjami tej klasy. Klasa dziedziczy po klasie wbudowanej `Exception`.
+Własna klasa wyjątków systemu WizyTówka. Wszystkie rzucane przez system WizyTówka wyjątki są instancjami tej klasy. Klasa dziedziczy po klasie wbudowanej o tej samej nazwie.
 
-Każdy wyjątek musi posiadać swój unikalny, jednoznaczny i niezmienny kod. Nie jest możliwe rzucenie wyjątku z nieokreślonym kodem.
+W systemie WizyTówka została określona koncepcja rzucania wyjątków z użyciem metod statycznych klasy wyjątku. Obok każdej klasy rzucającej wyjątki (w tym samym pliku) znajduje się klasa o tej samej nazwie z przyrostkiem `Exception` (na przykład `DatabaseException` dla klasy `Database`) dziedzicząca po tej klasie `Exception`. Klasa wyjątku definiuje publiczne metody statyczne zwracające swoją instancję z określonym komunikatem błędu i kodem.
 
-W repozytorium GIT projektu znajduje się skrypt `ExceptionsList.php` listujący wszystkie rzucane wyjątki wraz z ich kodami i komunikatami.
+Zalety takiego rozwiązania są następujące:
+
+- treść komunikatów błędu jest oddzielona od miejsca wystąpienia błędu, co wpływa na czytelność;
+- jeśli sytuacja, w której występuje wyjątek, powtarza się, nie trzeba kopiować kodu wyjątku;
+- wszystkie wyjątki danej klasy są zgrupowane w jednym miejscu (na końcu pliku klasy).
+
+Koncepcja została zaczerpnięta od [Rossa Tucka](http://rosstuck.com/formatting-exception-messages/).
+
+Konstruktor klasy `Exception` wymaga określenia komunikatu błędu i kodu.

@@ -80,7 +80,7 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 	{
 		if (empty($templateName)) {
 			if (empty($this->_templateName)) {
-				throw new Exception('Template name was not specified.', 22);
+				throw HTMLTemplateException::templateNotSpecified();
 			}
 			$templateName = $this->_templateName;
 		}
@@ -110,5 +110,13 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 			$this->_variables,
 			(empty($this->_templatesPath) ? : $this->_templatesPath.'/') . $templateName . '.php'
 		);
+	}
+}
+
+class HTMLTemplateException extends Exception
+{
+	static public function templateNotSpecified()
+	{
+		return new self('Template name was not specified.', 1);
 	}
 }

@@ -50,8 +50,8 @@ class HTMLMenuTest extends PHPUnit\Framework\TestCase
 	}
 
 	/**
-	* @expectedException     WizyTowka\Exception
-	* @expectedExceptionCode 26
+	* @expectedException     WizyTowka\HTMLMenuException
+	* @expectedExceptionCode 1
 	*/
 	public function testAddWrongObject()
 	{

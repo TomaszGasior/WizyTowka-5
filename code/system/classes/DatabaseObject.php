@@ -43,10 +43,10 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function __set($column, $value)
 	{
 		if ($column == static::$_tablePrimaryKey) {
-			throw new Exception('Primary key cannot be edited.', 15);
+			throw DatabaseObjectException::setterPrimaryKeyReadOnly();
 		}
 		elseif (in_array($column, static::$_tableColumnsJSON) and !is_object($value)) {
-			throw new Exception('JSON object cannot be replaced by non-object value.', 12);
+			throw DatabaseObjectException::setterJSONColumnNonObject();
 		}
 
 		$this->_data[$column] = $value;
@@ -106,7 +106,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		foreach (static::$_tableColumnsJSON as $column) {
 			$sqlQueryData[$column] = json_encode($sqlQueryData[$column], JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE);
 			if (json_last_error() != JSON_ERROR_NONE) {
-				throw new Exception('Error during writing JSON string: ' . json_last_error_msg() . '.', 14);
+				throw DatabaseObjectException::JSONError($column);
 			}
 		}
 
@@ -176,7 +176,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 					else {
 						$object->_data[$column] = json_decode($object->_data[$column]);
 						if (json_last_error() != JSON_ERROR_NONE) {
-							throw new Exception('Error during reading JSON string: ' . json_last_error_msg() . '.', 13);
+							throw DatabaseObjectException::JSONError($column);
 						}
 					}
 				}
@@ -188,7 +188,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		if ($mustBeOnlyOneRecord) {
 			if (isset($elementsToReturn[0])) {
 				if (isset($elementsToReturn[1])) {
-					throw new Exception('Database returned more than one record, when only one expected.', 11);
+					throw DatabaseObjectException::whereLimitError();
 				}
 				return $elementsToReturn[0];
 			}
@@ -207,5 +207,25 @@ abstract class DatabaseObject implements \IteratorAggregate
 	static public function getAll()
 	{
 		return static::_getByWhereCondition();
+	}
+}
+
+class DatabaseObjectException extends Exception
+{
+	static public function setterPrimaryKeyReadOnly()
+	{
+		return new self('Primary key cannot be edited.', 1);
+	}
+	static public function setterJSONColumnNonObject()
+	{
+		return new self('JSON object cannot be replaced by non-object value.', 2);
+	}
+	static public function JSONError()
+	{
+		return new self('Error "' . json_last_error_msg() . '" during JSON operation on encoded column.', 3);
+	}
+	static public function whereLimitError()
+	{
+		return new self('Database returned more than one record, when only one expected.', 4);
 	}
 }

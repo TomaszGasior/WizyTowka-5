@@ -22,7 +22,7 @@ abstract class Controller
 
 	public function POSTQuery()
 	{
-		throw new Exception('This controller does not support POST queries.', 21);
+		throw ControllerException::withoutPOSTQueries();
 	}
 
 	public function output()
@@ -43,4 +43,16 @@ abstract class Controller
 	// This method should return URL to specified target (page of site or page of admin panel).
 	// It should be abstract, but is not because of backward compatibility with PHP 5.6.
 	// More informations: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.strict
+}
+
+class ControllerException extends Exception
+{
+	static public function withoutPOSTQueries()
+	{
+		return new self('This controller does not support POST queries.', 1);
+	}
+	static public function unallowedKeyInURLArgument($unallowedKey)
+	{
+		return new self('Argument of URL must not have key named "' . $unallowedKey . '".', 2);
+	}
 }

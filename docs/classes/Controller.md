@@ -15,7 +15,7 @@ Aby wykluczyć pole formularza z filtrowania, należy jego nazwę poprzedzić pr
 
 Metoda zajmuje się obsługą żądania POST. Powinna być wywoływana tylko w kontekście żądania POST. Klasy dziedziczące mogą, przesłaniając tę metodę, definiować działanie występujące tylko przy zapytaniach POST.
 
-Domyślnie metoda ta rzuca wyjątek #21, co oznacza, że dany kontroler zapytań POST nie obsługuje.
+Domyślnie metoda ta rzuca wyjątek `ControllerException` #1, co oznacza, że dany kontroler zapytań POST nie obsługuje.
 
 ## `output()`
 
