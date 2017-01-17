@@ -16,7 +16,7 @@ class Exception extends \Exception
 			trigger_error('Exception should have a code.', E_USER_NOTICE);
 		}
 
-		if ($this->getTrace()[0]['class'] == static::class) {
+		if (isset($this->getTrace()[0]['class']) and $this->getTrace()[0]['class'] == static::class) {
 			// In this project is used concept of creating exceptions by static factory method in exception class.
 			// More informations here: http://rosstuck.com/formatting-exception-messages/
 			// Properties of exception object are set during creating, not during throwing, so for example $line property contain number of line,

@@ -2,11 +2,11 @@
 
 /**
 * WizyTówka 5
-* This class stores ConfigurationFile instance with main configuration file.
+* Settings manager. Stores ConfigurationFile instance with main configuration file.
 */
 namespace WizyTowka;
 
-class Settings
+trait Settings
 {
 	static private $_settings;
 	static private $_defaultSettings;

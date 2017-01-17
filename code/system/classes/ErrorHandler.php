@@ -6,7 +6,7 @@
 */
 namespace WizyTowka;
 
-class ErrorHandler
+trait ErrorHandler
 {
 	static private $_namedPHPErrors = [
 		2     => 'E_WARNING',
@@ -34,7 +34,7 @@ class ErrorHandler
 		(PHP_SAPI == 'cli' or $isPlainText) ? self::_printAsPlainText($exception) : self::_printAsHTML($exception);
 	}
 
-	static public function convertErrorToException($number, $message, $file, $line)  // For set_error_handler().
+	static public function handleError($number, $message, $file, $line)  // For set_error_handler().
 	{
 		if (error_reporting() !== 0) {  // Ignore error if @ operator was used.
 			throw new \ErrorException($message, 0, $number, $file, $line);
@@ -47,15 +47,15 @@ class ErrorHandler
 			// CONFIG_DIR can be not defined, when ErrorHandler is ran outside normal CMS code (in tests or utility scripts).
 			file_put_contents(
 				CONFIG_DIR . '/errors.log', (
-					"\n\n\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
+					"\n" . date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' .
 					"\nType:    " . ( ($exception instanceof \ErrorException)
-						? self::$_namedPHPErrors[$exception->getSeverity()]
+						? self::_getPHPErrorName($exception->getSeverity())
 						: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
 					) .
 					"\nMessage: " . $exception->getMessage() .
 					"\nFile:    " . $exception->getFile() .
 					"\nLine:    " . $exception->getLine() .
-					"\nTrace: \n" . $exception->getTraceAsString()
+					"\nTrace: \n" . $exception->getTraceAsString() . "\n\n"
 				), FILE_APPEND
 			);
 		}
@@ -65,7 +65,7 @@ class ErrorHandler
 	{
 		echo "\n\n", 'System encountered fatal error and execution must be interrupted.', "\n",
 			"\nType:    " . ( ($exception instanceof \ErrorException)
-				? self::$_namedPHPErrors[$exception->getSeverity()]
+				? self::_getPHPErrorName($exception->getSeverity())
 				: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
 			),
 			"\nMessage: ", $exception->getMessage(),
@@ -114,7 +114,7 @@ class ErrorHandler
 	<dl>
 		<dt>Type</dt>
 		<dd><?= ( ($exception instanceof \ErrorException)
-				? self::$_namedPHPErrors[$exception->getSeverity()]
+				? self::_getPHPErrorName($exception->getSeverity())
 				: get_class($exception) . ((empty($exception->getCode()))?'':' #'.$exception->getCode())
 			) ?></dd>
 		<dt>Message</dt>
@@ -131,5 +131,12 @@ class ErrorHandler
 	</dl>
 </section></div></div><?php
 		}
+	}
+
+	static private function _getPHPErrorName($code)
+	{
+		return array_flip(
+			array_filter(get_defined_constants(), function($key){ return $key[0].$key[1] == 'E_'; }, ARRAY_FILTER_USE_KEY)
+		)[$code];
 	}
 }

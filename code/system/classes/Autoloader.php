@@ -6,7 +6,7 @@
 */
 namespace WizyTowka;
 
-class Autoloader
+trait Autoloader
 {
 	static private $_directories = [];
 
@@ -46,7 +46,7 @@ class Autoloader
 			}
 			throw $e;
 		}
-		// If file does not exists, include command emits E_WARNING. We want to avoid file_exists() to limit operations on file system
+		// If file does not exists, "include" emits E_WARNING. We want to avoid file_exists() to limit operations on file system
 		// for better performance. We try to include file and catch PHP error converted to \ErrorException. If error was encountered
 		// in this class (this PHP file), file does not exists. Otherwise, we should throw exception again to default exception handler.
 	}

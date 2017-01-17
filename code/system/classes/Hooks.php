@@ -2,11 +2,11 @@
 
 /**
 * WizyTówka 5
-* Hooks class. Manages actions and filters. Concept inspired by WordPress hooks.
+* Manager of actions and filters. Concept inspired by WordPress hooks.
 */
 namespace WizyTowka;
 
-class Hooks
+trait Hooks
 {
 	static private $_actions = [];
 	static private $_filters = [];

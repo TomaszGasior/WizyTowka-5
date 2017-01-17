@@ -6,7 +6,7 @@
 */
 namespace WizyTowka;
 
-class SessionManager
+trait SessionManager
 {
 	static private $_cookieName = 'WTCMSSession';
 

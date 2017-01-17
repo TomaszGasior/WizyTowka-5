@@ -26,15 +26,6 @@ class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 		}
 	}
 
-	/**
-	* @expectedException        ErrorException
-	* @expectedExceptionMessage Example error
-	*/
-	public function testConvertErrorToException()
-	{
-		WizyTowka\ErrorHandler::convertErrorToException(E_WARNING, 'Example error', 'examplefile.txt', 1);
-	}
-
 	public function testErrorHandler()
 	{
 		$exceptionMessage = 'Example exception #' . rand(100,999);
@@ -44,5 +35,14 @@ class ErrorHandlerTest extends PHPUnit\Framework\TestCase
 
 		$errorLog = file_get_contents(self::$_errorLogPath);
 		$this->assertContains($exceptionMessage, $errorLog);
+	}
+
+	/**
+	* @expectedException        ErrorException
+	* @expectedExceptionMessage Example error
+	*/
+	public function testErrorsConverting()
+	{
+		WizyTowka\ErrorHandler::handleError(E_WARNING, 'Example error', 'examplefile.php', 1);
 	}
 }

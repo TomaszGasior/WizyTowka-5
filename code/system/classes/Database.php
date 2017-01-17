@@ -6,7 +6,7 @@
 */
 namespace WizyTowka;
 
-class Database
+trait Database
 {
 	static private $_pdo;
 

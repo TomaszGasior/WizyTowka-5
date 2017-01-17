@@ -1,7 +1,7 @@
 ErrorHandler
 ===
 
-Klasa wychwytująca i obsługująca systemowe błędy PHP oraz niezłapane wyjątki.
+Trait wychwytujący i obsługujący systemowe błędy PHP oraz niezłapane wyjątki.
 
 Informacja o błędzie obejmuje: kod błędu (jeśli jest wyjątkiem) lub typ błędu (jeśli jest przekonwertowanym błędem PHP), wiadomość, ścieżkę do pliku i linię pliku oraz ścieżkę wykonywanych plików (backtrace).
 
@@ -11,7 +11,7 @@ Wychwytuje niezłapany wyjątek. Przeznaczona do zarejestrowania przez `set_exce
 
 Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Jeśli konfiguracja systemu to określa — drukuje komunikat o błędzie, używając metody `printAsPlainText()` (gdy zostanie wykryty typ MIME inny niż `text/html` lub gdy skrypt jest uruchamiany w wierszu polecenia) bądź `printAsHTML()`.
 
-## *static* `convertErrorToException($number, $message, $file, $line)`
+## *static* `handleError($number, $message, $file, $line)`
 
 Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `ErrorException`. Przeznaczona do zarejestrowania przez `set_error_handler()`.
 
@@ -28,3 +28,7 @@ Wyświetla informacje o błędzie w formie zwykłego tekstu.
 ## *static private* `_printAsHTML($exception)`
 
 Wyświetla informacje o błędzie w formie strony HTML.
+
+## *static private* `_getPHPErrorName($code)`
+
+Zwraca nazwę błędu PHP o kodzie `$code`.

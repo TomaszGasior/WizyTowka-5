@@ -1,7 +1,7 @@
 Settings
 ===
 
-Klasa umożliwiająca dostęp do głównego pliku konfiguracyjnego systemu WizyTówka. Opiera swoje działanie na klasie `ConfigurationFile`. Nie ma potrzeby inicjacji klasy — plik konfiguracyjny zostanie załadowany automatycznie przed pierwszym użyciem.
+Trait umożliwiający dostęp do głównego pliku konfiguracyjnego systemu WizyTówka. Opiera swoje działanie na klasie `ConfigurationFile`. Nie ma potrzeby inicjacji — plik konfiguracyjny zostanie załadowany automatycznie przed pierwszym użyciem.
 
 Aby odczytać wartość ustawienia, należy podać jego nazwę jako argument metody `get()`. Aby móc modyfikować konfigurację bądź iterować po poszczególnych ustawieniach, należy wywołać metodę `get()` bez żadnego argumentu i operować na klasie `ConfigurationFile`.
 
