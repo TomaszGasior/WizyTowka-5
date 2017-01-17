@@ -11,6 +11,7 @@ class HTMLMenu
 	private $_listCSSClass;
 	private $_elements = [];
 	private $_autoPosition = 1.9;
+	private $_renderingInProgress = false;
 
 	public function __construct($CSSClass = null)
 	{
@@ -24,7 +25,7 @@ class HTMLMenu
 
 	public function add($label, $content, $CSSClass = null, $position = null, $newTab = false)
 	{
-		if (is_object($content) and (!($content instanceof $this) or $content === $this)) {
+		if (!is_string($content) and (!is_object($content) or !($content instanceof $this))) {
 			throw HTMLMenuException::notValidContentValue();
 		}
 
@@ -57,6 +58,11 @@ class HTMLMenu
 
 	public function __toString()
 	{
+		if ($this->_renderingInProgress) {
+			throw HTMLMenuException::renderingInProgress();
+		}
+		$this->_renderingInProgress = true;
+
 		sort($this->_elements); // Sort elements by position number.
 
 		ob_start();
@@ -70,8 +76,7 @@ class HTMLMenu
 				echo $element[1], (string)$element[2];
 			}
 			else {
-				echo '<a href="', $element[2], '"', $element[4] ? ' target="_blank">' : '>',
-					 $element[1], '</a>';
+				echo '<a href="', $element[2], '"', $element[4] ? ' target="_blank">' : '>', $element[1], '</a>';
 			}
 
 			echo '</li>';
@@ -79,6 +84,7 @@ class HTMLMenu
 
 		echo '</ul>';
 
+		$this->_renderingInProgress = false;
 		return ob_get_clean();
 	}
 }
@@ -87,6 +93,10 @@ class HTMLMenuException extends Exception
 {
 	static public function notValidContentValue()
 	{
-		return new self('As content argument for menu element you must pass string with URL address or other instance of this class.', 1);
+		return new self('As content of menu element you must pass string with URL address or other instance of menu class.', 1);
+	}
+	static public function renderingInProgress()
+	{
+		return new self('Menu object contain himself as element, infinite recursion.', 2);
 	}
 }
