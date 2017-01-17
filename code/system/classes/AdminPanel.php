@@ -8,6 +8,9 @@ namespace WizyTowka;
 
 abstract class AdminPanel extends Controller
 {
+	static private $_registeredPages = [];
+	static private $_defaultPagesNamespace = __NAMESPACE__ . '\\AdminPages';
+
 	protected $_pageTitle = 'Panel administracyjny';
 	protected $_requiredUserPermissions;
 
@@ -21,12 +24,12 @@ abstract class AdminPanel extends Controller
 	protected $_apMessage;
 	protected $_apMessageError = false;
 
-	public function __construct()
+	final public function __construct()
 	{
 		$this->_prepare();
 	}
 
-	public function output()
+	final public function output()
 	{
 		// HTML <head>.
 		$this->_head = new HTMLHead;
@@ -63,8 +66,9 @@ abstract class AdminPanel extends Controller
 
 		// Prepare template to use in _output() in child method.
 		$className = substr(strrchr(static::class, '\\'), 1);
-		$this->_apTemplate = new HTMLTemplate($className);
-
+		$this->_apTemplate = new HTMLTemplate;
+		$this->_apTemplate->setTemplate($className);
+		$this->_apTemplate->setTemplatePath(SYSTEM_DIR.'/templates/adminPages');
 		$this->_output();
 
 		// Main HTML layout.
@@ -77,7 +81,7 @@ abstract class AdminPanel extends Controller
 		$this->_apLayout->messageError = $this->_apMessageError;
 		$this->_apLayout->pageTitle    = $this->_pageTitle;
 		$this->_apLayout->pageTemplate = $this->_apTemplate;
-		$this->_apLayout->render('AP_Layout');
+		$this->_apLayout->render('AdminPanelLayout');
 	}
 
 	abstract protected function _prepare();
@@ -91,8 +95,48 @@ abstract class AdminPanel extends Controller
 		if (isset($arguments['c'])) {
 			throw ControllerException::unallowedKeyInURLArgument('c');
 		}
-		$arguments = ['c' => $target] + $arguments;  // Adds "c" argument to begin of array for better readability.
+		$arguments = ['c' => $target] + $arguments;  // Adds "c" argument to array beginning for better URL readability.
 
-		return Settings::get('systemAdminPanelFile') . ($arguments ? '?'.http_build_query($arguments) : '');
+		return Settings::get('adminPanelFile') . ($arguments ? '?'.http_build_query($arguments) : '');
+	}
+
+	static public function registerPage($name, $controller)
+	{
+		if (isset(self::$_registeredPages[$name]) or class_exists(self::$_defaultPagesNamespace.'\\'.ucfirst($name))) {
+			AdminPanelException::pageNameAlreadyRegistered($name);
+		}
+		if (!is_subclass_of($controller, self::class)) {
+			AdminPanelException::pageControllerInvalid($name, self::class);
+		}
+
+		self::$_registeredPages[$name] = $controller;
+	}
+
+	static public function getControllerClass()
+	{
+		$pageName = empty($_GET['c']) ? null : $_GET['c'];
+
+		if (isset(self::$_registeredPages[$pageName])) {
+			return self::$_registeredPages[$pageName];
+		}
+		else {
+			$controller        = self::$_defaultPagesNamespace . '\\'. ucfirst($pageName);
+			$defaultController = self::$_defaultPagesNamespace . '\\'. ucfirst(Settings::get('adminPanelDefaultPage'));
+
+			Autoloader::addNamespace(self::$_defaultPagesNamespace, SYSTEM_DIR.'/classes/adminPages');
+			return class_exists($controller) ? $controller : $defaultController;
+		}
+	}
+}
+
+class AdminPanelException extends Exception
+{
+	static public function pageNameAlreadyRegistered($name)
+	{
+		return new self('Page name "' . $name . '" is already registered in admin panel.', 1);
+	}
+	static public function pageControllerInvalid($name, $class)
+	{
+		return new self('Controller of admin panel page named "' . $name . '" is invalid. Controller must extend ' . $class . ' class.', 2);
 	}
 }

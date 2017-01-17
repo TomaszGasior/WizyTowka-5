@@ -23,28 +23,20 @@ include __DIR__ . '/classes/Autoloader.php';
 spl_autoload_register(__NAMESPACE__.'\\Autoloader::autoload');
 Autoloader::addNamespace(__NAMESPACE__, __DIR__.'/classes');
 
-set_error_handler(__NAMESPACE__.'\\ErrorHandler::convertErrorToException');
+set_error_handler(__NAMESPACE__.'\\ErrorHandler::handleError');
 set_exception_handler(__NAMESPACE__.'\\ErrorHandler::handleException');
 
 
 if (defined(__NAMESPACE__.'\\INIT')) {
 	call_user_func(function(){
 
-		$runController = function($controllerName) {
-			$controllerName = __NAMESPACE__ . '\\' . $controllerName;
-
-			if (!class_exists($controllerName)) {
-				return false;
-			}
-
-			$controller = new $controllerName;
+		$runController = function(Controller $controller) {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				$controller->filterPOSTData();
 				$controller->POSTQuery();
 			}
-			$controller->output();
 
-			return true;
+			$controller->output();
 		};
 
 		/* Installer. */
@@ -64,17 +56,9 @@ if (defined(__NAMESPACE__.'\\INIT')) {
 		/* User session manager. */
 		SessionManager::setup();
 
-		/* Controller: administration panel. */
-		if (defined(__NAMESPACE__.'\\ADMIN_PANEL')) {
-			$defaultController = 'AP_Pages';
-			$controllerName = (empty($_GET['c'])) ? : 'AP_' . ucfirst($_GET['c']);
-			$runController($controllerName) ? : $runController($defaultController);
-		}
-
-		/* Controller: website. */
-		else {
-			$runController('Website');
-		}
+		/* Controller. */
+		$controllerName = defined(__NAMESPACE__.'\\ADMIN_PANEL') ? AdminPanel::getControllerClass() : __NAMESPACE__.'\\Website';
+		$runController(new $controllerName);
 
 	});
 }
