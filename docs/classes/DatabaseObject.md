@@ -48,12 +48,12 @@ Zwraca tablicę gromadzącą wszystkie rekordy tabeli (każdy rekord jest indywi
 
 Zwraca rekord o wartości klucza podstawowego podanej w argumencie `$id` (instancję klasy). Jeśli taki rekord nie istnieje, zwraca fałsz.
 
-## *static protected* `_getByWhereCondition($sqlQueryWhere = null, $parameters = [], $mustBeOnlyOneRecord = false)`
+## *static protected* `_getByWhereCondition($sqlQueryWhere = null, $parameters = [], $onlyOneRecord = false)`
 
 Metoda stanowiąca podstawę dla innych metod pobierających istniejące rekordy. Wykonuje zapytanie `SELECT` w celu pobrania rekordów, wykorzystując przy tym [przypinanie parametrów wejściowych PDO](http://php.net/manual/en/pdo.prepared-statements.php).
 
 Argument `$sqlQueryWhere` określa fragment zapytania SQL umieszczony po klauzuli `WHERE`, może być pusty. Argument `$parameters` to tablica używana przez PDO do przypięcia wartości do odpowiadających parametrów obecnych w `$sqlQueryWhere`, może być pustą tablicą.
 
-Standardowo zwracana jest tablica rekordów (instancji klas), a jeśli rekordów brak — pusta tablica. Jeśli argument `$mustBeOnlyOneRecord` jest prawdą, zwracany jest tylko pierwszy rekord bądź fałsz, jeśli brak rekordów. Jednakże, gdy baza danych zwróci więcej niż jeden rekord, rzucany jest wyjątek `DatabaseObjectException` #4.
+Standardowo zwracana jest tablica rekordów (instancji klas), a jeśli rekordów brak — pusta tablica. Jeśli argument `$onlyOneRecord` jest prawdą, zwracany jest tylko pierwszy rekord bądź fałsz, jeśli brak rekordów.
 
 Przy pobieraniu rekordów kolumny określone w `$_tableColumnsJSON` są dekodowane do obiektów (instancji klasy `stdClass`). Jeśli przy parsowaniu kodu JSON wystąpi błąd, zostanie rzucony wyjątek `DatabaseObjectException` #3.

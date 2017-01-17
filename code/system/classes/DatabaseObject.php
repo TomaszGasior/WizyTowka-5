@@ -23,7 +23,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 	{
 		$this->_data[static::$_tablePrimaryKey] = null;
 		foreach (static::$_tableColumns as $column) {
-			$this->_data[$column] = (in_array($column, static::$_tableColumnsJSON)) ? new \stdClass : null;
+			$this->_data[$column] = in_array($column, static::$_tableColumnsJSON) ? new \stdClass : null;
 		}
 
 		$this->_dataNewlyCreated = true;
@@ -43,10 +43,10 @@ abstract class DatabaseObject implements \IteratorAggregate
 	public function __set($column, $value)
 	{
 		if ($column == static::$_tablePrimaryKey) {
-			throw DatabaseObjectException::setterPrimaryKeyReadOnly();
+			throw DatabaseObjectException::setterPrimaryKeyReadOnly($column);
 		}
 		elseif (in_array($column, static::$_tableColumnsJSON) and !is_object($value)) {
-			throw DatabaseObjectException::setterJSONColumnNonObject();
+			throw DatabaseObjectException::setterJSONColumnNonObject($column);
 		}
 
 		$this->_data[$column] = $value;
@@ -94,6 +94,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		if ($this->_dataNewlyCreated) {
 			unset($sqlQueryData[static::$_tablePrimaryKey]);  // Remove primary key from INSERT query parameters.
 		}
+
 		foreach ($sqlQueryData as &$value) {
 			if (is_bool($value)) {
 				$value = (integer)$value;
@@ -144,16 +145,19 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return $execution;
 	}
 
-	static protected function _getByWhereCondition($sqlQueryWhere = null, array $parameters = [], $mustBeOnlyOneRecord = false)
+	static protected function _getByWhereCondition($sqlQueryWhere = null, array $parameters = [], $onlyOneRecord = false)
 	{
 		$allColumnsNames = static::$_tableColumns;
-		array_unshift($allColumnsNames, static::$_tablePrimaryKey);  // With primary key column.
+		array_unshift($allColumnsNames, static::$_tablePrimaryKey);  // Add primary key column to the beginning of columns names list.
 
 		$sqlQuery = 'SELECT ' . implode(', ', $allColumnsNames) . ' FROM ' . static::$_tableName;
 		if ($sqlQueryWhere) {
 			$sqlQuery .= ' WHERE ' . $sqlQueryWhere;
 		}
 		$sqlQuery .= ' ORDER BY ' . static::$_tablePrimaryKey;
+		if ($onlyOneRecord) {
+			$sqlQuery .= ' LIMIT 1';
+		}
 
 		$statement = Database::pdo()->prepare($sqlQuery);
 		$statement->setFetchMode(\PDO::FETCH_NUM);   // Values must not be duplicated.
@@ -170,14 +174,9 @@ abstract class DatabaseObject implements \IteratorAggregate
 				// By default PostgreSQL lowercases names of columns and tables — this makes camelCase columns names inaccesible.
 
 				foreach (static::$_tableColumnsJSON as $column) {
-					if ($object->_data[$column] == '') {
-						$object->_data[$column] = new \stdClass;
-					}
-					else {
-						$object->_data[$column] = json_decode($object->_data[$column]);
-						if (json_last_error() != JSON_ERROR_NONE) {
-							throw DatabaseObjectException::JSONError($column);
-						}
+					$object->_data[$column] = $object->_data[$column] ? json_decode($object->_data[$column]) : new \stdClass;
+					if (json_last_error() != JSON_ERROR_NONE) {
+						throw DatabaseObjectException::JSONError($column);
 					}
 				}
 
@@ -185,17 +184,9 @@ abstract class DatabaseObject implements \IteratorAggregate
 			}
 		}
 
-		if ($mustBeOnlyOneRecord) {
-			if (isset($elementsToReturn[0])) {
-				if (isset($elementsToReturn[1])) {
-					throw DatabaseObjectException::whereLimitError();
-				}
-				return $elementsToReturn[0];
-			}
-			else
-				return false;
+		if ($onlyOneRecord) {
+			return isset($elementsToReturn[0]) ? $elementsToReturn[0] : false;
 		}
-
 		return $elementsToReturn;
 	}
 
@@ -212,20 +203,16 @@ abstract class DatabaseObject implements \IteratorAggregate
 
 class DatabaseObjectException extends Exception
 {
-	static public function setterPrimaryKeyReadOnly()
+	static public function setterPrimaryKeyReadOnly($column)
 	{
-		return new self('Primary key cannot be edited.', 1);
+		return new self('Primary key cannot be edited in column "' . $column . '".', 1);
 	}
-	static public function setterJSONColumnNonObject()
+	static public function setterJSONColumnNonObject($column)
 	{
-		return new self('JSON object cannot be replaced by non-object value.', 2);
+		return new self('JSON object cannot be replaced by non-object value in column "' . $column . '".', 2);
 	}
-	static public function JSONError()
+	static public function JSONError($column)
 	{
-		return new self('Error "' . json_last_error_msg() . '" during JSON operation on encoded column.', 3);
-	}
-	static public function whereLimitError()
-	{
-		return new self('Database returned more than one record, when only one expected.', 4);
+		return new self('Error "' . json_last_error_msg() . '" during JSON operation on encoded column "' . $column . '".', 3);
 	}
 }
