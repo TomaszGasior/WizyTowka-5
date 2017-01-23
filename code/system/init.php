@@ -39,9 +39,17 @@ if (defined(__NAMESPACE__.'\\INIT')) {
 			$controller->output();
 		};
 
+		/* Constants checking. */
+		foreach (['SYSTEM_DIR', 'DATA_DIR', 'CONFIG_DIR', 'FILES_DIR'] as $constant) {
+			if (!defined(__NAMESPACE__.'\\'.$constant)) {
+				exit('WizyTówka content management system cannot be started. Required system constant '.$constant.' is not defined.');
+			}
+		}
+
 		/* Installer. */
-		if (!file_exists(DATA_DIR)) {
-			$runController('Installer');
+		if (!file_exists(CONFIG_DIR)) {
+			$controllerName = __NAMESPACE__.'\\Installer';
+			$runController(new $controllerName);
 			return;
 		}
 
