@@ -29,8 +29,9 @@ class Login extends WT\Controller  /* Does not extends AdminPanel abstract class
 	public function output()
 	{
 		$this->_apTemplate->head = new WT\HTMLHead;
-		$this->_apTemplate->head->addStyle('AdminMain.css');
 		$this->_apTemplate->head->setTitle(WT\Settings::get('websiteTitle') . ' — WizyTówka');
+		$this->_apTemplate->head->setAssetsPath(basename(WT\SYSTEM_DIR).'/assets');
+		$this->_apTemplate->head->addStyle('AdminMain.css');
 
 		$this->_apTemplate->message = $this->_apMessage;
 		$this->_apTemplate->messageError = $this->_apMessageError;
