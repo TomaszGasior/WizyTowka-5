@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 class HTMLTemplate implements \IteratorAggregate, \Countable
 {
-	private $_templatesPath = SYSTEM_DIR . '/templates';
+	private $_templatesPath;
 
 	private $_variables = [];
 	private $_templateName;
@@ -96,11 +96,14 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 				include $___template___;
 				ob_end_flush();
 			}
-			catch (\Exception $e) {  // Throwable should be used in PHP 7.
-				ob_end_clean();
-				echo '<br><b>Template rendering error.</b><br>',
-					 'Message: ', $e->getMessage(), '<br>',
-					 'File: ', basename($e->getFile()), ':', $e->getLine(), '<br>';
+			catch (\Throwable $e) {} // PHP 7.
+			catch (\Exception $e) {} // PHP 5.6.
+			finally {
+				if (isset($e)) {
+					ob_end_clean();
+					echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
+						 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';
+				}
 			}
 		};
 		$include = $include->bindTo(null);
@@ -108,7 +111,7 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 		$include(
 			$this->_variables,
-			(empty($this->_templatesPath) ? : $this->_templatesPath.'/') . $templateName . '.php'
+			(empty($this->_templatesPath) ? null : $this->_templatesPath.'/') . $templateName . '.php'
 		);
 	}
 }

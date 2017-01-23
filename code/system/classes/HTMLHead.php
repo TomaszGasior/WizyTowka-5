@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 class HTMLHead
 {
-	private $_assetsPath = 'system/assets';
+	private $_assetsPath;
 
 	private $_base;
 	private $_title = 'Untitled HTML document';

@@ -5,6 +5,15 @@
 */
 class HTMLHeadTest extends PHPUnit\Framework\TestCase
 {
+	private function assertHTMLEquals($expected, $current, $message = null)
+	{
+		$this->assertXmlStringEqualsXmlString(
+			(@DOMDocument::loadHTML($expected, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
+			(@DOMDocument::loadHTML($current,  LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
+			$message
+		);
+	}
+
 	public function testBaseAndTitle()
 	{
 		$object = new WizyTowka\HTMLHead;
@@ -12,9 +21,11 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->setTitle('Title of page');
 
 		$current = (string)$object;
-		$expected = '<base href="http://example.org">'
-		          . '<title>Title of page</title>';
-		$this->assertEquals($expected, $current);
+		$expected = <<< 'EOL'
+<base href="http://example.org">
+<title>Title of page</title>
+EOL;
+		$this->assertHTMLEquals($expected, $current);
 	}
 
 	public function testScripts()
@@ -30,11 +41,13 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->addInlineScript('alert("hey!")');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>'
-		          . '<script src="example/assetsDir/script.js" defer></script>'
-		          . '<script src="script.js" async></script>'
-		          . '<script>alert("hey!")</script>';
-		$this->assertEquals($expected, $current);
+		$expected = <<< 'EOL'
+<title>Example</title>
+<script src="example/assetsDir/script.js" defer></script>
+<script src="script.js" async></script>
+<script>alert("hey!")</script>
+EOL;
+		$this->assertHTMLEquals($expected, $current);
 	}
 
 	public function testStyles()
@@ -50,11 +63,13 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->addInlineStyle('body{color:red;}');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>'
-		          . '<link rel="stylesheet" href="example/assetsDir/stylesheet.css">'
-		          . '<link rel="stylesheet" href="stylesheet.css" media="all and (max-width: 900px)">'
-		          . '<style>body{color:red;}</style>';
-		$this->assertEquals($expected, $current);
+		$expected = <<< 'EOL'
+<title>Example</title>
+<link rel="stylesheet" href="example/assetsDir/stylesheet.css">
+<link rel="stylesheet" href="stylesheet.css" media="all and (max-width: 900px)">
+<style>body{color:red;}</style>
+EOL;
+		$this->assertHTMLEquals($expected, $current);
 	}
 
 	public function testMetaTags()
@@ -67,11 +82,13 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->setHttpEquiv('refresh', '0; url=http://example.org');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>'
-		          . '<meta http-equiv="refresh" content="0; url=http://example.org">'
-		          . '<meta name="description" content="HTML tutorial: &quot;&lt;HEAD&gt;&quot; tag examples">'
-		          . '<meta name="keywords" content="html, lesson, tutorial, coding, website, programming">';
-		$this->assertEquals($expected, $current);
+		$expected = <<< 'EOL'
+<title>Example</title>
+<meta http-equiv="refresh" content="0; url=http://example.org">
+<meta name="description" content="HTML tutorial: &quot;&lt;HEAD&gt;&quot; tag examples">
+<meta name="keywords" content="html, lesson, tutorial, coding, website, programming">
+EOL;
+		$this->assertHTMLEquals($expected, $current);
 	}
 
 	public function testAssetsRemoving()
@@ -95,9 +112,11 @@ class HTMLHeadTest extends PHPUnit\Framework\TestCase
 		$object->removeScript('script1.js');
 
 		$current = (string)$object;
-		$expected = '<title>Example</title>'
-		          . '<link rel="stylesheet" href="style2.css">'
-		          . '<script src="script2.js" defer></script>';
-		$this->assertEquals($expected, $current);
+		$expected = <<< 'EOL'
+<title>Example</title>
+<link rel="stylesheet" href="style2.css">
+<script src="script2.js" defer></script>
+EOL;
+		$this->assertHTMLEquals($expected, $current);
 	}
 }

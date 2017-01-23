@@ -11,7 +11,7 @@ Aby wygenerować kod HTML znacznika `<head>`, należy rzutować obiekt na ciąg 
 
 ## `setAssetsPath($assetsPath)`
 
-Umożliwia ustawienie określonej w argumencie `$assetsPath` ścieżki do zewnętrznych arkuszy stylów i skryptów. Ścieżka jest dołączana do nazwy każdego dodawanego skryptu i arkusza stylów. Domyślnie ścieżka przyjmuje wartość `system/assets`.
+Umożliwia ustawienie określonej w argumencie `$assetsPath` ścieżki do zewnętrznych arkuszy stylów i skryptów. Ścieżka jest dołączana do nazwy każdego dodawanego skryptu i arkusza stylów.
 
 Uwaga: ścieżka jest dołączana do nazwy pliku w momencie dodawania skryptu bądź arkusza stylów (w momencie wywołania metody `addScript()` bądź `addStyle()`). Oznacza to, że jeśli najpierw dodasz skrypty i arkusze stylów, a potem określisz ścieżkę, ścieżka ta nie zostanie uwzględniona w dodanych już skryptach i stylach.
 

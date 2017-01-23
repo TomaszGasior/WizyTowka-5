@@ -17,7 +17,7 @@ Przykładowy plik szablonu może prezentować się następująco:
 		</body>
 	</html>
 
-Klasa implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umożliwiając operowanie na poszczególnych zmiennych szablonu jak na polach obiektu. Implementuje też interfejsy `Countable` i `IteratorAggregate`, by umożliwiać iterowanie w pętli oraz policzenie zmiennych, a także metodę `__debugInfo()` dla funkcji `var_dump()`.
+Klasa implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umożliwiając operowanie na poszczególnych zmiennych szablonu jak na polach obiektu — aby dodać zmienną do szablonu, należy utworzyć nową zmienną w obiekcie. Implementuje też interfejsy `Countable` i `IteratorAggregate`, by umożliwiać iterowanie w pętli oraz policzenie zmiennych, a także metodę `__debugInfo()` dla funkcji `var_dump()`.
 
 ## `__construct($templateName = null, $templatePath = null)`
 
@@ -33,7 +33,7 @@ Metoda umożliwia określenie globalnej nazwy szablonu. Nazwa szablonu nie powin
 
 ## `setTemplatePath($templatePath)`
 
-Metoda umożliwia określenie ścieżki do katalogu gromadzącego pliki szablonów. Domyślnie katalog ten ustawiony jest na `system/templates`.
+Metoda umożliwia określenie ścieżki do katalogu gromadzącego pliki szablonów.
 
 ## `render($templateName = null)`
 

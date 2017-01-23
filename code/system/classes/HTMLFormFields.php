@@ -8,8 +8,6 @@ namespace WizyTowka;
 
 class HTMLFormFields
 {
-	static private $_fieldsNumber = -1;  // Used to generate unique ID for each form field on the page.
-
 	private $_fieldsetCSSClass;
 	private $_fields = [];
 
@@ -131,28 +129,29 @@ class HTMLFormFields
 		echo '<fieldset', $this->_fieldsetCSSClass ? ' class="'.$this->_fieldsetCSSClass.'">' : '>';
 
 		foreach ($this->_fields as $field) {
-			$uniqueId = 'f' . ++self::$_fieldsNumber;    // Unique ID is used to assign form control to label.
-			$field['HTMLAttributes']['id'] = $uniqueId;
+			$id = $field['HTMLAttributes']['name'] .
+				(($field['type']=='checkable' and $field['HTMLAttributes']['type']=='radio') ? '_'.$field['HTMLAttributes']['value'] : '');
+			$field['HTMLAttributes']['id'] = $id;     // Unique ID is used to assign form control to label.
 
 			echo '<div>';
 
 			if ($field['type'] == 'checkable') {
 				$this->_renderHTMLOpenTag('input', $field['HTMLAttributes']);
-				echo '<label for="', $uniqueId, '">', $field['label'], '</label>';
+				echo '<label for="', $id, '">', $field['label'], '</label>';
 			}
 			else {
-				echo '<label for="', $uniqueId, '">', $field['label'], '</label>';
+				echo '<label for="', $id, '">', $field['label'], '</label>';
 				echo '<span>';
 
 				switch ($field['type']) {
 					case 'textWithHints':
-						$hintsUniqueId = 'hints' . self::$_fieldsNumber;
-						echo '<datalist id="', $hintsUniqueId, '">';
+						$hintsId = 'hints_' . $id;
+						echo '<datalist id="', $hintsId, '">';
 						foreach ($field['hints'] as $hint) {
 							echo '<option>', $hint, '</option>';
 						}
 						echo '</datalist>';
-						$field['HTMLAttributes']['list'] = $hintsUniqueId;
+						$field['HTMLAttributes']['list'] = $hintsId;
 						// No break. Share code with standard input.
 
 					case 'simple':
