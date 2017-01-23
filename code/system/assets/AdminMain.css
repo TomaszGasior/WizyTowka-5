@@ -120,15 +120,16 @@ input[type="checkbox"], input[type="radio"] {
 	border: none;
 
 	position: absolute;
+	clip: rect(1px, 1px, 1px, 1px);
 	opacity: 0;
 }
 
 input[type="checkbox"] + label:before, input[type="radio"] + label:before {
 	font-family: 'icomoon_wt' !important;
-	font-size: 1.1em;
+	font-size: 1.1rem;
 	margin-right: 0.5em;
 	line-height: 0;
-	vertical-align: -2px;
+	vertical-align: -0.1em;
 	color: #426FA3;
 }
 input[type="checkbox"]:focus + label:before, input[type="radio"]:focus + label:before {
@@ -487,21 +488,21 @@ p.information:before {
 
 /* Forms fieldsets. */
 
-form fieldset {
+fieldset {
 	border: 0;
 	padding: 0;
 
 	margin: -0.3em 0;
 }
 
-form fieldset > div {
+fieldset > div {
 	display: table;
 	table-layout: fixed;
 	width: 100%;
 
 	margin: 0.5em 0;
 }
-form fieldset > div > label:first-child, form fieldset > div > span:last-child {
+fieldset > div > label:first-child, fieldset > div > span:last-child {
 	display: table-cell;
 	vertical-align: middle;
 }
@@ -529,12 +530,6 @@ ul.elementsList a:hover {
 	color: #005BA8;
 	text-shadow: 0 0 3px rgba(0,0,0, 0.1);  /*@systemAnchorHover*/
 }
-ul.elementsList a span {  /*Hidden title of screen readers.*/
-	position: absolute;
-	width: 0px;
-	height: 0px;
-	overflow: hidden;
-}
 
 ul.elementsList li > ul li a {
 	font-size: 0.9em;
@@ -548,11 +543,11 @@ ul.elementsList li > span {
 
 /* Elements list — table view. */
 
-ul.elementsList.tableView {
+ul.elementsList.listView {
 	margin: 1.2em 0;
 }
 
-ul.elementsList.tableView > li {
+ul.elementsList.listView > li {
 	display: table;
 	width: 100%;
 
@@ -560,27 +555,27 @@ ul.elementsList.tableView > li {
 	margin-top: -1px;
 	border-bottom: 1px solid #F1F1F1;
 }
-ul.elementsList.tableView > li:last-of-type {
+ul.elementsList.listView > li:last-of-type {
 	border-bottom: 0;
 }
-ul.elementsList.tableView > li:hover {
+ul.elementsList.listView > li:hover {
 	background: #F3F3F3;
 	box-shadow: -1.5em 0 0 #F3F3F3, 1.5em 0 0 #F3F3F3;   /*@mainBlockPadding*/
 }
 
-ul.elementsList.tableView > li > * {
+ul.elementsList.listView > li > * {
 	display: table-cell;
 	vertical-align: top;
 }
-ul.elementsList.tableView > li > ul {
+ul.elementsList.listView > li > ul {
 	width: 1px;
 	white-space: nowrap;
 }
 
-ul.elementsList.tableView li > span {
+ul.elementsList.listView li > span {
 	padding: 0.15rem;
 }
-ul.elementsList.tableView li > ul li a {
+ul.elementsList.listView li > ul li a {
 	margin: 0.4rem 0 0.3rem 0.7rem;
 }
 
@@ -621,10 +616,18 @@ ul.elementsList.tilesView li a:focus {
 	outline-offset: -1px;
 }
 ul.elementsList.tilesView li > ul li:not(:first-child) a {
-	margin-left: 0.4em;
+	margin-left: 0.65em;
 }
 ul.elementsList.tilesView li > ul li a:before {
 	display: none;
+}
+
+ul.elementsList.tilesView > li > span label {
+	margin-left: 1.35em;
+}
+ul.elementsList.tilesView > li > span label:before {
+	position: absolute;
+	margin: 0.85em 0 0 -1.45em;
 }
 
 
