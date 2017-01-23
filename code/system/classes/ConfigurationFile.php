@@ -34,7 +34,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		if ($this->_wasChanged) {
 			file_put_contents(
 				$this->_filename,
-				json_encode($this->_configuration, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE),
+				json_encode($this->_configuration, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
 				LOCK_EX
 			);
 
