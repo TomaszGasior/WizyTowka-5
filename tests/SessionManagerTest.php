@@ -59,9 +59,10 @@ namespace
 			$sessionDuration = 3600;  // Seconds.
 
 			WizyTowka\SessionManager::logIn($userId, $sessionDuration);
+			$time = time();
 
 			$cookieExpireTime = self::$_lastFakeCookie['expire'];
-			$this->assertEquals(time()+$sessionDuration, $cookieExpireTime);
+			$this->assertEquals($time+$sessionDuration, $cookieExpireTime);
 
 			$sessionId = self::$_lastFakeCookie['value'];
 			$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
