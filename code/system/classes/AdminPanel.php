@@ -34,6 +34,7 @@ abstract class AdminPanel extends Controller
 		// HTML <head>.
 		$this->_head = new HTMLHead;
 		$this->_head->setTitle($this->_pageTitle . ' — WizyTówka');
+		$this->_head->setAssetsPath(basename(SYSTEM_DIR).'/assets');
 		$this->_head->addStyle('AdminMain.css');
 
 		// Top navigation menu.
@@ -66,13 +67,11 @@ abstract class AdminPanel extends Controller
 
 		// Prepare template to use in _output() in child method.
 		$className = substr(strrchr(static::class, '\\'), 1);
-		$this->_apTemplate = new HTMLTemplate;
-		$this->_apTemplate->setTemplate($className);
-		$this->_apTemplate->setTemplatePath(SYSTEM_DIR.'/templates/adminPages');
+		$this->_apTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
 		$this->_output();
 
 		// Main HTML layout.
-		$this->_apLayout = new HTMLTemplate;
+		$this->_apLayout = new HTMLTemplate('AdminPanelLayout', SYSTEM_DIR.'/templates');
 		$this->_apLayout->head         = $this->_head;
 		$this->_apLayout->topMenu      = $this->_apTopMenu;
 		$this->_apLayout->mainMenu     = $this->_apMainMenu;
@@ -81,7 +80,8 @@ abstract class AdminPanel extends Controller
 		$this->_apLayout->messageError = $this->_apMessageError;
 		$this->_apLayout->pageTitle    = $this->_pageTitle;
 		$this->_apLayout->pageTemplate = $this->_apTemplate;
-		$this->_apLayout->render('AdminPanelLayout');
+
+		$this->_apLayout->render();
 	}
 
 	abstract protected function _prepare();
@@ -90,7 +90,7 @@ abstract class AdminPanel extends Controller
 	abstract protected function _output();
 	// Equivalent of output() method for child classes.
 
-	static public function URL($target, $arguments = [])
+	static public function URL($target, array $arguments = [])
 	{
 		if (isset($arguments['c'])) {
 			throw ControllerException::unallowedKeyInURLArgument('c');

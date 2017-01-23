@@ -13,7 +13,7 @@ class Website extends Controller
 		echo 'Wkrótce… ';
 	}
 
-	static public function URL($target, $arguments = [])
+	static public function URL($target, array $arguments = [])
 	{
 		$slug = $target;
 		if (is_numeric($target) and $page = Page::getById($target)) {

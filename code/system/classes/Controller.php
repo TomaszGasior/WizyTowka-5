@@ -22,7 +22,7 @@ abstract class Controller
 
 	public function POSTQuery()
 	{
-		throw ControllerException::withoutPOSTQueries();
+		throw ControllerException::withoutPOSTQueries(static::class);
 	}
 
 	public function output()
@@ -30,7 +30,7 @@ abstract class Controller
 		return;
 	}
 
-	protected function _redirect($target, $arguments = [])
+	protected function _redirect($target, array $arguments = [])
 	{
 		$url = (strpos($target, '/') === false and strpos($target, '?') === false) ? static::URL($target, $arguments)
 			 : ($target . ($arguments ? '?'.http_build_query($arguments) : ''));
@@ -39,7 +39,7 @@ abstract class Controller
 		exit;
 	}
 
-	/*abstract*/ static public function URL($target, $arguments = []) {}
+	/*abstract*/ static public function URL($target, array $arguments = []) {}
 	// This method should return URL to specified target (page of site or page of admin panel).
 	// It should be abstract, but is not because of backward compatibility with PHP 5.6.
 	// More informations: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.strict
@@ -47,9 +47,9 @@ abstract class Controller
 
 class ControllerException extends Exception
 {
-	static public function withoutPOSTQueries()
+	static public function withoutPOSTQueries($class)
 	{
-		return new self('This controller does not support POST queries.', 1);
+		return new self('Controller ' . $class . ' does not support POST queries.', 1);
 	}
 	static public function unallowedKeyInURLArgument($unallowedKey)
 	{
