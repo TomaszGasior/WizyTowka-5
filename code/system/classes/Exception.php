@@ -12,8 +12,8 @@ class Exception extends \Exception
 	{
 		call_user_func_array([parent::class, '__construct'], $arguments);
 
-		if (!$this->getCode()) {
-			trigger_error('Exception should have a code.', E_USER_NOTICE);
+		if (!$this->getMessage() or !$this->getCode()) {
+			trigger_error('You should not throw exception without message and code.', E_USER_NOTICE);
 		}
 
 		if (isset($this->getTrace()[0]['class']) and $this->getTrace()[0]['class'] == static::class) {
@@ -28,6 +28,15 @@ class Exception extends \Exception
 			$traceProperty = new \ReflectionProperty(parent::class, 'trace');
 			$traceProperty->setAccessible(true);
 			$traceProperty->setValue($this, array_slice($traceProperty->getValue($this), 1));
+
+			$designedForClass = str_replace('Exception', null, static::class);
+			$thrownFromClass = $this->getTrace()[0]['class'];
+			if ($designedForClass != $thrownFromClass and !is_subclass_of($thrownFromClass, $designedForClass)) {
+				trigger_error('You should not throw exception designed for other class.', E_USER_NOTICE);
+			}
+		}
+		else {
+			trigger_error('You should not throw exceptions directly.', E_USER_NOTICE);
 		}
 	}
 }
