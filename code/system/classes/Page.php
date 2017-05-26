@@ -19,7 +19,6 @@ class Page extends DatabaseObject
 		'contents',
 		'settings',
 		'userId',
-		'languageId',
 		'updatedTime',
 		'createdTime',
 	];
@@ -45,16 +44,6 @@ class Page extends DatabaseObject
 	static public function getAllDrafts()
 	{
 		return static::_getByWhereCondition('isDraft = 1');
-	}
-
-	static public function getByLanguageId($languageId)
-	{
-		return static::_getByWhereCondition('isDraft = 0 AND languageId = :languageId', ['languageId' => $languageId]);
-	}
-
-	static public function getDraftsByLanguageId($languageId)
-	{
-		return static::_getByWhereCondition('isDraft = 1 AND languageId = :languageId', ['languageId' => $languageId]);
 	}
 
 	static public function getBySlug($slug)

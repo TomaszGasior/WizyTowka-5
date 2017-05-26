@@ -59,12 +59,6 @@ system('php '.__DIR__.'/GenerateDBSchema.php sqlite');
 Database::executeSQL(file_get_contents('sqliteSchema.sql'));
 unlink('sqliteSchema.sql');
 
-// Example data: language.
-$language = new Language;
-$language->slug = 'pl';
-$language->name = 'polski';
-$language->save();
-
 // Example data: user.
 $user = new User;
 $user->name = 'user';
@@ -79,6 +73,5 @@ foreach (range(1, 5) as $number) {
 	$page->title = 'Przykładowa strona #' . $number;
 	$page->isDraft = ($number <= 3);
 	$page->userId = 1;
-	$page->languageId = 1;
 	$page->save();
 }

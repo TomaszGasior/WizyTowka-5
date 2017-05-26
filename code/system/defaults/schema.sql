@@ -20,14 +20,6 @@ CREATE TABLE Files (
 	uploadedTime BIGINT NOT NULL DEFAULT 0
 );
 
-CREATE TABLE Languages (
-	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, -- wt_dbms: sqlite
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,         -- wt_dbms: mysql
-	id SERIAL PRIMARY KEY,                         -- wt_dbms: pgsql
-	slug VARCHAR(100) NOT NULL UNIQUE,
-	name VARCHAR(100) NOT NULL
-);
-
 CREATE TABLE Pages (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, -- wt_dbms: sqlite
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,         -- wt_dbms: mysql
@@ -41,7 +33,6 @@ CREATE TABLE Pages (
 	contents TEXT NOT NULL,
 	settings TEXT NOT NULL,
 	userId INTEGER REFERENCES Users(id) ON DELETE SET NULL,
-	languageId INTEGER NOT NULL REFERENCES Languages(id) ON DELETE CASCADE,
 	updatedTime BIGINT NOT NULL DEFAULT 0,
 	createdTime BIGINT NOT NULL DEFAULT 0
 );
