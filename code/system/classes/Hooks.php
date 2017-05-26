@@ -78,7 +78,15 @@ trait Hooks
 					call_user_func_array($callback, $arguments);
 				}
 			}
-			catch (\ErrorException $e) {
+			// If hook callback is called without required number of arguments, hooks exception is thrown for more accurate information.
+			catch (\ArgumentCountError $e) { // PHP 7.1.
+				throw HooksException::hookWrongArgumentsCount(
+					$name,
+					(new \ReflectionFunction($callback))->getNumberOfRequiredParameters(),
+					count($arguments)
+				);
+			}
+			catch (\ErrorException $e) {  // PHP 7 and PHP 5.6.
 				// When you call function without required number of arguments, PHP emits E_WARNING error that will be converted
 				// to \ErrorException. We would check whether number of given $arguments match to number of callback required arguments.
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();

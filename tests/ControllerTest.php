@@ -37,7 +37,7 @@ namespace
 				// public function POSTQuery();
 				// This controller does not support POST queries.
 
-				static public function URL($target, $arguments = [])
+				static public function URL($target, array $arguments = [])
 				{
 					return $target . strrev($target) . '?' . http_build_query($arguments);
 				}
