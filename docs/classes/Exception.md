@@ -1,4 +1,4 @@
-Exception
+*abstract* Exception
 ===
 
 Własna klasa wyjątków systemu WizyTówka. Wszystkie rzucane przez system WizyTówka wyjątki są instancjami tej klasy. Klasa dziedziczy po klasie wbudowanej o tej samej nazwie.
@@ -13,4 +13,4 @@ Zalety takiego rozwiązania są następujące:
 
 Koncepcja została zaczerpnięta od [Rossa Tucka](http://rosstuck.com/formatting-exception-messages/).
 
-Konstruktor klasy `Exception` wymaga określenia komunikatu błędu i kodu.
+Konstruktor klasy `Exception` wymaga określenia komunikatu błędu i kodu. Wystąpi błąd, jeśli nastąpi próba utworzenia instancji klasy wyjątku bezpośrednio, a nie przez publiczną metodę statyczną. Błąd wystąpi również, jeśli klasa rzuci wyjątek nienależący do niej (np. klasa `Page` rzuci wyjątek `DatabaseException` zamiast `PageException`), chyba że klasa dziedziczy po klasie, do której należy wyjątek.

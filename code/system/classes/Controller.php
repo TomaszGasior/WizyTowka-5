@@ -32,7 +32,8 @@ abstract class Controller
 
 	protected function _redirect($target, array $arguments = [])
 	{
-		$url = (strpos($target, '/') === false and strpos($target, '?') === false) ? static::URL($target, $arguments)
+		$url = (strpos($target, '/') === false and strpos($target, '?') === false)
+			 ? static::URL($target, $arguments)
 			 : ($target . ($arguments ? '?'.http_build_query($arguments) : ''));
 
 		header('Location: ' . $url);

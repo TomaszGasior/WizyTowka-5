@@ -39,13 +39,6 @@ if (defined(__NAMESPACE__.'\\INIT')) {
 			$controller->output();
 		};
 
-		/* Constants checking. */
-		foreach (['SYSTEM_DIR', 'DATA_DIR', 'CONFIG_DIR', 'FILES_DIR'] as $constant) {
-			if (!defined(__NAMESPACE__.'\\'.$constant)) {
-				exit('WizyTówka content management system cannot be started. Required system constant '.$constant.' is not defined.');
-			}
-		}
-
 		/* Installer. */
 		if (!file_exists(CONFIG_DIR)) {
 			$controllerName = __NAMESPACE__.'\\Installer';
@@ -54,12 +47,9 @@ if (defined(__NAMESPACE__.'\\INIT')) {
 		}
 
 		/* Database connection. */
-		if (Settings::get('databaseType') == 'sqlite') {
-			Database::connect('sqlite', CONFIG_DIR.'/database.db');
-		}
-		else {
-			Database::connect(Settings::get('databaseType'), Settings::get('databaseName'), Settings::get('databaseHost'), Settings::get('databaseUsername'), Settings::get('databasePassword'));
-		}
+		(Settings::get('databaseType') == 'sqlite')
+		? Database::connect('sqlite', CONFIG_DIR.'/database.db')
+		: Database::connect(Settings::get('databaseType'), Settings::get('databaseName'), Settings::get('databaseHost'), Settings::get('databaseUsername'), Settings::get('databasePassword'));
 
 		/* User session manager. */
 		SessionManager::setup();

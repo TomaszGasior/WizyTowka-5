@@ -131,7 +131,7 @@ class HTMLFormFields
 		foreach ($this->_fields as $field) {
 			$id = $field['HTMLAttributes']['name'] .
 				(($field['type']=='checkable' and $field['HTMLAttributes']['type']=='radio') ? '_'.$field['HTMLAttributes']['value'] : '');
-			$field['HTMLAttributes']['id'] = $id;     // Unique ID is used to assign form control to label.
+			$field['HTMLAttributes']['id'] = $id;   // Unique ID is used to assign form control to label.
 
 			echo '<div>';
 

@@ -18,28 +18,31 @@ abstract class AdminPanel extends Controller
 	private $_apTopMenu;
 	private $_apMainMenu;
 
-	protected $_apTemplate;
 	protected $_apHead;
+	protected $_apTemplate;
 	protected $_apContextMenu;
 	protected $_apMessage;
 	protected $_apMessageError = false;
 
 	final public function __construct()
 	{
+		// More comming soon…
+
+		// Run _prepare() method from child class.
 		$this->_prepare();
 	}
 
 	final public function output()
 	{
 		// HTML <head>.
-		$this->_head = new HTMLHead;
-		$this->_head->setTitle($this->_pageTitle . ' — WizyTówka');
-		$this->_head->setAssetsPath(basename(SYSTEM_DIR).'/assets');
-		$this->_head->addStyle('AdminMain.css');
+		$this->_apHead = new HTMLHead;
+		$this->_apHead->setTitle($this->_pageTitle . ' — WizyTówka');
+		$this->_apHead->setAssetsPath(basename(SYSTEM_DIR).'/assets');
+		$this->_apHead->addStyle('AdminMain.css');
 
 		// Top navigation menu.
 		$this->_apTopMenu = new HTMLMenu;
-		$this->_apTopMenu->add('tomaszgasior', self::URL('userSettings'), 'iUser');
+		$this->_apTopMenu->add('username', self::URL('userSettings'), 'iUser');
 		$this->_apTopMenu->add('Zaktualizuj', self::URL('systemUpdate'), 'iUpdates');
 		$this->_apTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iWebsite');
 		$this->_apTopMenu->add('Wyloguj się', self::URL('logout'), 'iLogout');
@@ -62,17 +65,19 @@ abstract class AdminPanel extends Controller
 		$this->_apMainMenu->add('Kopia zapasowa', self::URL('backup'), 'iBackup');
 		$this->_apMainMenu->add('Informacje', self::URL('informations'), 'iInformations');
 
-		// Context menu.
+		// Context menu (prepared for child class).
 		$this->_apContextMenu = new HTMLMenu;
 
-		// Prepare template to use in _output() in child method.
-		$className = substr(strrchr(static::class, '\\'), 1);
+		// Main template of page (prepared for child class).
+		$className = substr(strrchr(static::class, '\\'), 1);  // Example: "WizyTowka\AdminPages\Pages" --> "Pages".
 		$this->_apTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
+
+		// Run _output() method. Child class can specify additional template variables and context menu here.
 		$this->_output();
 
 		// Main HTML layout.
 		$this->_apLayout = new HTMLTemplate('AdminPanelLayout', SYSTEM_DIR.'/templates');
-		$this->_apLayout->head         = $this->_head;
+		$this->_apLayout->head         = $this->_apHead;
 		$this->_apLayout->topMenu      = $this->_apTopMenu;
 		$this->_apLayout->mainMenu     = $this->_apMainMenu;
 		$this->_apLayout->contextMenu  = $this->_apContextMenu;
@@ -81,14 +86,15 @@ abstract class AdminPanel extends Controller
 		$this->_apLayout->pageTitle    = $this->_pageTitle;
 		$this->_apLayout->pageTemplate = $this->_apTemplate;
 
+		// Recursively render all HTML elements and whole layout.
 		$this->_apLayout->render();
 	}
 
 	abstract protected function _prepare();
-	// Equivalent of __construct() method for child classes.
+	// Equivalent of Controller::__construct() method for AdminPanel child classes.
 
 	abstract protected function _output();
-	// Equivalent of output() method for child classes.
+	// Equivalent of Controller::output() method for AdminPanel child classes.
 
 	static public function URL($target, array $arguments = [])
 	{

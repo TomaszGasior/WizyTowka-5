@@ -160,7 +160,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		}
 
 		$statement = Database::pdo()->prepare($sqlQuery);
-		$statement->setFetchMode(\PDO::FETCH_NUM);   // Values must not be duplicated.
+		$statement->setFetchMode(\PDO::FETCH_NUM);   // PDO::FETCH_NUM style is used because values must not be duplicated.
 		$execution = $statement->execute($parameters);
 
 		$elementsToReturn = [];
@@ -170,7 +170,8 @@ abstract class DatabaseObject implements \IteratorAggregate
 				$object = new static;
 				$object->_dataNewlyCreated = false;
 				$object->_data = array_combine($allColumnsNames, $record);
-				// Normally it is possible to use PDO::FETCH_NAMED fetch mode and $object->_data = $record syntax, but this is PostgreSQL workaround.
+				// Normally it is possible to use PDO::FETCH_NAMED fetch mode and $object->_data = $record syntax,
+				// but this is PostgreSQL workaround.
 				// By default PostgreSQL lowercases names of columns and tables — this makes camelCase columns names inaccesible.
 
 				foreach (static::$_tableColumnsJSON as $column) {

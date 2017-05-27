@@ -12,7 +12,7 @@ class Text
 
 	public function __construct($string)
 	{
-		$this->_string = (string)$string;
+		$this->_string = (string)$string;    // See comment in formatAsDate().
 	}
 
 	public function __debugInfo()

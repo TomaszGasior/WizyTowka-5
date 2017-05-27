@@ -1,34 +1,36 @@
 ErrorHandler
 ===
 
-Trait wychwytujący i obsługujący systemowe błędy PHP oraz niezłapane wyjątki.
+Mechanizm wychwytujący i obsługujący systemowe błędy PHP oraz niezłapane wyjątki.
 
 Informacja o błędzie obejmuje: kod błędu (jeśli jest wyjątkiem) lub typ błędu (jeśli jest przekonwertowanym błędem PHP), wiadomość, ścieżkę do pliku i linię pliku oraz ścieżkę wykonywanych plików (backtrace).
 
-## *static* `handleException($exception)`
+## *static* `handleException(\Throwable $exception)`
 
-Wychwytuje niezłapany wyjątek. Przeznaczona do zarejestrowania przez `set_exception_handler()`.
+Wychwytuje niezłapany wyjątek. Metoda przeznaczona do zarejestrowania przez `set_exception_handler()`.
 
-Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Jeśli konfiguracja systemu to określa — drukuje komunikat o błędzie, używając metody `printAsPlainText()` (gdy zostanie wykryty typ MIME inny niż `text/html` lub gdy skrypt jest uruchamiany w wierszu polecenia) bądź `printAsHTML()`.
+Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Drukuje komunikat o błędzie, używając metody `_printAsPlainText()` (gdy zostanie wykryty typ MIME inny niż `text/html` lub gdy skrypt jest uruchamiany w wierszu polecenia) bądź `_printAsHTML()`.
 
 ## *static* `handleError($number, $message, $file, $line)`
 
-Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `ErrorException`. Przeznaczona do zarejestrowania przez `set_error_handler()`.
+Konwertuje błąd systemowy PHP na wyjątek za pośrednictwem wbudowanej klasy `ErrorException`. Metoda przeznaczona do zarejestrowania przez `set_error_handler()`.
 
 Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie jest uwzględniana wartość dyrektywy `error_reporting`. Ignorowane są jedynie błędy, przy których wystąpieniu użyto [operatora kontroli błędów `@`](http://php.net/manual/en/language.operators.errorcontrol.php).
 
-## *static private* `_addToLog($exception)`
+## *static* `addToLog(\Throwable $exception)`
 
 Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on domyślnie w folderze `data/config/errors.log`.
 
-## *static private* `_printAsPlainText($exception)`
+## *static private* `_printAsPlainText(\Throwable $exception)`
 
 Wyświetla informacje o błędzie w formie zwykłego tekstu.
 
-## *static private* `_printAsHTML($exception)`
+## *static private* `_printAsHTML(\Throwable $exception)`
 
 Wyświetla informacje o błędzie w formie strony HTML.
 
-## *static private* `_getPHPErrorName($code)`
+Jeśli wartość ustawienia `systemShowErrors` jest prawdą, komunikat zawiera pełną informację o błędzie. W przeciwnym wypadku generowany jest jedynie komunikat „Przepraszamy za usterki.”, a w komentarzu HTML umieszczana jest nazwa klasy wyjątku.
 
-Zwraca nazwę błędu PHP o kodzie `$code`.
+## *static private* `_prepareInfo(\Throwable $exception)`
+
+Przygotowuje (formatuje, weryfikuje) informacje o błędzie do użytku w komunikatach błędu.
