@@ -33,7 +33,7 @@ trait ErrorHandler
 	static public function addToLog(/*\Throwable*/ $exception)
 	{
 		// Do not add error to log, when code is running outside normal CMS mode (in unit tests) or CMS is not installed yet.
-		$addToLog = (defined(__NAMESPACE__.'\\INIT') and file_exists(CONFIG_DIR));
+		$addToLog = (defined(__NAMESPACE__.'\INIT') and file_exists(CONFIG_DIR));
 
 		if ($addToLog) {
 			$info = self::_prepareInfo($exception);
@@ -68,7 +68,7 @@ trait ErrorHandler
 		?><!doctype html><meta charset="utf-8"><?php
 
 		// Show full error information, when CMS is not installed yet or detailed errors are enabled.
-		$showFullErrorMessage = (!defined(__NAMESPACE__.'\\INIT') or !file_exists(CONFIG_DIR) or Settings::get('systemShowErrors'));
+		$showFullErrorMessage = (!defined(__NAMESPACE__.'\INIT') or !file_exists(CONFIG_DIR) or Settings::get('systemShowErrors'));
 
 		$info = self::_prepareInfo($exception);
 
@@ -136,7 +136,7 @@ trait ErrorHandler
 				array_filter(get_defined_constants(), function($key){ return $key[0].$key[1] == 'E_'; }, ARRAY_FILTER_USE_KEY)
 			)[$code];
 		};
-		$isCodeMinified = (defined(__NAMESPACE__.'\\VERSION_STABLE') and VERSION_STABLE)
+		$isCodeMinified = (defined(__NAMESPACE__.'\VERSION_STABLE') and VERSION_STABLE)
 			and strpos(file_get_contents(__FILE__), '/*COMMENT*/');   /*COMMENT*/
 
 		return [

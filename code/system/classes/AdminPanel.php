@@ -9,7 +9,7 @@ namespace WizyTowka;
 abstract class AdminPanel extends Controller
 {
 	static private $_registeredPages = [];
-	static private $_defaultPagesNamespace = __NAMESPACE__ . '\\AdminPages';
+	static private $_defaultPagesNamespace = __NAMESPACE__ . '\AdminPages';
 
 	protected $_pageTitle = 'Panel administracyjny';
 	protected $_requiredUserPermissions;

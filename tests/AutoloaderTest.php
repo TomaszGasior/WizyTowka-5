@@ -5,7 +5,7 @@
 */
 class AutoloaderTest extends PHPUnit\Framework\TestCase
 {
-	static private $_exampleNamespace = 'Example\\SubExample';
+	static private $_exampleNamespace = 'Example\SubExample';
 	static private $_examplePath = './path/to/classes';
 
 	public function testAddNamespace()

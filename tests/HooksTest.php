@@ -63,7 +63,7 @@ class HooksTest extends PHPUnit\Framework\TestCase
 		WizyTowka\Hooks::addAction('secondExampleAction', 'strrev');
 		WizyTowka\Hooks::removeAction('secondExampleAction', 'strrev');
 
-		$actionsArray = (new ReflectionClass('WizyTowka\\Hooks'))->getStaticProperties()['_actions'];
+		$actionsArray = (new ReflectionClass('WizyTowka\Hooks'))->getStaticProperties()['_actions'];
 
 		$this->assertEmpty($actionsArray['secondExampleAction']);
 	}
