@@ -40,6 +40,12 @@ abstract class Controller
 		exit;
 	}
 
+	static public function getControllerClass()
+	{
+		return static::class;
+	}
+	// This method should return fully qualified name of controller class according to URL.
+
 	/*abstract*/ static public function URL($target, array $arguments = []) {}
 	// This method should return URL to specified target (page of site or page of admin panel).
 	// It should be abstract, but is not because of backward compatibility with PHP 5.6.

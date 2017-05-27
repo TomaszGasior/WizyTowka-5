@@ -23,6 +23,12 @@ Metoda renderująca stronę. Klasy dziedziczące, przesłaniając tę metodę, o
 
 Domyślnie metoda ta nie robi nic.
 
+## *static* `getControllerClass()`
+
+Metoda zwraca pełną nazwę kwalifikowaną kontrolera, który ma zostać załadowany. Dzięki niej kontroler bazowy może wskazać, na podstawie adresu URL bądź innych informacji, jaka klasa dziedzicząca po nim ma zostać załadowana. Funkcjonalność tej funkcji jest uzupełniana przez metodę `URL()`.
+
+Domyślnie metoda zwraca pełną nazwę kwalifikowaną swojej własnej klasy.
+
 ## *abstract static* `URL($target, array $arguments = [])`
 
 Metoda abstrakcyjna, w której klasa dziedzicząca musi zdefiniować sposób generowania odnośników URL do swoich zasobów. Argument `$target` określa miejsce docelowe odnośnika (np. ID strony witryny bądź nazwę strony panelu administracyjnego). Argument `$arguments` określa parametry dodane do query stringa odnośnika (np. `?arg1=val1&arg2=val2`).
