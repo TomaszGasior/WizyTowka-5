@@ -59,11 +59,13 @@ system('php '.__DIR__.'/GenerateDBSchema.php sqlite');
 Database::executeSQL(file_get_contents('sqliteSchema.sql'));
 unlink('sqliteSchema.sql');
 
-// Example data: user.
-$user = new User;
-$user->name = 'user';
-$user->password = '_';
-$user->save();
+// Example data: users.
+foreach (range(1, 3) as $number) {
+	$user = new User;
+	$user->name = 'user_' . $number;
+	$user->password = $user->name;
+	$user->save();
+}
 
 // Example data: pages.
 foreach (range(1, 5) as $number) {
@@ -71,7 +73,7 @@ foreach (range(1, 5) as $number) {
 	$page->slug = 'example_' . $number;
 	$page->contentType = '_';
 	$page->title = 'Przykładowa strona #' . $number;
-	$page->isDraft = ($number <= 3);
+	$page->isDraft = !($number % 2);
 	$page->userId = 1;
 	$page->save();
 }

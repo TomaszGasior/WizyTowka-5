@@ -12,7 +12,10 @@ abstract class AdminPanel extends Controller
 	static private $_defaultPagesNamespace = __NAMESPACE__ . '\AdminPages';
 
 	protected $_pageTitle = 'Panel administracyjny';
-	protected $_requiredUserPermissions;
+
+	protected $_currentUser;
+	protected $_userRequiredPermissions;
+	protected $_userMustBeLoggedIn = true;
 
 	private $_apLayout;
 	private $_apTopMenu;
@@ -27,7 +30,16 @@ abstract class AdminPanel extends Controller
 
 	final public function __construct()
 	{
-		// More comming soon…
+		if (SessionManager::isUserLoggedIn()) {
+			$this->_currentUser = User::getById(SessionManager::getUserId());
+		}
+		elseif ($this->_userMustBeLoggedIn) {
+			$this->_redirect(self::URL('login'));
+		}
+
+		if ($this->_userRequiredPermissions) {
+			//
+		}
 
 		// Run _prepare() method from child class.
 		$this->_prepare();
@@ -42,11 +54,13 @@ abstract class AdminPanel extends Controller
 		$this->_apHead->addStyle('AdminMain.css');
 
 		// Top navigation menu.
-		$this->_apTopMenu = new HTMLMenu;
-		$this->_apTopMenu->add('username', self::URL('userSettings'), 'iUser');
-		$this->_apTopMenu->add('Zaktualizuj', self::URL('systemUpdate'), 'iUpdates');
-		$this->_apTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iWebsite');
-		$this->_apTopMenu->add('Wyloguj się', self::URL('logout'), 'iLogout');
+		if ($this->_currentUser) {
+			$this->_apTopMenu = new HTMLMenu;
+			$this->_apTopMenu->add($this->_currentUser->name, self::URL('userSettings'), 'iUser');
+			$this->_apTopMenu->add('Zaktualizuj', self::URL('systemUpdate'), 'iUpdates');
+			$this->_apTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iWebsite');
+			$this->_apTopMenu->add('Wyloguj się', self::URL('logout'), 'iLogout');
+		}
 
 		// Main navigation menu.
 		$this->_apMainMenu = new HTMLMenu;
