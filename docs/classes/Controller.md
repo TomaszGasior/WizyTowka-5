@@ -7,9 +7,9 @@ Klasy dziedziczące muszą definiować metodę `URL()`, powinny definiować `out
 
 ## `filterPOSTData()`
 
-Filtruje wszystkie dane znajdujące się w tablicy `$_POST`, modyfikując ją bezpośrednio i rekurencyjnie przy użyciu funkcji `htmlspecialchars()`. Metoda ta powinna być wywoływana przed użyciem metody `POSTQuery()`.
+Bezpośrednio i rekurencyjnie filtruje wszystkie dane znajdujące się w tablicy `$_POST` przy użyciu funkcji `htmlspecialchars()`. Metoda ta powinna być wywoływana przed użyciem metody `POSTQuery()`.
 
-Aby wykluczyć pole formularza z filtrowania, należy jego nazwę poprzedzić przedrostkiem `nofilter_`, na przykład: `nofilter_pageContent`.
+Aby wykluczyć pole formularza z filtrowania, należy jego nazwę poprzedzić przedrostkiem `nofilter_`, na przykład: `nofilter_pageContent`. W tablicy `$_POST` powstaną aliasy dla takich pól pozbawione tego przedrostka, będące referencjami.
 
 ## `POSTQuery()`
 

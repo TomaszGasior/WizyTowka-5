@@ -10,14 +10,23 @@ abstract class Controller
 {
 	public function filterPOSTData()
 	{
-		$HTMLFilter = function(&$value, $key) use (&$HTMLFilter) {
-			// Values with key prefixed by "nofilter_" will not be filtered.
-			if (substr($key, 0, 9) != 'nofilter_') {
-				is_array($value) ? array_walk($value, $HTMLFilter) : $value = htmlspecialchars($value);
+		$HTMLFilter = function(array &$array) use (&$HTMLFilter) {
+			$aliases = [];
+			foreach ($array as $key => &$value) {
+				$key = explode('_', $key);
+				if ($key[0] != 'nofilter') {
+					is_array($value) ? $HTMLFilter($value) : $value = htmlspecialchars($value);
+				}
+				elseif (!empty($key[1])) {
+					$aliases[$key[1]] =& $value;
+				}
 			}
+			$array += $aliases;
+			// $_POST elements with "nofilter_" prefix will not be filtered.
+			// For these elements referenced aliases without "nofilter_" prefix will be created.
 		};
 
-		$HTMLFilter($_POST, null);
+		$HTMLFilter($_POST);
 	}
 
 	public function POSTQuery()

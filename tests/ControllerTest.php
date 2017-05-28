@@ -59,6 +59,7 @@ namespace
 				'field1' => 'example content',
 				'field2' => '&lt;strong&gt;example content&lt;/strong&gt;',
 				'nofilter_field3' => '<strong>example content</strong>',
+				'field3' => '<strong>example content</strong>',  // Automatically created alias of "nofilter_field3".
 			];
 
 			$this->assertEquals($expected, $_POST);
