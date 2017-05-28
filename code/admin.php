@@ -2,10 +2,16 @@
 
 /**
 * WizyTówka 5
-* Administration panel file. You can change name of this file if you want.
+* Administration panel file.
 */
 namespace WizyTowka;
 
 
-const ADMIN_PANEL = 1;
-require 'index.php';
+/* You can rename this file.
+   In this case you must also change "adminPanelFile" setting,
+   otherwise administration panel will be broken. */
+
+require __DIR__ . '/config.php';
+require SYSTEM_DIR . '/init.php';
+
+$init('AdminPanel');
