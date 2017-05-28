@@ -5,7 +5,7 @@ Kontroler reprezentujący panel administracyjny systemu WizyTówka. Dziedziczy p
 
 Klasa umożliwia rejestrowanie z zewnątrz dodatkowych stron panelu administracyjnego oraz pobranie nazwy kontrolera w zależności od bieżącego adresu URL. Stanowi też fundament dla wszelkich klas kontrolerów stron panelu administracyjnego — zarządza dostępem w zależności od oczekiwanego poziomu uprawnień użytkownika i szablonem HTML panelu administracyjnego.
 
-Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery poszczególnych stron panelu administracyjnego powinny, prócz niektórych wyjątków, dziedziczyć po tej klasie.
+Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery poszczególnych stron panelu administracyjnego powinny dziedziczyć po tej klasie.
 
 ## *abstract protected* `_prepare()`
 

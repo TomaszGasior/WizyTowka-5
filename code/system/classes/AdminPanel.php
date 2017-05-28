@@ -18,6 +18,7 @@ abstract class AdminPanel extends Controller
 	private $_apTopMenu;
 	private $_apMainMenu;
 
+	protected $_apAlternateLayout = false;
 	protected $_apHead;
 	protected $_apTemplate;
 	protected $_apContextMenu;
@@ -76,7 +77,8 @@ abstract class AdminPanel extends Controller
 		$this->_output();
 
 		// Main HTML layout.
-		$this->_apLayout = new HTMLTemplate('AdminPanelLayout', SYSTEM_DIR.'/templates');
+		$this->_apLayout = new HTMLTemplate(null, SYSTEM_DIR.'/templates');
+		$this->_apLayout->setTemplate($this->_apAlternateLayout ? 'APAlternateLayout' : 'APStandardLayout');
 		$this->_apLayout->head         = $this->_apHead;
 		$this->_apLayout->topMenu      = $this->_apTopMenu;
 		$this->_apLayout->mainMenu     = $this->_apMainMenu;
