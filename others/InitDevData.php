@@ -63,7 +63,7 @@ unlink('sqliteSchema.sql');
 foreach (range(1, 3) as $number) {
 	$user = new User;
 	$user->name = 'user_' . $number;
-	$user->password = $user->name;
+	$user->setPassword($user->name);
 	$user->save();
 }
 

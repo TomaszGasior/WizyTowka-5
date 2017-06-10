@@ -30,7 +30,7 @@ class Login extends WT\AdminPanel
 
 		$user = WT\User::getByName($_POST['name']);
 
-		if ($user and $user->password == $_POST['password']) {
+		if ($user and $user->checkPassword($_POST['password'])) {
 			WT\SessionManager::logIn($user->id, 3600);
 			$this->_redirect(WT\AdminPanel::URL('pages'));
 		}

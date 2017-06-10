@@ -13,8 +13,7 @@ class User extends DatabaseObject
 	const PERM_EDITING_OTHERS_PAGES  = 0b00000100;
 	const PERM_EDITING_SITE_ELEMENTS = 0b00001000;
 	const PERM_EDITING_SYSTEM_CONFIG = 0b00010000;
-	const PERM_FILES_EDITOR_ACCESS   = 0b00100000;
-	const PERM_SUPER_USER            = 0b01000000;
+	const PERM_SUPER_USER            = 0b00100000;
 
 	static protected $_tableName = 'Users';
 	static protected $_tableColumns = [
@@ -29,5 +28,15 @@ class User extends DatabaseObject
 	static public function getByName($name)
 	{
 		return static::_getByWhereCondition('name = :name', ['name' => $name], true);
+	}
+
+	public function setPassword($givenPassword)
+	{
+		$this->password = password_hash($givenPassword, PASSWORD_BCRYPT, ['cost' => 13]);
+	}
+
+	public function checkPassword($givenPassword)
+	{
+		return password_verify($givenPassword, $this->password);
 	}
 }

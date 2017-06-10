@@ -10,6 +10,8 @@ Posiada następujące pola:
 - `password` — zahaszowane hasło użytkownika,
 - `createdTime` — data i czas utworzenia użytkownika w formie uniksowego znacznika czasu.
 
+Sugeruje się nie modyfikować bezpośrednio pola `password`. Zamiast tego należy korzystać z metod `setPassword()` oraz `checkPassword()`.
+
 W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnień użytkownika.
 
 - `PERM_CREATING_PAGES` — uprawnienie do tworzenia stron i szkiców stron w witrynie,
@@ -17,9 +19,16 @@ W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnie
 - `PERM_EDITING_OTHERS_PAGES` — uprawnienie do edycji stron stworzonych przez innych użytkowników,
 - `PERM_EDITING_SITE_ELEMENTS` — uprawnienie do modyfikacji elementów witryny (nagłówek, stopka, menu),
 - `PERM_EDITING_SYSTEM_CONFIG` — uprawnienie do zarządzania konfiguracją witryny i systemu,
-- `PERM_FILES_EDITOR_ACCESS` — uprawnienie do korzystania z edytora plików,
-- `PERM_SUPER_USER` — uprawnienie do korzystania z edytora konfiguracji i innych elementów systemu.
+- `PERM_SUPER_USER` — uprawnienie do zarządzania kontami użytkowników oraz korzystania z edytora konfiguracji, edytora plików i innych elementów systemu.
 
 ## *static* `getByName($name)`
 
 Zwraca użytkownika o nazwie `$name` lub fałsz, jeśli brak takiego użytkownika.
+
+## *static* `setPassword($givenPassword)`
+
+Ustawia hasło użytkownika na podane w argumencie `$givenPassword` z wykorzystaniem wbudowanych w PHP funkcji do obsługi haseł. Po wywołaniu tej metody w polu `password` zostanie umieszczony hasz hasła.
+
+## *static* `checkPassword($givenPassword)`
+
+Porównuje hasło podane w argumencie `$givenPassword` z haszem hasła zapisanym w bazie danych w polu `password` z wykorzystaniem wbudowanych w PHP funkcji do obsługi haseł. Zwraca prawdę, jeśli podane hasło jest poprawne, inaczej fałsz.
