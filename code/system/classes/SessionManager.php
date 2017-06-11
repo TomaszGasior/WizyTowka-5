@@ -27,9 +27,15 @@ trait SessionManager
 
 			if ($session and $session['waiString'] == self::_generateWAI($session['userId']) and time() < $session['expireTime']) {
 				self::$_currentUserId = $session['userId'];
+
+				// Periodically log out user and log in again to change session ID for better security.
+				if (time() > $session['reloginTime']) {
+					self::logOut();
+					self::logIn($session['userId'], $session['expireTime'] - time());
+				}
 			}
+			// If session is expired or WAI string is incorrect, destroy session data such as when user is logged out.
 			else {
-				// If session is expired or WAI string is not correct, destroy session data such as when user is logged out.
 				self::$_currentUserId = -1;  // This is a fake value. logOut() method needs it to work.
 				self::logOut();
 			}
@@ -42,15 +48,20 @@ trait SessionManager
 			throw SessionManagerException::wrongState();
 		}
 
-		$session['userId'] = $userId;
-		$session['waiString'] = self::_generateWAI($userId);
-		$session['expireTime'] = time() + (integer)$sessionDuration;
+		// For backwards compatibility with PHP 5.6.
+		$randomValue = (function_exists('random_int')) ? random_int(PHP_INT_MIN, PHP_INT_MAX) : uniqid(1);
 
-		$sessionId = hash('sha512', uniqid(1));
+		$session['userId']      = $userId;
+		$session['waiString']   = self::_generateWAI($userId);
+		$session['expireTime']  = time() + (integer)$sessionDuration;
+		$session['reloginTime'] = time() + 120;
+
+		$sessionId = hash('sha512', $randomValue);
 		$sessionsConfig = self::_getSessionsConfig();
 		$sessionsConfig->$sessionId = $session;
 
-		setcookie(self::$_cookieName, $sessionId, $session['expireTime']);
+		$forceHTTPS = (!empty($_SERVER['HTTPS']) and $_SERVER['HTTPS'] != 'off');
+		setcookie(self::$_cookieName, $sessionId, $session['expireTime'], null, null, $forceHTTPS, true);
 
 		self::$_currentUserId = $userId;
 	}
@@ -68,6 +79,13 @@ trait SessionManager
 		setcookie(self::$_cookieName, null, 1);
 
 		self::$_currentUserId = false;
+
+		// Clean up expired sessions.
+		foreach ($sessionsConfig as $sessionId => $session) {
+			if (time() > $session['expireTime']) {
+				unset($sessionsConfig->$sessionId);
+			}
+		}
 	}
 
 	static public function isUserLoggedIn()
@@ -84,16 +102,17 @@ trait SessionManager
 	{
 		return hash('sha512',
 			$userId . $_SERVER['REMOTE_ADDR']
-			. ((!empty($_SERVER['HTTP_ACCEPT_ENCODING'])) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '')
-			. ((!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '')
-			. ((!empty($_SERVER['HTTP_ACCEPT']))          ? $_SERVER['HTTP_ACCEPT']          : '')
 			. ((!empty($_SERVER['HTTP_USER_AGENT']))      ? $_SERVER['HTTP_USER_AGENT']      : '')
+			. ((!empty($_SERVER['HTTP_ACCEPT']))          ? $_SERVER['HTTP_ACCEPT']          : '')
+			. ((!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '')
+			. ((!empty($_SERVER['HTTP_HOST']))            ? $_SERVER['HTTP_HOST']            : '')
 		);
 	}
 
 	static private function _getSessionsConfig()
 	{
-		return new ConfigurationFile(CONFIG_DIR.'/sessions.conf');
+		static $conf = false;
+		return ($conf) ? $conf : ($conf = new ConfigurationFile(CONFIG_DIR . '/sessions.conf'));
 	}
 }
 

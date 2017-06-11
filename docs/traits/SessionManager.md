@@ -3,7 +3,7 @@ SessionManager
 
 Menadżer sesji użytkownika. Zarządza sesją, umożliwia zalogowanie i wylogowanie użytkownika.
 
-Rozpoczęcie sesji powoduje utworzenie po stronie klienta ciastka HTTP z identyfikatorem sesji. Dane sesji przypisane do jej identyfikatora (identyfikator użytkownika, data ważności sesji, WAI) są przechowywane w pliku konfiguracyjnym systemu — po stronie serwera. Przy wylogowaniu ciastko HTTP i dane z pliku konfiguracyjnego są usuwane.
+Rozpoczęcie sesji powoduje utworzenie po stronie klienta ciastka HTTP z identyfikatorem sesji. Dane sesji przypisane do jej identyfikatora (identyfikator użytkownika, data ważności sesji, WAI) są przechowywane w pliku konfiguracyjnym systemu — po stronie serwera. Identyfikator sesji jest, dla zwiększenia bezpieczeństwa, automatycznie zmieniany co kilka minut. Przy wylogowaniu ciastko HTTP i dane z pliku konfiguracyjnego są usuwane.
 
 WAI to hasz sha512 z ciągu znaków złożonego z informacji o przeglądarce i użytkowniku (m.in. user agent i adres IP). WAI to skrót od „where am I?”.
 
@@ -23,7 +23,7 @@ Jeżeli użytkownik już jest zalogowany bądź menadżer nie został zainicjowa
 
 ## *static* `logOut()`
 
-Wylogowuje aktualnie zalogowanego użytkownika.
+Wylogowuje aktualnie zalogowanego użytkownika oraz usuwa z pliku konfiguracyjnego wszystkie sesje, których ważność upłynęła.
 
 Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek `SessionManagerException` #2.
 
