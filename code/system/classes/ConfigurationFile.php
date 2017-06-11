@@ -8,6 +8,8 @@ namespace WizyTowka;
 
 class ConfigurationFile implements \IteratorAggregate, \Countable
 {
+	static private $_modifiedFiles = [];
+
 	private $_filename;
 	private $_configuration = [];
 	private $_wasChanged = false;
@@ -32,6 +34,13 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 	public function __destruct()
 	{
 		if ($this->_wasChanged) {
+			// If there is more than one instance of ConfigurationFile class that makes changes in  the same file,
+			// configuration changes could be overwritten. Code below prevents from it.
+			if (in_array($this->_filename, self::$_modifiedFiles)) {
+				throw ConfigurationFileException::modificationCollision($this->_filename, self::class);
+			}
+			self::$_modifiedFiles[] = $this->_filename;
+
 			file_put_contents(
 				$this->_filename,
 				json_encode($this->_configuration, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
@@ -107,5 +116,9 @@ class ConfigurationFileException extends Exception
 	static public function writingWhenReadOnly($filename)
 	{
 		return new self('Configuration file ' . $filename . ' is opened as read only.', 3);
+	}
+	static public function modificationCollision($filename, $class)
+	{
+		return new self('Configuration file ' . $filename . ' was modified by more than one instance of ' . $class . ' class.', 4);
 	}
 }

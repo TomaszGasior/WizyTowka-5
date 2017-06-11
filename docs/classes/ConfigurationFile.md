@@ -19,6 +19,8 @@ Plik JSON powinien zawierać tablicę wartości, inaczej przy odczycie zostanie 
 
 W destruktorze następuje automatyczny zapis pliku konfiguracyjnego JSON wyłącznie, gdy jakiekolwiek ustawienie zostanie zmodyfikowane bądź usunięte.
 
+Uwaga! Jeżeli zostanie utworzona więcej niż jedna instancja klasy `ConfigurationFile` wprowadzająca zmiany w tym samym pliku konfiguracyjnym, zostanie rzucony wyjątek `ConfigurationFileException` #4, a zmiany drugiej i kolejnych instancji — porzucone.
+
 ## *static* `createNew($filename)`
 
 Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$filename` przyjmuje ścieżkę do pliku. Jeżeli plik istnieje, zostanie nadpisany.
