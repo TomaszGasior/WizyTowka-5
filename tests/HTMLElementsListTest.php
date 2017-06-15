@@ -3,22 +3,16 @@
 /**
 * WizyTówka 5 — unit test
 */
-class HTMLElementsListTest extends PHPUnit\Framework\TestCase
+include_once 'workarounds.php';
+// Workarounds: HTMLTestCase::assertHTMLEquals().
+
+class HTMLElementsListTest extends PHPUnit\Framework\HTMLTestCase
 {
 	private $_data = [
 		[ 'id' => 1, 'title' => 'Title 1', 'url' => 'http://example.org/e_1', ],
 		[ 'id' => 2, 'title' => 'Title 2', 'url' => 'http://example.org/e_2', ],
 		[ 'id' => 3, 'title' => 'Title 3', 'url' => 'http://example.org/e_3', ],
 	];
-
-	private function assertHTMLEquals($expected, $current, $message = null)
-	{
-		$this->assertXmlStringEqualsXmlString(
-			(@DOMDocument::loadHTML($expected, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
-			(@DOMDocument::loadHTML($current,  LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
-			$message
-		);
-	}
 
 	public function testSimpleList()
 	{

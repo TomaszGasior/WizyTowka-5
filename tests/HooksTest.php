@@ -22,12 +22,10 @@ class HooksTest extends PHPUnit\Framework\TestCase
 		WizyTowka\Hooks::addAction('exampleAction', $action3);
 		WizyTowka\Hooks::addAction('exampleAction', $action1);
 
-		ob_start();
 		WizyTowka\Hooks::runAction('exampleAction', $randomText);
-		$output = ob_get_clean();
 
 		$expected = "Function2:$randomText\nFunction1:$randomText";
-		$this->assertEquals($output, $expected);
+		$this->expectOutputString($expected);
 	}
 
 	public function testApplyFilter()
@@ -52,20 +50,23 @@ class HooksTest extends PHPUnit\Framework\TestCase
 		WizyTowka\Hooks::addFilter('exampleFilter', $filter2);
 		WizyTowka\Hooks::addFilter('exampleFilter', $filter1);
 
-		$returnedText = WizyTowka\Hooks::applyFilter('exampleFilter', $randomText);
-
+		$current  = WizyTowka\Hooks::applyFilter('exampleFilter', $randomText);
 		$expected = $filter1($filter2($filter3($randomText)));
-		$this->assertEquals($returnedText, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testRemoveAction()
 	{
-		WizyTowka\Hooks::addAction('secondExampleAction', 'strrev');
-		WizyTowka\Hooks::removeAction('secondExampleAction', 'strrev');
+		$function = function(){
+			echo 'I should not be called!';
+		};
 
-		$actionsArray = (new ReflectionClass('WizyTowka\Hooks'))->getStaticProperties()['_actions'];
+		WizyTowka\Hooks::addAction('secondExampleAction', $function);
+		WizyTowka\Hooks::removeAction('secondExampleAction', $function);
 
-		$this->assertEmpty($actionsArray['secondExampleAction']);
+		WizyTowka\Hooks::runAction('secondExampleAction');
+
+		$this->expectOutputString('');
 	}
 
 	/**

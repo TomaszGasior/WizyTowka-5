@@ -8,6 +8,7 @@ class HTMLTemplateTest extends PHPUnit\Framework\TestCase
 	static private $_exampleTemplateName = 'exampleTemplate';
 	static private $_exampleTemplateFile = 'exampleTemplate.php';
 	static private $_exampleTemplatePath = '.';
+
 	static private $_exampleTemplateCode = <<< 'EOL'
 <!doctype html>
 <meta charset="utf-8">
@@ -15,6 +16,7 @@ class HTMLTemplateTest extends PHPUnit\Framework\TestCase
 <h1><?= $header ?></h1>
 <p><?= $content ?></p>
 EOL;
+
 	static private $_expectedOutput = <<< 'EOL'
 <!doctype html>
 <meta charset="utf-8">
@@ -22,6 +24,7 @@ EOL;
 <h1>Header of page</h1>
 <p>Content of page</p>
 EOL;
+
 	static private $_exampleVariables = [
 		'title' => 'Example title',
 		'header' => 'Header of page',
@@ -35,13 +38,11 @@ EOL;
 
 	static public function tearDownAfterClass()
 	{
-		unlink(self::$_exampleTemplateFile);
+		@unlink(self::$_exampleTemplateFile);
 	}
 
 	public function testRenderWithLocalName()
 	{
-		$this->expectOutputString(self::$_expectedOutput);
-
 		$object = new WizyTowka\HTMLTemplate;
 		$object->setTemplatePath('.');
 
@@ -50,12 +51,12 @@ EOL;
 		}
 
 		$object->render(self::$_exampleTemplateName);
+
+		$this->expectOutputString(self::$_expectedOutput);
 	}
 
 	public function testRenderWithGlobalName()
 	{
-		$this->expectOutputString(self::$_expectedOutput);
-
 		$object = new WizyTowka\HTMLTemplate;
 		$object->setTemplate(self::$_exampleTemplateName);
 		$object->setTemplatePath('.');
@@ -65,12 +66,12 @@ EOL;
 		}
 
 		$object->render();
+
+		$this->expectOutputString(self::$_expectedOutput);
 	}
 
 	public function testRenderWithGlobalNameInConstructor()
 	{
-		$this->expectOutputString(self::$_expectedOutput);
-
 		$object = new WizyTowka\HTMLTemplate(self::$_exampleTemplateName, '.');
 
 		foreach (self::$_exampleVariables as $variable => $value) {
@@ -78,12 +79,12 @@ EOL;
 		}
 
 		$object->render();
+
+		$this->expectOutputString(self::$_expectedOutput);
 	}
 
 	public function testRenderWithOverwrittenName()
 	{
-		$this->expectOutputString(self::$_expectedOutput);
-
 		$object = new WizyTowka\HTMLTemplate('nonexistentTemplate', '.');
 
 		foreach (self::$_exampleVariables as $variable => $value) {
@@ -91,6 +92,8 @@ EOL;
 		}
 
 		$object->render(self::$_exampleTemplateName);
+
+		$this->expectOutputString(self::$_expectedOutput);
 	}
 
 	/**

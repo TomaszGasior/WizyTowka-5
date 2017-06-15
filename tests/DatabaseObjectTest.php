@@ -14,9 +14,20 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		// Connect to SQLite database in memory. Prepare database structure and content.
 		WizyTowka\Database::connect('sqlite', ':memory:');
 		WizyTowka\Database::executeSQL('
-			CREATE TABLE exampleTable (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, column1 INTEGER, column2 TEXT);
-			CREATE TABLE exampleTableJSON (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, dataJSON TEXT);
-			CREATE TABLE exampleTableTime (primaryKey INTEGER PRIMARY KEY AUTOINCREMENT, updatedAt INTEGER, insertedAt INTEGER);
+			CREATE TABLE exampleTable (
+				primaryKey INTEGER PRIMARY KEY AUTOINCREMENT,
+				column1 INTEGER,
+				column2 TEXT
+			);
+			CREATE TABLE exampleTableJSON (
+				primaryKey INTEGER PRIMARY KEY AUTOINCREMENT,
+				dataJSON TEXT
+			);
+			CREATE TABLE exampleTableTime (
+				primaryKey INTEGER PRIMARY KEY AUTOINCREMENT,
+				updatedAt INTEGER,
+				insertedAt INTEGER
+			);
 			INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");
 		');
 
@@ -82,7 +93,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 			['primaryKey' => '1', 'column1' => '100', 'column2' => 'hundred'],
 			['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'],
 		];
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testGetById()
@@ -91,7 +102,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'];
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testSaveInsert()
@@ -105,7 +116,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '3', 'column1' => '10', 'column2' => 'ten'];
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testSaveUpdate()
@@ -119,7 +130,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '1', 'column1' => '1024', 'column2' => 'one thousand twenty four'];
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testDelete()
@@ -137,7 +148,8 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$originalObject = self::$_exampleClass::getById(2);
 		$clonedObject   = clone $originalObject;
 
-		$this->assertNull($clonedObject->primaryKey); // Cloned object should be treated as newly created, primary key field should be empty.
+		// Cloned object should be treated as newly created, primary key field should be empty.
+		$this->assertNull($clonedObject->primaryKey);
 
 		$clonedObject->save();
 
@@ -145,7 +157,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$current  = $this->_convertObjectToArray($object);
 		$expected = ['primaryKey' => '4', 'column1' => '1000', 'column2' => 'thousand'];
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testJSONEncoding()
@@ -164,14 +176,14 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$newObject->save();
 
 		$expected = (object)$exampleData;
-		$current = $newObject->dataJSON;
-		$this->assertEquals($current, $expected);
+		$current  = $newObject->dataJSON;
+		$this->assertEquals($expected, $current);
 
 		$object = self::$_exampleClassJSON::getById($newObject->primaryKey);
 
 		$expected = (object)$exampleData;
-		$current = $object->dataJSON;
-		$this->assertEquals($current, $expected);
+		$current  = $object->dataJSON;
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testTimeAtInsert()
@@ -180,13 +192,13 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$newObject->save();
 
 		$expected = time();
-		$current = $newObject->insertedAt;
-		$this->assertEquals($current, $expected);
+		$current  = $newObject->insertedAt;
+		$this->assertEquals($expected, $current);
 
 		$object = self::$_exampleClassTime::getById(1);
 
 		$current = $object->insertedAt;
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testTimeAtUpdate()
@@ -195,13 +207,13 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$editedObject->save();
 
 		$expected = time();
-		$current = $editedObject->updatedAt;
-		$this->assertEquals($current, $expected);
+		$current  = $editedObject->updatedAt;
+		$this->assertEquals($expected, $current);
 
-		$object1 = self::$_exampleClassTime::getById(1);
+		$object = self::$_exampleClassTime::getById(1);
 
-		$current = $object1->updatedAt;
-		$this->assertEquals($current, $expected);
+		$current = $object->updatedAt;
+		$this->assertEquals($expected, $current);
 	}
 
 	/**
@@ -211,6 +223,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	public function testDoNotEditPrimaryKey()
 	{
 		$object = new self::$_exampleClass;
+
 		$object->primaryKey = 1;
 	}
 }

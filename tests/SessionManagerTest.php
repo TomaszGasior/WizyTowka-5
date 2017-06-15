@@ -3,92 +3,79 @@
 /**
 * WizyTówka 5 — unit test
 */
-namespace WizyTowka
+include_once 'workarounds.php';
+// Workarounds: overwritten setcookie() PHP function.
+
+class SessionManagerTest extends PHPUnit\Framework\TestCase
 {
-	function setcookie($name, $value, $expire)
+	static private $_sessionsConfigFile = WizyTowka\CONFIG_DIR . '/sessions.conf';
+
+	static public function setUpBeforeClass()
 	{
-		\SessionManagerTest::$_lastFakeCookie = compact('name', 'value', 'expire');
+		// Prepare session configuration file for test only.
+		@rename(self::$_sessionsConfigFile, self::$_sessionsConfigFile.'.bak');
+		WizyTowka\ConfigurationFile::createNew(self::$_sessionsConfigFile);
+
+		// Run user session manager.
+		WizyTowka\SessionManager::setup();
 	}
-	// Dirty hack. It is needed to check whether HTTP cookie is created properly, but cookies do not work in CLI scripts.
-	// This function overwrites built-in PHP setcookie() in CMS namespace and puts information about cookie in test class.
-}
-namespace
-{
-	class SessionManagerTest extends PHPUnit\Framework\TestCase
+
+	static public function tearDownAfterClass()
 	{
-		static private $_sessionsConfigFile;
-		static public $_lastFakeCookie;  // Fake setcookie() function puts cookie data here.
+		@unlink(self::$_sessionsConfigFile);
+		@rename(self::$_sessionsConfigFile.'.bak', self::$_sessionsConfigFile);
+	}
 
-		static public function setUpBeforeClass()
-		{
-			// Prepare session configuration file for test only.
-			self::$_sessionsConfigFile = WizyTowka\CONFIG_DIR . '/sessions.conf';
-			if (file_exists(self::$_sessionsConfigFile)) {
-				rename(self::$_sessionsConfigFile, self::$_sessionsConfigFile.'.bak');
-			}
-			WizyTowka\ConfigurationFile::createNew(self::$_sessionsConfigFile);
+	public function testLogIn()
+	{
+		$exampleUserId = 678;
+		$exampleSessionDuration = 3600;
 
-			// Set fake IP address in $_SERVER array.
-			$_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+		WizyTowka\SessionManager::logIn($exampleUserId, $exampleSessionDuration);
 
-			// Run user session manager.
-			WizyTowka\SessionManager::setup();
-		}
+		$sessionId          = workaroundsData()->lastCookie['value'];  // See workarounds.php.
+		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
+		$cookieExpireTime   = workaroundsData()->lastCookie['expire'];  // See workarounds.php.
 
-		static public function tearDownAfterClass()
-		{
-			if (file_exists(self::$_sessionsConfigFile)) {
-				unlink(self::$_sessionsConfigFile);
-			}
-			if (file_exists(self::$_sessionsConfigFile.'.bak')) {
-				rename(self::$_sessionsConfigFile.'.bak', self::$_sessionsConfigFile);
-			}
-		}
+		// Session data in sessions configuration file.
+		$this->assertTrue(isset($sessionsConfigFile->$sessionId));
 
-		public function setUp()
-		{
-			// Restore cookie created by fake setcookie() function declarated on the top of this file.
-			if (self::$_lastFakeCookie) {
-				$_COOKIE[self::$_lastFakeCookie['name']] = self::$_lastFakeCookie['value'];
-			}
-		}
+		// Session ID in session data from configuration file.
+		$current  = $sessionsConfigFile->$sessionId['userId'];
+		$expected = $exampleUserId;
+		$this->assertEquals($expected, $current);
 
-		public function testLogIn()
-		{
-			$userId = 678;
-			$sessionDuration = 3600;  // Seconds.
+		// Expire time of session cookie.
+		$current  = $cookieExpireTime;
+		$expected = time()+$exampleSessionDuration;
+		$this->assertEquals($expected, $current);
 
-			WizyTowka\SessionManager::logIn($userId, $sessionDuration);
-			$time = time();
+		// Current data in SessionManager trait.
+		$this->assertTrue(
+			WizyTowka\SessionManager::isUserLoggedIn()
+		);
+		$current  = WizyTowka\SessionManager::getUserId();
+		$expected = $exampleUserId;
+		$this->assertEquals($expected, $current);
+	}
 
-			$cookieExpireTime = self::$_lastFakeCookie['expire'];
-			$this->assertEquals($time+$sessionDuration, $cookieExpireTime);
+	public function testLogOut()
+	{
+		$sessionId = workaroundsData()->lastCookie['value'];  // From previous setcookie() call.
 
-			$sessionId = self::$_lastFakeCookie['value'];
-			$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
-			$this->assertTrue(isset($sessionsConfigFile->$sessionId));
-			$this->assertEquals($userId, $sessionsConfigFile->$sessionId['userId']);
+		WizyTowka\SessionManager::logOut();
 
-			$this->assertTrue(WizyTowka\SessionManager::isUserLoggedIn());
+		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
+		$cookieExpireTime   = workaroundsData()->lastCookie['expire'];  // See workarounds.php.
 
-			$this->assertEquals($userId, WizyTowka\SessionManager::getUserId());
-		}
+		// Session data in sessions configuration file.
+		$this->assertFalse(isset($sessionsConfigFile->$sessionId));
 
-		public function testLogOut()
-		{
-			$sessionId = self::$_lastFakeCookie['value']; // From previous setcookie() call.
+		// Expire time of session cookie.
+		$this->assertTrue($cookieExpireTime < time());
 
-			WizyTowka\SessionManager::logOut();
-
-			$cookieExpireTime = self::$_lastFakeCookie['expire'];
-			$this->assertTrue($cookieExpireTime < time());
-
-			$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
-			$this->assertFalse(isset($sessionsConfigFile->$sessionId));
-
-			$this->assertFalse(WizyTowka\SessionManager::isUserLoggedIn());
-
-			$this->assertFalse(WizyTowka\SessionManager::getUserId());
-		}
+		// Current data in SessionManager trait.
+		$this->assertFalse(WizyTowka\SessionManager::isUserLoggedIn());
+		$this->assertFalse(WizyTowka\SessionManager::getUserId());
 	}
 }

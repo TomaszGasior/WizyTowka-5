@@ -25,7 +25,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 
 		$current  = file_get_contents(self::$_exampleFilename);
 		$expected = json_encode([]);
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testWrite()
@@ -34,11 +34,11 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 		foreach (self::$_exampleData as $key => $value) {
 			$config->$key = $value;
 		}
-		unset($config); // We must run destructor to save config changes.
+		unset($config); // Destructor of ConfigurationFile class saves config changes.
 
-		$current  = json_decode(file_get_contents(self::$_exampleFilename), true);  // Use associative array.
+		$current  = json_decode(file_get_contents(self::$_exampleFilename), true);  // "true" means associative array.
 		$expected = self::$_exampleData;
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	/**
@@ -49,9 +49,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 	{
 		$config = new WizyTowka\ConfigurationFile(self::$_exampleFilename, true);
 
-		foreach (self::$_exampleData as $key => $value) {
-			$config->$key = $value;
-		}
+		$config->setting1 = '';
 	}
 
 	public function testRead()
@@ -61,7 +59,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 		foreach ($config as $key => $value) {
 			$current  = $value;
 			$expected = self::$_exampleData[$key];
-			$this->assertEquals($current, $expected);
+			$this->assertEquals($expected, $current);
 		}
 	}
 
@@ -71,7 +69,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 
 		$current  = count($config);
 		$expected = 5;
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 
 	public function testReferences()
@@ -84,10 +82,10 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 
 		$current  = $config_secondInstance->setting1;
 		$expected = $config_firstInstance->setting1;
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 
 		$current  = $config_firstInstance->setting2;
 		$expected = $config_secondInstance->setting2;
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 }

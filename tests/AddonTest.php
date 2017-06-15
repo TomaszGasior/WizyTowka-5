@@ -5,27 +5,29 @@
 */
 class AddonTest extends PHPUnit\Framework\TestCase
 {
+	static private $_addonsDirectorySystem = WizyTowka\SYSTEM_DIR . '/addons/exampleAddonType';
+	static private $_addonsDirectoryData   = WizyTowka\DATA_DIR   . '/addons/exampleAddonType';
+
+	static private $_exampleAddonsSubdirs = [];
 	static private $_exampleAddonType;
-	static private $_addonDirectorySystem;
-	static private $_addonDirectoryData;
 
 	static public function setUpBeforeClass()
 	{
 		// Example addons directories.
-		self::$_addonDirectorySystem = WizyTowka\SYSTEM_DIR . '/addons/exampleAddonType';
-		self::$_addonDirectoryData   = WizyTowka\DATA_DIR   . '/addons/exampleAddonType';
-		@mkdir(self::$_addonDirectoryData);
-		@mkdir(self::$_addonDirectorySystem);
+		@mkdir(self::$_addonsDirectoryData);
+		@mkdir(self::$_addonsDirectorySystem);
 
-		// Example addons.
-		@mkdir(self::$_addonDirectoryData   . '/dataAddon');
-		WizyTowka\ConfigurationFile::createNew(self::$_addonDirectoryData   . '/dataAddon/addon.conf');
-		@mkdir(self::$_addonDirectorySystem . '/systemAddon');
-		WizyTowka\ConfigurationFile::createNew(self::$_addonDirectorySystem . '/systemAddon/addon.conf');
-		@mkdir(self::$_addonDirectoryData   . '/nameCollision');
-		WizyTowka\ConfigurationFile::createNew(self::$_addonDirectoryData   . '/nameCollision/addon.conf');
-		@mkdir(self::$_addonDirectorySystem . '/nameCollision');
-		WizyTowka\ConfigurationFile::createNew(self::$_addonDirectorySystem . '/nameCollision/addon.conf');
+		// Example addons subdirectories and "addon.conf" files.
+		self::$_exampleAddonsSubdirs = [
+			self::$_addonsDirectoryData   . '/dataAddon',
+			self::$_addonsDirectorySystem . '/systemAddon',
+			self::$_addonsDirectoryData   . '/nameCollision',
+			self::$_addonsDirectorySystem . '/nameCollision',
+		];
+		foreach (self::$_exampleAddonsSubdirs as $directory) {
+			@mkdir($directory);
+			WizyTowka\ConfigurationFile::createNew($directory . '/addon.conf');
+		}
 
 		// Example addon class that extends Addon class. PHP 7 syntax.
 		self::$_exampleAddonType = new class() extends WizyTowka\Addon
@@ -33,24 +35,39 @@ class AddonTest extends PHPUnit\Framework\TestCase
 			static protected $_addonsSubdir = 'exampleAddonType';
 
 			public function __construct() {}
-			// Oryginal Addon class has private constructor. To create anonymous class costructor must be public.
+			// Addon class has private constructor. Costructor must be public to create anonymous class.
 		};
+	}
+
+	static public function tearDownAfterClass()
+	{
+		foreach (self::$_exampleAddonsSubdirs as $directory) {
+			@unlink($directory . '/addon.conf');
+			@rmdir($directory);
+		}
+
+		@rmdir(self::$_addonsDirectoryData);
+		@rmdir(self::$_addonsDirectorySystem);
 	}
 
 	public function testGetByName()
 	{
-		$dataAddon = self::$_exampleAddonType::getByName('dataAddon');
+		$dataAddon     = self::$_exampleAddonType::getByName('dataAddon');
+		$systemAddon   = self::$_exampleAddonType::getByName('systemAddon');
+		$nameCollision = self::$_exampleAddonType::getByName('nameCollision');
+
+		// Addon from user addons directory.
 		$this->assertInstanceOf(get_class(self::$_exampleAddonType), $dataAddon);
 		$this->assertEquals('dataAddon', $dataAddon->getName());
 		$this->assertTrue($dataAddon->isFromUser());
 
-		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
+		// Addon from system addons directory.
 		$this->assertInstanceOf(get_class(self::$_exampleAddonType), $systemAddon);
 		$this->assertEquals('systemAddon', $systemAddon->getName());
 		$this->assertTrue($systemAddon->isFromSystem());
 
-		// If the same name is in data addons and system addons, data addon has higher priority.
-		$nameCollision = self::$_exampleAddonType::getByName('nameCollision');
+		// Name collision: addon "nameCollision" exists in user addons directory and in system addons directory.
+		// If the same name is in user addons and system addons, user addon has higher priority.
 		$this->assertInstanceOf(get_class(self::$_exampleAddonType), $nameCollision);
 		$this->assertEquals('nameCollision', $nameCollision->getName());
 		$this->assertFalse($nameCollision->isFromSystem());
@@ -59,28 +76,12 @@ class AddonTest extends PHPUnit\Framework\TestCase
 
 	public function testGetAll()
 	{
+		$current = self::$_exampleAddonType::getAll();
 		$expected = [
 			self::$_exampleAddonType::getByName('dataAddon'),
 			self::$_exampleAddonType::getByName('nameCollision'),
 			self::$_exampleAddonType::getByName('systemAddon'),
 		];
-		$current = self::$_exampleAddonType::getAll();
-
 		$this->assertEquals($expected, $current);
-	}
-
-	static public function tearDownAfterClass()
-	{
-		@unlink(self::$_addonDirectoryData   . '/dataAddon/addon.conf');
-		@rmdir( self::$_addonDirectoryData   . '/dataAddon');
-		@unlink(self::$_addonDirectorySystem . '/systemAddon/addon.conf');
-		@rmdir( self::$_addonDirectorySystem . '/systemAddon');
-		@unlink(self::$_addonDirectoryData   . '/nameCollision/addon.conf');
-		@rmdir( self::$_addonDirectoryData   . '/nameCollision');
-		@unlink(self::$_addonDirectorySystem . '/nameCollision/addon.conf');
-		@rmdir( self::$_addonDirectorySystem . '/nameCollision');
-
-		@rmdir(self::$_addonDirectoryData);
-		@rmdir(self::$_addonDirectorySystem);
 	}
 }

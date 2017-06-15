@@ -5,13 +5,11 @@
 */
 class DatabaseTest extends PHPUnit\Framework\TestCase
 {
-	static private $_databaseFile = 'exampleSQLiteDatabase.db';
+	static private $_exampleDatabaseFile = 'exampleSQLiteDatabase.db';
 
 	static public function tearDownAfterClass()
 	{
-		if (file_exists(self::$_databaseFile)) {
-			unlink(self::$_databaseFile);
-		}
+		@unlink(self::$_exampleDatabaseFile);
 
 		WizyTowka\Database::disconnect();
 	}
@@ -27,16 +25,14 @@ class DatabaseTest extends PHPUnit\Framework\TestCase
 
 	public function testConnect()
 	{
-		WizyTowka\Database::connect('sqlite', self::$_databaseFile);
+		WizyTowka\Database::connect('sqlite', self::$_exampleDatabaseFile);
 
-		$this->assertTrue(file_exists(self::$_databaseFile));
+		$this->assertFileExists(self::$_exampleDatabaseFile);
 	}
 
 	public function testPDOAfterConnect()
 	{
-		$check = WizyTowka\Database::pdo() instanceof \PDO;
-
-		$this->assertTrue($check);
+		$this->assertInstanceOf(\PDO::class, WizyTowka\Database::pdo());
 	}
 
 	public function testExecuteSQL()
@@ -45,7 +41,6 @@ class DatabaseTest extends PHPUnit\Framework\TestCase
 
 		$current  = WizyTowka\Database::pdo()->query('SELECT column1 FROM exampleTable')->fetchColumn();
 		$expected = '45';
-
-		$this->assertEquals($current, $expected);
+		$this->assertEquals($expected, $current);
 	}
 }

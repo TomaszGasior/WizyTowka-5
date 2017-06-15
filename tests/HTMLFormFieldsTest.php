@@ -3,17 +3,11 @@
 /**
 * WizyTówka 5 — unit test
 */
-class HTMLFormFieldsTest extends PHPUnit\Framework\TestCase
-{
-	private function assertHTMLEquals($expected, $current, $message = null)
-	{
-		$this->assertXmlStringEqualsXmlString(
-			(@DOMDocument::loadHTML($expected, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
-			(@DOMDocument::loadHTML($current,  LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
-			$message
-		);
-	}
+include_once 'workarounds.php';
+// Workarounds: HTMLTestCase::assertHTMLEquals().
 
+class HTMLFormFieldsTest extends PHPUnit\Framework\HTMLTestCase
+{
 	public function testText()
 	{
 		$object = new WizyTowka\HTMLFormFields;

@@ -17,8 +17,9 @@ class AutoloaderTest extends PHPUnit\Framework\TestCase
 		$this->assertTrue(
 			WizyTowka\Autoloader::addNamespace(self::$_exampleNamespace, self::$_examplePath)
 		);
-		$this->assertFalse(  // addNamespace() returns false, if namespace is already registered.
+		$this->assertFalse(
 			WizyTowka\Autoloader::addNamespace(self::$_exampleNamespace, self::$_examplePath)
+			// addNamespace() returns false, if namespace is already registered.
 		);
 
 		$this->assertTrue(
