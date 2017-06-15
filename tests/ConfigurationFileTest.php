@@ -12,31 +12,31 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 		'setting4' => 'value4',
 		'setting5' => 'value5',
 	);
-	static private $_filename = 'example.conf';
+	static private $_exampleFilename = 'example.conf';
 
 	static public function tearDownAfterClass()
 	{
-		@unlink(self::$_filename);
+		@unlink(self::$_exampleFilename);
 	}
 
 	public function testCreateNew()
 	{
-		WizyTowka\ConfigurationFile::createNew(self::$_filename);
+		WizyTowka\ConfigurationFile::createNew(self::$_exampleFilename);
 
-		$current  = file_get_contents(self::$_filename);
+		$current  = file_get_contents(self::$_exampleFilename);
 		$expected = json_encode([]);
 		$this->assertEquals($current, $expected);
 	}
 
 	public function testWrite()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_filename);
+		$config = new WizyTowka\ConfigurationFile(self::$_exampleFilename);
 		foreach (self::$_exampleData as $key => $value) {
 			$config->$key = $value;
 		}
 		unset($config); // We must run destructor to save config changes.
 
-		$current  = json_decode(file_get_contents(self::$_filename), true);  // Use associative array.
+		$current  = json_decode(file_get_contents(self::$_exampleFilename), true);  // Use associative array.
 		$expected = self::$_exampleData;
 		$this->assertEquals($current, $expected);
 	}
@@ -47,7 +47,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 	 */
 	public function testWriteWhenReadOnly()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_filename, true);
+		$config = new WizyTowka\ConfigurationFile(self::$_exampleFilename, true);
 
 		foreach (self::$_exampleData as $key => $value) {
 			$config->$key = $value;
@@ -56,7 +56,7 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 
 	public function testRead()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_filename);
+		$config = new WizyTowka\ConfigurationFile(self::$_exampleFilename);
 
 		foreach ($config as $key => $value) {
 			$current  = $value;
@@ -67,10 +67,27 @@ class ConfigurationFileTest extends PHPUnit\Framework\TestCase
 
 	public function testCountable()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_filename);
+		$config = new WizyTowka\ConfigurationFile(self::$_exampleFilename);
 
 		$current  = count($config);
 		$expected = 5;
+		$this->assertEquals($current, $expected);
+	}
+
+	public function testReferences()
+	{
+		$config_firstInstance  = new WizyTowka\ConfigurationFile(self::$_exampleFilename);
+		$config_secondInstance = new WizyTowka\ConfigurationFile(self::$_exampleFilename);
+
+		$config_firstInstance->setting1  = strrev(self::$_exampleData['setting1']);
+		$config_secondInstance->setting2 = strtolower(self::$_exampleData['setting2']);
+
+		$current  = $config_secondInstance->setting1;
+		$expected = $config_firstInstance->setting1;
+		$this->assertEquals($current, $expected);
+
+		$current  = $config_firstInstance->setting2;
+		$expected = $config_secondInstance->setting2;
 		$this->assertEquals($current, $expected);
 	}
 }

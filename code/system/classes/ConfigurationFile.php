@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 class ConfigurationFile implements \IteratorAggregate, \Countable
 {
-	static private $_modifiedFiles = [];
+	static private $_configurationFiles = [];
 
 	private $_filename;
 	private $_configuration = [];
@@ -19,28 +19,33 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 	{
 		$this->_filename = $filename;
 		$this->_readOnly = (boolean)$readOnly;
-		$this->_configuration = json_decode(file_get_contents($filename), true);  // Associative array.
 
-		if (json_last_error() != JSON_ERROR_NONE) {
-			$this->_configuration = [];
-			throw ConfigurationFileException::JSONError($filename);
+		$filenameHash = md5(($filename[0] == '/') ? $filename : realpath($filename));
+		// It is a hash of full path of configuration file.
+		// We should avoid realpath() when it is possible to limit operations on file system.
+
+		if (!isset(self::$_configurationFiles[$filenameHash])) {
+			$configuration = json_decode(file_get_contents($filename), true);  // "true" means associative array.
+
+			if (json_last_error() != JSON_ERROR_NONE) {
+				throw ConfigurationFileException::JSONError($filename);
+			}
+			if (!is_array($configuration)) {
+				throw ConfigurationFileException::invalidArray($filename);
+			}
+
+			self::$_configurationFiles[$filenameHash] = $configuration;
 		}
-		if (!is_array($this->_configuration)) {
-			$this->_configuration = [];
-			throw ConfigurationFileException::invalidArray($filename);
-		}
+
+		// If there is more than one instance of ConfigurationFile class that opens the same file,
+		// configuration changes will not be overwritten and each instance of ConfigurationFile class
+		// will use current configuration without reading file from file system more than once.
+		$this->_configuration =& self::$_configurationFiles[$filenameHash];
 	}
 
 	public function __destruct()
 	{
 		if ($this->_wasChanged) {
-			// If there is more than one instance of ConfigurationFile class that makes changes in  the same file,
-			// configuration changes could be overwritten. Code below prevents from it.
-			if (in_array($this->_filename, self::$_modifiedFiles)) {
-				throw ConfigurationFileException::modificationCollision($this->_filename, self::class);
-			}
-			self::$_modifiedFiles[] = $this->_filename;
-
 			file_put_contents(
 				$this->_filename,
 				json_encode($this->_configuration, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
@@ -116,9 +121,5 @@ class ConfigurationFileException extends Exception
 	static public function writingWhenReadOnly($filename)
 	{
 		return new self('Configuration file ' . $filename . ' is opened as read only.', 3);
-	}
-	static public function modificationCollision($filename, $class)
-	{
-		return new self('Configuration file ' . $filename . ' was modified by more than one instance of ' . $class . ' class.', 4);
 	}
 }

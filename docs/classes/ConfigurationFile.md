@@ -5,6 +5,8 @@ Klasa gromadząca różne konfiguracje przechowywane w plikach JSON.
 
 Implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umożliwiając operowanie na poszczególnych ustawieniach jak na polach obiektu. Implementuje też interfejsy `Countable` i `IteratorAggregate`, by umożliwiać iterowanie po poszczególnych ustawieniach w pętli oraz ich policzenie. Implementuje również metodę `__debugInfo()` dla funkcji `var_dump()`.
 
+Jeśli zostanie utworzona więcej niż jedna instancja klasy operującej na tym samym pliku, każda z instancji będzie mieć dostęp do najnowszej zawartości pliku konfiguracyjnego — wprowadzane zmiany są synchronizowane. Odczyt z systemu plików zostanie wykonany tylko przy tworzeniu pierwszej instancji.
+
 ## `__construct($filename, $readOnly = false)`
 
 Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
@@ -18,8 +20,6 @@ Plik JSON powinien zawierać tablicę wartości, inaczej przy odczycie zostanie 
 ## `__destruct()`
 
 W destruktorze następuje automatyczny zapis pliku konfiguracyjnego JSON wyłącznie, gdy jakiekolwiek ustawienie zostanie zmodyfikowane bądź usunięte.
-
-Uwaga! Jeżeli zostanie utworzona więcej niż jedna instancja klasy `ConfigurationFile` wprowadzająca zmiany w tym samym pliku konfiguracyjnym, zostanie rzucony wyjątek `ConfigurationFileException` #4, a zmiany drugiej i kolejnych instancji — porzucone.
 
 ## *static* `createNew($filename)`
 
