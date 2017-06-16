@@ -17,7 +17,7 @@ Ekwiwalent dla metody `output()` (z klasy `Controller`) dla klas dziedziczących
 
 ## *static* `URL($target, $arguments = [])`
 
-Zwraca adres URL kierujący do strony panelu administracyjnego określonej w argumencie `$target`. Argument `$arguments` określa parametry dodane do query stringa odnośnika.
+Zwraca adres URL kierujący do strony panelu administracyjnego określonej w argumencie `$target`. Jeżeli argument `$target` ma wartość `null`, adres URL kieruje do domyślnej strony panelu. Argument `$arguments` określa parametry dodane do query stringa odnośnika.
 
 Nie należy określać w query stringu argumentu o kluczu `c`, gdyż nazwa ta jest używana wewnętrznie przez panel administracyjny. W wypadku takiego użycia, zostanie rzucony wyjątek `ControllerException` #2.
 

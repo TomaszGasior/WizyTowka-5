@@ -114,6 +114,10 @@ abstract class AdminPanel extends Controller
 
 	static public function URL($target, array $arguments = [])
 	{
+		if ($target == null) {
+			$target = Settings::get('adminPanelDefaultPage');
+		}
+
 		if (isset($arguments['c'])) {
 			throw ControllerException::unallowedKeyInURLArgument('c');
 		}

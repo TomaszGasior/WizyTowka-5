@@ -15,7 +15,7 @@ class Login extends WT\AdminPanel
 	protected function _prepare()
 	{
 		if (WT\SessionManager::isUserLoggedIn()) {
-			$this->_redirect(WT\AdminPanel::URL('pages'));
+			$this->_redirect(WT\AdminPanel::URL(null));
 		}
 	}
 
@@ -32,7 +32,7 @@ class Login extends WT\AdminPanel
 
 		if ($user and $user->checkPassword($_POST['password'])) {
 			WT\SessionManager::logIn($user->id, 3600);
-			$this->_redirect(WT\AdminPanel::URL('pages'));
+			$this->_redirect(WT\AdminPanel::URL(null));
 		}
 		else {
 			$this->_apMessage = 'Dane logowania są niepoprawne.';
