@@ -7,14 +7,11 @@ Posiada następujące pola:
 
 - `id` — klucz podstawowy,
 - `slug` — unikalna nazwa uproszczona podstrony,
-- `contentType` — nazwa typu zawartości,
 - `title` — tytuł podstrony,
 - `titleHead` — tytuł w nagłówku `<head>` witryny,
 - `description` — opis w znaczniku meta `description`,
 - `isDraft` — status podstrony zapisany w formie liczby całkowitej: jeśli `0` — publiczna, jeśli `1` — szkic,
-- `contents` — treść witryny (obiekt zakodowany w formacie JSON),
-- `settings` — ustawienia typu zawartości (obiekt zakodowany w formacie JSON),
-- `userId` — identyfikator użytkownika, który stworzył podstronę,
+- `userId` — identyfikator użytkownika, który stworzył podstronę; jeśli `NULL` — użytkownik został usunięty,
 - `updatedTime` — data i czas ostatniej aktualizacji podstrony w formie uniksowego znacznika czasu,
 - `createdTime` — data i czas utworzenia podstrony w formie uniksowego znacznika czasu.
 

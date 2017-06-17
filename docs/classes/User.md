@@ -8,6 +8,7 @@ Posiada następujące pola:
 - `id` — klucz podstawowy,
 - `name` — unikalna nazwa użytkownika,
 - `password` — zahaszowane hasło użytkownika,
+- `permissions` — poziom uprawnień użytkownika zapisany w formie liczby całkowitej będącej sumą wartości stałych określających uprawnienia (patrz niżej),
 - `createdTime` — data i czas utworzenia użytkownika w formie uniksowego znacznika czasu.
 
 Sugeruje się nie modyfikować bezpośrednio pola `password`. Zamiast tego należy korzystać z metod `setPassword()` oraz `checkPassword()`.

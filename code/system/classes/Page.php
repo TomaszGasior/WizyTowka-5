@@ -11,20 +11,13 @@ class Page extends DatabaseObject
 	static protected $_tableName = 'Pages';
 	static protected $_tableColumns = [
 		'slug',
-		'contentType',
 		'title',
 		'titleHead',
 		'description',
 		'isDraft',
-		'contents',
-		'settings',
 		'userId',
 		'updatedTime',
 		'createdTime',
-	];
-	static protected $_tableColumnsJSON = [
-		'contents',
-		'settings',
 	];
 	static protected $_tableColumnsTimeAtInsert = [
 		'updatedTime',

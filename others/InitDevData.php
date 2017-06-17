@@ -10,6 +10,7 @@ namespace WizyTowka;
 const DATA_DIR   = __DIR__ . '/../code/data';
 const CONFIG_DIR = DATA_DIR . '/config';
 const SYSTEM_DIR = __DIR__ . '/../code/system';
+
 include SYSTEM_DIR . '/init.php';
 
 
@@ -63,6 +64,7 @@ unlink('sqliteSchema.sql');
 foreach (range(1, 3) as $number) {
 	$user = new User;
 	$user->name = 'user_' . $number;
+	$user->permissions = User::PERM_CREATING_PAGES | User::PERM_SUPER_USER;
 	$user->setPassword($user->name);
 	$user->save();
 }
@@ -71,7 +73,6 @@ foreach (range(1, 3) as $number) {
 foreach (range(1, 5) as $number) {
 	$page = new Page;
 	$page->slug = 'example_' . $number;
-	$page->contentType = '_';
 	$page->title = 'Przykładowa strona #' . $number;
 	$page->isDraft = !($number % 2);
 	$page->userId = 1;
