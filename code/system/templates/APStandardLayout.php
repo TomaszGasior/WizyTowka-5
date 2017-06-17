@@ -8,8 +8,8 @@
 
 <body>
 	<div class="adminPanel">
-		<a class="a11yJumpLink" href="#navigation">Przeskocz do menu</a>
 		<a class="a11yJumpLink" href="#main">Przeskocz do bloku głównego</a>
+		<a class="a11yJumpLink" href="#navigation">Przeskocz do menu</a>
 
 		<header id="header" class="columns">
 			<h1>WizyTówka — panel administracyjny</h1>
@@ -35,7 +35,6 @@
 				<?= $pageTemplate ?>
 			</main>
 		</div>
-
 	</div>
 </body>
 

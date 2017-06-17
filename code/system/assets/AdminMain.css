@@ -18,13 +18,11 @@ html, body {
 html {
 	overflow-y: scroll;
 	cursor: default;
+	padding: 1px 2em;
 
 	color: #000;
 	background: #E1E1E1;
 	font: 16px /1.5 "Lato", "Segoe UI", "Tahoma", sans-serif;
-}
-body {
-	padding: 1px 2em;
 }
 
 a:link, a:visited {
@@ -92,7 +90,7 @@ input, button, textarea, select {
 input[disabled], button[disabled], textarea[disabled], select[disabled] {
 	opacity: 0.7;
 }
-input[disabled]:hover, button[disabled], textarea[disabled]:hover, select[disabled]:hover {
+input[disabled]:hover, button[disabled]:hover, textarea[disabled]:hover, select[disabled]:hover {
 	cursor: not-allowed;
 }
 
@@ -103,7 +101,7 @@ input, textarea, select {
 
 	border: 1px solid #BDBDBD;
 	box-shadow: inset 2px 2px 2px rgba(0,0,0, 0.04);
-	background: #fff;
+	background: #FFF;
 }
 input:focus, textarea:focus, select:focus {
 	border-color: #50BCFF;
@@ -171,7 +169,7 @@ select::-ms-expand {
 }
 @supports (-moz-user-select: none) {
 	select {
-		color: rgba(0,0,0,0);   /* Remove dotted border inside select in Firefox. */
+		color: rgba(0,0,0,0);   /* Removes dotted border inside select in Firefox. */
 		text-shadow: -3px 0 0 #000;
 	}
 }
@@ -186,7 +184,7 @@ button {
 	min-width: 300px;
 
 	background: #009AF9;
-	color: #fff;
+	color: #FFF;
 	font-weight: bold;
 }
 button:hover, button:focus {
@@ -210,7 +208,7 @@ button[disabled] {
 }
 
 
-/* Admin panel and login form common styles. */
+/* Admin panel common styles. */
 
 header#header h1 {
 	line-height: 0;
@@ -222,7 +220,7 @@ header#header h1 {
 	background: #232323 url('WTLogo.svg') no-repeat;   /*@sidebarBackground*/
 }
 
-div.adminPanel, div.loginForm {
+div.adminPanel, div.adminPanelAlternative {
 	margin: 2em auto;
 
 	box-shadow: 0 0 5px rgba(0,0,0, 0.4);
@@ -230,12 +228,12 @@ div.adminPanel, div.loginForm {
 }
 
 
-/* Main container — admin panel. */
+/* Main container — standard layout. */
 
 div.adminPanel {
 	max-width: 1000px;
 }
-div.adminPanel > div {
+div.adminPanel > div.columns {
 	height: 600px;
 }
 
@@ -260,7 +258,7 @@ div.adminPanel a.a11yJumpLink:focus {
 	background: #0078D3;
 	padding: 0.2em 1em;
 	box-shadow: 0 0 2px rgba(0,0,0, 0.4);
-	color: #fff;
+	color: #FFF;
 	font-weight: bold;
 	text-transform: uppercase;
 
@@ -289,7 +287,7 @@ div.adminPanel header#header li a:hover {
 	color: #005BA8;
 	text-shadow: 0 0 3px rgba(0,0,0, 0.1);  /*@systemAnchorHover*/
 }
-div.adminPanel header#header li:first-of-type a {
+div.adminPanel header#header li:first-of-type a {  /* User account anchor. */
 	color: inherit;
 	font-weight: bold;
 }
@@ -328,15 +326,15 @@ nav#navigation a:active {
 }
 
 nav#navigation li.iAdd a {
-	margin-top: 0;
-	width: 1em;
-	white-space: nowrap;
-	overflow-x: hidden;
-
 	float: right;
 	position: relative;
 	top: -2.5em;
 	z-index: 2;
+
+	margin: 0 0 -2.5em;
+	width: 1em;
+	white-space: nowrap;
+	overflow-x: hidden;
 
 	border-left: 1px solid #272727;
 }
@@ -345,18 +343,18 @@ nav#navigation li.iAdd a:before {
 }
 
 
-/* Main container — login form. */
+/* Main container — alternative layout (used in login form). */
 
-div.loginForm {
+div.adminPanelAlternative {
 	max-width: 500px;
 }
 
-div.loginForm header#header h1 {
+div.adminPanelAlternative header#header h1 {
 	background-position: center 26px;
 	padding-bottom: 0.5em;
 }
 
-div.loginForm main header {
+div.adminPanelAlternative main header {
 	margin-top: 1.5em;
 }
 
@@ -418,7 +416,7 @@ main h3 {
 }
 
 
-/* Messages. */
+/* Messages — on the top of page. */
 
 @keyframes messageFading {
 	to {
@@ -453,6 +451,26 @@ div#message.error {
 	background: #C70000;
 	color: #FFFFFF;
 	border-color: #B80000;
+
+	animation: messageFading 0.35s ease-in-out; /* Do not hide error message. */
+}
+
+
+/* Message pages. */
+
+p.messagePage {
+	font-size: 1.7em;
+	padding: 0 1em;
+	text-align: center;
+	font-weight: bold;
+}
+
+p.messagePage > *:before {
+	font-family: 'icomoon_wt' !important;
+
+	font-size: 7em;
+	display: block;
+	font-weight: normal;
 }
 
 
@@ -470,7 +488,7 @@ p.warning:before, p.information:before {
 }
 
 p.warning {
-	background: #fff0ad;
+	background: #FFF0ad;
 	color: #892a00;
 }
 p.warning:before {
@@ -631,12 +649,35 @@ ul.elementsList.tilesView > li > span label:before {
 }
 
 
+/* Special styles — system informations page. */
+
+div.systemVersion {
+	text-align: center;
+	margin: 1.3em 0;
+}
+
+div.systemVersion p {
+	margin: 0;
+	font-size: 1.05em;
+}
+div.systemVersion p:first-child {
+	font-size: 4.1em;
+	font-weight: bold;
+	margin: 0.4em 0;
+}
+div.systemVersion p:last-child {
+	font-weight: bold;
+}
+
+
+
 /* Menu icons from icon font. */
 
 header#header li a:before,
 nav#navigation li a:before,
 ul.elementsList ul li a:before,
-main > header ul li a:before {
+main > header ul li a:before,
+.useIcons > *:before {
 	font-family: 'icomoon_wt' !important;
 	padding-right: 0.5em;
 	vertical-align: -1px;

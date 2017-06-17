@@ -7,7 +7,7 @@
 </head>
 
 <body>
-	<div class="loginForm">
+	<div class="adminPanelAlternative">
 		<header id="header">
 			<h1>WizyTówka — panel administracyjny</h1>
 		</header>
