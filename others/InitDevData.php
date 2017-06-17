@@ -64,7 +64,7 @@ unlink('sqliteSchema.sql');
 foreach (range(1, 3) as $number) {
 	$user = new User;
 	$user->name = 'user_' . $number;
-	$user->permissions = User::PERM_CREATING_PAGES | User::PERM_SUPER_USER;
+	$user->permissions = ($number == 1) ? User::PERM_ALL : User::PERM_CREATING_PAGES;
 	$user->setPassword($user->name);
 	$user->save();
 }
