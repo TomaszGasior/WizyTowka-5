@@ -1,0 +1,1 @@
+<p class="messagePage <?= $CSSClasses ?>"><span><?= $messageText ?></span></p>

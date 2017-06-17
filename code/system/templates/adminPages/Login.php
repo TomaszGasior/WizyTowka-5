@@ -5,5 +5,6 @@
 		->text('Nazwa użytkownika', 'nofilter_name', $lastUsername, ['required'=>true])
 		->password('Hasło', 'nofilter_password', ['required'=>true])
 	?>
-	<button>Zapisz</button>
+
+	<button>Zaloguj się</button>
 </form>
