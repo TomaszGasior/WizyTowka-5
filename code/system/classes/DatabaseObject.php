@@ -49,6 +49,9 @@ abstract class DatabaseObject implements \IteratorAggregate
 			throw DatabaseObjectException::setterJSONColumnNonObject($column);
 		}
 
+		$this->_data[$column];
+		// Prevent from setting non-existent column. If column does not exists, error will be thrown.
+
 		$this->_data[$column] = $value;
 	}
 

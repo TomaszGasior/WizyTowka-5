@@ -13,7 +13,7 @@ abstract class Controller
 		$HTMLFilter = function(array &$array) use (&$HTMLFilter) {
 			$aliases = [];
 			foreach ($array as $key => &$value) {
-				$key = explode('_', $key);
+				$key = explode('_', $key, 2);
 				if ($key[0] != 'nofilter') {
 					is_array($value) ? $HTMLFilter($value) : $value = htmlspecialchars($value);
 				}
