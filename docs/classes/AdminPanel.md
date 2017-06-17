@@ -7,13 +7,13 @@ Klasa umożliwia rejestrowanie z zewnątrz dodatkowych stron panelu administracy
 
 Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery poszczególnych stron panelu administracyjnego powinny dziedziczyć po tej klasie.
 
-## *abstract protected* `_prepare()`
+## *protected* `_prepare()`
 
-Ekwiwalent dla metody `__construct()` dla klas dziedziczących.
+Ekwiwalent dla metody `__construct()` dla klas dziedziczących. Metoda jest domyślnie pusta.
 
-## *abstract protected* `_output()`
+## *protected* `_output()`
 
-Ekwiwalent dla metody `output()` (z klasy `Controller`) dla klas dziedziczących.
+Ekwiwalent dla metody `output()` (z klasy `Controller`) dla klas dziedziczących. Metoda jest domyślnie pusta.
 
 ## *static* `URL($target, $arguments = [])`
 

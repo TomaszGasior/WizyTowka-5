@@ -37,8 +37,10 @@ abstract class AdminPanel extends Controller
 			$this->_redirect(self::URL('login'));
 		}
 
-		if ($this->_userRequiredPermissions) {
-			//
+		// When user have not required permissions to view this page of admin panel,
+		// redirect him to permissions error message.
+		if ($this->_userRequiredPermissions and !($this->_userRequiredPermissions & $this->_currentUser->permissions)) {
+			$this->_redirect(self::URL('permissionsError'));
 		}
 
 		// Run _prepare() method from child class.
@@ -53,32 +55,10 @@ abstract class AdminPanel extends Controller
 		$this->_apHead->setAssetsPath(basename(SYSTEM_DIR).'/assets');
 		$this->_apHead->addStyle('AdminMain.css');
 
-		// Top navigation menu.
-		if ($this->_currentUser) {
-			$this->_apTopMenu = new HTMLMenu;
-			$this->_apTopMenu->add($this->_currentUser->name, self::URL('userSettings'), 'iUser');
-			$this->_apTopMenu->add('Zaktualizuj', self::URL('systemUpdate'), 'iUpdates');
-			$this->_apTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iWebsite');
-			$this->_apTopMenu->add('Wyloguj się', self::URL('logout'), 'iLogout');
+		// Top navigation menu and main navigation menu.
+		if (!$this->_apAlternateLayout) {
+			$this->_setupMenus();
 		}
-
-		// Main navigation menu.
-		$this->_apMainMenu = new HTMLMenu;
-		$this->_apMainMenu->add('Strony', self::URL('pages'), 'iPages');
-		$this->_apMainMenu->add('Utwórz stronę', self::URL('pageCreate'), 'iAdd');
-		$this->_apMainMenu->add('Szkice', self::URL('drafts'), 'iDrafts');
-		$this->_apMainMenu->add('Utwórz szkic', self::URL('pageCreate', ['draft' => true]), 'iAdd');
-		$this->_apMainMenu->add('Pliki', self::URL('files'), 'iFiles');
-		$this->_apMainMenu->add('Wyślij pliki', self::URL('filesSend'), 'iAdd');
-		$this->_apMainMenu->add('Użytkownicy', self::URL('users'), 'iUsers');
-		$this->_apMainMenu->add('Utwórz użytkownika', self::URL('userCreate'), 'iAdd');
-		$this->_apMainMenu->add('Menu', self::URL('menus'), 'iMenus');
-		$this->_apMainMenu->add('Obszary', self::URL('widgets'), 'iWidgets');
-		$this->_apMainMenu->add('Ustawienia', self::URL('settings'), 'iSettings');
-		$this->_apMainMenu->add('Personalizacja', self::URL('customization'), 'iCustomization');
-		$this->_apMainMenu->add('Edytor plików', self::URL('filesEditor'), 'iFilesEditor');
-		$this->_apMainMenu->add('Kopia zapasowa', self::URL('backup'), 'iBackup');
-		$this->_apMainMenu->add('Informacje', self::URL('informations'), 'iInformations');
 
 		// Context menu (prepared for child class).
 		$this->_apContextMenu = new HTMLMenu;
@@ -106,10 +86,51 @@ abstract class AdminPanel extends Controller
 		$this->_apLayout->render();
 	}
 
-	abstract protected function _prepare();
+	private function _setupMenus()
+	{
+		// Top navigation menu.
+		$this->_apTopMenu = new HTMLMenu;
+		$this->_apTopMenu->add($this->_currentUser->name, self::URL('userSettings'), 'iUser');
+		$this->_apTopMenu->add('Zaktualizuj', self::URL('systemUpdate'), 'iUpdates');
+		$this->_apTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iWebsite', null, true);
+		$this->_apTopMenu->add('Wyloguj się', self::URL('logout'), 'iLogout');
+
+		// Main navigation menu.
+		$this->_apMainMenu = new HTMLMenu;
+		$this->_apMainMenu->add('Strony', self::URL('pages'), 'iPages');
+		if ($this->_currentUser->permissions & User::PERM_CREATING_PAGES) {
+			$this->_apMainMenu->add('Utwórz stronę', self::URL('pageCreate'), 'iAdd');
+		}
+		$this->_apMainMenu->add('Szkice', self::URL('drafts'), 'iDrafts');
+		if ($this->_currentUser->permissions & User::PERM_CREATING_PAGES) {
+			$this->_apMainMenu->add('Utwórz szkic', self::URL('pageCreate', ['draft' => true]), 'iAdd');
+		}
+		$this->_apMainMenu->add('Pliki', self::URL('files'), 'iFiles');
+		if ($this->_currentUser->permissions & User::PERM_SENDING_FILES) {
+			$this->_apMainMenu->add('Wyślij pliki', self::URL('filesSend'), 'iAdd');
+		}
+		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_ELEMENTS) {
+			$this->_apMainMenu->add('Menu', self::URL('menus'), 'iMenus');
+			$this->_apMainMenu->add('Obszary', self::URL('areas'), 'iWidgets');
+			$this->_apMainMenu->add('Personalizacja', self::URL('customization'), 'iCustomization');
+		}
+		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_CONFIG) {
+			$this->_apMainMenu->add('Ustawienia', self::URL('siteSettings'), 'iSettings');
+		}
+		if ($this->_currentUser->permissions & User::PERM_SUPER_USER) {
+			$this->_apMainMenu->add('Użytkownicy', self::URL('users'), 'iUsers');
+			$this->_apMainMenu->add('Utwórz użytkownika', self::URL('userCreate'), 'iAdd');
+			$this->_apMainMenu->add('Edytor plików', self::URL('dataEditor_List'), 'iFilesEditor');
+			$this->_apMainMenu->add('Utwórz plik', self::URL('dataEditor_Editor'), 'iAdd');
+			$this->_apMainMenu->add('Kopia zapasowa', self::URL('backup'), 'iBackup');
+		}
+		$this->_apMainMenu->add('Informacje', self::URL('informations'), 'iInformations');
+	}
+
+	protected function _prepare() {}
 	// Equivalent of Controller::__construct() method for AdminPanel child classes.
 
-	abstract protected function _output();
+	protected function _output() {}
 	// Equivalent of Controller::output() method for AdminPanel child classes.
 
 	static public function URL($target, array $arguments = [])
