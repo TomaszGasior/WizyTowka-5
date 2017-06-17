@@ -12,8 +12,9 @@ class User extends DatabaseObject
 	const PERM_SENDING_FILES         = 0b00000010;
 	const PERM_EDITING_OTHERS_PAGES  = 0b00000100;
 	const PERM_EDITING_SITE_ELEMENTS = 0b00001000;
-	const PERM_EDITING_SYSTEM_CONFIG = 0b00010000;
+	const PERM_EDITING_SITE_CONFIG   = 0b00010000;
 	const PERM_SUPER_USER            = 0b00100000;
+	const PERM_ALL                   = 0b00111111;
 
 	static protected $_tableName = 'Users';
 	static protected $_tableColumns = [
