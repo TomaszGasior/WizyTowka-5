@@ -1,0 +1,102 @@
+@media (max-width: 1050px)
+{
+	/* Remove unneeded margins. */
+
+	html {
+		padding: 0;
+	}
+
+	div.adminPanel, div.adminPanelAlternative {
+		margin: 0;
+	}
+	div.adminPanel {
+		max-width: none;
+	}
+}
+
+@media (max-width: 900px)
+{
+	/* Overwrite main styles for mobile purposes. */
+
+	.columns, .columns > * {
+		display: block;
+	}
+
+	div.adminPanel header#header h1, nav#navigation {
+		width: auto;
+	}
+	div.adminPanel > div.columns {
+		height: auto;
+	}
+
+
+	/* Centered logo. */
+
+	div.adminPanel header#header h1 {
+		background-position: center 22px;
+	}
+
+
+	/* Main navigation. */
+
+	nav#navigation:not(:target) {
+		display: none;
+	}
+	nav#navigation {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 60px;
+
+		overflow-y: scroll;
+	}
+	nav#navigation ul {
+		margin-bottom: 2em;
+	}
+
+	a.mobileMenuOpen, a.mobileMenuClose {
+		display: inline-block;
+		overflow: hidden;
+		white-space: nowrap;
+		width: 1.01em;
+		font-size: 1.8em;
+
+		position: fixed;
+		top: 0.7rem;
+		right: 1.1rem;
+
+		color: #EEE;
+		text-decoration: none !important;
+	}
+	a.mobileMenuOpen:before, a.mobileMenuClose:before {
+		font-family: 'icomoon_wt' !important;
+		padding-right: 10px;
+	}
+
+	a.mobileMenuOpen:before {
+		content: "\e900";
+	}
+	a.mobileMenuClose:before {
+		content: "\e901";
+	}
+
+
+	/* Header navigation. */
+
+	div.adminPanel header#header li a {
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+		padding: 0.7em 0;
+	}
+}
+
+@media (max-width: 600px)
+{
+	/* Header navigation. */
+
+	div.adminPanel header#header li:not(:first-child) a {
+		width: 1em;
+	}
+}

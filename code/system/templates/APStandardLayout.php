@@ -14,12 +14,14 @@
 		<header id="header" class="columns">
 			<h1>WizyTówka — panel administracyjny</h1>
 			<?= $topMenu ?>
+			<a class="mobileMenuOpen" href="#navigation" aria-hidden="true">Otwórz menu</a>
 		</header>
 
 		<div class="columns">
 			<nav id="navigation" tabindex="-1">
 				<h2 class="screenReaders">Menu nawigacyjne</h2>
 				<?= $mainMenu ?>
+				<a class="mobileMenuClose" href="#" aria-hidden="true">Zamknij menu</a>
 			</nav>
 
 			<main id="main" tabindex="-1">

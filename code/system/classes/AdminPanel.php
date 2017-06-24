@@ -54,6 +54,7 @@ abstract class AdminPanel extends Controller
 		$this->_apHead->setTitle($this->_pageTitle . ' — WizyTówka');
 		$this->_apHead->setAssetsPath(basename(SYSTEM_DIR).'/assets');
 		$this->_apHead->addStyle('AdminMain.css');
+		$this->_apHead->addStyle('AdminMobile.css');
 
 		// Top navigation menu and main navigation menu.
 		if (!$this->_apAlternateLayout) {
