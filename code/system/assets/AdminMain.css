@@ -325,7 +325,7 @@ nav#navigation a:active {
 	transition: transform 0.05s ease-out;
 }
 
-nav#navigation li.iAdd a {
+nav#navigation li.iconAdd a {
 	float: right;
 	position: relative;
 	top: -2.5em;
@@ -338,7 +338,7 @@ nav#navigation li.iAdd a {
 
 	border-left: 1px solid #272727;
 }
-nav#navigation li.iAdd a:before {
+nav#navigation li.iconAdd a:before {
 	padding-right: 30px;
 }
 
@@ -444,6 +444,7 @@ div#message {
 	animation-delay: -1ms, 10s;
 	animation-direction: reverse, normal;
 	animation-fill-mode: none, forwards;
+
 	box-sizing: border-box;
 	overflow: hidden;
 }
@@ -452,7 +453,10 @@ div#message.error {
 	color: #FFFFFF;
 	border-color: #B80000;
 
-	animation: messageFading 0.35s ease-in-out; /* Do not hide error message. */
+	animation: messageFading 0.35s ease-in-out;
+	animation-delay: -1ms;
+	animation-direction: reverse;
+	animation-fill-mode: none;
 }
 
 
@@ -673,11 +677,7 @@ div.systemVersion p:last-child {
 
 /* Menu icons from icon font. */
 
-header#header li a:before,
-nav#navigation li a:before,
-ul.elementsList ul li a:before,
-main > header ul li a:before,
-.useIcons > *:before {
+*[class^="icon"] > *:before {
 	font-family: 'icomoon_wt' !important;
 	padding-right: 0.5em;
 	vertical-align: -1px;
@@ -686,78 +686,78 @@ main > header ul li a:before,
 	font-weight: normal;
 }
 
-.iEdit > *:before {
+.iconEdit > *:before {
 	content: "\e906";
 }
-.iDrafts > *:before {
+.iconDrafts > *:before {
 	content: "\e924";
 }
-.iPages > *:before {
+.iconPages > *:before {
 	content: "\e926";
 }
-.iFiles > *:before {
+.iconFiles > *:before {
 	content: "\e927";
 }
-.iFilesEditor > *:before {
+.iconDataEditor > *:before {
 	content: "\e930";
 }
-.iBackup > *:before {
+.iconBackup > *:before {
 	content: "\e95e";
 }
-.iUser > *:before {
+.iconUser > *:before {
 	content: "\e971";
 }
-.iUsers > *:before {
+.iconUsers > *:before {
 	content: "\e972";
 }
-.iCustomization > *:before {
+.iconCustomization > *:before {
 	content: "\e992";
 }
-.iSettings > *:before {
+.iconSettings > *:before {
 	content: "\e994";
 }
-.iDelete > *:before {
+.iconDelete > *:before {
 	content: "\e9ac";
 }
-.iMenus > *:before {
+.iconMenus > *:before {
 	content: "\e9ba";
 }
-.iWebsite > *:before {
+.iconWebsite > *:before {
 	content: "\e9ca";
 }
-.iShow > *:before {
+.iconShow > *:before {
 	content: "\e9ce";
 }
-.iHide > *:before {
+.iconHide > *:before {
 	content: "\e9d1";
 }
-.iWarning > *:before {
+.iconWarning > *:before {
 	content: "\ea07";
 }
-.iAdd > *:before {
+.iconAdd > *:before {
 	content: "\ea0a";
 }
-.iInformations > *:before {
+.iconInformation > *:before {
 	content: "\ea0c";
 }
-.iLogout > *:before {
+.iconLogout > *:before {
 	content: "\ea13";
 }
-.iUpdates > *:before {
+.iconUpdates > *:before {
 	content: "\ea2e";
 }
-.iCheckboxChecked > *:before {
+.iconCheckboxChecked > *:before {
 	content: "\ea52";
 }
-.iCheckboxUnchecked > *:before {
+.iconCheckboxUnchecked > *:before {
 	content: "\ea53";
 }
-.iRadioChecked > *:before {
+.iconRadioChecked > *:before {
 	content: "\ea55";
 }
-.iRadioUnchecked > *:before {
+.iconRadioUnchecked > *:before {
 	content: "\ea56";
 }
-.iWidgets > *:before {
+.iconAreas > *:before {
 	content: "\ea72";
 }

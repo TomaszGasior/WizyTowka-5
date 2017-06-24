@@ -16,7 +16,7 @@ class Customization extends WT\AdminPanel
 	{
 		$this->_apTemplate->setTemplate('Message');
 
-		$this->_apTemplate->CSSClasses = 'iInformations';
+		$this->_apTemplate->CSSClasses = 'iconInformation';
 		$this->_apTemplate->messageText = 'Jeszcze niezaimplementowane.';
 	}
 }

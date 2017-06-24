@@ -15,7 +15,7 @@ class PermissionsError extends WT\AdminPanel
 	{
 		$this->_apTemplate->setTemplate('Message');
 
-		$this->_apTemplate->CSSClasses = 'iWarning';
+		$this->_apTemplate->CSSClasses = 'iconWarning';
 		$this->_apTemplate->messageText = 'Nie posiadasz wystarczających uprawnień do korzystania z&nbsp;tej strony panelu administracyjnego.';
 	}
 }
