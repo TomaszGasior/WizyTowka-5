@@ -225,7 +225,7 @@ div.adminPanel, div.adminPanelAlternative {
 	margin: 2em auto;
 
 	box-shadow: 0 0 5px rgba(0,0,0, 0.4);
-	background: #FFFFFF;
+	background: #FFF;   /*@mainBlockBackground*/
 }
 
 a.mobileMenuOpen, a.mobileMenuClose {
@@ -277,7 +277,7 @@ div.adminPanel header#header h1 {
 div.adminPanel header#header ul {
 	text-align: right;
 	vertical-align: middle;
-	padding: 0 1.4em;
+	padding: 0 1.5em;    /*@mainBlockPadding*/
 	background: #F7F7F7;  /*@topHeaderBackground*/
 	border-bottom: 1px solid #E7E7E7;  /*@topHeaderBottomBorder*/
 
@@ -307,7 +307,7 @@ nav#navigation {
 nav#navigation ul {
 	list-style: none;
 	padding: 0;
-	margin: 0.5em 0;
+	margin: 0.6em 0;
 }
 
 nav#navigation li a {
@@ -693,11 +693,11 @@ div.systemVersion p:last-child {
 	font-weight: normal;
 }
 
-.iconClose > *:before {
- 	content: "\e901";
-}
 .iconHamburger > *:before {
- 	content: "\e900";
+	content: "\e900";
+}
+.iconClose > *:before {
+	content: "\e901";
 }
 .iconEdit > *:before {
 	content: "\e906";

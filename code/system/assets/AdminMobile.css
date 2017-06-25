@@ -1,16 +1,18 @@
 @media (max-width: 1050px)
 {
-	/* Remove unneeded margins. */
+	/* Reset unneeded margins, widths, shadows. */
 
 	html {
 		padding: 0;
+
+		background: #FFF;   /*@mainBlockBackground*/
 	}
 
 	div.adminPanel, div.adminPanelAlternative {
 		margin: 0;
-	}
-	div.adminPanel {
 		max-width: none;
+
+		box-shadow: none;
 	}
 }
 
@@ -32,12 +34,24 @@
 
 	/* Centered logo. */
 
-	div.adminPanel header#header h1 {
-		background-position: center 22px;
+	div.adminPanel header#header h1, div.adminPanelAlternative header#header h1 {
+		background-position: center 20px;
+		padding-bottom: 0.1em;
 	}
 
 
 	/* Main navigation. */
+
+	@keyframes navigationMenuSliding {
+		from {
+			margin-left: 100vw;
+			margin-right: -100vw;
+		}
+		to {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
 
 	nav#navigation:not(:target) {
 		display: none;
@@ -49,31 +63,44 @@
 		bottom: 0;
 		top: 60px;
 
-		overflow-y: scroll;
+		overflow-y: auto;
+
+		animation: navigationMenuSliding 0.3s ease-in-out;
+		box-shadow: inset 0 10px 3px -6px rgba(0,0,0, 0.08);
 	}
 	nav#navigation ul {
-		margin-bottom: 2em;
+		margin: 0.8em 0 2em;
 	}
 
 	a.mobileMenuOpen, a.mobileMenuClose {
 		display: inline-block;
 		overflow: hidden;
 		white-space: nowrap;
-		width: 1.01em;
+
 		font-size: 1.8em;
+		width: 1em;
 
-		position: fixed;
+		position: absolute;
 		top: 0.7rem;
-		right: 1.1rem;
+		right: 5vw;     /*@mainBlockPaddingMobile*/
 
-		color: #EEE;
+		opacity: 1 !important;
+		color: #DDD;
+		background: #232323;   /*@sidebarBackground*/
 		text-decoration: none !important;
 	}
+	a.mobileMenuOpen:active {
+		transform: scale(0.91);  /*@buttonPressedUpTransition*/
+		transition: transform 0.05s ease-out;
+	}
+	a.mobileMenuClose {
+		position: fixed;
+	}
+
 	a.mobileMenuOpen:before, a.mobileMenuClose:before {
 		font-family: 'icomoon_wt' !important;
 		padding-right: 10px;
 	}
-
 	a.mobileMenuOpen:before {
 		content: "\e900";
 	}
@@ -84,11 +111,27 @@
 
 	/* Header navigation. */
 
+	div.adminPanel header#header ul {
+		padding: 0;
+		text-align: center;
+	}
+
+	div.adminPanel header#header li {
+		margin: 0 0.35em;
+	}
 	div.adminPanel header#header li a {
 		display: inline-block;
 		white-space: nowrap;
 		overflow: hidden;
-		padding: 0.7em 0;
+		height: 1em;
+		padding: 0.5em;
+	}
+
+
+	/* Main block. */
+
+	main {
+		padding: 0 5vw 5vw;   /*@mainBlockPaddingMobile*/
 	}
 }
 
@@ -98,5 +141,14 @@
 
 	div.adminPanel header#header li:not(:first-child) a {
 		width: 1em;
+	}
+}
+
+@media (max-width: 350px)
+{
+	/* Left-aligned logo. */
+
+	div.adminPanel header#header h1, div.adminPanelAlternative header#header h1 {
+		background-position: 5vw 20px;    /*@mainBlockPaddingMobile*/
 	}
 }
