@@ -4,14 +4,12 @@
 
 	html {
 		padding: 0;
-
 		background: #FFF;   /*@mainBlockBackground*/
 	}
 
 	div.adminPanel, div.adminPanelAlternative {
 		margin: 0;
 		max-width: none;
-
 		box-shadow: none;
 	}
 }
@@ -131,7 +129,44 @@
 	/* Main block. */
 
 	main {
-		padding: 0 5vw 5vw;   /*@mainBlockPaddingMobile*/
+		padding: 0.1em 5vw 1em;   /*@mainBlockPaddingMobile*/
+	}
+
+	main > header h2 {
+		font-size: 1.6em;
+	}
+	main > header ul {
+		width: auto;
+		text-align: right;
+	}
+
+
+	/* Elements list — table view. */
+
+	ul.elementsList.listView > li:hover {
+		box-shadow: none;
+		background: none;
+	}
+
+
+	/* Messages — on the top of page. */
+
+	div#message, div#message.error {
+		margin: 0 -5vw; /*@mainBlockPaddingMobile*/
+		animation: none;
+	}
+
+
+	/* Message pages. */
+
+	p.messagePage {
+		font-weight: normal;
+		font-size: 1.2em;
+		padding: 0;
+	}
+
+	p.messagePage > *:before {
+		font-size: 3em;
 	}
 }
 
@@ -142,13 +177,74 @@
 	div.adminPanel header#header li:not(:first-child) a {
 		width: 1em;
 	}
+
+
+	/* Main block. */
+
+	main > header ul {
+		font-size: 0.85em;
+		margin-top: 0.5em;
+	}
+
+
+	/* Forms fieldsets. */
+
+	fieldset {
+		border: 0;
+		padding: 0;
+
+		margin: -0.3em 0;
+	}
+
+	fieldset > div,
+	fieldset > div > label:first-child, fieldset > div > span:last-child {
+		display: block;
+
+		margin: 0.5em 0;
+	}
+
+
+	/* Elements list — table view. */
+
+	ul.elementsList.listView {
+		margin: 0.8em 0;
+	}
+
+	ul.elementsList.listView > li, ul.elementsList.listView > li > * {
+		display: block;
+	}
+	ul.elementsList.listView > li {
+		padding: 0.5em 0;
+	}
+
+	ul.elementsList.listView li > span {
+		padding: 0;
+	}
+	ul.elementsList.listView li > ul li:first-child a {
+		margin-left: 0;
+	}
+
+	/* Special styles — system informations page. */
+
+	div.systemVersion p:first-child {
+		font-size: 2em;
+	}
 }
 
-@media (max-width: 350px)
+@media (max-width: 400px)
 {
 	/* Left-aligned logo. */
 
 	div.adminPanel header#header h1, div.adminPanelAlternative header#header h1 {
 		background-position: 5vw 20px;    /*@mainBlockPaddingMobile*/
+	}
+
+
+	/* Elements list — table view. */
+
+	ul.elementsList.listView li > ul li a {
+		font-size: 0.7em;
+		padding: 0.3em 0;
+		margin-bottom: -0.1em;
 	}
 }
