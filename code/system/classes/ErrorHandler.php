@@ -9,7 +9,7 @@ namespace WizyTowka;
 trait ErrorHandler
 {
 	// Warning: \Throwable type hint in $exception argument must not be used to keep backward compatibility with PHP 5.6.
-	// More informations here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.set-exception-handler
+	// More here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.set-exception-handler
 
 	static public function handleException(/*\Throwable*/ $exception)  // For set_exception_handler().
 	{

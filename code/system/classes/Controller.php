@@ -58,7 +58,7 @@ abstract class Controller
 	/*abstract*/ static public function URL($target, array $arguments = []) {}
 	// This method should return URL to specified target (page of site or page of admin panel).
 	// It should be abstract, but is not because of backward compatibility with PHP 5.6.
-	// More informations: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.strict
+	// More here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.strict
 }
 
 class ControllerException extends Exception

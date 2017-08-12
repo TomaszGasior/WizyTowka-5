@@ -13,7 +13,7 @@ abstract class Exception extends \Exception
 		call_user_func_array([parent::class, '__construct'], $arguments);
 
 		// In this project is used concept of creating exceptions by static factory method in exception class.
-		// More informations here: http://rosstuck.com/formatting-exception-messages/
+		// More here: http://rosstuck.com/formatting-exception-messages/
 
 		// Properties of exception object are set during creating, not during throwing.
 		// For example $line property contain number of line, where exception was created, not where was thrown.

@@ -484,7 +484,7 @@ p.messagePage > *:before {
 }
 
 
-/* Tips: warnings and informations. */
+/* Tips: warnings and explanations. */
 
 p.warning, p.information {
 	padding: 0.7em 1.3em 0.7em 3.8rem;
@@ -659,7 +659,7 @@ ul.elementsList.tilesView > li > span label:before {
 }
 
 
-/* Special styles — system informations page. */
+/* Special styles — about system page. */
 
 div.systemVersion {
 	text-align: center;

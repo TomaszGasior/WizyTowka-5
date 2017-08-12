@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 
 /* You can edit this file.
-   Do it only if you know, what are you doing. */
+   Do it only if you know, what you are doing. */
 
 // "data" directory contains site configuration, plugins and files.
 const DATA_DIR = __DIR__ . '/data';

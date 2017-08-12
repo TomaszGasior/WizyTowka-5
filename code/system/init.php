@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Basic configuration and system initiation.
+* Basic configuration and system initialization.
 */
 namespace WizyTowka;
 

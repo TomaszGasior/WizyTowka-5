@@ -82,7 +82,7 @@ abstract class Addon
 		if ($addons === false) {
 			// Notice: if directory is empty, glob() should return empty array,
 			// but it is possible to return false on some operating systems.
-			// More informations here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
+			// More here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
 			return [];
 		}
 		$addons = array_unique(array_map(function($var){ return basename(dirname($var)); }, $addons));

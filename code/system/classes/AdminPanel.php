@@ -126,7 +126,7 @@ abstract class AdminPanel extends Controller
 			$this->_apMainMenu->add('Utwórz plik', self::URL('dataEditor_Editor'), 'iconAdd');
 			$this->_apMainMenu->add('Kopia zapasowa', self::URL('backup'), 'iconBackup');
 		}
-		$this->_apMainMenu->add('Informacje', self::URL('informations'), 'iconInformation');
+		$this->_apMainMenu->add('Informacje', self::URL('about'), 'iconInformation');
 	}
 
 	protected function _prepare() {}

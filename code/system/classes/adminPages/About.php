@@ -2,12 +2,12 @@
 
 /**
 * WizyTówka 5
-* Admin page — system informations.
+* Admin page — about system.
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Informations extends WT\AdminPanel
+class About extends WT\AdminPanel
 {
 	protected $_pageTitle = 'Informacje o systemie';
 

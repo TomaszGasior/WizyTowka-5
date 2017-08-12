@@ -83,7 +83,7 @@ class HTMLElementsList
 	public function __toString()
 	{
 		if (is_null($this->_collection) or empty($this->_callbackTitle) or empty($this->_emptyMessage)) {
-			throw HTMLElementsListException::missingInformations();
+			throw HTMLElementsListException::missingInformation();
 		}
 
 		ob_start();
@@ -137,7 +137,7 @@ class HTMLElementsList
 
 class HTMLElementsListException extends Exception
 {
-	static public function missingInformations()
+	static public function missingInformation()
 	{
 		return new self('You must provide collection, title callback and empty message at least.', 1);
 	}

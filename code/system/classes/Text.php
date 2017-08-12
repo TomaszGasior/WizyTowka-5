@@ -124,7 +124,7 @@ class Text
 			$format,
 			(ctype_digit($this->_string)) ? $this->_string : strtotime($this->_string)
 			// Notice: ctype_digit() works properly only when given argument is in string type!
-			// More informations: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
+			// More here: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
 		);
 
 		$this->_string = Hooks::applyFilter('textDateTime', $this->_string);
