@@ -36,15 +36,15 @@ class SiteSettings extends WT\AdminPanel
 			$this->_apMessage = 'Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.';
 		}
 
-		$this->_settings->websiteTitle = $_POST['websiteTitle'];
-		$this->_settings->websiteAuthor = $_POST['websiteAuthor'];
+		$this->_settings->websiteTitle        = $_POST['websiteTitle'];
+		$this->_settings->websiteAuthor       = $_POST['websiteAuthor'];
 		$this->_settings->websiteTitlePattern = $_POST['websiteTitlePattern'];
-		$this->_settings->websiteAddress = $_POST['websiteAddress'];
-		$this->_settings->websiteHomepageId = $_POST['websiteHomepageId'];
+		$this->_settings->websiteAddress      = $_POST['websiteAddress'];
+		$this->_settings->websiteHomepageId   = $_POST['websiteHomepageId'];
 
 		$this->_settings->websiteEmailAddress = $_POST['websiteEmailAddress'];
-		$this->_settings->websiteDateFormat = $_POST['websiteDateFormat'];
-		$this->_settings->websitePrettyLinks = isset($_POST['websitePrettyLinks']);
+		$this->_settings->websiteDateFormat   = $_POST['websiteDateFormat'];
+		$this->_settings->websitePrettyLinks  = isset($_POST['websitePrettyLinks']);
 
 		// Title pattern must have place for page title "%s".
 		if (mb_strpos($this->_settings->websiteTitlePattern, '%s') === false) {

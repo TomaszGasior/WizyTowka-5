@@ -124,12 +124,16 @@ class HTMLHead
 
 		// <meta http-equiv="..." content="...">
 		foreach ($this->_httpEquiv as $header => $content) {
-			echo '<meta http-equiv="', $header, '" content="', $content, '">';
+			if ($content) {
+				echo '<meta http-equiv="', $header, '" content="', $content, '">';
+			}
 		}
 
 		// <meta name="..." content="...">
 		foreach ($this->_metaTags as $name => $content) {
-			echo '<meta name="', $name, '" content="', $content, '">';
+			if ($content) {
+				echo '<meta name="', $name, '" content="', $content, '">';
+			}
 		}
 
 		// <link rel="stylesheet" href="..." media="...">

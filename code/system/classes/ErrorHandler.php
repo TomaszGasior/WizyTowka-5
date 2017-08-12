@@ -136,8 +136,8 @@ trait ErrorHandler
 				array_filter(get_defined_constants(), function($key){ return $key[0].$key[1] == 'E_'; }, ARRAY_FILTER_USE_KEY)
 			)[$code];
 		};
-		$isCodeMinified = (defined(__NAMESPACE__.'\VERSION_STABLE') and VERSION_STABLE)
-			and strpos(file_get_contents(__FILE__), '/*COMMENT*/');   /*COMMENT*/
+		$isCodeMinified = ((defined(__NAMESPACE__.'\VERSION_STABLE') and VERSION_STABLE)
+			and !strpos(file_get_contents(__FILE__), '/*COM'.'MENT*/'));   /*COMMENT*/
 
 		return [
 			"type"    => (
