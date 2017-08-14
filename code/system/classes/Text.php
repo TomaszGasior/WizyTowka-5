@@ -68,6 +68,67 @@ class Text
 		return $this;
 	}
 
+	public function correctTypography()
+	{
+		// Do not correct typography in contents of <code> and <pre> HTML tags.
+		$partsPreCode = preg_split('/(<\/{0,1}(?:pre|code)(?: [^<>]*|)>)/', $this->_string, -1,  PREG_SPLIT_DELIM_CAPTURE);
+
+		foreach ($partsPreCode as $key => &$stringPart) {
+			if ($key % 4 != 0) {
+				// Typography corrections should be applied only to $partsPreCode[0], $partsPreCode[4], $partsPreCode[8], $partsPreCode[12], etc.
+				// Other $partsPreCode elements contain <pre>/<code> HTML tags and tags contents.
+				continue;
+			}
+
+			// Polish one-letter words at the end of lines. More here: https://pl.wikipedia.org/wiki/Sierotka_(typografia)
+			$stringPart = preg_replace(
+				'/(( |\()(o|u|w|z|i|a)) /i',
+				'$1'.(PHP_VERSION_ID < 70000 ? json_decode('"\u00A0"') : "\u{00A0}"), // "No break space" character.
+				// PHP 5.6 backwards compatibility.
+				// More here: http://php.net/manual/en/migration70.new-features.php#migration70.new-features.unicode-codepoint-escape-syntax
+				$stringPart
+			);
+
+			// Em-dash character. More here: https://pl.wikipedia.org/wiki/Pauza_(znak_typograficzny)
+			$stringPart = str_replace(
+				[' - ', ' -<', '>- '],
+				[' — ', ' —<', '>— '],
+				$stringPart
+			);
+
+			// Ellipsis character. More here: https://pl.wikipedia.org/wiki/Wielokropek
+			$stringPart = str_replace(
+				['... ', ' ...', "...\n", "\n...", '>...', '...<'],
+				['… ',   ' …',   "…\n",   "\n…",   '>…',   '…<'  ],
+				$stringPart
+			);
+
+			// Do not correct apostrophes and quotation marks in HTML open tags.
+			$partsHTMLOpenTags = preg_split('/(<[^\/]* [^<>]*>)/', $stringPart, -1,  PREG_SPLIT_DELIM_CAPTURE);
+
+			foreach ($partsHTMLOpenTags as $key => &$nestedStringPart) {
+				if ($key % 2 != 0) {
+					// Typography corrections should be applied only to $partsHTMLOpenTags[0], $partsHTMLOpenTags[2], $partsHTMLOpenTags[4], $partsHTMLOpenTags[6], etc.
+					// Other $partsHTMLOpenTags elements contain HTML open tags.
+					continue;
+				}
+
+				// Proper Polish apostrophe character. More here: https://pl.wikipedia.org/wiki/Apostrof
+				$nestedStringPart = str_replace('\'', '’', $nestedStringPart);
+
+				// Proper Polish quotation marks. More here: https://pl.wikipedia.org/wiki/Cudzysłów
+				$nestedStringPart = preg_replace('/"([^"]*)"/', '„$1”', $nestedStringPart);
+			}
+			unset($nestedStringPart);
+
+			$stringPart = join($partsHTMLOpenTags);
+		}
+
+		$this->_string = join($partsPreCode);
+
+		return $this;
+	}
+
 	public function makeFragment($maxLength, $dots = '…')
 	{
 		if ($maxLength > 0 and $maxLength < $this->getLength()) {
@@ -113,21 +174,27 @@ class Text
 		$this->_string = str_replace($charsFrom, $charsTo, $this->_string);
 		$this->_string = preg_replace(['/[^a-z0-9\-_]/', '/\-{2,}/'], ['', '-'], $this->_string);
 
-		$this->_string = Hooks::applyFilter('textSlug', $this->_string);
-
 		return $this;
 	}
 
-	public function formatAsDate($format = '%Y-%m-%d %H:%M:%S')
+	public function formatAsDateTime($dateFormat = '%Y-%m-%d', $timeFormat = '%H:%M:%S', $reverse = false)
 	{
-		$this->_string = strftime(
-			$format,
-			(ctype_digit($this->_string)) ? $this->_string : strtotime($this->_string)
+		if ($dateFormat or $timeFormat) {
 			// Notice: ctype_digit() works properly only when given argument is in string type!
 			// More here: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
-		);
+			$unixTimestamp = ctype_digit($this->_string) ? $this->_string : strtotime($this->_string);
 
-		$this->_string = Hooks::applyFilter('textDateTime', $this->_string);
+			$dateTime = [];
+
+			if ($dateFormat) {
+				$dateTime[] = strftime($dateFormat, $unixTimestamp);
+			}
+			if ($timeFormat) {
+				$dateTime[] = strftime($timeFormat, $unixTimestamp);
+			}
+
+			$this->_string = implode(' ', $reverse ? array_reverse($dateTime) : $dateTime);
+		}
 
 		return $this;
 	}

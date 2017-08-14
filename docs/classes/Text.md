@@ -39,6 +39,12 @@ Zmienia wielkość liter przechowywanego tekstu na duże.
 
 Ucina przechowywany ciąg znaków do określonej w `$length` długości. Jeśli liczba jest ujemna, ucina od końca.
 
+## `correctTypography()`
+
+Modyfikuje przechowywany ciąg znaków, dokonując poprawek typograficznych. Aby poprawić zgodność z polskimi zasadami typografii, metoda dokonuje korekty cudzysłowów, apostrofów, myślników i wielokropków. Ponadto spacje za słowami w formie pojedynczych liter (spójniki „i”, „a”; przyimki „o”, „u”, „z”, „w”) zamieniane są na znak niełamliwej spacji.
+
+Metoda jest przystosowana do pracy z kodem HTML. Encje HTML nie są używane, zamiast nich odpowiednie znaki są wstawiane bezpośrednio. Korekty nie są dokonywane w znacznikach otwierających HTML oraz we wnętrzu znaczników `<pre>` i `<code>`.
+
 ## `makeFragment($maxLength, $dots = '…')`
 
 Zamienia przechowywany ciąg znaków na wycinek zawierający fragment oryginalnego ciągu znaków o długości nieprzekraczającej `$maxLength` oraz doklejoną po nim zawartość argumentu `$dots`.
@@ -61,10 +67,12 @@ Zamienia przechowywany ciąg znaków na identyfikator, który może zostać bezp
 
 Spacje są zamieniane na minusy, ich duplikaty są usuwane. Polskie znaki diakrytyczne są zamieniane na ich odpowiedniki z tablicy ASCII. Wszystkie niepożądane znaki są usuwane.
 
-## `formatAsDate($format = '%Y-%m-%d %H:%M:%S')`
+## `formatAsDateTime($dateFormat = '%Y-%m-%d', $timeFormat = '%H:%M:%S', $reverse = false)`
 
-Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym w argumencie `$format`.
+Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym w argumentach `$dateFormat` i `$timeFormat`.
+
+Domyślnie najpierw umieszczana jest data, następnie godzina. Aby pominąć datę bądź godzinę w wynikowym ciągu znaków, należy zamiast formatu podać pusty ciąg bądź `null`. Aby zamienić kolejność, należy ustawić atrybut `$reverse` na prawdę.
 
 Ciąg znaków jest najpierw konwertowany do uniksowego znacznika czasu za pomocą funkcji `strtotime()` (chyba, że string zawiera tylko liczby — wtedy jest używany bezpośrednio). Następnie oryginalny string jest zastępowany przez datę i godzinę zwróconą przez funkcję `strftime()`.
 
-Format określony w argumencie `$format` musi być zatem zgodny ze [składnią formatu funkcji `strftime()`](http://php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters) .
+Format określony w argumentach `$dateFormat` i `$timeFormat` musi być zatem zgodny ze [składnią formatu funkcji `strftime()`](http://php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters).
