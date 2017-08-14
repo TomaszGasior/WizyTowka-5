@@ -15,8 +15,6 @@ if (PHP_VERSION_ID < 50600) {
 	exit('WizyTówka content management system cannot be started. PHP 5.6 is required.');
 }
 
-setlocale(LC_ALL, 'pl_PL.UTF-8', 'pl');
-date_default_timezone_set('Europe/Warsaw');
 mb_internal_encoding('UTF-8');
 
 include __DIR__ . '/classes/Autoloader.php';
@@ -47,10 +45,16 @@ $init = function($baseController) {
 		return;
 	}
 
+	$settings = Settings::get();
+
+	/* PHP settings. */
+	setlocale(LC_ALL, explode('|', $settings->phpLocalesList));
+	date_default_timezone_set($settings->phpTimeZone);
+
 	/* Database connection. */
-	(Settings::get('databaseType') == 'sqlite')
+	($settings->databaseType == 'sqlite')
 	? Database::connect('sqlite', CONFIG_DIR.'/database.db')
-	: Database::connect(Settings::get('databaseType'), Settings::get('databaseName'), Settings::get('databaseHost'), Settings::get('databaseUsername'), Settings::get('databasePassword'));
+	: Database::connect($settings->databaseType, $settings->databaseName, $settings->databaseHost, $settings->databaseUsername, $settings->databasePassword);
 
 	/* User session manager. */
 	SessionManager::setup();
