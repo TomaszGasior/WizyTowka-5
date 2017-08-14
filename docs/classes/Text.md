@@ -67,12 +67,10 @@ Zamienia przechowywany ciąg znaków na identyfikator, który może zostać bezp
 
 Spacje są zamieniane na minusy, ich duplikaty są usuwane. Polskie znaki diakrytyczne są zamieniane na ich odpowiedniki z tablicy ASCII. Wszystkie niepożądane znaki są usuwane.
 
-## `formatAsDateTime($dateFormat = '%Y-%m-%d', $timeFormat = '%H:%M:%S', $reverse = false)`
+## `formatAsDateTime($format = '%Y-%m-%d %H:%M:%S')`
 
-Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym w argumentach `$dateFormat` i `$timeFormat`.
-
-Domyślnie najpierw umieszczana jest data, następnie godzina. Aby pominąć datę bądź godzinę w wynikowym ciągu znaków, należy zamiast formatu podać pusty ciąg bądź `null`. Aby zamienić kolejność, należy ustawić atrybut `$reverse` na prawdę.
+Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym w argumencie `$format`.
 
 Ciąg znaków jest najpierw konwertowany do uniksowego znacznika czasu za pomocą funkcji `strtotime()` (chyba, że string zawiera tylko liczby — wtedy jest używany bezpośrednio). Następnie oryginalny string jest zastępowany przez datę i godzinę zwróconą przez funkcję `strftime()`.
 
-Format określony w argumentach `$dateFormat` i `$timeFormat` musi być zatem zgodny ze [składnią formatu funkcji `strftime()`](http://php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters).
+Format określony w argumencie `$format` musi być zatem zgodny ze [składnią formatu funkcji `strftime()`](http://php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters).

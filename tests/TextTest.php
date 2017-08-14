@@ -132,7 +132,7 @@ EOL;
 	public function testFormatAsDateTime()
 	{
 		$textObject1 = new WizyTowka\Text('1997-06-03 16:30');
-		$textObject1->formatAsDateTime('%d.%m.%Y', '%R', true);
+		$textObject1->formatAsDateTime('%R %d.%m.%Y');
 
 		$current  = $textObject1->get();
 		$expected = '16:30 03.06.1997';
@@ -140,7 +140,7 @@ EOL;
 
 		$unixTimestamp = time();
 		$textObject2 = new WizyTowka\Text($unixTimestamp);
-		$textObject2->formatAsDateTime('%Y-%m-%d', null);
+		$textObject2->formatAsDateTime('%Y-%m-%d');
 
 		$current  = $textObject2->get();
 		$expected = strftime('%Y-%m-%d', $unixTimestamp);

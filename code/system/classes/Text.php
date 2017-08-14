@@ -177,23 +177,16 @@ class Text
 		return $this;
 	}
 
-	public function formatAsDateTime($dateFormat = '%Y-%m-%d', $timeFormat = '%H:%M:%S', $reverse = false)
+	public function formatAsDateTime($format = '%Y-%m-%d %H:%M:%S')
 	{
-		if ($dateFormat or $timeFormat) {
-			// Notice: ctype_digit() works properly only when given argument is in string type!
-			// More here: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
-			$unixTimestamp = ctype_digit($this->_string) ? $this->_string : strtotime($this->_string);
-
-			$dateTime = [];
-
-			if ($dateFormat) {
-				$dateTime[] = strftime($dateFormat, $unixTimestamp);
-			}
-			if ($timeFormat) {
-				$dateTime[] = strftime($timeFormat, $unixTimestamp);
-			}
-
-			$this->_string = implode(' ', $reverse ? array_reverse($dateTime) : $dateTime);
+		if ($format) {
+			$dateTimeText = strftime(
+				$format,
+				ctype_digit($this->_string) ? $this->_string : strtotime($this->_string)
+				// Notice: ctype_digit() works properly only when given argument is in string type!
+				// More here: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
+			);
+			$this->_string = $dateTimeText;
 		}
 
 		return $this;
