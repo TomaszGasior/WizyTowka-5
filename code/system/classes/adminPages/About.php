@@ -14,7 +14,7 @@ class About extends WT\AdminPanel
 	protected function _output()
 	{
 		$this->_apTemplate->version = WT\VERSION;
-		$this->_apTemplate->releaseDate = (new WT\Text(WT\VERSION_DATE))->formatAsDate()->get();
+		$this->_apTemplate->releaseDate = WT\VERSION_DATE;
 		$this->_apTemplate->betaVersionWarning = !WT\VERSION_STABLE;
 	}
 }
