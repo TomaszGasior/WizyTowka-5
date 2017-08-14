@@ -180,12 +180,29 @@ class Text
 	public function formatAsDateTime($format = '%Y-%m-%d %H:%M:%S')
 	{
 		if ($format) {
+			// Windows does not support "%e" modifier.
+			// More here: http://php.net/manual/en/function.strftime.php#example-2583
+			if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+			    $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+			}
+
 			$dateTimeText = strftime(
 				$format,
 				ctype_digit($this->_string) ? $this->_string : strtotime($this->_string)
 				// Notice: ctype_digit() works properly only when given argument is in string type!
 				// More here: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
 			);
+
+			// Some operating system have bug in Polish locale causing month names in wrong form.
+			if (strpos($format, ' %B') !== false and strftime('%B', 1) == 'styczeń') {
+				$monthNames = [
+					'styczeń'  => 'stycznia', 'luty'        => 'lutego',       'marzec'   => 'marca',     'kwiecień' => 'kwietnia',
+					'maj'      => 'maja',     'czerwiec'    => 'czerwca',      'lipiec'   => 'lipca',     'sierpień' => 'sierpnia',
+					'wrzesień' => 'września', 'październik' => 'października', 'listopad' => 'listopada', 'grudzień' => 'grudnia'
+				];
+				$dateTimeText = str_replace(array_keys($monthNames), $monthNames, $dateTimeText);
+			}
+
 			$this->_string = $dateTimeText;
 		}
 
