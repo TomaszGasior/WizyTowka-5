@@ -180,10 +180,12 @@ class Text
 	public function formatAsDateTime($format = '%Y-%m-%d %H:%M:%S')
 	{
 		if ($format) {
-			// Windows does not support "%e" modifier.
+			$isWindowsOS = !strncasecmp(PHP_OS, 'win', 3);
+
+			// Windows does not support "%e" and "%k" modifiers.
 			// More here: http://php.net/manual/en/function.strftime.php#example-2583
-			if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-			    $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+			if ($isWindowsOS) {
+			    $format = preg_replace(['#(?<!%)((?:%%)*)%e#', '#(?<!%)((?:%%)*)%k#'], ['\1%#d', '\1%#H'], $format);
 			}
 
 			$dateTimeText = strftime(
@@ -193,8 +195,13 @@ class Text
 				// More here: http://php.net/manual/en/function.ctype-digit.php#refsect1-function.ctype-digit-notes
 			);
 
-			// Some operating system have bug in Polish locale causing month names in wrong form.
-			if (strpos($format, ' %B') !== false and strftime('%B', 1) == 'styczeń') {
+			// Windows uses wrong encoding in strftime().
+			if ($isWindowsOS) {
+				$dateTimeText = mb_convert_encoding($dateTimeText, mb_internal_encoding(), 'ISO-8859-2');
+			}
+
+			// Some operating systems have bug in Polish locale causing month names in wrong form.
+			if (strpos($format, ' %B') !== false and (strftime('%B', 1) == 'styczeń' or $isWindowsOS)) {
 				$monthNames = [
 					'styczeń'  => 'stycznia', 'luty'        => 'lutego',       'marzec'   => 'marca',     'kwiecień' => 'kwietnia',
 					'maj'      => 'maja',     'czerwiec'    => 'czerwca',      'lipiec'   => 'lipca',     'sierpień' => 'sierpnia',
