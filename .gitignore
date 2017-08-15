@@ -11,5 +11,6 @@ code/system/assets/thirdparty/*
 !code/system/assets/thirdparty/.gitkeep
 
 # Private files.
+code/.htaccess
 code/tests.php
 others/TODO.txt

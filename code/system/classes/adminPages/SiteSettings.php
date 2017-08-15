@@ -42,10 +42,16 @@ class SiteSettings extends WT\AdminPanel
 		}
 
 		// Try to update ".htaccess" file, when pretty links setting was changed.
-		// Give information about problem to user if it is not possible.
-		if ($this->_settings->websitePrettyLinks != isset($_POST['websitePrettyLinks']) and !$this->_updateHtaccess()) {
+		// Tell user about problem, when he enabled pretty links and server is other than Apache.
+		if ($this->_settings->websitePrettyLinks != isset($_POST['websitePrettyLinks'])
+			and !$this->_updateHtaccess(isset($_POST['websitePrettyLinks'])) and isset($_POST['websitePrettyLinks'])) {
 			$this->_apMessageError = true;
 			$this->_apMessage = 'Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.';
+		}
+
+		// Date/time format can be changed in configuration file. In this case form field will be disabled.
+		if (isset($_POST['websiteDateFormat']) and in_array($_POST['websiteDateFormat'], $this->_definedDateFormats)) {
+			$this->_settings->websiteDateFormat = $_POST['websiteDateFormat'];
 		}
 
 		$this->_settings->websiteTitle        = $_POST['websiteTitle'];
@@ -57,19 +63,55 @@ class SiteSettings extends WT\AdminPanel
 		$this->_settings->websiteEmailAddress = $_POST['websiteEmailAddress'];
 		$this->_settings->websitePrettyLinks  = isset($_POST['websitePrettyLinks']);
 
-		// Date/time format can be changed in configuration file. In this case form field will be disabled.
-		if (isset($_POST['websiteDateFormat']) and in_array($_POST['websiteDateFormat'], $this->_definedDateFormats)) {
-			$this->_settings->websiteDateFormat   = $_POST['websiteDateFormat'];
+		// Website address should not have "/" at the end.
+		if (substr($this->_settings->websiteAddress, -1) == '/') {
+			$this->_settings->websiteAddress = substr($this->_settings->websiteAddress, 0, -1);
 		}
 
 		// Title pattern must have place for page title "%s".
-		if (mb_strpos($this->_settings->websiteTitlePattern, '%s') === false) {
+		if (strpos($this->_settings->websiteTitlePattern, '%s') === false) {
 			$this->_settings->websiteTitlePattern = '%s — ' . $this->_settings->websiteTitlePattern;
 		}
 
 		if (!$this->_apMessage) {
 			$this->_apMessage = 'Zmiany zostały zapisane.';
 		}
+	}
+
+	private function _updateHtaccess($enablePrettyLinks)
+	{
+		if (empty($_SERVER['SERVER_SOFTWARE']) or stripos($_SERVER['SERVER_SOFTWARE'], 'Apache') === false) {
+			return false;
+		}
+
+		try {
+			$htaccessContent = file_exists('.htaccess') ? file_get_contents('.htaccess') : '';
+
+			if ($enablePrettyLinks) {
+				$websiteAddressPath = ($p = parse_url($this->_settings->websiteAddress, PHP_URL_PATH)) ? $p : '/';
+				$htaccessRule = <<< EOL
+# WizyTowka
+RewriteEngine on
+RewriteBase $websiteAddressPath
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule /?([A-Za-z0-9-._]+)/?$ index.php?id=$1 [QSA,L]
+# WizyTowka
+EOL;
+				$htaccessContent .= "\n\n\n" . $htaccessRule;
+			}
+			else {
+				$htaccessContent = preg_replace('/# WizyTowka.*# WizyTowka/s', null, $htaccessContent);
+			}
+
+			$htaccessContent = trim($htaccessContent);
+			$htaccessContent ? file_put_contents('.htaccess', $htaccessContent) : @unlink('.htaccess');
+		}
+		catch (ErrorException $e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	protected function _output()
@@ -102,10 +144,5 @@ class SiteSettings extends WT\AdminPanel
 
 		// "Date/time format" field — disable if setting was changed in configuration file.
 		$this->_apTemplate->disableDateFormatField = !in_array($this->_settings->websiteDateFormat, $this->_definedDateFormats);
-	}
-
-	private function _updateHtaccess()
-	{
-		return false;
 	}
 }
