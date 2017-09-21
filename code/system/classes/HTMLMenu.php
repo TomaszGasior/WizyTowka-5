@@ -67,22 +67,24 @@ class HTMLMenu
 
 		ob_start();
 
-		echo '<ul', $this->_listCSSClass ? ' class="'.$this->_listCSSClass.'">' : '>';
+		if ($this->_elements) {
+			echo '<ul', $this->_listCSSClass ? ' class="'.$this->_listCSSClass.'">' : '>';
 
-		foreach ($this->_elements as $element) {
-			echo '<li', $element[3] ? ' class="'.$element[3].'">' : '>';
+			foreach ($this->_elements as $element) {
+				echo '<li', $element[3] ? ' class="'.$element[3].'">' : '>';
 
-			if (is_object($element[2])) {
-				echo $element[1], (string)$element[2];
+				if (is_object($element[2])) {
+					echo $element[1], (string)$element[2];
+				}
+				else {
+					echo '<a href="', $element[2], '"', $element[4] ? ' target="_blank">' : '>', $element[1], '</a>';
+				}
+
+				echo '</li>';
 			}
-			else {
-				echo '<a href="', $element[2], '"', $element[4] ? ' target="_blank">' : '>', $element[1], '</a>';
-			}
 
-			echo '</li>';
+			echo '</ul>';
 		}
-
-		echo '</ul>';
 
 		$this->_renderingInProgress = false;
 		return ob_get_clean();
