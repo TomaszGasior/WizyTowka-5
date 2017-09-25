@@ -1,11 +1,37 @@
 *abstract* AdminPanel
 ===
 
-Kontroler reprezentujący panel administracyjny systemu WizyTówka. Dziedziczy po klasie `Controller`.
+Podstawa kontrolerów reprezentujących panel administracyjny systemu WizyTówka. Dziedziczy po klasie `Controller`.
 
-Klasa umożliwia rejestrowanie z zewnątrz dodatkowych stron panelu administracyjnego oraz pobranie nazwy kontrolera w zależności od bieżącego adresu URL. Stanowi też fundament dla wszelkich klas kontrolerów stron panelu administracyjnego — zarządza dostępem w zależności od oczekiwanego poziomu uprawnień użytkownika i szablonem HTML panelu administracyjnego.
+Klasa umożliwia rejestrowanie z zewnątrz dodatkowych stron panelu administracyjnego oraz pobranie nazwy właściwego kontrolera w zależności od bieżącego adresu URL. Stanowi też fundament dla wszelkich klas kontrolerów stron panelu administracyjnego — zarządza dostępem w zależności od oczekiwanego poziomu uprawnień użytkownika i szablonem HTML panelu administracyjnego.
 
-Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery poszczególnych stron panelu administracyjnego powinny dziedziczyć po tej klasie.
+Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery poszczególnych stron panelu administracyjnego powinny dziedziczyć po tej klasie. W celach konfiguracyjnych mogą one określać pola chronione:
+
+- `$_pageTitle` — tytuł strony panelu administracyjnego widoczny na pasku tytułowym przeglądarki;
+- `$_userRequiredPermissions` — flagi uprawnień użytkownika (stałe `PERM_*` klasy `User`) wymaganych do umożliwienia użytkownikowi korzystania ze strony panelu;
+- `$_userMustBeLoggedIn` — określenie wymagania zalogowania się użytkownika w celu dostępu do strony, typ logiczny, domyślnie prawda;
+- `$_apAlternateLayout` — użycie uproszczonego układu panelu administracyjnego zamiast pełnego (opcja przeznaczona głównie dla strony logowania i instalatora), typ logiczny, domyślnie fałsz.
+
+Klasa określa też dla klas dziedziczących następujące pola chronione:
+
+- `$_currentUser` — instancja klasy `User` konta bieżącego użytkownika, jeśli jest zalogowany;
+- `$_apHead` — instancja klasy `HTMLHead` nagłówka strony panelu administracyjnego;
+- `$_apTemplate` — instancja klasy `HTMLTemplate` szablonu głównej treści strony.
+- `$_apContextMenu` — instancja klasy `HTMLMenu` menu dodatkowego strony.
+
+## `__construct()`
+
+Konstruktor przekierowuje do strony logowania panelu administracyjnego, jeśli wymagane jest zalogowanie użytkownika, a użytkownik nie jest zalogowany, a także przekierowuje do komunikatu o błędzie, jeśli obecnie zalogowany użytkownik nie posiada wymaganych uprawnień.
+
+Tutaj jest wywoływana metoda `_prepare()`.
+
+## `output()`
+
+Metoda generuje nagłówek strony HTML, menu główne, menu dodatkowe oraz ładuje główny szablon panelu administracyjnego, a także szablon strony panelu.
+
+Szablon strony ładowany jest z folderu `system/templates/adminPages`, nazwa pliku szablonu zawiera nazwę klasy i rozszerzenie `php`. Można zmienić ścieżkę do folderu szablonów, używając metody `setTemplatePath()` klasy `HTMLTemplate`.
+
+Tutaj jest wywoływana metoda `_output()`.
 
 ## *protected* `_prepare()`
 

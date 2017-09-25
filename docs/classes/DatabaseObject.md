@@ -10,11 +10,11 @@ Klasy dziedziczące mogą oferować inne sposoby pobierania rekordów z wykorzys
 **Konfiguracja klasy dziedziczącej polega na określeniu statycznych i chronionych pól:**
 
 - `$_tableName` — nazwa tabeli bazy danych;
-- `$_tableColumns` — tablica nazw poszczególnych kolumn tabeli (bez klucza podstawowego!).
-- `$_tableColumnsJSON` — tablica nazw kolumn tabeli przechowujących obiekty zakodowane w formacie JSON (kod JSON jest automatycznie dekodowany przy odczycie i kodowany przy zapisie rekordu), opcjonalne.
-- `$_tableColumnsTimeAtInsert` — tablica nazw kolumn tabeli z uniksowym znacznikiem czasu automatycznie umieszczanym przy tworzeniu rekordu (operacji `INSERT`), opcjonalne.
-- `$_tableColumnsTimeAtUpdate` — jak wyżej, ale przy aktualizacji rekordu (operacji `UPDATE`), opcjonalne.
-- `$_tablePrimaryKey` — nazwa kolumny klucza podstawowego, domyślnie `id`, opcjonalnie;
+- `$_tableColumns` — tablica nazw poszczególnych kolumn tabeli (bez klucza podstawowego!);
+- `$_tableColumnsJSON` — tablica nazw kolumn tabeli przechowujących obiekty zakodowane w formacie JSON (kod JSON jest automatycznie dekodowany przy odczycie i kodowany przy zapisie rekordu), opcjonalne;
+- `$_tableColumnsTimeAtInsert` — tablica nazw kolumn tabeli z uniksowym znacznikiem czasu automatycznie umieszczanym przy tworzeniu rekordu (operacji `INSERT`), opcjonalne;
+- `$_tableColumnsTimeAtUpdate` — jak wyżej, ale przy aktualizacji rekordu (operacji `UPDATE`), opcjonalne;
+- `$_tablePrimaryKey` — nazwa kolumny klucza podstawowego, domyślnie `id`, opcjonalnie.
 
 Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej klasy, należy rozpocząć połączenie z bazą danych za pomocą `Database::connect()`.
 

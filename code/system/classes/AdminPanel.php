@@ -12,10 +12,10 @@ abstract class AdminPanel extends Controller
 	static private $_defaultPagesNamespace = __NAMESPACE__ . '\AdminPages';
 
 	protected $_pageTitle = 'Panel administracyjny';
-
-	protected $_currentUser;
 	protected $_userRequiredPermissions;
 	protected $_userMustBeLoggedIn = true;
+
+	protected $_currentUser;
 
 	private $_apLayout;
 	private $_apTopMenu;
@@ -34,13 +34,13 @@ abstract class AdminPanel extends Controller
 			$this->_currentUser = User::getById(SessionManager::getUserId());
 		}
 		elseif ($this->_userMustBeLoggedIn) {
-			$this->_redirect(self::URL('login'));
+			$this->_redirect('login');
 		}
 
 		// When user have not required permissions to view this page of admin panel,
 		// redirect him to permissions error message.
 		if ($this->_userRequiredPermissions and !($this->_userRequiredPermissions & $this->_currentUser->permissions)) {
-			$this->_redirect(self::URL('permissionsError'));
+			$this->_redirect('permissionsError');
 		}
 
 		// Run _prepare() method from child class.
