@@ -21,14 +21,14 @@ class HTMLElementsListTest extends PHPUnit\Framework\HTMLTestCase
 			->title(function($row){ return strtoupper($row['title']); })
 			->emptyMessage('Empty.');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul class="exampleClass">
 	<li><span>TITLE 1</span></li>
 	<li><span>TITLE 2</span></li>
 	<li><span>TITLE 3</span></li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -41,10 +41,10 @@ EOL;
 			->title(function(){ return 'something'; })
 			->emptyMessage('Empty.');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <p class="exampleClass emptyMessage">Empty.</p>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -56,14 +56,14 @@ EOL;
 			->link(function($row){ return $row['url']; })
 			->emptyMessage('Empty.');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul>
 	<li><span><a href="http://example.org/e_1">Title 1</a></span></li>
 	<li><span><a href="http://example.org/e_2">Title 2</a></span></li>
 	<li><span><a href="http://example.org/e_3">Title 3</a></span></li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -75,8 +75,8 @@ EOL;
 			->radio('field_name', function($row){ return $row['id']; }, 2)
 			->emptyMessage('Empty.');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul>
 	<li><span>
 		<input id="field_name0" type="radio" name="field_name" value="1"><label for="field_name0">Title 1</label>
@@ -88,7 +88,7 @@ EOL;
 		<input id="field_name2" type="radio" name="field_name" value="3"><label for="field_name2">Title 3</label>
 	</span></li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -104,8 +104,8 @@ EOL;
 			]; })
 			->emptyMessage('Empty.');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul>
 	<li>
 		<span>Title 1</span>
@@ -132,7 +132,7 @@ EOL;
 		</ul>
 	</li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 }

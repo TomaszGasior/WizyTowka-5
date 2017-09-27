@@ -63,7 +63,7 @@ class TextTest extends PHPUnit\Framework\TestCase
 	public function testCorrectTypography()
 	{
 		// Examples sources: https://pl.wikipedia.org, https://sjp.pwn.pl, https://encyklopedia.pwn.pl.
-		$exampleCodeBefore = <<< EOL
+		$exampleCodeBefore = <<< TEXT
 <h2 class="title">"A oto przykładowy tekst"</h2>
 <p>Nie ma się nad czym zastanawiać, "koń jaki jest, każdy widzi".</p>
 <p>Kandydat na posła potrafił tylko <code style="color: blue">powtarzać za Gierkiem "Pomożecie?"</code>.</p>
@@ -72,8 +72,8 @@ class TextTest extends PHPUnit\Framework\TestCase
 	<dt>alfabet Morse'a</dt><dd>alfabet telegraficzny, w którym znaki graficzne (litery, cyfry i in.) są przedstawione w postaci kombinacji kropek i kresek</dd>
 	<dt>cappuccino</dt><dd>czarna kawa z dodatkiem zmiksowanego mleka; też: porcja tego napoju</dd>
 </dl>
-EOL;
-		$exampleCodeAfter = <<< EOL
+TEXT;
+		$exampleCodeAfter = <<< TEXT
 <h2 class="title">„A oto przykładowy tekst”</h2>
 <p>Nie ma się nad czym zastanawiać, „koń jaki jest, każdy widzi”.</p>
 <p>Kandydat na posła potrafił tylko <code style="color: blue">powtarzać za Gierkiem "Pomożecie?"</code>.</p>
@@ -82,7 +82,7 @@ EOL;
 	<dt>alfabet Morse’a</dt><dd>alfabet telegraficzny, w\u{00A0}którym znaki graficzne (litery, cyfry i\u{00A0}in.) są przedstawione w\u{00A0}postaci kombinacji kropek i\u{00A0}kresek</dd>
 	<dt>cappuccino</dt><dd>czarna kawa z\u{00A0}dodatkiem zmiksowanego mleka; też: porcja tego napoju</dd>
 </dl>
-EOL;
+TEXT;
 
 		$textObject = new WizyTowka\Text($exampleCodeBefore);
 		$textObject->correctTypography();

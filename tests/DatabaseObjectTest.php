@@ -175,14 +175,14 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		}
 		$newObject->save();
 
-		$expected = (object)$exampleData;
 		$current  = $newObject->dataJSON;
+		$expected = (object)$exampleData;
 		$this->assertEquals($expected, $current);
 
 		$object = self::$_exampleClassJSON::getById($newObject->primaryKey);
 
-		$expected = (object)$exampleData;
 		$current  = $object->dataJSON;
+		$expected = (object)$exampleData;
 		$this->assertEquals($expected, $current);
 	}
 
@@ -191,8 +191,8 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$newObject = new self::$_exampleClassTime;
 		$newObject->save();
 
-		$expected = time();
 		$current  = $newObject->insertedAt;
+		$expected = time();
 		$this->assertEquals($expected, $current);
 
 		$object = self::$_exampleClassTime::getById(1);
@@ -206,8 +206,8 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$editedObject = self::$_exampleClassTime::getById(1);
 		$editedObject->save();
 
-		$expected = time();
 		$current  = $editedObject->updatedAt;
+		$expected = time();
 		$this->assertEquals($expected, $current);
 
 		$object = self::$_exampleClassTime::getById(1);

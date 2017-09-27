@@ -13,15 +13,15 @@ class HTMLFormFieldsTest extends PHPUnit\Framework\HTMLTestCase
 		$object = new WizyTowka\HTMLFormFields;
 		$object->text('Example field', 'name', 'value');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="name">Example field</label>
 		<span><input type="text" name="name" value="value" id="name"></span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -30,15 +30,15 @@ EOL;
 		$object = new WizyTowka\HTMLFormFields;
 		$object->number('Example field', 'name', 8.5, ['min' => 5, 'max' => '10']);
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="name">Example field</label>
 		<span><input min="5" max="10" type="number" name="name" value="8.5" id="name"></span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -47,15 +47,15 @@ EOL;
 		$object = new WizyTowka\HTMLFormFields;
 		$object->password('Example field', 'name', ['required' => true, 'disabled' => false]);
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="name">Example field</label>
 		<span><input required type="password" name="name" id="name"></span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -65,8 +65,8 @@ EOL;
 		$object->checkbox('Example checkbox', 'name_1', true);
 		$object->checkbox('Example checkbox', 'name_2', false);
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<input type="checkbox" name="name_1" checked id="name_1">
@@ -77,7 +77,7 @@ EOL;
 		<label for="name_2">Example checkbox</label>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -89,8 +89,8 @@ EOL;
 		$object->radio('I use Linux', 'operating_system', 'linux', $selectedValue);
 		$object->option('I use Mac OS', 'operating_system', 'mac_os', $selectedValue);  // "option" is an alias of "radio".
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<input type="radio" name="operating_system" value="windows" id="operating_system_windows">
@@ -105,7 +105,7 @@ EOL;
 		<label for="operating_system_mac_os">I use Mac OS</label>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -114,8 +114,8 @@ EOL;
 		$object = new WizyTowka\HTMLFormFields;
 		$object->textarea('Example field', 'name', "Line 1.\nLine 2.\nLine 3.");
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="name">Example field</label>
@@ -124,7 +124,7 @@ Line 2.
 Line 3.</textarea></span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -137,8 +137,8 @@ EOL;
 			'mac_os' => 'Mac OS',
 		]);
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="operating_system">Select your OS</label>
@@ -151,7 +151,7 @@ EOL;
 		</span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -164,8 +164,8 @@ EOL;
 			'mac_os' => 'Mac OS',
 		]);
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="operating_system">Select your OS</label>
@@ -179,7 +179,7 @@ EOL;
 		</span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -192,8 +192,8 @@ EOL;
 		$object->text('Example field 3.', 'name_3', 'value');
 		$object->remove('name_2');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <fieldset class="exampleCSSClass">
 	<div>
 		<label for="name_1">Example field 1.</label>
@@ -204,7 +204,7 @@ EOL;
 		<span><input type="text" name="name_3" value="value" id="name_3"></span>
 	</div>
 </fieldset>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 }

@@ -14,11 +14,11 @@ class HTMLHeadTest extends PHPUnit\Framework\HTMLTestCase
 		$object->setBase('http://example.org');
 		$object->setTitle('Title of page');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <base href="http://example.org">
 <title>Title of page</title>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -34,13 +34,13 @@ EOL;
 
 		$object->addInlineScript('alert("hey!")');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <title>Example</title>
 <script src="example/assetsDir/script.js" defer></script>
 <script src="script.js" async></script>
 <script>alert("hey!")</script>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -56,13 +56,13 @@ EOL;
 
 		$object->addInlineStyle('body{color:red;}');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <title>Example</title>
 <link rel="stylesheet" href="example/assetsDir/stylesheet.css">
 <link rel="stylesheet" href="stylesheet.css" media="all and (max-width: 900px)">
 <style>body{color:red;}</style>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -75,13 +75,13 @@ EOL;
 		$object->setMeta('keywords', 'html, lesson, tutorial, coding, website, programming');
 		$object->setHttpEquiv('refresh', '0; url=http://example.org');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <title>Example</title>
 <meta http-equiv="refresh" content="0; url=http://example.org">
 <meta name="description" content="HTML tutorial: &quot;&lt;HEAD&gt;&quot; tag examples">
 <meta name="keywords" content="html, lesson, tutorial, coding, website, programming">
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -105,12 +105,12 @@ EOL;
 		$object->removeStyle('style1.css');
 		$object->removeScript('script1.js');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <title>Example</title>
 <link rel="stylesheet" href="style2.css">
 <script src="script2.js" defer></script>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 }

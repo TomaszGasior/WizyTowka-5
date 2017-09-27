@@ -9,25 +9,25 @@ class HTMLTemplateTest extends PHPUnit\Framework\TestCase
 	static private $_exampleTemplateFile = 'exampleTemplate.php';
 	static private $_exampleTemplatePath = '.';
 
-	static private $_exampleTemplateCode = <<< 'EOL'
+	static private $_exampleTemplateCode = <<< 'HTML'
 <!doctype html>
 <meta charset="utf-8">
 <title><?= $title ?></title>
 <h1><?= $header ?></h1>
 <p><?= $content ?></p>
-EOL;
+HTML;
 
-	static private $_expectedOutput = <<< 'EOL'
+	static private $_expectedOutput = <<< 'HTML'
 <!doctype html>
 <meta charset="utf-8">
 <title>Example title</title>
 <h1>Header of page</h1>
 <p>Content of page</p>
-EOL;
+HTML;
 
 	static private $_exampleVariables = [
-		'title' => 'Example title',
-		'header' => 'Header of page',
+		'title'   => 'Example title',
+		'header'  => 'Header of page',
 		'content' => 'Content of page',
 	];
 

@@ -16,15 +16,15 @@ class HTMLMenuTest extends PHPUnit\Framework\HTMLTestCase
 		$object->add('Facebook', 'http://facebook.com');
 		$object->add('Bing', 'http://bing.com', null, 2);
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul class="exampleCSSClass">
 	<li class="google"><a href="http://google.com">Google</a></li>
 	<li><a href="http://bing.com">Bing</a></li>
 	<li><a href="http://yahoo.com" target="_blank">Yahoo</a></li>
 	<li><a href="http://facebook.com">Facebook</a></li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -40,8 +40,8 @@ EOL;
 		$object->add('Files', $objectNested);
 		$object->add('Webpage 2', 'http://example.com');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul>
 	<li><a href="http://example.org">Webpage 1</a></li>
 	<li>Files<ul>
@@ -51,7 +51,7 @@ EOL;
 	</ul></li>
 	<li><a href="http://example.com">Webpage 2</a></li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
@@ -74,13 +74,13 @@ EOL;
 		$object->add('File 3', 'file3.html');
 		$object->remove('File 2');
 
-		$current = (string)$object;
-		$expected = <<< 'EOL'
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
 <ul>
 	<li><a href="file1.html">File 1</a></li>
 	<li><a href="file3.html">File 3</a></li>
 </ul>
-EOL;
+HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 }

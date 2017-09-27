@@ -89,7 +89,7 @@ class SiteSettings extends WT\AdminPanel
 
 			if ($enablePrettyLinks) {
 				$websiteAddressPath = ($p = parse_url($this->_settings->websiteAddress, PHP_URL_PATH)) ? $p : '/';
-				$htaccessRule = <<< EOL
+				$htaccessRule = <<< HTACCESS
 # WizyTowka
 RewriteEngine on
 RewriteBase $websiteAddressPath
@@ -97,7 +97,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule /?([A-Za-z0-9-._]+)/?$ index.php?id=$1 [QSA,L]
 # WizyTowka
-EOL;
+HTACCESS;
 				$htaccessContent .= "\n\n\n" . $htaccessRule;
 			}
 			else {
