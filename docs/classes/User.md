@@ -7,11 +7,9 @@ Posiada następujące pola:
 
 - `id` — klucz podstawowy,
 - `name` — unikalna nazwa użytkownika,
-- `password` — zahaszowane hasło użytkownika,
+- `password` — zahaszowane hasło użytkownika; nie należy modyfikować tego pola, zamiast tego należy używać metod `setPassword()` oraz `checkPassword()`,
 - `permissions` — poziom uprawnień użytkownika zapisany w formie liczby całkowitej będącej sumą wartości stałych określających uprawnienia (patrz niżej),
 - `createdTime` — data i czas utworzenia użytkownika w formie uniksowego znacznika czasu.
-
-Sugeruje się nie modyfikować bezpośrednio pola `password`. Zamiast tego należy korzystać z metod `setPassword()` oraz `checkPassword()`.
 
 W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnień użytkownika.
 
@@ -27,10 +25,10 @@ W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnie
 
 Zwraca użytkownika o nazwie `$name` lub fałsz, jeśli brak takiego użytkownika.
 
-## *static* `setPassword($givenPassword)`
+## `setPassword($givenPassword)`
 
 Ustawia hasło użytkownika na podane w argumencie `$givenPassword` z wykorzystaniem wbudowanych w PHP funkcji do obsługi haseł. Po wywołaniu tej metody w polu `password` zostanie umieszczony hasz hasła.
 
-## *static* `checkPassword($givenPassword)`
+## `checkPassword($givenPassword)`
 
 Porównuje hasło podane w argumencie `$givenPassword` z haszem hasła zapisanym w bazie danych w polu `password` z wykorzystaniem wbudowanych w PHP funkcji do obsługi haseł. Zwraca prawdę, jeśli podane hasło jest poprawne, inaczej fałsz.

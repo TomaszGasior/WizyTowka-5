@@ -7,20 +7,21 @@ Przykładowy kod generowany przez klasę (z dodanymi dla czytelności wcięciami
 
 	<fieldset>
 		<div>
-			<label for="f0">Pole tekstowe</label>
+			<label for="example1">Pole tekstowe</label>
 			<span>
-				<input type="text" name="example1" value="wartość" id="f0">
+				<input type="text" name="example1" value="wartość" id="example1">
 			</span>
 		</div>
 		<div>
-			<label for="f1">Pole liczbowe</label>
+			<label for="example2">Pole liczbowe</label>
 			<span>
-				<input type="text" name="example2" value="25" id="f1">
+				<input type="number" name="example2" value="25" id="example2">
 			</span>
 		</div>
-		<div><label for="f2">Lista wyboru</label>
+		<div>
+			<label for="example3">Lista wyboru</label>
 			<span>
-				<select name="example3" id="f2">
+				<select name="example3" id="example3">
 					<option value="val1">Pole 1</option>
 					<option value="val2" selected>Pole 2</option>
 					<option value="val3">Pole 3</option>
@@ -28,11 +29,10 @@ Przykładowy kod generowany przez klasę (z dodanymi dla czytelności wcięciami
 			</span>
 		</div>
 		<div>
-			<input type="checkbox" name="example4" checked id="f3">
-			<label for="f3">Checkbox</label>
+			<input type="checkbox" name="example4" checked id="example4">
+			<label for="example4">Checkbox</label>
 		</div>
 	</fieldset>
-
 
 Pola zgrupowane są w znaczniku HTML `<fieldset>`. Każde pole wraz z etykietą otoczone jest blokiem `<div>`. Klasa generuje poprawny semantycznie kod, przypisując etykiety do pól za pośrednictwem identyfikatorów. Kontrolki pól otoczone są znacznikiem `<span>` dla łatwiejszego stylizowania przez CSS.
 Ze względu na stylizację CSS oraz czytelność, nieco inny układ ma kod HTML pól typu `checkbox` i `radio` — kolejność etykiety i kontrolki jest odwrócona, kontrolka nie jest otoczona znacznikiem.
@@ -57,7 +57,7 @@ Dodaje pole `<input type="text">`.
 
 Jako argument `$label` należy podać etykietę pola. Argument `$name` zawierać powinien nazwę pola (atrybut HTML `name`), która zostanie użyta przy odbiorze informacji z tablicy `$_POST` lub `$_GET`. W argumencie `$value` podać należy bieżącą wartość pola (atrybut HTML `value`). Z wartości pola usuwane są przełamania wierszy.
 
-Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów kontrolki formularza w HTML (takich jak `disabled`, `readonly`, `tabindex`, `spellcheck`, `autofocus`, `acceskey` bądź jakichkolwiek innych). Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami. Nie ma możliwości nadpisania atrybutów generowanych przez metodę (takich jak `id`, `value`, `name`).
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów kontrolki formularza w HTML (takich jak `disabled`, `readonly`, `tabindex`, `spellcheck`, `autofocus`, `accesskey` bądź jakichkolwiek innych). Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami. Nie ma możliwości nadpisania atrybutów generowanych przez metodę (takich jak `id`, `value`, `name`).
 Jeżeli atrybut jest typu logicznego i ma wartość prawda, zostanie wygenerowany w kodzie HTML bez żadnej wartości (np. `<input checked>`), jeżeli ma wartość fałsz — zostanie pominięty.
 
 ## `number($label, $name, $value, array $HTMLAttributes = [])`
@@ -102,7 +102,7 @@ Dodaje pole wieloliniowe `<textarea>`.
 
 Zobacz opis argumentów metody `text()`.
 
-Argument `$content` (nazwany inaczej dla rozróżnienia od atrybutu HTML `value`) przyjmuje jako wartość treść umieszczaną wewnątrz znacznika `<textarea>`. W przeciwieństwie to pola tekstowego, można w niej użyć przełamania wierszy.
+Argument `$content` (nazwany inaczej dla rozróżnienia od atrybutu HTML `value`) przyjmuje jako wartość treść umieszczaną wewnątrz znacznika `<textarea>`. W przeciwieństwie to pola tekstowego można w niej użyć przełamania wierszy.
 
 ## `select($label, $name, $selected, array $valuesList, array $HTMLAttributes = [])`
 
@@ -110,7 +110,7 @@ Dodaje listę wyboru `<select>`.
 
 Zobacz opis argumentów metody `text()`.
 
-Argument `$valueList` jest tablicą zawierającą opcje możliwe do wybrania z listy. Klucze tablicy są wartościami opcji (``<option value="...">`), a wartości tablicy są etykietami opcji.
+Argument `$valueList` jest tablicą zawierającą opcje możliwe do wybrania z listy. Klucze tablicy są wartościami opcji (`<option value="...">`), a wartości tablicy są etykietami opcji.
 
 Argument `$selected` określa wartość aktualnie zaznaczonej opcji.
 

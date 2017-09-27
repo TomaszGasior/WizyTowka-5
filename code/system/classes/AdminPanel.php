@@ -152,10 +152,10 @@ abstract class AdminPanel extends Controller
 	static public function registerPage($name, $controller)
 	{
 		if (isset(self::$_registeredPages[$name]) or class_exists(self::$_defaultPagesNamespace.'\\'.ucfirst($name))) {
-			AdminPanelException::pageNameAlreadyRegistered($name);
+			throw AdminPanelException::pageNameAlreadyRegistered($name);
 		}
 		if (!is_subclass_of($controller, self::class)) {
-			AdminPanelException::pageControllerInvalid($name, self::class);
+			throw AdminPanelException::pageControllerInvalid($name, self::class);
 		}
 
 		self::$_registeredPages[$name] = $controller;
