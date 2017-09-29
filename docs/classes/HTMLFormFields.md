@@ -68,6 +68,30 @@ Zobacz opis argumentów metody `text()`.
 
 Wartość `$value` musi być liczbą, inaczej zostanie użyte zero.
 
+## `color($label, $name, $value, array $HTMLAttributes = [])`
+
+Dodaje pole `<input type="color">`
+
+Zobacz opis argumentów metody `text()`.
+
+Wartość `$value` musi być kolorem określonym w sześcioznakowym zapisie heksadecymalnym poprzedzonym znakiem krzyżyka — na przykład `#272822`. W wypadku podania nieprawidłowej wartości zostanie użyta wartość `#ffffff`.
+
+## `url($label, $name, $value, array $HTMLAttributes = [])`
+
+Dodaje pole `<input type="url">`
+
+Zobacz opis argumentów metody `text()`.
+
+Wartość `$value` musi być poprawnym adresem URL, inaczej zostanie użyty pusty łańcuch.
+
+## `email($label, $name, $value, array $HTMLAttributes = [])`
+
+Dodaje pole `<input type="email">`
+
+Zobacz opis argumentów metody `text()`.
+
+Wartość `$value` musi być poprawnym adresem e-mail, inaczej zostanie użyty pusty łańcuch.
+
 ## `password($label, $name, array $HTMLAttributes = [])`
 
 Dodaje pole `<input type="password">`

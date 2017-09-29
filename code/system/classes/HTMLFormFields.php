@@ -37,7 +37,41 @@ class HTMLFormFields
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
 		$HTMLAttributes['name']  = $name;
-		$HTMLAttributes['value'] = is_numeric($value) ? str_replace(',', '.', $value) : '0';  // Because of locale settings number can be wrong formatted.
+		$HTMLAttributes['value'] = is_numeric($value) ? str_replace(',', '.', $value) : '0';
+		// Number can be wrong formatted because of locale settings.
+
+		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
+		return $this;
+	}
+
+	public function color($label, $name, $value, array $HTMLAttributes = [])
+	{
+		$type = 'simple';
+		$HTMLAttributes['type']  = __FUNCTION__;
+		$HTMLAttributes['name']  = $name;
+		$HTMLAttributes['value'] = preg_match('/#[0-9a-f]{6}/i', $value) ? $value : '#ffffff';
+
+		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
+		return $this;
+	}
+
+	public function url($label, $name, $value, array $HTMLAttributes = [])
+	{
+		$type = 'simple';
+		$HTMLAttributes['type']  = __FUNCTION__;
+		$HTMLAttributes['name']  = $name;
+		$HTMLAttributes['value'] = filter_var($value, FILTER_VALIDATE_URL) ? $value : '';
+
+		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
+		return $this;
+	}
+
+	public function email($label, $name, $value, array $HTMLAttributes = [])
+	{
+		$type = 'simple';
+		$HTMLAttributes['type']  = __FUNCTION__;
+		$HTMLAttributes['name']  = $name;
+		$HTMLAttributes['value'] = filter_var($value, FILTER_VALIDATE_EMAIL) ? $value : '';
 
 		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
 		return $this;
@@ -49,6 +83,7 @@ class HTMLFormFields
 		$HTMLAttributes['type']  = __FUNCTION__;
 		$HTMLAttributes['name']  = $name;
 		unset($HTMLAttributes['value']);
+		// Don't allow predefined value on password field.
 
 		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
 		return $this;

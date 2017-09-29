@@ -42,6 +42,71 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
+	public function testColor()
+	{
+		$object = new WizyTowka\HTMLFormFields;
+		$object->color('Example field', 'name', '#00ff00');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<fieldset>
+	<div>
+		<label for="name">Example field</label>
+		<span><input type="color" name="name" value="#00ff00" id="name"></span>
+	</div>
+</fieldset>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+	}
+
+	public function testUrl()
+	{
+		$object1 = new WizyTowka\HTMLFormFields;
+		$object1->url('Example field', 'name', 'https://example.com');
+
+		$current  = (string)$object1;
+		$expected = <<< 'HTML'
+<fieldset>
+	<div>
+		<label for="name">Example field</label>
+		<span><input type="url" name="name" value="https://example.com" id="name"></span>
+	</div>
+</fieldset>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+
+		$object2 = new WizyTowka\HTMLFormFields;
+		$object2->url('Example field', 'name', 'http://example.org:80');
+
+		$current  = (string)$object2;
+		$expected = <<< 'HTML'
+<fieldset>
+	<div>
+		<label for="name">Example field</label>
+		<span><input type="url" name="name" value="http://example.org:80" id="name"></span>
+	</div>
+</fieldset>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+	}
+
+	public function testEmail()
+	{
+		$object = new WizyTowka\HTMLFormFields;
+		$object->email('Example field', 'name', 'email@example.com');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<fieldset>
+	<div>
+		<label for="name">Example field</label>
+		<span><input type="email" name="name" value="email@example.com" id="name"></span>
+	</div>
+</fieldset>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+	}
+
 	public function testPassword()
 	{
 		$object = new WizyTowka\HTMLFormFields;
