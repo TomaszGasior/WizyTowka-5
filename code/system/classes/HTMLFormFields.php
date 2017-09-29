@@ -114,7 +114,7 @@ class HTMLFormFields
 
 	public function option(...$arguments)
 	{
-		return call_user_func_array([$this, 'radio'], $arguments);
+		return $this->radio(...$arguments);
 	}
 
 	public function textarea($label, $name, $content, array $HTMLAttributes = [])

@@ -63,7 +63,7 @@ class HTMLElementsList
 
 	public function option(...$arguments)
 	{
-		return call_user_func_array([$this, 'radio'], $arguments);
+		return $this->radio(...$arguments);
 	}
 
 	public function menu(callable $callback)
@@ -93,6 +93,7 @@ class HTMLElementsList
 
 			foreach ($this->_collection as $element) {
 				$title = call_user_func($this->_callbackTitle, $element);
+				// Syntax like ($this->_callbackTitle)($element) cannot be used because of backwards compatibility with PHP 5.6.
 
 				echo '<li>';
 

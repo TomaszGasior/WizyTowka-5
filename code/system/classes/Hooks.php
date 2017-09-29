@@ -72,18 +72,16 @@ trait Hooks
 		foreach ($hooks[$name] as $callback) {
 			try {
 				if ($keepFirstArgument) {
-					$arguments[0] = call_user_func_array($callback, $arguments);
+					$arguments[0] = $callback(...$arguments);
 				}
 				else {
-					call_user_func_array($callback, $arguments);
+					$callback(...$arguments);
 				}
 			}
 			// If hook callback is called without required number of arguments, hooks exception is thrown for more accurate information.
 			catch (\ArgumentCountError $e) { // PHP 7.1.
 				throw HooksException::hookWrongArgumentsCount(
-					$name,
-					(new \ReflectionFunction($callback))->getNumberOfRequiredParameters(),
-					count($arguments)
+					$name, (new \ReflectionFunction($callback))->getNumberOfRequiredParameters(), count($arguments)
 				);
 			}
 			catch (\ErrorException $e) {  // PHP 7 and PHP 5.6.

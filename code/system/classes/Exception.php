@@ -10,7 +10,7 @@ abstract class Exception extends \Exception
 {
 	public function __construct(...$arguments)
 	{
-		call_user_func_array([parent::class, '__construct'], $arguments);
+		parent::__construct(...$arguments);
 
 		// In this project is used concept of creating exceptions by static factory method in exception class.
 		// More here: http://rosstuck.com/formatting-exception-messages/
