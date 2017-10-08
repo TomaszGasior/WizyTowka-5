@@ -45,6 +45,11 @@ $init = function($baseController) {
 		return;
 	}
 
+	/* Initialize plugins. */
+	foreach (Plugin::getAll() as $plugin) {
+		$plugin->init();
+	}
+
 	$settings = Settings::get();
 
 	/* PHP settings. */
