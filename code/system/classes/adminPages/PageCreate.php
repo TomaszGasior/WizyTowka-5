@@ -16,13 +16,16 @@ class PageCreate extends WT\AdminPanel
 	{
 		$this->_apMessageError = true;
 
+		$_POST['title'] = trim($_POST['title']);
+		$_POST['slug']  = trim($_POST['slug']);
+
 		if (empty($_POST['title'])) {
 			$this->_apMessage = 'Nie określono tytułu strony.';
 			return;
 		}
 
 		$slug = (new WT\Text(
-			trim($_POST['slug'] ? $_POST['slug'] : $_POST['title']))
+			!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
 		)->makeSlug()->get();
 
 		if (WT\Page::getBySlug($slug)) {
@@ -34,7 +37,7 @@ class PageCreate extends WT\AdminPanel
 
 		$page->title   = $_POST['title'];
 		$page->slug    = $slug;
-		$page->isDraft = $_POST['isDraft'];
+		$page->isDraft = (bool)$_POST['isDraft'];
 		$page->userId  = $this->_currentUser->id;
 
 		$page->save();
