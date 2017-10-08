@@ -10,6 +10,7 @@ Posiada następujące pola:
 - `title` — tytuł podstrony,
 - `titleHead` — tytuł w nagłówku `<head>` witryny,
 - `description` — opis w znaczniku meta `description`,
+- `keywords` — słowa kluczowe w znaczniku meta `keywords`,
 - `isDraft` — status podstrony zapisany w formie liczby całkowitej: jeśli `0` — publiczna, jeśli `1` — szkic,
 - `userId` — identyfikator użytkownika, który stworzył podstronę; jeśli `NULL` — użytkownik został usunięty,
 - `updatedTime` — data i czas ostatniej aktualizacji podstrony w formie uniksowego znacznika czasu,

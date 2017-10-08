@@ -14,6 +14,7 @@ class Page extends DatabaseObject
 		'title',
 		'titleHead',
 		'description',
+		'keywords',
 		'isDraft',
 		'userId',
 		'updatedTime',

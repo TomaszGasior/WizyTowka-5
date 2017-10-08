@@ -41,6 +41,7 @@ CREATE TABLE Pages (
 	title VARCHAR(500) NOT NULL,
 	titleHead VARCHAR(500),
 	description VARCHAR(500),
+	keywords VARCHAR(500),
 	isDraft SMALLINT NOT NULL CHECK(isDraft IN (0,1)),
 	userId INTEGER REFERENCES Users(id) ON DELETE SET NULL,
 	updatedTime BIGINT NOT NULL DEFAULT 0,
