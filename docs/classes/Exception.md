@@ -11,6 +11,6 @@ Zalety takiego rozwiązania są następujące:
 - jeśli sytuacja, w której występuje wyjątek, powtarza się, nie trzeba kopiować kodu wyjątku;
 - wszystkie wyjątki danej klasy są zgrupowane w jednym miejscu (na końcu pliku klasy).
 
-Koncepcja została zaczerpnięta od [Rossa Tucka](http://rosstuck.com/formatting-exception-messages/).
+Koncepcja została zaczerpnięta od [Rossa Tucka](http://rosstuck.com/formatting-exception-messages).
 
 Konstruktor klasy `Exception` wymaga określenia komunikatu błędu i kodu. Wystąpi błąd, jeśli nastąpi próba utworzenia instancji klasy wyjątku bezpośrednio, a nie przez publiczną metodę statyczną. Błąd wystąpi również, jeśli klasa rzuci wyjątek nienależący do niej (np. klasa `Page` rzuci wyjątek `DatabaseException` zamiast `PageException`), chyba że klasa dziedziczy po klasie, do której należy wyjątek.
