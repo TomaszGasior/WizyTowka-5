@@ -15,6 +15,10 @@ Konstruktor jest prywatny — nie można tworzyć nowych dodatków z wnętrza ko
 
 Zwraca nazwę dodatku (dokładniej: nazwę podfolderu danego dodatku znajdującego się w katalogu określonym w `$_addonsSubdir`).
 
+## `getPath()`
+
+Zwraca pełną bezwzględną ścieżkę do katalogu dodatku, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
+
 ## `isFromSystem()`
 
 Zwraca prawdę, jeśli dodatek jest integralnym elementem systemu WizyTówka i znajduje się w folderze systemu (domyślnie `system`; pełna ścieżka to `(katalog systemu)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `system/addons/themes/exampletheme`).

@@ -40,6 +40,11 @@ abstract class Addon
 		return $this->_name;
 	}
 
+	public function getPath()
+	{
+		return ($this->_isFromSystem ? SYSTEM_DIR : DATA_DIR) . '/addons/' . static::$_addonsSubdir . '/' . $this->_name;
+	}
+
 	public function isFromUser()
 	{
 		return !$this->_isFromSystem;
