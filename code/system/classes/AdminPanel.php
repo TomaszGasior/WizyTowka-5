@@ -40,7 +40,7 @@ abstract class AdminPanel extends Controller
 		// When user have not required permissions to view this page of admin panel,
 		// redirect him to permissions error message.
 		if ($this->_userRequiredPermissions and !($this->_userRequiredPermissions & $this->_currentUser->permissions)) {
-			$this->_redirect('permissionsError');
+			$this->_redirect('error', ['type' => 'permissions']);
 		}
 
 		// Run _prepare() method from child class.
