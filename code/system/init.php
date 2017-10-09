@@ -25,11 +25,12 @@ set_error_handler(__NAMESPACE__.'\ErrorHandler::handleError');
 set_exception_handler(__NAMESPACE__.'\ErrorHandler::handleException');
 
 
-$init = function($baseController) {
-
+$init = function($baseController)
+{
 	defined(__NAMESPACE__.'\INIT') ? exit('Do not init twice!') : define(__NAMESPACE__.'\INIT', 1);
 
-	$runController = function(Controller $controller) {
+	$runController = function(Controller $controller)
+	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$controller->filterPOSTData();
 			$controller->POSTQuery();
@@ -68,5 +69,4 @@ $init = function($baseController) {
 	$baseController = __NAMESPACE__.'\\'.$baseController;
 	$controllerClass = $baseController::getControllerClass();
 	$runController(new $controllerClass);
-
 };

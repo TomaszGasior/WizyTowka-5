@@ -10,7 +10,8 @@ abstract class Controller
 {
 	public function filterPOSTData()
 	{
-		$HTMLFilter = function(array &$array) use (&$HTMLFilter) {
+		$HTMLFilter = function(array &$array) use (&$HTMLFilter)
+		{
 			$aliases = [];
 			foreach ($array as $key => &$value) {
 				$key = explode('_', $key, 2);

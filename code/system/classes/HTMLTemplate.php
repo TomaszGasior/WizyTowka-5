@@ -89,7 +89,8 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 			header('Content-type: text/html; charset=UTF-8');
 		}
 
-		$include = function(&$___variables___, $___template___) {
+		$include = function(&$___variables___, $___template___)
+		{
 			try {
 				ob_start();
 				extract($___variables___, EXTR_SKIP | EXTR_REFS);

@@ -5,12 +5,12 @@ Klasa reprezentująca blok treści w podstronie witryny (rekord w tabeli bazy da
 
 Posiada następujące pola:
 
-- `id` — klucz podstawowy,
-- `type` — nazwa typu zawartości,
-- `contents` — treść typu zawartości (obiekt zakodowany w formacie JSON),
-- `settings` — ustawienia typu zawartości (obiekt zakodowany w formacie JSON),
-- `pageId` — identyfikator podstrony witryny, do której przynależy blok treści,
-- `positionRow` — numer wiersza, w którym blok treści ma zostać wyświetlony,
+- `id` — klucz podstawowy;
+- `type` — nazwa typu zawartości;
+- `contents` — treść typu zawartości (obiekt zakodowany w formacie JSON);
+- `settings` — ustawienia typu zawartości (obiekt zakodowany w formacie JSON);
+- `pageId` — identyfikator podstrony witryny, do której przynależy blok treści;
+- `positionRow` — numer wiersza, w którym blok treści ma zostać wyświetlony;
 - `positionColumn` — numer kolumny w ramach wiersza, w której blok treści ma zostać wyświetlony.
 
 ## *static* `getAll($pageId)`

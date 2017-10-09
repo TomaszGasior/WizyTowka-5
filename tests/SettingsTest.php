@@ -56,7 +56,8 @@ class SettingsTest extends PHPUnit\Framework\TestCase
 
 	public function testGetWriting()
 	{
-		$modify = function($string){
+		$modify = function($string)
+		{
 			return mb_strtoupper($string) . date('Y-m-d');
 		};
 

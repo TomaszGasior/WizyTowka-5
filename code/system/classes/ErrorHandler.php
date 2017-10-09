@@ -131,7 +131,8 @@ trait ErrorHandler
 
 	static private function _prepareInfo(/*\Throwable*/ $exception)
 	{
-		$getPHPErrorName = function($code){
+		$getPHPErrorName = function($code)
+		{
 			return array_flip(
 				array_filter(get_defined_constants(), function($key){ return $key[0].$key[1] == 'E_'; }, ARRAY_FILTER_USE_KEY)
 			)[$code];

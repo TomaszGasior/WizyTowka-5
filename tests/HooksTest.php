@@ -7,13 +7,16 @@ class HooksTest extends PHPUnit\Framework\TestCase
 {
 	public function testRunAction()
 	{
-		$action1 = function($text) {
+		$action1 = function($text)
+		{
 			echo 'Function1:', $text;
 		};
-		$action2 = function($text) {
+		$action2 = function($text)
+		{
 			echo 'Function2:', $text;
 		};
-		$action3 = function() {
+		$action3 = function()
+		{
 			echo "\n";
 		};
 		$randomText = uniqid();
@@ -30,10 +33,12 @@ class HooksTest extends PHPUnit\Framework\TestCase
 
 	public function testApplyFilter()
 	{
-		$filter1 = function($text) {
+		$filter1 = function($text)
+		{
 			return strrev(strtoupper($text));
 		};
-		$filter2 = function($text) {
+		$filter2 = function($text)
+		{
 			$chars = str_split($text);
 			$text = '';
 			foreach ($chars as $char) {
@@ -41,7 +46,8 @@ class HooksTest extends PHPUnit\Framework\TestCase
 			}
 			return trim($text);
 		};
-		$filter3 = function($text) {
+		$filter3 = function($text)
+		{
 			return str_replace(' ', '_', $text);
 		};
 		$randomText = uniqid();
@@ -57,7 +63,8 @@ class HooksTest extends PHPUnit\Framework\TestCase
 
 	public function testRemoveAction()
 	{
-		$function = function(){
+		$function = function()
+		{
 			echo 'I should not be called!';
 		};
 
@@ -75,7 +82,8 @@ class HooksTest extends PHPUnit\Framework\TestCase
 	*/
 	public function testInvalidCallbackArguments()
 	{
-		$function = function($requiredArgument1, $requiredArgument2, $requiredArgument3) {
+		$function = function($requiredArgument1, $requiredArgument2, $requiredArgument3)
+		{
 			echo 'This function has 3 required arguments!';
 		};
 

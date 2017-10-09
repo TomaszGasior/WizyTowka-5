@@ -16,7 +16,7 @@ Klasa określa też dla klas dziedziczących następujące pola chronione:
 
 - `$_currentUser` — instancja klasy `User` konta bieżącego użytkownika, jeśli jest zalogowany;
 - `$_apHead` — instancja klasy `HTMLHead` nagłówka strony panelu administracyjnego;
-- `$_apTemplate` — instancja klasy `HTMLTemplate` szablonu głównej treści strony.
+- `$_apTemplate` — instancja klasy `HTMLTemplate` szablonu głównej treści strony;
 - `$_apContextMenu` — instancja klasy `HTMLMenu` menu dodatkowego strony.
 
 ## `__construct()`
