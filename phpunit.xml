@@ -1,4 +1,4 @@
-<phpunit bootstrap="code/system/init.php" columns="max" colors="true" verbose="true">
+<phpunit bootstrap="tests/bootstrap.php" columns="max" colors="true" verbose="true">
 	<testsuites>
 		<testsuite name="WizyTówka">
 			<directory phpVersion="7">tests</directory>
@@ -9,10 +9,4 @@
 	    <directory>code/system/classes</directory>
 	  </whitelist>
 	</filter>
-	<php>
-		<const name="WizyTowka\DATA_DIR" value="code/data"/>
-		<const name="WizyTowka\FILES_DIR" value="code/data/files"/>
-		<const name="WizyTowka\CONFIG_DIR" value="code/data/config"/>
-		<const name="WizyTowka\SYSTEM_DIR" value="code/system"/>
-	</php>
 </phpunit>

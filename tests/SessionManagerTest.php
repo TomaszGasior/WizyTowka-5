@@ -3,7 +3,6 @@
 /**
 * WizyTówka 5 — unit test
 */
-include_once 'workarounds.php';
 // Workarounds: overwritten setcookie() PHP function.
 
 class SessionManagerTest extends PHPUnit\Framework\TestCase

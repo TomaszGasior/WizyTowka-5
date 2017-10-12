@@ -1,7 +1,8 @@
 <?php
 
 /**
-* WizyTówka 5 — workarounds for unit tests
+* WizyTówka 5
+* Workarounds for unit tests.
 */
 
 // Extented PHPUnit's TestCase class with additional assertHTMLEquals().
@@ -10,19 +11,19 @@ namespace PHPUnit\Framework
 {
 	abstract class HTMLTestCase extends TestCase
 	{
-		protected function assertHTMLEquals($expected, $current, $message = null)
+		protected function assertHTMLEquals($expected, $current, ...$arguments)
 		{
 			$this->assertXmlStringEqualsXmlString(
 				(@\DOMDocument::loadHTML($expected, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
 				(@\DOMDocument::loadHTML($current,  LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
-				$message
+				...$arguments
 			);
 		}
 	}
 }
 
 // Built-in PHP functions overwritten in CMS namespace.
-// These functions are needed by some CMS components but do not work in command line interface.
+// These functions are needed by some CMS components but don't work properly in command line interface.
 namespace WizyTowka
 {
 	// $_SERVER values needed by SessionManager trait, not defined in CLI.

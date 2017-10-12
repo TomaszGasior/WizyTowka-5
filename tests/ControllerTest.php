@@ -3,7 +3,6 @@
 /**
 * WizyTówka 5 — unit test
 */
-include_once 'workarounds.php';
 // Workarounds: overwritten header() PHP function.
 
 class ControllerTest extends PHPUnit\Framework\TestCase

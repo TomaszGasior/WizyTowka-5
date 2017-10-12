@@ -84,4 +84,18 @@ class AddonTest extends PHPUnit\Framework\TestCase
 		];
 		$this->assertEquals($expected, $current);
 	}
+
+	public function testGetPath()
+	{
+		$dataAddon   = self::$_exampleAddonType::getByName('dataAddon');
+		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
+
+		$current  = $dataAddon->getPath();
+		$expected = self::$_addonsDirectoryData . '/dataAddon';
+		$this->assertEquals($expected, $current);
+
+		$current  = $systemAddon->getPath();
+		$expected = self::$_addonsDirectorySystem . '/systemAddon';
+		$this->assertEquals($expected, $current);
+	}
 }

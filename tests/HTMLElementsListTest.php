@@ -3,7 +3,6 @@
 /**
 * WizyTówka 5 — unit test
 */
-include_once 'workarounds.php';
 // Workarounds: HTMLTestCase::assertHTMLEquals().
 
 class HTMLElementsListTest extends PHPUnit\Framework\HTMLTestCase

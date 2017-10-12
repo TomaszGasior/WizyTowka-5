@@ -29,9 +29,9 @@ abstract class Addon
 	public function __debugInfo()
 	{
 		return [
-			'name' => $this->_name,
-			'isFromSystem' => $this->_isFromSystem,
-			'config' => $this->_config,
+			'name'   => $this->_name,
+			'system' => $this->_isFromSystem,
+			'addon'  => $this->_config,
 		];
 	}
 
