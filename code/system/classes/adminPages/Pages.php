@@ -18,11 +18,11 @@ class Pages extends WT\AdminPanel
 		if (!empty($_GET['hideId']) and $page = WT\Page::getById($_GET['hideId'])) {
 			$page->isDraft = true;
 			$page->save();
-			$this->_apMessage = 'Strona „' . $page->title . '” została przeniesiona do szkiców.';
+			$this->_apMessage->success('Strona „' . $page->title . '” została przeniesiona do szkiców.');
 		}
 		if (!empty($_GET['deleteId']) and $page = WT\Page::getById($_GET['deleteId'])) {
 			$page->delete();
-			$this->_apMessage = 'Strona „' . $page->title . '” została usunięta.';
+			$this->_apMessage->success('Strona „' . $page->title . '” została usunięta.');
 		}
 
 		$this->_pages = WT\Page::getAll();
@@ -31,7 +31,7 @@ class Pages extends WT\AdminPanel
 	protected function _output()
 	{
 		if (!empty($_GET['msg'])) {
-			$this->_apMessage = 'Strona została utworzona.';
+			$this->_apMessage->success('Strona została utworzona.');
 		}
 
 		$this->_apTemplate->pages = $this->_pages;

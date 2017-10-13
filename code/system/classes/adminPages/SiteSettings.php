@@ -36,8 +36,7 @@ class SiteSettings extends WT\AdminPanel
 	{
 		if (empty($_POST['websiteTitle']) or empty($_POST['websiteTitlePattern']) or empty($_POST['websiteAddress'])
 			or empty($_POST['websiteEmailAddress']) or empty($_POST['websiteHomepageId'])) {
-			$this->_apMessageError = true;
-			$this->_apMessage = 'Nie wypełniono wymaganych pól.';
+			$this->_apMessage->error('Nie wypełniono wymaganych pól.');
 			return;
 		}
 
@@ -45,8 +44,7 @@ class SiteSettings extends WT\AdminPanel
 		// Tell user about problem, when he enabled pretty links and server is other than Apache.
 		if ($this->_settings->websitePrettyLinks != isset($_POST['websitePrettyLinks'])
 			and !$this->_updateHtaccess(isset($_POST['websitePrettyLinks'])) and isset($_POST['websitePrettyLinks'])) {
-			$this->_apMessageError = true;
-			$this->_apMessage = 'Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.';
+			$this->_apMessage->error('Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.');
 		}
 
 		// Date/time format can be changed in configuration file. In this case form field will be disabled.
@@ -73,9 +71,7 @@ class SiteSettings extends WT\AdminPanel
 			$this->_settings->websiteTitlePattern = '%s — ' . $this->_settings->websiteTitlePattern;
 		}
 
-		if (!$this->_apMessage) {
-			$this->_apMessage = 'Zmiany zostały zapisane.';
-		}
+		$this->_apMessage->default('Zmiany zostały zapisane.');
 	}
 
 	private function _updateHtaccess($enablePrettyLinks)

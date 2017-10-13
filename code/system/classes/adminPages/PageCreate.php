@@ -14,13 +14,11 @@ class PageCreate extends WT\AdminPanel
 
 	public function POSTQuery()
 	{
-		$this->_apMessageError = true;
-
 		$_POST['title'] = trim($_POST['title']);
 		$_POST['slug']  = trim($_POST['slug']);
 
 		if (empty($_POST['title'])) {
-			$this->_apMessage = 'Nie określono tytułu strony.';
+			$this->_apMessage->error('Nie określono tytułu strony.');
 			return;
 		}
 
@@ -29,7 +27,7 @@ class PageCreate extends WT\AdminPanel
 		)->makeSlug()->get();
 
 		if (WT\Page::getBySlug($slug)) {
-			$this->_apMessage = 'Identyfikator „' . $slug . '” jest już wykorzystany w innej stronie.';
+			$this->_apMessage->error('Identyfikator „' . $slug . '” jest już wykorzystany w innej stronie.');
 			return;
 		}
 

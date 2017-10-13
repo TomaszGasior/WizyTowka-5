@@ -21,10 +21,8 @@ class Login extends WT\AdminPanel
 
 	public function POSTQuery()
 	{
-		$this->_apMessageError = true;
-
 		if (empty($_POST['name']) or empty($_POST['password'])) {
-			$this->_apMessage = 'Nie podano danych logowania.';
+			$this->_apMessage->error('Nie podano danych logowania.');
 			return;
 		}
 
@@ -35,7 +33,7 @@ class Login extends WT\AdminPanel
 			$this->_redirect(null);
 		}
 		else {
-			$this->_apMessage = 'Dane logowania są niepoprawne.';
+			$this->_apMessage->error('Dane logowania są niepoprawne.');
 		}
 	}
 

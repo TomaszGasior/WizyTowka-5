@@ -25,9 +25,7 @@
 			</nav>
 
 			<main id="main" tabindex="-1">
-				<?php if ($message) { ?>
-					<div role="alert" <?= $messageError ? 'class="error"' : '' ?> id="message"><?= $message ?></div>
-				<?php } ?>
+				<?= $message ?>
 
 				<header class="columns">
 					<h2><?= $pageTitle ?></h2>

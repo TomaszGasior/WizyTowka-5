@@ -26,7 +26,6 @@ abstract class AdminPanel extends Controller
 	protected $_apTemplate;
 	protected $_apContextMenu;
 	protected $_apMessage;
-	protected $_apMessageError = false;
 
 	final public function __construct()
 	{
@@ -42,6 +41,10 @@ abstract class AdminPanel extends Controller
 		if ($this->_userRequiredPermissions and !($this->_userRequiredPermissions & $this->_currentUser->permissions)) {
 			$this->_redirect('error', ['type' => 'permissions']);
 		}
+
+		// HTML message box (prepared for child class).
+		// It is created here before other HTML classes to have ability to use it in POSTQuery() and _prepare() methods.
+		$this->_apMessage = new HTMLMessage;
 
 		// Run _prepare() method from child class.
 		$this->_prepare();
@@ -80,7 +83,6 @@ abstract class AdminPanel extends Controller
 		$this->_apLayout->mainMenu     = $this->_apMainMenu;
 		$this->_apLayout->contextMenu  = $this->_apContextMenu;
 		$this->_apLayout->message      = $this->_apMessage;
-		$this->_apLayout->messageError = $this->_apMessageError;
 		$this->_apLayout->pageTitle    = $this->_pageTitle;
 		$this->_apLayout->pageTemplate = $this->_apTemplate;
 
@@ -92,10 +94,10 @@ abstract class AdminPanel extends Controller
 	{
 		// Top navigation menu.
 		$this->_apTopMenu = new HTMLMenu;
-		$this->_apTopMenu->add($this->_currentUser->name, self::URL('userSettings'), 'iconUser');
-		$this->_apTopMenu->add('Zaktualizuj', self::URL('systemUpdate'), 'iconUpdates');
-		$this->_apTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite', null, true);
-		$this->_apTopMenu->add('Wyloguj się', self::URL('logout'), 'iconLogout');
+		$this->_apTopMenu->add($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
+		$this->_apTopMenu->add('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
+		$this->_apTopMenu->add('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', null, true);
+		$this->_apTopMenu->add('Wyloguj się',             self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
 		$this->_apMainMenu = new HTMLMenu;
@@ -112,19 +114,19 @@ abstract class AdminPanel extends Controller
 			$this->_apMainMenu->add('Wyślij pliki', self::URL('filesSend'), 'iconAdd');
 		}
 		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_ELEMENTS) {
-			$this->_apMainMenu->add('Menu', self::URL('menus'), 'iconMenus');
-			$this->_apMainMenu->add('Obszary', self::URL('areas'), 'iconAreas');
+			$this->_apMainMenu->add('Menu',           self::URL('menus'),         'iconMenus');
+			$this->_apMainMenu->add('Obszary',        self::URL('areas'),         'iconAreas');
 			$this->_apMainMenu->add('Personalizacja', self::URL('customization'), 'iconCustomization');
 		}
 		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_CONFIG) {
 			$this->_apMainMenu->add('Ustawienia', self::URL('siteSettings'), 'iconSettings');
 		}
 		if ($this->_currentUser->permissions & User::PERM_SUPER_USER) {
-			$this->_apMainMenu->add('Użytkownicy', self::URL('users'), 'iconUsers');
-			$this->_apMainMenu->add('Utwórz użytkownika', self::URL('userCreate'), 'iconAdd');
-			$this->_apMainMenu->add('Edytor plików', self::URL('dataEditor_List'), 'iconDataEditor');
-			$this->_apMainMenu->add('Utwórz plik', self::URL('dataEditor_Editor'), 'iconAdd');
-			$this->_apMainMenu->add('Kopia zapasowa', self::URL('backup'), 'iconBackup');
+			$this->_apMainMenu->add('Użytkownicy',        self::URL('users'),             'iconUsers');
+			$this->_apMainMenu->add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd');
+			$this->_apMainMenu->add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor');
+			$this->_apMainMenu->add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd');
+			$this->_apMainMenu->add('Kopia zapasowa',     self::URL('backup'),            'iconBackup');
 		}
 		$this->_apMainMenu->add('Informacje', self::URL('about'), 'iconInformation');
 	}

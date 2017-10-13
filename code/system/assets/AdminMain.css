@@ -436,33 +436,38 @@ main h3 {
 	}
 }
 
-div#message {
+div.message {
 	margin: 0 -1.5em -0.9em; /*@mainBlockPadding*/
 
 	text-align: center;
 	font-weight: bold;
 	padding: 0.4em 1.5em;
-	background: #FFFDB9;
-	color: #734000;
-	border-bottom: 1px solid #FFED00;
-
-	animation: messageFading 0.35s ease-in-out, messageFading 0.65s ease-in-out;
-	animation-delay: -1ms, 10s;
-	animation-direction: reverse, normal;
-	animation-fill-mode: none, forwards;
+	background: #EFEFEF;
+	color: #000;
+	border-bottom: 1px solid #DFDFDF;
 
 	box-sizing: border-box;
 	overflow: hidden;
-}
-div#message.error {
-	background: #C70000;
-	color: #FFFFFF;
-	border-color: #B80000;
 
 	animation: messageFading 0.35s ease-in-out;
 	animation-delay: -1ms;
 	animation-direction: reverse;
 	animation-fill-mode: none;
+}
+div.message.success {
+	background: #FFFDB9;
+	color: #734000;
+	border-color: #FFED00;
+
+	animation: messageFading 0.35s ease-in-out, messageFading 0.65s ease-in-out;
+	animation-delay: -1ms, 10s;
+	animation-direction: reverse, normal;
+	animation-fill-mode: none, forwards;
+}
+div.message.error {
+	background: #C70000;
+	color: #FFFFFF;
+	border-color: #B80000;
 }
 
 

@@ -26,8 +26,7 @@ class PageSettings extends WT\AdminPanel
 		$_POST['slug']  = trim($_POST['slug']);
 
 		if (empty($_POST['title'])) {
-			$this->_apMessage = 'Nie określono tytułu strony.';
-			$this->_apMessageError = true;
+			$this->_apMessage->error('Nie określono tytułu strony.');
 		}
 		else {
 			$this->_page->title = $_POST['title'];
@@ -37,8 +36,7 @@ class PageSettings extends WT\AdminPanel
 			$newSlug = !empty($_POST['slug']) ? $_POST['slug'] : (new WT\Text($_POST['title']))->makeSlug()->get();
 
 			if (WT\Page::getBySlug($newSlug)) {
-				$this->_apMessage = 'Identyfikator „' . $newSlug . '” jest już wykorzystany w innej stronie.';
-				$this->_apMessageError = true;
+				$this->_apMessage->error('Identyfikator „' . $newSlug . '” jest już wykorzystany w innej stronie.');
 			}
 			else {
 				$this->_page->slug = $newSlug;
@@ -49,11 +47,8 @@ class PageSettings extends WT\AdminPanel
 		$this->_page->description = $_POST['description'];
 		$this->_page->keywords    = $_POST['keywords'];
 
-		if (empty($this->_apMessage)) {
-			$this->_apMessage = 'Zmiany zostały zapisane.';
-		}
-
 		$this->_page->save();
+		$this->_apMessage->default('Zmiany zostały zapisane.');
 	}
 
 	protected function _output()

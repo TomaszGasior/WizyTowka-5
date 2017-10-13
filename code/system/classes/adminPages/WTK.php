@@ -29,7 +29,7 @@ class WTK extends WT\AdminPanel
 			}
 		}
 
-		$this->_apMessage = 'Zmiany konfiguracji zostały zapisane.';
+		$this->_apMessage->success('Zmiany konfiguracji zostały zapisane.');
 	}
 
 	protected function _output()

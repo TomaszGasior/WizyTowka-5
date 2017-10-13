@@ -13,9 +13,7 @@
 		</header>
 
 		<main id="main">
-			<?php if ($message) { ?>
-				<div role="alert" <?= $messageError ? 'class="error"' : '' ?> id="message"><?= $message ?></div>
-			<?php } ?>
+			<?= $message ?>
 
 			<header>
 				<h2><?= $pageTitle ?></h2>
