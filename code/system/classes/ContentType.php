@@ -24,7 +24,7 @@ class ContentType extends Addon
 		$className = $this->namespace . '\\' . $className;
 		$APIClass  = __NAMESPACE__ . '\ContentTypeAPI';
 		if (!is_subclass_of($className, $APIClass)) {
-			ContentTypeException::invalidClass($this->_name, $className, $APIClass);
+			ContentTypeException::invalidClass($className, $APIClass);
 		}
 
 		// Init class instance and return it.
@@ -49,8 +49,8 @@ class ContentType extends Addon
 
 class ContentTypeException extends Exception
 {
-	static public function invalidClass($name, $invalidClass, $APIClass)
+	static public function invalidClass($invalidClass, $APIClass)
 	{
-		return new self('Class ' . $invalidClass . ' of content type "' . $name . '" must extend ' . $APIClass . 'class.', 1);
+		return new self('Content type class ' . $invalidClass . ' must extend ' . $APIClass . 'class.', 1);
 	}
 }

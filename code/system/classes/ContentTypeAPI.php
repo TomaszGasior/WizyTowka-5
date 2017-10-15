@@ -9,16 +9,16 @@ namespace WizyTowka;
 abstract class ContentTypeAPI
 {
 	// Data of website page as stdClass objects. It will be set by Website class.
-	private $_content;
-	private $_settings;
+	protected $_contents;
+	protected $_settings;
 
 	// HTML code parts classes. It will be set by WebsiteRenderer class.
-	private $_HTMLHead;
-	private $_HTMLMessage;
-	private $_HTMLTemplate;
+	protected $_HTMLHead;
+	protected $_HTMLMessage;
+	protected $_HTMLTemplate;
 
 	// Instance of ContentType plugin class. It will be set by ContentType itself.
-	private $_contentType;
+	protected $_contentType;
 
 	final public function __construct(ContentType $myContentTypeInstance)
 	{
@@ -27,15 +27,15 @@ abstract class ContentTypeAPI
 		$this->_prepare();
 	}
 
-	final public function setPageData(stdClass $content, stdClass $settings)
+	final public function setPageData(\stdClass $contents, \stdClass $settings)
 	{
-		$this->_content  = $content;
+		$this->_contents = $contents;
 		$this->_settings = $settings;
 	}
 
 	final public function setHTMLParts(HTMLTemplate $template, HTMLHead $head, HTMLMessage $message)
 	{
-		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\PlainPage\SettingsPage" --> "SettingsPage".
+		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\PlainText\SettingsPage" --> "SettingsPage".
 
 		$this->_HTMLTemplate = $template;
 		$this->_HTMLTemplate->setTemplate($className);
@@ -49,8 +49,6 @@ abstract class ContentTypeAPI
 
 	// Equivalent of __construct() method for child classes.
 	protected function _prepare() {}
-
-	public function HTTPHeaders() {}
 
 	public function POSTQuery()
 	{
