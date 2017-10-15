@@ -8,15 +8,20 @@ namespace WizyTowka;
 
 class Website extends Controller
 {
+	private $_page;
+
+	public function __construct()
+	{
+		$this->_page = !empty($_GET['id']) ? Page::getBySlug($_GET['id']) : Page::getById(Settings::get('websiteHomepageId'));
+	}
+
 	public function output()
 	{
-		echo 'Wkrótce…';
+		echo $this->_page->title;
 	}
 
 	static public function URL($target, array $arguments = [])
 	{
-		$slug = $target;
-
 		if (is_integer($target)) {
 			if ($page = Page::getById($target)) {
 				$slug = $page->slug;
@@ -24,6 +29,9 @@ class Website extends Controller
 			else {
 				return false;
 			}
+		}
+		else {
+			$slug = $target;
 		}
 
 		if (isset($arguments['id'])) {
