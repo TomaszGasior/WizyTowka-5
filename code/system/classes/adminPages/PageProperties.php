@@ -2,14 +2,14 @@
 
 /**
 * WizyTówka 5
-* Admin page — page settings.
+* Admin page — page properties.
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class PageSettings extends WT\AdminPanel
+class PageProperties extends WT\AdminPanel
 {
-	protected $_pageTitle = 'Ustawienia strony';
+	protected $_pageTitle = 'Właściwości strony';
 
 	private $_page;
 
