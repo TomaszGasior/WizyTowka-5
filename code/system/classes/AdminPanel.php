@@ -42,9 +42,8 @@ abstract class AdminPanel extends Controller
 			$this->_redirect('error', ['type' => 'permissions']);
 		}
 
-		// HTML message box (prepared for child class).
-		// It is created here before other HTML classes to have ability to use it in POSTQuery() and _prepare() methods.
-		$this->_apMessage = new HTMLMessage;
+		// Prepare HTML parts for child class.
+		$this->_setupHTMLParts();
 
 		// Run _prepare() method from child class.
 		$this->_prepare();
@@ -52,25 +51,10 @@ abstract class AdminPanel extends Controller
 
 	final public function output()
 	{
-		// HTML <head>.
-		$this->_apHead = new HTMLHead;
-		$this->_apHead->setTitle($this->_pageTitle . ' — WizyTówka');
-		$this->_apHead->setAssetsPath(SYSTEM_URL . '/assets');
-		$this->_apHead->setMeta('viewport', 'width=device-width');
-		$this->_apHead->addStyle('AdminMain.css');
-		$this->_apHead->addStyle('AdminMobile.css');
-
 		// Top navigation menu and main navigation menu.
 		if (!$this->_apAlternateLayout) {
 			$this->_setupMenus();
 		}
-
-		// Context menu (prepared for child class).
-		$this->_apContextMenu = new HTMLMenu;
-
-		// Main template of page (prepared for child class).
-		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".
-		$this->_apTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
 
 		// Run _output() method. Child class can specify additional template variables and context menu here.
 		$this->_output();
@@ -90,6 +74,29 @@ abstract class AdminPanel extends Controller
 		$this->_apLayout->render();
 	}
 
+	// This method sets up HTML layout parts needed by child class.
+	private function _setupHTMLParts()
+	{
+		// HTML <head>.
+		$this->_apHead = new HTMLHead;
+		$this->_apHead->setTitle($this->_pageTitle . ' — WizyTówka');
+		$this->_apHead->setAssetsPath(SYSTEM_URL . '/assets');
+		$this->_apHead->setMeta('viewport', 'width=device-width');
+		$this->_apHead->addStyle('AdminMain.css');
+		$this->_apHead->addStyle('AdminMobile.css');
+
+		// Main template of page.
+		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".
+		$this->_apTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
+
+		// Context menu.
+		$this->_apContextMenu = new HTMLMenu;
+
+		// HTML message box.
+		$this->_apMessage = new HTMLMessage;
+	}
+
+	// This method sets up admin panel menu elements according to current user permissions.
 	private function _setupMenus()
 	{
 		// Top navigation menu.
