@@ -45,8 +45,6 @@ class PageCreate extends WT\AdminPanel
 		$page->save();
 
 		try {
-			throw new \Exception("Error Processing Request", 1);
-
 			$pageBox = new WT\PageBox;
 			$pageBox->pageId         = $page->id;
 			$pageBox->type           = $_POST['type'];
@@ -56,7 +54,6 @@ class PageCreate extends WT\AdminPanel
 			$pageBox->positionColumn = 1;
 			$pageBox->save();
 		} catch (\Throwable $e) {
-			echo 'Złapałem się, throwable!';exit;
 			$page->delete();   // Delete incomplete created page from database.
 			throw $e;
 		}
