@@ -1,0 +1,1 @@
+<p class="information">Ten typ zawartości nie posiada ustawień.</p>
