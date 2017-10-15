@@ -15,14 +15,26 @@ class Pages extends WT\AdminPanel
 
 	protected function _prepare()
 	{
+		// Important: page selected as website homepage should not be deleted or moved to drafts.
+
 		if (!empty($_GET['hideId']) and $page = WT\Page::getById($_GET['hideId'])) {
-			$page->isDraft = true;
-			$page->save();
-			$this->_apMessage->success('Strona „' . $page->title . '” została przeniesiona do szkiców.');
+			if ($page->id == WT\Settings::get('websiteHomepageId')) {
+				$this->_apMessage->error('Wybrana do ukrycia strona jest stroną główną witryny. Nie ukryto strony.');
+			}
+			else {
+				$page->isDraft = true;
+				$page->save();
+				$this->_apMessage->success('Strona „' . $page->title . '” została przeniesiona do szkiców.');
+			}
 		}
 		if (!empty($_GET['deleteId']) and $page = WT\Page::getById($_GET['deleteId'])) {
-			$page->delete();
-			$this->_apMessage->success('Strona „' . $page->title . '” została usunięta.');
+			if ($page->id == WT\Settings::get('websiteHomepageId')) {
+				$this->_apMessage->error('Wybrana do usunięcia strona jest stroną główną witryny. Nie usunięto strony.');
+			}
+			else {
+				$page->delete();
+				$this->_apMessage->success('Strona „' . $page->title . '” została usunięta.');
+			}
 		}
 
 		$this->_pages = WT\Page::getAll();
