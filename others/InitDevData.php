@@ -44,7 +44,7 @@ $settings = Settings::get();
 $settings->databaseType = 'sqlite';
 $settings->websiteAddress = 'http://localhost';
 $settings->websiteTitle = 'Przykładowa witryna';
-$settings->websiteSiteHomepageId = 1;
+$settings->websiteHomepageId = 1;
 $settings->systemVersion = VERSION;
 $settings->systemShowErrors = true;
 
@@ -77,4 +77,15 @@ foreach (range(1, 5) as $number) {
 	$page->isDraft = !($number % 2);
 	$page->userId = 1;
 	$page->save();
+
+	$contentType = ContentType::getByName(Settings::get('adminPanelDefaultContentType'));
+
+	$pageBox = new PageBox;
+	$pageBox->pageId = $page->id;
+	$pageBox->type = $contentType->getName();
+	$pageBox->settings = (object)($contentType->settings ?? []);
+	$pageBox->contents = (object)($contentType->contents ?? []);
+	$pageBox->positionRow = 1;
+	$pageBox->positionColumn = 1;
+	$pageBox->save();
 }
