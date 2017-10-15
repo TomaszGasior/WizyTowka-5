@@ -7,6 +7,8 @@ class AddonTest extends PHPUnit\Framework\TestCase
 {
 	static private $_addonsDirectorySystem = WizyTowka\SYSTEM_DIR . '/addons/exampleAddonType';
 	static private $_addonsDirectoryData   = WizyTowka\DATA_DIR   . '/addons/exampleAddonType';
+	static private $_addonsURLPathSystem   = WizyTowka\SYSTEM_URL . '/addons/exampleAddonType';
+	static private $_addonsURLPathData     = WizyTowka\DATA_URL   . '/addons/exampleAddonType';
 
 	static private $_exampleAddonsSubdirs = [];
 	static private $_exampleAddonType;
@@ -34,8 +36,8 @@ class AddonTest extends PHPUnit\Framework\TestCase
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
 
-			public function __construct() {}
 			// Addon class has private constructor. Costructor must be public to create anonymous class.
+			public function __construct() {}
 		};
 	}
 
@@ -96,6 +98,20 @@ class AddonTest extends PHPUnit\Framework\TestCase
 
 		$current  = $systemAddon->getPath();
 		$expected = self::$_addonsDirectorySystem . '/systemAddon';
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testGetURL()
+	{
+		$dataAddon   = self::$_exampleAddonType::getByName('dataAddon');
+		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
+
+		$current  = $dataAddon->getURL();
+		$expected = self::$_addonsURLPathData . '/dataAddon';
+		$this->assertEquals($expected, $current);
+
+		$current  = $systemAddon->getURL();
+		$expected = self::$_addonsURLPathSystem . '/systemAddon';
 		$this->assertEquals($expected, $current);
 	}
 }

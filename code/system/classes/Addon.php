@@ -16,6 +16,8 @@ abstract class Addon
 
 	private function __construct() {}
 
+	private function __clone() {}
+
 	public function __get($name)
 	{
 		return $this->_config->$name;
@@ -43,6 +45,11 @@ abstract class Addon
 	public function getPath()
 	{
 		return ($this->_isFromSystem ? SYSTEM_DIR : DATA_DIR) . '/addons/' . static::$_addonsSubdir . '/' . $this->_name;
+	}
+
+	public function getURL()
+	{
+		return ($this->_isFromSystem ? SYSTEM_URL : DATA_URL) . '/addons/' . static::$_addonsSubdir . '/' . $this->_name;
 	}
 
 	public function isFromUser()

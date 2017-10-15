@@ -11,6 +11,10 @@ Klasa implementuje metody `__get()` i `__isset()`, umożliwiając operowanie na 
 
 Konstruktor jest prywatny — nie można tworzyć nowych dodatków z wnętrza kodu. Aby pobrać instancję klasy konkretnego typu dodatku należy użyć metody statycznej `getByName()` lub `getAll()`.
 
+## *private* `__clone()`
+
+Nie można klonować obiektu dodatku — jest to pozbawione sensu, bowiem dodatek nie ma wielu kopii w systemie plików.
+
 ## `getName()`
 
 Zwraca nazwę dodatku (dokładniej: nazwę podfolderu danego dodatku znajdującego się w katalogu określonym w `$_addonsSubdir`).
@@ -18,6 +22,10 @@ Zwraca nazwę dodatku (dokładniej: nazwę podfolderu danego dodatku znajdujące
 ## `getPath()`
 
 Zwraca pełną bezwzględną ścieżkę do katalogu dodatku, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
+
+## `getURL()`
+
+Zwraca adres URL — ścieżkę do katalogu dodatku, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
 
 ## `isFromSystem()`
 
