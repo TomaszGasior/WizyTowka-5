@@ -11,17 +11,17 @@ class Error extends WT\AdminPanel
 {
 	protected $_pageTitle = 'Wystąpił bląd';
 
-	public function _prepare()
+	protected function _prepare()
 	{
 		if (empty($_GET['type'])) {
-			$this->_redirect(null);
+			$this->_redirect('error', ['type' => 'unknown']);
 		}
 	}
 
 	protected function _output()
 	{
 		$messages = [
-			'unknowwn'    => 'Wystąpił błąd, ale nie wiemy jaki… <span style="opacity: 0.5; display: block; font-size: 0.63em">Detektyw Monk powinien się tym zająć.</span>',
+			'unknown'     => 'Wystąpił błąd, ale nie wiemy jaki… <span style="opacity: 0.5; display: block; font-size: 0.63em">Detektyw Monk powinien się tym zająć.</span>',
 
 			'permissions' => 'Nie posiadasz wystarczających uprawnień do korzystania z&nbsp;tej strony panelu administracyjnego.',
 			'parameters'  => 'Podano błędne parametry bądź brak wymaganych parametrów w&nbsp;adresie URL.',
@@ -29,6 +29,6 @@ class Error extends WT\AdminPanel
 
 		$this->_apTemplate->setTemplate('Message');
 		$this->_apTemplate->CSSClasses  = 'iconWarning';
-		$this->_apTemplate->messageText = isset($messages[$_GET['type']]) ? $messages[$_GET['type']] : $messages['unknowwn'];
+		$this->_apTemplate->messageText = isset($messages[$_GET['type']]) ? $messages[$_GET['type']] : $messages['unknown'];
 	}
 }
