@@ -49,7 +49,7 @@ trait SessionManager
 		}
 
 		// For backwards compatibility with PHP 5.6.
-		$randomValue = (function_exists('random_int')) ? random_int(PHP_INT_MIN, PHP_INT_MAX) : uniqid(1);
+		$randomValue = function_exists('random_int') ? random_int(PHP_INT_MIN, PHP_INT_MAX) : uniqid(1);
 
 		$session['userId']      = $userId;
 		$session['waiString']   = self::_generateWAI($userId);

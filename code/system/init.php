@@ -27,7 +27,7 @@ set_exception_handler(__NAMESPACE__.'\ErrorHandler::handleException');
 
 $init = function($baseController)
 {
-	defined(__NAMESPACE__.'\INIT') ? exit('Do not init twice!') : define(__NAMESPACE__.'\INIT', 1);
+	defined(__NAMESPACE__.'\INIT') ? exit : define(__NAMESPACE__.'\INIT', 1);
 
 	$runController = function(Controller $controller)
 	{
@@ -58,15 +58,17 @@ $init = function($baseController)
 	date_default_timezone_set($settings->phpTimeZone);
 
 	/* Database connection. */
-	($settings->databaseType == 'sqlite')
-	? Database::connect('sqlite', CONFIG_DIR.'/database.db')
-	: Database::connect($settings->databaseType, $settings->databaseName, $settings->databaseHost, $settings->databaseUsername, $settings->databasePassword);
+	Database::connect(
+		$settings->databaseType,
+		($settings->databaseType == 'sqlite') ? CONFIG_DIR.'/database.db' : $settings->databaseName,
+		$settings->databaseHost, $settings->databaseUsername, $settings->databasePassword
+	);
 
 	/* User session manager. */
 	SessionManager::setup();
 
 	/* Controller. */
-	$baseController = __NAMESPACE__.'\\'.$baseController;
+	$baseController  = __NAMESPACE__ . '\\'. $baseController;
 	$controllerClass = $baseController::getControllerClass();
 	$runController(new $controllerClass);
 };

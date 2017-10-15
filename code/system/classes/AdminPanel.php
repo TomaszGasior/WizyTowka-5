@@ -55,7 +55,7 @@ abstract class AdminPanel extends Controller
 		// HTML <head>.
 		$this->_apHead = new HTMLHead;
 		$this->_apHead->setTitle($this->_pageTitle . ' — WizyTówka');
-		$this->_apHead->setAssetsPath(basename(SYSTEM_DIR).'/assets');
+		$this->_apHead->setAssetsPath(SYSTEM_URL . '/assets');
 		$this->_apHead->setMeta('viewport', 'width=device-width');
 		$this->_apHead->addStyle('AdminMain.css');
 		$this->_apHead->addStyle('AdminMobile.css');
@@ -69,7 +69,7 @@ abstract class AdminPanel extends Controller
 		$this->_apContextMenu = new HTMLMenu;
 
 		// Main template of page (prepared for child class).
-		$className = substr(strrchr(static::class, '\\'), 1);  // Example: "WizyTowka\AdminPages\Pages" --> "Pages".
+		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".
 		$this->_apTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
 
 		// Run _output() method. Child class can specify additional template variables and context menu here.
@@ -131,11 +131,11 @@ abstract class AdminPanel extends Controller
 		$this->_apMainMenu->add('Informacje', self::URL('about'), 'iconInformation');
 	}
 
-	protected function _prepare() {}
 	// Equivalent of Controller::__construct() method for AdminPanel child classes.
+	protected function _prepare() {}
 
-	protected function _output() {}
 	// Equivalent of Controller::output() method for AdminPanel child classes.
+	protected function _output() {}
 
 	static public function URL($target, array $arguments = [])
 	{

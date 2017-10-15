@@ -35,10 +35,7 @@ abstract class Controller
 		throw ControllerException::withoutPOSTQueries(static::class);
 	}
 
-	public function output()
-	{
-		return;
-	}
+	public function output() {}
 
 	protected function _redirect($target, array $arguments = [])
 	{
@@ -50,16 +47,16 @@ abstract class Controller
 		exit;
 	}
 
+	// This method should return fully qualified name of controller class according to URL.
 	static public function getControllerClass()
 	{
 		return static::class;
 	}
-	// This method should return fully qualified name of controller class according to URL.
 
-	/*abstract*/ static public function URL($target, array $arguments = []) {}
 	// This method should return URL to specified target (page of site or page of admin panel).
-	// It should be abstract, but is not because of backward compatibility with PHP 5.6.
+	// It should be abstract but is not because of backward compatibility with PHP 5.6.
 	// More here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.strict
+	/*abstract*/ static public function URL($target, array $arguments = []) {}
 }
 
 class ControllerException extends Exception
@@ -70,6 +67,6 @@ class ControllerException extends Exception
 	}
 	static public function unallowedKeyInURLArgument($unallowedKey)
 	{
-		return new self('Argument of URL must not have key named "' . $unallowedKey . '".', 2);
+		return new self('Argument of URL must not have key named "' . $unallowedKey . '".', 2);  // Exception used by child classes.
 	}
 }

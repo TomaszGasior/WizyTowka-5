@@ -20,9 +20,9 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		$this->_filename = $filename;
 		$this->_readOnly = (boolean)$readOnly;
 
-		$filenameHash = md5(($filename[0] == '/') ? $filename : realpath($filename));
 		// It is a hash of full path of configuration file.
 		// We should avoid realpath() when it is possible to limit operations on file system.
+		$filenameHash = md5(($filename[0] == '/') ? $filename : realpath($filename));
 
 		if (!isset(self::$_configurationFiles[$filenameHash])) {
 			$configuration = json_decode(file_get_contents($filename), true);  // "true" means associative array.

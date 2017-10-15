@@ -28,12 +28,12 @@ class Page extends DatabaseObject
 		'updatedTime',
 	];
 
+	// This method overwrites DatabaseObject::getAll().
+	// Page::getAll() returns public pages, Page::getAllDrafts() returns pages with draft status.
 	static public function getAll()
 	{
 		return static::_getByWhereCondition('isDraft = 0');
 	}
-	// This method overwrites DatabaseObject::getAll().
-	// Page::getAll() returns public pages, Page::getAllDrafts() returns pages with draft status.
 
 	static public function getAllDrafts()
 	{

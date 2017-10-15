@@ -22,10 +22,10 @@ class PageBox extends DatabaseObject
 		'settings',
 	];
 
+	// This method overwrites DatabaseObject::getAll().
+	// PageBox::getAll() returns page boxes only for page specified in first argument.
 	static public function getAll($pageId)
 	{
 		return static::_getByWhereCondition('pageId = :pageId', ['pageId' => $pageId]);
 	}
-	// This method overwrites DatabaseObject::getAll().
-	// PageBox::getAll() returns page boxes only for page specified in first argument.
 }
