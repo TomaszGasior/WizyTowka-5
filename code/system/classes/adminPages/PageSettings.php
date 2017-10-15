@@ -2,14 +2,14 @@
 
 /**
 * WizyTówka 5
-* Admin page — page editor (uses content type API).
+* Admin page — page settings (uses content type API).
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class PageEdit extends WT\AdminPanel
+class PageSettings extends WT\AdminPanel
 {
-	protected $_pageTitle = 'Edycja strony';
+	protected $_pageTitle = 'Ustawienia strony';
 
 	private $_page;
 	private $_pageBoxes;
@@ -25,7 +25,7 @@ class PageEdit extends WT\AdminPanel
 		}
 
 		$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->type);
-		$this->_contentTypeAPI = $contentType->initEditorPage();
+		$this->_contentTypeAPI = $contentType->initSettingsPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
 		$this->_contentTypeAPI->setHTMLParts($this->_apTemplate, $this->_apHead, $this->_apMessage);
 	}

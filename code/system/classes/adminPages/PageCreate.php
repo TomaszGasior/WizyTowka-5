@@ -31,23 +31,43 @@ class PageCreate extends WT\AdminPanel
 			return;
 		}
 
-		$page = new WT\Page;
+		if (empty($_POST['type'])) {
+			$this->_apMessage->error('Nie określono typu zawartości strony.');
+			return;
+		}
+		$contentType = WT\ContentType::getByName($_POST['type']);
 
+		$page = new WT\Page;
 		$page->title   = $_POST['title'];
 		$page->slug    = $slug;
 		$page->isDraft = (bool)$_POST['isDraft'];
 		$page->userId  = $this->_currentUser->id;
-
 		$page->save();
+
+		try {
+			throw new \Exception("Error Processing Request", 1);
+
+			$pageBox = new WT\PageBox;
+			$pageBox->pageId         = $page->id;
+			$pageBox->type           = $_POST['type'];
+			$pageBox->settings       = (object)(isset($contentType->settings) ? $contentType->settings : []);
+			$pageBox->contents       = (object)(isset($contentType->contents) ? $contentType->contents : []);
+			$pageBox->positionRow    = 1;
+			$pageBox->positionColumn = 1;
+			$pageBox->save();
+		} catch (\Throwable $e) {
+			echo 'Złapałem się, throwable!';exit;
+			$page->delete();   // Delete incomplete created page from database.
+			throw $e;
+		}
 
 		$this->_redirect($page->isDraft ? 'drafts' : 'pages', ['msg' => 1]);
 	}
 
 	protected function _output()
 	{
-		$this->_apTemplate->autocheckDraft = !empty($_GET['draft']);
-
-		$this->_apTemplate->boxesTypes = [];  // Comming soon.
-		$this->_apTemplate->autocheckBoxType = '';  // Comming soon.
+		$this->_apTemplate->contentTypes         = WT\ContentType::getAll();
+		$this->_apTemplate->autocheckContentType = WT\Settings::get('adminPanelDefaultContentType');
+		$this->_apTemplate->autocheckDraft       = !empty($_GET['draft']);
 	}
 }

@@ -13,9 +13,9 @@
 	<h3>Typ zawartości</h3>
 
 	<?= (new WizyTowka\HTMLElementsList('elementsList listView'))
-		->collection($boxesTypes)
-		->title(function($type){ return $type->title; })
-		->option('type', function($type){ return $type->getName(); }, $autocheckBoxType)
+		->collection($contentTypes)
+		->title(function($type){ return $type->label; })
+		->option('type', function($type){ return $type->getName(); }, $autocheckContentType)
 		->emptyMessage('Brak zainstalowanych typów zawartości stron.')
 	?>
 
