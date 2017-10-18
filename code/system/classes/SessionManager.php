@@ -48,15 +48,12 @@ trait SessionManager
 			throw SessionManagerException::wrongState();
 		}
 
-		// For backwards compatibility with PHP 5.6.
-		$randomValue = function_exists('random_int') ? random_int(PHP_INT_MIN, PHP_INT_MAX) : uniqid(1);
-
 		$session['userId']      = $userId;
 		$session['waiString']   = self::_generateWAI($userId);
 		$session['expireTime']  = time() + (integer)$sessionDuration;
 		$session['reloginTime'] = time() + 120;
 
-		$sessionId = hash('sha512', $randomValue);
+		$sessionId = hash('sha512', random_int(PHP_INT_MIN, PHP_INT_MAX));
 		$sessionsConfig = self::_getSessionsConfig();
 		$sessionsConfig->$sessionId = $session;
 

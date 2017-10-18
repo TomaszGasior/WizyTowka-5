@@ -56,6 +56,9 @@ class PageCreate extends WT\AdminPanel
 		} catch (\Throwable $e) {
 			$page->delete();   // Delete incomplete created page from database.
 			throw $e;
+		} catch (\Exception $e) {  // PHP 5.6 backwards compatibility.
+			$page->delete();
+			throw $e;
 		}
 
 		$this->_redirect($page->isDraft ? 'drafts' : 'pages', ['msg' => 1]);

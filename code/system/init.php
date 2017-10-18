@@ -14,6 +14,9 @@ const VERSION_STABLE = false;
 if (PHP_VERSION_ID < 50600) {
 	exit('WizyTówka content management system cannot be started. PHP 5.6 is required.');
 }
+if (PHP_VERSION_ID < 70000) {
+	include __DIR__ . '/compat.php';
+}
 
 mb_internal_encoding('UTF-8');
 

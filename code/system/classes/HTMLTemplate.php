@@ -97,12 +97,12 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 				include $___template___;
 				ob_end_flush();
 			}
-			catch (\Throwable $e) { // PHP 7.
+			catch (\Throwable $e) {
 				ob_end_clean();
 				echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
 					 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';
 			}
-			catch (\Exception $e) { // PHP 5.6.
+			catch (\Exception $e) { // PHP 5.6 backwards compatibility.
 				ob_end_clean();
 				echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
 					 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';

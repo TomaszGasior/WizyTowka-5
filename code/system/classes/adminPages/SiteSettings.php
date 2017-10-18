@@ -103,7 +103,7 @@ HTACCESS;
 			$htaccessContent = trim($htaccessContent);
 			$htaccessContent ? file_put_contents('.htaccess', $htaccessContent) : @unlink('.htaccess');
 		}
-		catch (ErrorException $e) {
+		catch (\ErrorException $e) {
 			return false;
 		}
 
@@ -114,23 +114,9 @@ HTACCESS;
 	{
 		$this->_apTemplate->settings = $this->_settings;
 
-		// PHP 5.6 backwards compatibility for using objects in array_columns() function.
-		// More here: http://php.net/manual/en/function.array-column.php#refsect1-function.array-column-changelog
-		$array_column = function($input, $column_key, $index_key)
-		{
-			if (PHP_VERSION_ID >= 70000) {
-				return array_column($input, $column_key, $index_key);
-			}
-			$array = [];
-			foreach ($input as $object) {
-				$array[$object->$index_key] = $object->$column_key;
-			}
-			return $array;
-		};
-
 		// "Website homepage" field — titles of public pages.
 		$pages = WT\Page::getAll();
-		$this->_apTemplate->pagesIds = $array_column($pages, 'title', 'id');
+		$this->_apTemplate->pagesIds = array_column($pages, 'title', 'id');
 
 		// "Date/time format" field — list with formats and examples.
 		$dateFormatsAndExamples = [];
