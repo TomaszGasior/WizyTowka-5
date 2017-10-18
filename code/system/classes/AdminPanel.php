@@ -79,11 +79,11 @@ abstract class AdminPanel extends Controller
 	{
 		// HTML <head>.
 		$this->_apHead = new HTMLHead;
-		$this->_apHead->setTitle($this->_pageTitle . ' — WizyTówka');
 		$this->_apHead->setAssetsPath(SYSTEM_URL . '/assets');
-		$this->_apHead->setMeta('viewport', 'width=device-width');
-		$this->_apHead->addStyle('AdminMain.css');
-		$this->_apHead->addStyle('AdminMobile.css');
+		$this->_apHead->title($this->_pageTitle . ' — WizyTówka');
+		$this->_apHead->meta('viewport', 'width=device-width');
+		$this->_apHead->stylesheet('AdminMain.css');
+		$this->_apHead->stylesheet('AdminMobile.css');
 
 		// Main template of page.
 		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".

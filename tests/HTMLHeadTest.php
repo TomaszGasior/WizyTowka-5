@@ -10,8 +10,9 @@ class HTMLHeadTest extends PHPUnit\Framework\HTMLTestCase
 	public function testBaseAndTitle()
 	{
 		$object = new WizyTowka\HTMLHead;
-		$object->setBase('http://example.org');
-		$object->setTitle('Title of page');
+
+		$object->base('http://example.org');
+		$object->title('Title of page');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
@@ -24,19 +25,15 @@ HTML;
 	public function testScripts()
 	{
 		$object = new WizyTowka\HTMLHead;
-		$object->setTitle('Example');
 
-		$object->setAssetsPath('example/assetsDir');
-		$object->addScript('script.js');
-		$object->setAssetsPath('');
-		$object->addScript('script.js', true);
+		$object->script('script.js', ['defer' => true]);
+		$object->script('script.js', ['async' => true]);
 
-		$object->addInlineScript('alert("hey!")');
+		$object->inlineScript('alert("hey!")');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
-<title>Example</title>
-<script src="example/assetsDir/script.js" defer></script>
+<script src="script.js" defer></script>
 <script src="script.js" async></script>
 <script>alert("hey!")</script>
 HTML;
@@ -46,69 +43,85 @@ HTML;
 	public function testStyles()
 	{
 		$object = new WizyTowka\HTMLHead;
-		$object->setTitle('Example');
 
-		$object->setAssetsPath('example/assetsDir');
-		$object->addStyle('stylesheet.css');
-		$object->setAssetsPath('');
-		$object->addStyle('stylesheet.css', 'all and (max-width: 900px)');
+		$object->stylesheet('stylesheet.css');
+		$object->stylesheet('stylesheetMobile.css', ['media' => 'all and (max-width: 900px)']);
 
-		$object->addInlineStyle('body{color:red;}');
+		$object->inlineStylesheet('body{color:red;}');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
-<title>Example</title>
-<link rel="stylesheet" href="example/assetsDir/stylesheet.css">
-<link rel="stylesheet" href="stylesheet.css" media="all and (max-width: 900px)">
+<link rel="stylesheet" href="stylesheet.css">
+<link rel="stylesheet" href="stylesheetMobile.css" media="all and (max-width: 900px)">
+<style>body{color:red;}</style>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+
+		// Remove stylesheets with specified name.
+		$object->removeStylesheet('stylesheetMobile.css');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<link rel="stylesheet" href="stylesheet.css">
 <style>body{color:red;}</style>
 HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testMetaTags()
+	public function testMeta()
 	{
 		$object = new WizyTowka\HTMLHead;
-		$object->setTitle('Example');
 
-		$object->setMeta('description', 'HTML tutorial: "<HEAD>" tag examples');
-		$object->setMeta('keywords', 'html, lesson, tutorial, coding, website, programming');
-		$object->setHttpEquiv('refresh', '0; url=http://example.org');
+		$object->meta('description', 'HTML tutorial: "<HEAD>" tag examples');
+		$object->meta('keywords', 'tutorial, coding, website');
+		$object->httpEquiv('refresh', '0; url=http://example.org');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
-<title>Example</title>
-<meta http-equiv="refresh" content="0; url=http://example.org">
 <meta name="description" content="HTML tutorial: &quot;&lt;HEAD&gt;&quot; tag examples">
-<meta name="keywords" content="html, lesson, tutorial, coding, website, programming">
+<meta name="keywords" content="tutorial, coding, website">
+<meta http-equiv="refresh" content="0; url=http://example.org">
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+
+		// Remove all "description" meta tags.
+		$object->removeMeta('description');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<meta name="keywords" content="tutorial, coding, website">
+<meta http-equiv="refresh" content="0; url=http://example.org">
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+
+		// Remove "keywords" meta tag with specified value.
+		$object->removeMeta('keywords', 'tutorial, coding, website');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<meta http-equiv="refresh" content="0; url=http://example.org">
 HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testAssetsRemoving()
+	public function testAssetsPath()
 	{
 		$object = new WizyTowka\HTMLHead;
-		$object->setTitle('Example');
 
-		$object->setAssetsPath('');
-		$object->addStyle('style1.css');
-		$object->addStyle('style2.css');
-		$object->setAssetsPath('example/example');
-		$object->addStyle('style1.css');
+		$object->setAssetsPath('assets');
+		$object->stylesheet('stylesheet.min.css');
+		$object->stylesheet('http://example.org/stylesheet.min.css');
 
-		$object->setAssetsPath('');
-		$object->addScript('script1.js');
-		$object->addScript('script2.js');
-		$object->setAssetsPath('example/something/else');
-		$object->addScript('script1.js');
-
-		$object->removeStyle('style1.css');
-		$object->removeScript('script1.js');
+		$object->setAssetsPath('somewhere');
+		$object->script('script.js');
+		$object->script('https://example.org/script.js');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
-<title>Example</title>
-<link rel="stylesheet" href="style2.css">
-<script src="script2.js" defer></script>
+<link rel="stylesheet" href="assets/stylesheet.min.css">
+<link rel="stylesheet" href="http://example.org/stylesheet.min.css">
+<script src="somewhere/script.js"></script>
+<script src="https://example.org/script.js"></script>
 HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
