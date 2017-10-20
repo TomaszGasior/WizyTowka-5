@@ -17,7 +17,7 @@ abstract class HTMLTag
 
 	public function getCSSClass()
 	{
-		return $CSSClass;
+		return $this->_CSSClass;
 	}
 
 	public function setCSSClass($CSSClass)
@@ -36,10 +36,10 @@ abstract class HTMLTag
 
 	abstract public function output();
 
-	protected function _renderHTMLOpenTag($tagName, array $attributes = [])
+	protected function _renderHTMLOpenTag($tagName, array $HTMLAttributes = [])
 	{
 		echo '<', $tagName;
-		foreach ($attributes as $name => $value) {
+		foreach ($HTMLAttributes as $name => $value) {
 			if ($value === false) {
 				continue;
 			}

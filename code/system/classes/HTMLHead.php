@@ -74,7 +74,7 @@ class HTMLHead extends HTMLTag
 	public function script($src, array $HTMLAttributes = [])
 	{
 		$tagName = __FUNCTION__;
-		$content = '';
+		$content = '';   // Render also ending </script> tag.
 		$HTMLAttributes['src'] = $this->_prepareAssetPath($src);
 
 		$this->_tags[] = compact('tagName', 'content', 'HTMLAttributes');
@@ -111,9 +111,9 @@ class HTMLHead extends HTMLTag
 		return $this;
 	}
 
-	public function removeHttpEquiv($httpEquiv, $content = null)
+	public function removeHttpEquiv($header, $content = null)
 	{
-		$this->_removeTag('meta', array_filter(['http-equiv' => $httpEquiv, 'content' => $content]));
+		$this->_removeTag('meta', array_filter(['http-equiv' => $header, 'content' => $content]));
 
 		return $this;
 	}
@@ -140,11 +140,9 @@ class HTMLHead extends HTMLTag
 	public function setAssetsPath($assetsPath)
 	{
 		$this->_assetsPath = (string)$assetsPath;
-
-		return $this;
 	}
 
-	public function getAssetsPath($assetsPath)
+	public function getAssetsPath()
 	{
 		return $this->_assetsPath;
 	}

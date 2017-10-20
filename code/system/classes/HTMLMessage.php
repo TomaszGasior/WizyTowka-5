@@ -6,17 +6,11 @@
 */
 namespace WizyTowka;
 
-class HTMLMessage
+class HTMLMessage extends HTMLTag
 {
-	private $_CSSClass;
 	private $_messageDefaultText;
 	private $_messageText;
 	private $_messageType;
-
-	public function __construct($CSSClass = 'message')
-	{
-		$this->_CSSClass = $CSSClass;
-	}
 
 	public function __debugInfo()
 	{
@@ -75,19 +69,15 @@ class HTMLMessage
 		}
 	}
 
-	public function __toString()
+	public function output()
 	{
 		if (!$this->_messageText and $this->_messageDefaultText) {
 			$this->success($this->_messageDefaultText);
 		}
 
-		ob_start();
-
 		if ($this->_messageText) {
 			echo '<div class="', $this->_CSSClass ? $this->_CSSClass.' ' : '', $this->_messageType . '" role="alert">',
 			     $this->_messageText, '</div>';
 		}
-
-		return ob_get_clean();
 	}
 }

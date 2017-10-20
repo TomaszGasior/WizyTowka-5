@@ -1,70 +1,100 @@
 HTMLHead
 ===
 
-Klasa generująca kod HTML znacznika `<head>`. Umożliwia przejrzyste i proste dodawanie metatagów, arkuszy stylów i skryptów do nagłówka dokumentu HTML. Generowana jest zawartość znacznika `<head>` bez samego znacznika dookoła.
+Klasa generująca zawartość znacznika HTML `<head>`. Umożliwia przejrzyste i proste dodawanie metatagów, arkuszy stylów i skryptów do nagłówka dokumentu HTML. Klasa dziedziczy po klasie `HTMLTag`. Ustawienie klasy CSS z klasy `HTMLTag` w przypadku tej klasy nie ma zastosowania.
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
-## `__toString()`
+## `base($href = null, array $HTMLAttributes = [])`
 
-Aby wygenerować kod HTML znacznika `<head>`, należy rzutować obiekt na ciąg znaków. Kod jest zwracany, nie wyświetlany.
+Dodaje znacznik `<base>` o atrybucie `href` równym `$href`. Jeśli `$href` jest puste, usuwa znacznik.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `title($title = null, array $HTMLAttributes = [])`
+
+Dodaje tytuł strony `$title` w znaczniku `<title>`. Tytuł jest filtrowany za pomocą funkcji `htmlspecialchars()`. Jeśli `$title` jest puste, usuwa znacznik.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `meta($name, $content, array $HTMLAttributes = [])`
+
+Dodaje metatag `<meta>` o atrybucie `name` równym `$name` i atrybucie `content` równym `$content`. Atrybut `content` jest filtrowany za pomocą funkcji `htmlspecialchars()`.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `httpEquiv($header, $content, array $HTMLAttributes = [])`
+
+Dodaje ekwiwalent nagłówka HTTP poprzez znacznik `<meta>` o atrybucie `http-equiv` równym `$header` i atrybucie `content` równym `$content`. Atrybut `content` jest filtrowany za pomocą funkcji `htmlspecialchars()`.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `link($rel, $href, array $HTMLAttributes = [])`
+
+Dodaje znacznik `<link>` o atrybucie `rel` równym `$rel` i atrybucie `href` równym `$href`.
+
+Jeżeli adres określony w argumencie `$href` jest względny, doklejana jest do niego ścieżka określona za pomocą metody `setAssetsPath()`.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `script($src, array $HTMLAttributes = [])`
+
+Dodaje skrypt poprzez znacznik `<script>` o atrybucie `src` równym `$src`.
+
+Jeżeli adres określony w argumencie `$src` jest względny, doklejana jest do niego ścieżka określona za pomocą metody `setAssetsPath()`.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `stylesheet($href, array $HTMLAttributes = [])`
+
+Dodaje arkusz stylów CSS. Alias dla `link('stylesheet', $href, ...)`.
+
+## `inlineScript($code, array $HTMLAttributes = [])`
+
+Dodaje skrypt inline w znaczniku `<script>`. Dodanych skryptów inline nie można usunąć.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `inlineStylesheet($stylesheet, array $HTMLAttributes = []`
+
+Dodaje arkusz stylów inline w znaczniku `<style>`. Dodanych stylów inline nie można usunąć.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
+
+## `removeMeta($name, $content = null)`
+
+Usuwa metatagi `<meta>` o atrybucie `name` równym `$name` i, jeśli podano, atrybucie `content` jednocześnie równym `$content`.
+
+## `removeHttpEquiv($header, $content = null)`
+
+Usuwa ekwiwalent nagłówka HTTP w znaczniku `<meta>` o atrybucie `http-equiv` równym `$header` i, jeśli podano, atrybucie `content` jednocześnie równym `$content`.
+
+## `removeScript($src)`
+
+Usuwa skrypt `<script>` o atrybucie `src` równym `$src`.
+
+## `removeLink($rel, $href = null)`
+
+Usuwa znacznik `<link>` o atrybucie `rel` równym `$rel` i, jeśli podano, atrybucie `href` jednocześnie równym `$href`.
+
+## `removeStylesheet($href)`
+
+Usuwa arkusz stylów CSS. Alias dla `removeLink('stylesheet', $href)`.
 
 ## `setAssetsPath($assetsPath)`
 
-Umożliwia ustawienie określonej w argumencie `$assetsPath` ścieżki do zewnętrznych arkuszy stylów i skryptów. Ścieżka jest dołączana do nazwy każdego dodawanego skryptu i arkusza stylów.
+Ustawia ścieżkę do zewnętrznych arkuszy stylów i skryptów na `$assetsPath`. Ścieżka jest dołączana do nazwy każdego dodawanego skryptu i arkusza stylów.
 
-Uwaga: ścieżka jest dołączana do nazwy pliku w momencie dodawania skryptu bądź arkusza stylów (w momencie wywołania metody `addScript()` bądź `addStyle()`). Oznacza to, że jeśli najpierw dodasz skrypty i arkusze stylów, a potem określisz ścieżkę, ścieżka ta nie zostanie uwzględniona w dodanych już skryptach i stylach.
+Uwaga: ścieżka jest dołączana do nazwy pliku już w momencie dodawania skryptu bądź arkusza stylów (w momencie wywołania metody `link()`, `stylesheet()` bądź `script()`), nie zaś w momencie generowania kodu HTML.
 
-## `setBase($base)`
+Metoda nie zwraca wartości.
 
-Określa zawartość atrybutu `href` znacznika `<base>`. Jeśli nie zostanie określona, znacznik nie zostanie dołączony do kodu.
+## `getAssetsPath($assetsPath)`
 
-## `setTitle($title)`
+Zwraca bieżącą ścieżkę do zewnętrznych arkuszy stylów i skryptów.
 
-Określa tytuł witryny umieszczany w znaczniku `<title>`. Jeśli nie zostanie wskazany, użyty zostanie domyślny: `Untitled HTML document`.
+## `output()`
 
-Tytuł jest filtrowany za pomocą funkcji `htmlspecialchars()`.
+Renderuje kod HTML zawartości znacznika `<head>` (bez samego znacznika).
 
-## `setMeta($name, $value)`
-
-Umożliwia określenie metatagu o nazwie określonej argumentem `$name` i wartości określonej argumentem `$value`.
-
-Wartość jest filtrowana za pomocą funkcji `htmlspecialchars()`.
-
-## `setHttpEquiv($name, $value)`
-
-Umożliwia określenie ekwiwalentu nagłówka HTTP wskazanego w argumencie `$name` z wartością `$value`.
-
-Wartość jest filtrowana za pomocą funkcji `htmlspecialchars()`.
-
-## `addStyle($stylePath, $media = null)`
-
-Dodaje zewnętrzny arkusz stylów do nagłówka. Do ścieżki/nazwy pliku określonej argumentem `$stylePath` dodawana jest ścieżka wskazana za pomocą metody `setAssetsPath()`.
-
-Opcjonalny argument `$media` umożliwia określenie reguły `@media`, dokładniej: argumentu `media` znacznika `<link rel="stylesheet">`.
-
-## `removeStyle($styleFileName)`
-
-Usuwa wszystkie arkusze stylów z nazwą pliku określoną w argumencie `$styleFileName`.
-
-Uwaga: ścieżka jest ignorowana. Wystarczy zgodność samej nazwy pliku, by arkusz stylów został usunięty.
-
-## `addScript($scriptPath, $asyncInsteadDefer = false)`
-
-Dodaje zewnętrzny skrypt JavaScript do nagłówka. Do ścieżki/nazwy pliku określonej argumentem `$stylePath` dodawana jest ścieżka wskazana za pomocą metody `setAssetsPath()`.
-
-Domyślnie skrypty zewnętrzne otrzymują atrybut `defer`. Opcjonalny argument `$asyncInsteadDefer` ustawiony na prawdę umożliwia zastąpienie tego atrybutu atrybutem `async`.
-
-## `removeScript($scriptFileName)`
-
-Usuwa wszystkie skrypty z nazwą pliku określoną w argumencie `$scriptFileName`.
-
-Uwaga: ścieżka jest ignorowana. Wystarczy zgodność samej nazwy pliku, by skrypt został usunięty.
-
-## `addInlineStyle($styleCode)`
-
-Dodaje do nagłówka styl CSS inline określony w argumencie `$styleCode`.
-
-## `addInlineScript($scriptCode)`
-
-Dodaje do nagłówka skrypt inline określony w argumencie `$scriptCode`.
+Metoda nie zwraca wartości.

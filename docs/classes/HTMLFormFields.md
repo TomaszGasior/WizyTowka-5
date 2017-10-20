@@ -1,7 +1,7 @@
 HTMLFormFields
 ===
 
-Klasa generująca kod HTML pól formularzy (nie — całych formularzy).
+Klasa generująca kod HTML pól formularzy (nie — całych formularzy). Klasa dziedziczy po klasie `HTMLTag`.
 
 Przykładowy kod generowany przez klasę (z dodanymi dla czytelności wcięciami i przełamaniami):
 
@@ -42,14 +42,6 @@ Elementy są renderowane w kolejności dodawania. Klasa nie generuje kodu znaczn
 Klasa implementuje metodę magiczną `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
-
-## `__construct($CSSClass = null)`
-
-Konstruktor umożliwia przypisanie znacznikowi `<fieldset>` klasy CSS określonej w opcjonalnym argumencie `$CSSClass`.
-
-## `__toString()`
-
-Aby wygenerować kod HTML pól formularzy, należy instancję klasy rzutować na typ ciągu znaków.
 
 ## `text($label, $name, $value, array $HTMLAttributes = [])`
 
@@ -145,3 +137,9 @@ Działa dokładnie tak samo jak `text()` z tą różnicą, że umożliwia dodani
 ## `remove($name)`
 
 Usuwa wszystkie pola o nazwie (atrybucie HTML `name`) określonym w argumencie `$name`.
+
+## `output()`
+
+Renderuje kod HTML pól formularza.
+
+Metoda nie zwraca wartości.

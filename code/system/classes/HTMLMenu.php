@@ -6,17 +6,12 @@
 */
 namespace WizyTowka;
 
-class HTMLMenu
+class HTMLMenu extends HTMLTag
 {
-	private $_listCSSClass;
-	private $_elements = [];
+	private $_elements     = [];
 	private $_autoPosition = 1.9;
-	private $_renderingInProgress = false;
 
-	public function __construct($CSSClass = null)
-	{
-		$this->_listCSSClass = $CSSClass;
-	}
+	private $_renderingInProgress = false;
 
 	public function __debugInfo()
 	{
@@ -56,7 +51,7 @@ class HTMLMenu
 		return $this;
 	}
 
-	public function __toString()
+	public function output()
 	{
 		if ($this->_renderingInProgress) {
 			throw HTMLMenuException::renderingInProgress();
@@ -65,10 +60,8 @@ class HTMLMenu
 
 		sort($this->_elements); // Sort elements by position number.
 
-		ob_start();
-
 		if ($this->_elements) {
-			echo '<ul', $this->_listCSSClass ? ' class="'.$this->_listCSSClass.'">' : '>';
+			echo '<ul', $this->_CSSClass ? ' class="'.$this->_CSSClass.'">' : '>';
 
 			foreach ($this->_elements as $element) {
 				echo '<li', $element[3] ? ' class="'.$element[3].'">' : '>';
@@ -87,7 +80,6 @@ class HTMLMenu
 		}
 
 		$this->_renderingInProgress = false;
-		return ob_get_clean();
 	}
 }
 

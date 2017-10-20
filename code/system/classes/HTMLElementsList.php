@@ -6,9 +6,8 @@
 */
 namespace WizyTowka;
 
-class HTMLElementsList
+class HTMLElementsList extends HTMLTag
 {
-	private $_CSSClass;
 	private $_collection;
 	private $_emptyMessage;
 
@@ -19,11 +18,6 @@ class HTMLElementsList
 
 	private $_radioFieldName;
 	private $_radioFieldCurrentValue;
-
-	public function __construct($CSSClass = null)
-	{
-		$this->_CSSClass = $CSSClass;
-	}
 
 	public function collection(array &$collection)
 	{
@@ -80,13 +74,11 @@ class HTMLElementsList
 		return $this;
 	}
 
-	public function __toString()
+	public function output()
 	{
 		if (is_null($this->_collection) or empty($this->_callbackTitle) or empty($this->_emptyMessage)) {
 			throw HTMLElementsListException::missingInformation();
 		}
-
-		ob_start();
 
 		if ($this->_collection) {
 			echo '<ul', $this->_CSSClass ? ' class="'.$this->_CSSClass.'">' : '>';
@@ -116,6 +108,9 @@ class HTMLElementsList
 				if ($this->_callbackMenu) {
 					echo '<ul>';
 					foreach (call_user_func($this->_callbackMenu, $element) as $option) {
+						// $option[0] — menu item label,
+						// $option[1] — menu item URL address,
+						// $option[2] — optional, menu item CSS class.
 						echo (!empty($option[2]) ? '<li class="'.$option[2].'">' : '<li>'),
 							 '<a href="', $option[1], '" aria-label="', $option[0], ' — ', $title, '">', $option[0], '</a>',
 							 '</li>';
@@ -131,8 +126,6 @@ class HTMLElementsList
 		else {
 			echo '<p class="', $this->_CSSClass,' emptyMessage">', $this->_emptyMessage, '</p>';
 		}
-
-		return ob_get_clean();
 	}
 }
 

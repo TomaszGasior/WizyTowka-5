@@ -6,15 +6,9 @@
 */
 namespace WizyTowka;
 
-class HTMLFormFields
+class HTMLFormFields extends HTMLTag
 {
-	private $_fieldsetCSSClass;
 	private $_fields = [];
-
-	public function __construct($CSSClass = null)
-	{
-		$this->_fieldsetCSSClass = $CSSClass;
-	}
 
 	public function __debugInfo()
 	{
@@ -157,15 +151,15 @@ class HTMLFormFields
 		return $this;
 	}
 
-	public function __toString()
+	public function output()
 	{
-		ob_start();
-
-		echo '<fieldset', $this->_fieldsetCSSClass ? ' class="'.$this->_fieldsetCSSClass.'">' : '>';
+		echo '<fieldset', $this->_CSSClass ? ' class="'.$this->_CSSClass.'">' : '>';
 
 		foreach ($this->_fields as $field) {
-			$id = $field['HTMLAttributes']['name'] .
-				(($field['type']=='checkable' and $field['HTMLAttributes']['type']=='radio') ? '_'.$field['HTMLAttributes']['value'] : '');
+			$id = $field['HTMLAttributes']['name'];
+			if ($field['type'] == 'checkable' and $field['HTMLAttributes']['type'] == 'radio') {
+				$id .= '_' . $field['HTMLAttributes']['value'];
+			}
 			$field['HTMLAttributes']['id'] = $id;   // Unique ID is used to assign form control to label.
 
 			echo '<div>';
@@ -213,22 +207,5 @@ class HTMLFormFields
 		}
 
 		echo '</fieldset>';
-
-		return ob_get_clean();
-	}
-
-	private function _renderHTMLOpenTag($tagName, array $attributes = [])
-	{
-		echo '<', $tagName;
-		foreach ($attributes as $name => $value) {
-			if ($value === false) {
-				continue;
-			}
-			echo ' ', $name;
-			if ($value !== true) {
-				echo '="', $value, '"';
-			}
-		}
-		echo '>';
 	}
 }
