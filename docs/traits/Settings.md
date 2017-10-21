@@ -5,6 +5,8 @@ Trait umożliwiający dostęp do głównego pliku konfiguracyjnego systemu WizyT
 
 Aby odczytać wartość ustawienia, należy podać jego nazwę jako argument metody `get()`. Aby móc modyfikować konfigurację bądź iterować po poszczególnych ustawieniach, należy wywołać metodę `get()` bez żadnego argumentu i operować na klasie `ConfigurationFile`.
 
+Plik konfiguracyjny systemu `settings.conf` znajduje się domyślnie w folderze `data/config`. Domyślna konfiguracja umieszczona jest w pliku `system/defaults/settings.conf`.
+
 ## *static* `get($option = null)`
 
 Jeśli podano argument `$option`, metoda zwraca wartość ustawienia o podanej nazwie. Jeżeli argumentu nie podano, zwracana jest instancja klasy `ConfigurationFile` przechowująca główny plik konfiguracyjny systemu.

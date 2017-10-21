@@ -13,7 +13,7 @@ namespace WizyTowka;
 // It's a file system directory where URL hierarchy is starting.
 const PUBLIC_DIR = __DIR__;
 
-// "system" directory contains CMS files — you must not edit contents of this folder.
+// "system" directory contains CMS files. You must not edit contents of this folder.
 const SYSTEM_DIR = __DIR__ . '/system';
 const SYSTEM_URL = 'system';
 
@@ -25,5 +25,5 @@ const DATA_URL = 'data';
 const FILES_DIR = DATA_DIR . '/files';
 const FILES_URL = DATA_URL . '/files';
 
-// "config" directory contains secret files. It is a good idea to move it outisde public area.
+// "config" directory contains secret files. It's a good idea to move it outisde public area.
 const CONFIG_DIR = DATA_DIR . '/config';

@@ -23,13 +23,13 @@ Zwraca określoną klasę CSS głównego znacznika HTML.
 
 Ustawia klasę CSS głównego znacznika HTML na `$CSSClass`.
 
-## `abstract output()`
+## *abstract* `output()`
 
 Generuje kod HTML i kieruje go na wyjście.
 
 Klasa dziedzicząca powinna w tym miejscu zaimplementować wyświetlanie elementu, renderowanie poprzez kod HTML.
 
-## `protected _renderHTMLOpenTag($tagName, array $HTMLAttributes = [])`
+## *protected* `_renderHTMLOpenTag($tagName, array $HTMLAttributes = [])`
 
 Metoda używana wewnętrznie przez klasy dziedziczące przeznaczona do generowania kodu HTML znacznika otwierającego `$tagName` wraz z atrybutami wskazanymi w tablicy `$HTMLAttributes`. Na przykład: `<input type="text" name="field_1" disabled>`. Kod HTML jest kierowany na wyjście, nie — zwracany.
 

@@ -19,18 +19,4 @@ Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie j
 
 ## *static* `addToLog(\Throwable $exception)`
 
-Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on domyślnie w folderze `data/config/errors.log`.
-
-## *static private* `_printAsPlainText(\Throwable $exception)`
-
-Wyświetla informacje o błędzie w formie zwykłego tekstu.
-
-## *static private* `_printAsHTML(\Throwable $exception)`
-
-Wyświetla informacje o błędzie w formie strony HTML.
-
-Jeśli wartość ustawienia `systemShowErrors` jest prawdą, komunikat zawiera pełną informację o błędzie. W przeciwnym wypadku generowany jest jedynie komunikat „Przepraszamy za usterki.”, a w komentarzu HTML umieszczana jest nazwa klasy wyjątku.
-
-## *static private* `_prepareInfo(\Throwable $exception)`
-
-Przygotowuje (formatuje, weryfikuje) informacje o błędzie do użytku w komunikatach błędu.
+Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on w pliku `errors.log`, domyślnie w folderze `data/config`.

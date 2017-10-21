@@ -3,7 +3,7 @@ Website
 
 Kontroler reprezentujący witrynę internetową w systemie WizyTówka. Dziedziczy po klasie `Controller`.
 
-## *static* `URL($target, $arguments = [])`
+## *static* `URL($target, array $arguments = [])`
 
 Zwraca pełny adres URL kierujący do określonej w argumencie `$target` strony w witrynie internetowej. Argument `$target` może być liczbą całkowitą (typ `integer`) — wtedy zwrócony zostanie adres strony o określonym identyfikatorze (pole `id`) bądź fałsz, jeśli strona o takim identyfikatorze nie istnieje. W innym wypadku argument `$target` uważany jest za slug strony — wtedy też istnienie strony nie jest weryfikowane.
 
