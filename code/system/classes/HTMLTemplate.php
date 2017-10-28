@@ -66,9 +66,19 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		return count($this->_variables);
 	}
 
+	public function getTemplate()
+	{
+		return $this->_templateName;
+	}
+
 	public function setTemplate($templateName)
 	{
 		$this->_templateName = $templateName;
+	}
+
+	public function getTemplatePath()
+	{
+		return $this->_templatesPath;
 	}
 
 	public function setTemplatePath($templatePath)

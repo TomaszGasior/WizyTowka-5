@@ -31,9 +31,17 @@ Jeśli zostanie dokonane rzutowanie obiektu na ciąg znaków, wykonana zostanie 
 
 Metoda umożliwia określenie globalnej nazwy szablonu. Nazwa szablonu nie powinna zawierać rozszerzenia pliku. Jeśli nazwa nie zostanie określona przy wywołaniu metody `render()`, zostanie użyta globalna nazwa szablonu.
 
+## `getTemplate()`
+
+Metoda zwraca globalną nazwę szablonu określoną przez `setTemplate()` bądź w konstruktorze.
+
 ## `setTemplatePath($templatePath)`
 
 Metoda umożliwia określenie ścieżki do katalogu gromadzącego pliki szablonów.
+
+## `getTemplatePath()`
+
+Metoda zwraca ścieżkę do katalogu szablonów określoną przez `setTemplatePath()` bądź w konstruktorze.
 
 ## `render($templateName = null)`
 

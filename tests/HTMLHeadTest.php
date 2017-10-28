@@ -124,5 +124,18 @@ HTML;
 <script src="https://example.org/script.js"></script>
 HTML;
 		$this->assertHTMLEquals($expected, $current);
+
+		$object->restoreAssetsPath();
+		$object->link('icon', 'favicon.png');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<link rel="stylesheet" href="assets/stylesheet.min.css">
+<link rel="stylesheet" href="http://example.org/stylesheet.min.css">
+<script src="somewhere/script.js"></script>
+<script src="https://example.org/script.js"></script>
+<link rel="icon" href="assets/favicon.png">
+HTML;
+		$this->assertHTMLEquals($expected, $current);
 	}
 }

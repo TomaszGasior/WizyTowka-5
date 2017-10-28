@@ -89,6 +89,12 @@ Uwaga: ścieżka jest dołączana do nazwy pliku już w momencie dodawania skryp
 
 Metoda nie zwraca wartości.
 
+## `restoreAssetsPath()`
+
+Ustawia ścieżkę do zewnętrznych arkuszy stylów i skryptów na poprzednią (przed ostatnią zmianą dokonaną przy użyciu metody `setAssetsPath()`). Zapamiętywana jest tylko ostatnia wartość, nie można wywołać tej metody kilkukrotnie by przywrócić wcześniejsze wartości.
+
+Metoda zwraca prawdę, jeśli przywrócono poprzednią ścieżkę, inaczej — fałsz.
+
 ## `getAssetsPath($assetsPath)`
 
 Zwraca bieżącą ścieżkę do zewnętrznych arkuszy stylów i skryptów.

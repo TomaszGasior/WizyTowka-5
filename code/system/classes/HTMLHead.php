@@ -8,8 +8,10 @@ namespace WizyTowka;
 
 class HTMLHead extends HTMLTag
 {
+	private $_previousAssetsPath = '';
 	private $_assetsPath = '';
-	private $_tags       = [];
+
+	private $_tags  = [];
 
 	public function base($href = null, array $HTMLAttributes = [])
 	{
@@ -137,14 +139,25 @@ class HTMLHead extends HTMLTag
 		return $this->removeLink('stylesheet', $href);
 	}
 
-	public function setAssetsPath($assetsPath)
-	{
-		$this->_assetsPath = (string)$assetsPath;
-	}
-
 	public function getAssetsPath()
 	{
 		return $this->_assetsPath;
+	}
+
+	public function setAssetsPath($assetsPath)
+	{
+		$this->_previousAssetsPath = $this->_assetsPath;
+		$this->_assetsPath         = (string)$assetsPath;
+	}
+
+	public function restoreAssetsPath()
+	{
+		if ($this->_previousAssetsPath) {
+			$this->_assetsPath = $this->_previousAssetsPath;
+			return true;
+		}
+
+		return false;
 	}
 
 	private function _prepareAssetPath($file)
