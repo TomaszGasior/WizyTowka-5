@@ -43,8 +43,8 @@ class PageEdit extends WT\AdminPanel
 
 	protected function _output()
 	{
-		$this->_apContextMenu->add('Edycja', self::URL('PageEdit', ['id' => $this->_page->id]), 'iconEdit');
-		$this->_apContextMenu->add('Ustawienia', self::URL('PageSettings', ['id' => $this->_page->id]), 'iconSettings');
+		$this->_apContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit');
+		$this->_apContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 
 		$this->_contentTypeAPI->HTMLContent();
 	}

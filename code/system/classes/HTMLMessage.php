@@ -8,6 +8,8 @@ namespace WizyTowka;
 
 class HTMLMessage extends HTMLTag
 {
+	protected $_CSSClass = 'message';
+
 	private $_messageDefaultText;
 	private $_messageText;
 	private $_messageType;

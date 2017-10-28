@@ -41,6 +41,5 @@ class AdminPanelTest extends PHPUnit\Framework\TestCase
 	public function testRegisterPageNameAlreadyRegistered()
 	{
 		WizyTowka\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
-		$this->assertTrue(true);
 	}
 }

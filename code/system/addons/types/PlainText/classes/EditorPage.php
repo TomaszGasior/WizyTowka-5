@@ -16,7 +16,7 @@ class EditorPage extends WT\ContentTypeAPI
 
 	public function HTMLContent()
 	{
-		$this->_HTMLHead->addInlineStyle(
+		$this->_HTMLHead->inlineStylesheet(
 			<<< CSS
 form.PlainText > fieldset > div, form.PlainText > fieldset > div > * {
 	display: block;
