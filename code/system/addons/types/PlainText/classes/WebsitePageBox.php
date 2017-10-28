@@ -9,7 +9,8 @@ use WizyTowka as WT;
 
 class WebsitePageBox extends WT\ContentTypeAPI
 {
-	public function HTMLContent() {
-		$this->_HTMLTemplate->content = $this->_contents->html;
+	public function HTMLContent()
+	{
+		$this->_HTMLTemplate->content = WT\WebsiteRenderer::correctTypography($this->_contents->html);
 	}
 }

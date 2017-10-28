@@ -1,6 +1,6 @@
 <form method="post" class="PlainText">
 	<?= (new WizyTowka\HTMLFormFields)
-		->textarea('Zawartość', 'content', $content)
+		->textarea('Zawartość', 'nofilter_content', $content)
 	?>
 
 	<button>Zapisz zmiany</button>

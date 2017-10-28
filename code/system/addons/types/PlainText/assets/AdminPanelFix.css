@@ -1,0 +1,13 @@
+/* Hide useless form label. */
+
+form.PlainText > fieldset > div, form.PlainText > fieldset > div > * {
+	display: block;
+}
+form.PlainText label {
+	clip: rect(1px 1px 1px 1px);
+	position: absolute;
+}
+form.PlainText textarea {
+	min-height: 400px;
+	font-family: monospace;
+}
