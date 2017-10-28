@@ -9,85 +9,188 @@ namespace WizyTowka;
 class WebsiteRenderer
 {
 	private $_page;
-	private $_template;
-	private $_head;
-	private $_theme;
-	private $_contentType;
 
-	public function _construct(Page $page, HTMLTemplate $template, HTMLHead $head, Theme $theme, ContentType $contentType)
+	private $_HTMLLayout;
+	private $_HTMLBoxes = [];
+	private $_HTMLHead;
+	private $_HTMLMessage;
+
+	private $_theme;
+
+	public function __construct(Page $page, array $contentTypeAPIBoxes, HTMLTemplate $HTMLLayout)
 	{
 		$this->_page = $page;
 
-		$this->_template = $template;
-		$this->_head     = $head;
+		$this->_theme = Theme::getByName(Settings::get('themeName'));
 
-		$this->_theme       = $theme;
-		$this->_contentType = $contentType;
+		$this->_HTMLLayout = $HTMLLayout;
+		$this->_HTMLLayout->setTemplate('WebsiteLayout');
+		$this->_setupTemplatePath($this->_HTMLLayout);
+
+		$this->_HTMLHead = $this->_prepareHead();
+
+		$this->_HTMLMessage = new HTMLMessage;
+
+		foreach ($contentTypeAPIBoxes as $box) {
+			$HTMLBox = new HTMLTemplate;
+
+			$this->_HTMLBoxes[] = $HTMLBox;
+			$box->setHTMLParts($HTMLBox, $this->_HTMLHead, $this->_HTMLMessage);
+		}
 	}
 
-	public function buildVariables()
+	private function _setupTemplatePath(HTMLTemplate $template)
 	{
-		$this->_template->head    = $this->_prepareHead();
-		$this->_template->title   = $this->_page->title;
-
-		$this->_template->header  = $this->_buildHeader();
-		$this->_template->footer  = $this->_buildFooter();
-		$this->_template->content = $this->_buildContent();
-
-		$this->_template->menu = function($menuPositionNumber)
-		{
-			return '';
-		};
-
-		$this->_template->area = function($areaPositionNumber)
-		{
-			return '';
-		};
-
-		$this->_template->info = function($option)
-		{
-			switch ($option) {
-				case 'websiteTitle': return Settings::get('websiteTitle');
-				case 'pageTitle':    return $this->_page->title;
-				case 'version':      return VERSION;
-			}
-		};
+		$template->setTemplatePath(
+			(
+				(isset($this->_theme->templates) and isset($this->_theme->templates[$template->getTemplate()]))
+				? $this->_theme->getPath() : SYSTEM_DIR
+			)
+			. '/templates'
+		);
 	}
 
 	private function _prepareHead()
 	{
-		$this->_head->setTitle(sprintf(Settings::get('websiteTitle'), $this->_page->title));
+		$head = new HTMLHead;
+		$head->setAssetsPath($this->_theme->getURL());
 
-		return $this->_head;
+		$head->title(self::correctTypography(sprintf(Settings::get('websiteTitle'), $this->_page->title)));
+		$head->stylesheet('style.css');
+		$head->meta('Generator', 'WizyTówka CMS — https://wizytowka.tomaszgasior.pl');
+
+		$head->restoreAssetsPath();
+
+		return $head;
 	}
 
-	private function _buildHeader()
+	public function prepareTemplate()
 	{
+		$layout = $this->_HTMLLayout;
+
+		$layout->lang = Settings::get('websiteLanguage');
+		$layout->head = $this->_HTMLHead;
+
+		$layout->websiteHeader = $this->_variable_websiteHeader();
+		$layout->websiteFooter = $this->_variable_websiteFooter();
+
+		$layout->pageHeader  = $this->_variable_pageHeader();
+		$layout->pageContent = $this->_variable_pageContent();
+
+		$layout->menu = function(...$a) { return $this->_function_menu(...$a); };
+		$layout->area = function(...$a) { return $this->_function_area(...$a); };
+		$layout->info = function(...$a) { return $this->_function_info(...$a); };
+
+		// Change HTML <head> assets path to theme path. Thanks to this adding assets from theme layout will be
+		// more convenient. Assets path must be changed at the end of this method because other assets path
+		// is set by ContentTypeAPI class for content types purposes.
+		$this->_HTMLHead->setAssetsPath($this->_theme->getURL());
+	}
+
+	private function _variable_websiteHeader()
+	{
+		$template = new HTMLTemplate('WebsiteHeader');
+		$this->_setupTemplatePath($template);
+
+		$template->websiteTitle       = self::correctTypography(Settings::get('websiteTitle'));
+		$template->websiteDescription = self::correctTypography(Settings::get('websiteDescription'));
+
 		ob_start();
+		$template->render();
+		return ob_get_clean();
+	}
 
-		echo '<h1>', Settings::get('websiteTitle'), '</h1>';
+	private function _variable_websiteFooter()
+	{
+		$template = new HTMLTemplate('WebsiteFooter');
+		$this->_setupTemplatePath($template);
 
+		$elements = [
+			0   => '&copy; ' . self::correctTypography(Settings::get('websiteAuthor')),
+			999 => '<a href="https://wizytowka.tomaszgasior.pl" title="Ta witryna jest oparta na systemie zarządzania treścią WizyTówka.">WizyTówka</a>',
+		];
+
+		ksort($elements);
+		$template->elements = $elements;
+
+		ob_start();
+		$template->render();
+		return ob_get_clean();
+	}
+
+	private function _variable_pageHeader()
+	{
+		$template = new HTMLTemplate('WebsitePageHeader');
+		$this->_setupTemplatePath($template);
+
+		$template->pageTitle = self::correctTypography($this->_page->title);
+
+		$properties = [];
+		if ($user = User::getById($this->_page->userId)) {
+			$properties['Autor'] = self::correctTypography($user->name);
+		}
+		$properties['Data utworzenia']  = self::formatDate($this->_page->createdTime);
+		$properties['Data modyfikacji'] = self::formatDate($this->_page->updatedTime);
+
+		$template->properties = $properties;
+
+		ob_start();
+		$template->render();
+		return ob_get_clean();
+	}
+
+	private function _variable_pageContent()
+	{
+		$template = new HTMLTemplate('WebsitePageContent');
+		$this->_setupTemplatePath($template);
+
+		$template->message   = self::correctTypography($this->_HTMLMessage);
+		$template->pageBoxes = $this->_HTMLBoxes;
+
+		ob_start();
+		$template->render();
 		return ob_get_clean();
 	}
 
 
-	private function _buildFooter()
+	private function _function_menu($menuPositionNumber)
 	{
+		// More comming soon.
+		$pages = Page::getAll();
+		$menu  = new HTMLMenu;
+
+		foreach ($pages as $page) {
+			$menu->add(self::correctTypography($page->title), Website::URL($page->id), $page->slug);
+		}
+
 		ob_start();
-
-		echo '<ul>';
-		echo '<li>&copy; ', Settings::get('websiteTitle'), '</li>';
-		echo '</ul>';
-
+		$menu->output();
 		return ob_get_clean();
 	}
 
-	private function _buildContent()
+	private function _function_area($areaPositionNumber)
 	{
-		ob_start();
+		// More comming soon.
+		return '';
+	}
 
-		echo 'Example content.';
+	private function _function_info($option)
+	{
+		switch ($option) {
+			case 'websiteTitle':       return Settings::get('websiteTitle');
+			case 'websiteDescription': return Settings::get('websiteDescription');
+			case 'pageTitle':          return $this->_page->title;
+			case 'version':            return VERSION;
+		}
+	}
 
-		return ob_get_clean();
+	static public function correctTypography($text)
+	{
+		return Settings::get('websiteTypography') ? (new Text($text))->correctTypography()->get() : $text;
+	}
+
+	static public function formatDate($unixTimestamp)
+	{
+		return (new Text($unixTimestamp))->formatAsDateTime(Settings::get('websiteDateFormat'))->get();
 	}
 }
