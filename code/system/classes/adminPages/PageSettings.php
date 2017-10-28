@@ -20,11 +20,11 @@ class PageSettings extends WT\AdminPanel
 		if (empty($_GET['id']) or !$this->_page = WT\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
-		if (!$this->_pageBoxes = WT\PageBox::getAll($this->_page->id)) {
-			$this->_redirect('error');
-		}
+		$this->_pageBoxes = WT\PageBox::getAll($this->_page->id);
 
-		$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->type);
+		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->type)) {
+			throw PageSettingsException::contentTypeNotExists($this->_pageBoxes[0]->type);
+		}
 		$this->_contentTypeAPI = $contentType->initSettingsPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
 		$this->_contentTypeAPI->setHTMLParts($this->_apTemplate, $this->_apHead, $this->_apMessage);
@@ -47,5 +47,13 @@ class PageSettings extends WT\AdminPanel
 		$this->_apContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 
 		$this->_contentTypeAPI->HTMLContent();
+	}
+}
+
+class PageSettingsException extends WT\Exception
+{
+	static public function contentTypeNotExists($name)
+	{
+		return new self('Content type "' . $name . '" does not exists.', 1);
 	}
 }
