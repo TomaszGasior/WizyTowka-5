@@ -7,13 +7,13 @@ Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzen
 
 ## `base($href = null, array $HTMLAttributes = [])`
 
-Dodaje znacznik `<base>` o atrybucie `href` równym `$href`. Jeśli `$href` jest puste, usuwa znacznik.
+Dodaje znacznik `<base>` o atrybucie `href` równym `$href`. Można dodać tylko jeden znacznik `<base>` — jeżeli dodano ten znacznik wcześniej, poprzedni egzemplarz zostanie usunięty. Jeśli `$href` jest puste, usuwa znacznik.
 
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
 
 ## `title($title = null, array $HTMLAttributes = [])`
 
-Dodaje tytuł strony `$title` w znaczniku `<title>`. Tytuł jest filtrowany za pomocą funkcji `htmlspecialchars()`. Jeśli `$title` jest puste, usuwa znacznik.
+Dodaje tytuł strony `$title` w znaczniku `<title>`. Można dodać tylko jeden znacznik `<title>` — jeżeli dodano ten znacznik wcześniej, poprzedni egzemplarz zostanie usunięty. Tytuł jest filtrowany za pomocą funkcji `htmlspecialchars()`. Jeśli `$title` jest puste, usuwa znacznik.
 
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
 
