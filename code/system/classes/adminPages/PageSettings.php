@@ -22,8 +22,8 @@ class PageSettings extends WT\AdminPanel
 		}
 		$this->_pageBoxes = WT\PageBox::getAll($this->_page->id);
 
-		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->type)) {
-			throw PageSettingsException::contentTypeNotExists($this->_pageBoxes[0]->type);
+		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->contentType)) {
+			throw PageSettingsException::contentTypeNotExists($this->_pageBoxes[0]->contentType);
 		}
 		$this->_contentTypeAPI = $contentType->initSettingsPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);

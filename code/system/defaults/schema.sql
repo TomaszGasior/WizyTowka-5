@@ -25,7 +25,7 @@ CREATE TABLE PageBoxes (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, -- wt_dbms: sqlite
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,         -- wt_dbms: mysql
 	id SERIAL PRIMARY KEY,                         -- wt_dbms: pgsql
-	type VARCHAR(50) NOT NULL,
+	contentType VARCHAR(50) NOT NULL,
 	contents TEXT NOT NULL,
 	settings TEXT NOT NULL,
 	pageId INTEGER NOT NULL REFERENCES Pages(id) ON DELETE CASCADE,

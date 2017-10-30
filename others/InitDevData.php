@@ -82,7 +82,7 @@ foreach (range(1, 5) as $number) {
 
 	$pageBox = new PageBox;
 	$pageBox->pageId = $page->id;
-	$pageBox->type = $contentType->getName();
+	$pageBox->contentType = $contentType->getName();
 	$pageBox->settings = (object)($contentType->settings ?? []);
 	$pageBox->contents = (object)($contentType->contents ?? []);
 	$pageBox->positionRow = 1;

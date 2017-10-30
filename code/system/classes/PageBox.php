@@ -10,7 +10,7 @@ class PageBox extends DatabaseObject
 {
 	static protected $_tableName = 'PageBoxes';
 	static protected $_tableColumns = [
-		'type',
+		'contentType',
 		'contents',
 		'settings',
 		'pageId',

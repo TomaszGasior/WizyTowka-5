@@ -24,8 +24,8 @@ class Website extends Controller
 
 		// Get page boxes and its contents. Initialize content types.
 		foreach (PageBox::getAll($this->_page->id) as $pageBox) {
-			if (!$contentType = ContentType::getByName($pageBox->type)) {
-				throw WebsiteException::contentTypeNotExists($pageBox->type);
+			if (!$contentType = ContentType::getByName($pageBox->contentType)) {
+				throw WebsiteException::contentTypeNotExists($pageBox->contentType);
 			}
 
 			$contentTypeAPI = $contentType->initWebsitePageBox();

@@ -6,7 +6,7 @@ Klasa reprezentująca blok treści (rekord w tabeli bazy danych) będący częś
 Posiada następujące pola:
 
 - `id` — klucz podstawowy;
-- `type` — nazwa typu zawartości;
+- `contentType` — nazwa typu zawartości;
 - `contents` — treść typu zawartości (obiekt zakodowany w formacie JSON);
 - `settings` — ustawienia typu zawartości (obiekt zakodowany w formacie JSON);
 - `pageId` — identyfikator strony witryny, do której przynależy blok treści;

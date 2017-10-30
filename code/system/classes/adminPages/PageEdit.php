@@ -22,8 +22,8 @@ class PageEdit extends WT\AdminPanel
 		}
 		$this->_pageBoxes = WT\PageBox::getAll($this->_page->id);
 
-		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->type)) {
-			throw PageEditException::contentTypeNotExists($this->_pageBoxes[0]->type);
+		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->contentType)) {
+			throw PageEditException::contentTypeNotExists($this->_pageBoxes[0]->contentType);
 		}
 		$this->_contentTypeAPI = $contentType->initEditorPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
