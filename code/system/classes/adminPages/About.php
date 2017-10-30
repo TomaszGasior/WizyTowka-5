@@ -13,8 +13,8 @@ class About extends WT\AdminPanel
 
 	protected function _output()
 	{
-		$this->_apTemplate->version = WT\VERSION;
-		$this->_apTemplate->releaseDate = WT\VERSION_DATE;
-		$this->_apTemplate->betaVersionWarning = !WT\VERSION_STABLE;
+		$this->_HTMLTemplate->version = WT\VERSION;
+		$this->_HTMLTemplate->releaseDate = WT\VERSION_DATE;
+		$this->_HTMLTemplate->betaVersionWarning = !WT\VERSION_STABLE;
 	}
 }

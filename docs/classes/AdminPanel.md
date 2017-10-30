@@ -10,15 +10,15 @@ Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery posz
 - `$_pageTitle` — tytuł strony panelu administracyjnego widoczny na pasku tytułowym przeglądarki;
 - `$_userRequiredPermissions` — flagi uprawnień użytkownika (stałe `PERM_*` klasy `User`) wymaganych do umożliwienia użytkownikowi korzystania ze strony panelu;
 - `$_userMustBeLoggedIn` — określenie wymagania zalogowania się użytkownika w celu dostępu do strony, typ logiczny, domyślnie prawda;
-- `$_apAlternateLayout` — użycie uproszczonego układu panelu administracyjnego zamiast pełnego (opcja przeznaczona głównie dla strony logowania i instalatora), typ logiczny, domyślnie fałsz.
+- `$_alternativeLayout` — użycie uproszczonego układu panelu administracyjnego zamiast pełnego (opcja przeznaczona głównie dla strony logowania i instalatora), typ logiczny, domyślnie fałsz.
 
 Klasa określa też dla klas dziedziczących następujące pola chronione:
 
 - `$_currentUser` — instancja klasy `User` konta bieżącego użytkownika, jeśli jest zalogowany;
-- `$_apHead` — instancja klasy `HTMLHead` nagłówka strony panelu administracyjnego;
-- `$_apMessage` — instancja klasy `HTMLMessage` komunikatu strony.
-- `$_apTemplate` — instancja klasy `HTMLTemplate` szablonu głównej treści strony;
-- `$_apContextMenu` — instancja klasy `HTMLMenu` menu dodatkowego strony.
+- `$_HTMLHead` — instancja klasy `HTMLHead` nagłówka strony panelu administracyjnego;
+- `$_HTMLMessage` — instancja klasy `HTMLMessage` komunikatu strony.
+- `$_HTMLTemplate` — instancja klasy `HTMLTemplate` szablonu głównej treści strony;
+- `$_HTMLContextMenu` — instancja klasy `HTMLMenu` menu dodatkowego strony.
 
 ## `__construct()`
 

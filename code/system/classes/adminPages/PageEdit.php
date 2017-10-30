@@ -27,7 +27,7 @@ class PageEdit extends WT\AdminPanel
 		}
 		$this->_contentTypeAPI = $contentType->initEditorPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
-		$this->_contentTypeAPI->setHTMLParts($this->_apTemplate, $this->_apHead, $this->_apMessage);
+		$this->_contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
 	}
 
 	public function POSTQuery()
@@ -38,13 +38,13 @@ class PageEdit extends WT\AdminPanel
 		// We don't need to assign values because these properties contain instances of \stdClass.
 		$this->_pageBoxes[0]->save();
 
-		$this->_apMessage->default('Zmiany zostały zapisane.');
+		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
 	protected function _output()
 	{
-		$this->_apContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit');
-		$this->_apContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
+		$this->_HTMLContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit');
+		$this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 
 		$this->_contentTypeAPI->HTMLContent();
 	}

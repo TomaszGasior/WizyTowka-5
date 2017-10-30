@@ -14,18 +14,17 @@ abstract class AdminPanel extends Controller
 	protected $_pageTitle = 'Panel administracyjny';
 	protected $_userRequiredPermissions;
 	protected $_userMustBeLoggedIn = true;
+	protected $_alternativeLayout = false;
 
 	protected $_currentUser;
 
-	private $_apLayout;
-	private $_apTopMenu;
-	private $_apMainMenu;
-
-	protected $_apAlternateLayout = false;
-	protected $_apHead;
-	protected $_apTemplate;
-	protected $_apContextMenu;
-	protected $_apMessage;
+	private $_HTMLLayout;
+	private $_HTMLTopMenu;
+	private $_HTMLMainMenu;
+	protected $_HTMLHead;
+	protected $_HTMLTemplate;
+	protected $_HTMLContextMenu;
+	protected $_HTMLMessage;
 
 	final public function __construct()
 	{
@@ -51,8 +50,8 @@ abstract class AdminPanel extends Controller
 
 	final public function output()
 	{
-		// Top navigation menu and main navigation menu.
-		if (!$this->_apAlternateLayout) {
+		// Top navigation menu and main navigation menu. Only for logged in users.
+		if ($this->_userMustBeLoggedIn) {
 			$this->_setupMenus();
 		}
 
@@ -60,82 +59,82 @@ abstract class AdminPanel extends Controller
 		$this->_output();
 
 		// Main HTML layout.
-		$this->_apLayout = new HTMLTemplate(null, SYSTEM_DIR.'/templates');
-		$this->_apLayout->setTemplate($this->_apAlternateLayout ? 'APAlternateLayout' : 'APStandardLayout');
-		$this->_apLayout->head         = $this->_apHead;
-		$this->_apLayout->topMenu      = $this->_apTopMenu;
-		$this->_apLayout->mainMenu     = $this->_apMainMenu;
-		$this->_apLayout->contextMenu  = $this->_apContextMenu;
-		$this->_apLayout->message      = $this->_apMessage;
-		$this->_apLayout->pageTitle    = $this->_pageTitle;
-		$this->_apLayout->pageTemplate = $this->_apTemplate;
+		$this->_HTMLLayout = new HTMLTemplate(null, SYSTEM_DIR.'/templates');
+		$this->_HTMLLayout->setTemplate($this->_alternativeLayout ? 'AdminPanelAlternate' : 'AdminPanelLayout');
+		$this->_HTMLLayout->head         = $this->_HTMLHead;
+		$this->_HTMLLayout->topMenu      = $this->_HTMLTopMenu;
+		$this->_HTMLLayout->mainMenu     = $this->_HTMLMainMenu;
+		$this->_HTMLLayout->contextMenu  = $this->_HTMLContextMenu;
+		$this->_HTMLLayout->message      = $this->_HTMLMessage;
+		$this->_HTMLLayout->pageTitle    = $this->_pageTitle;
+		$this->_HTMLLayout->pageTemplate = $this->_HTMLTemplate;
 
 		// Recursively render all HTML elements and whole layout.
-		$this->_apLayout->render();
+		$this->_HTMLLayout->render();
 	}
 
 	// This method sets up HTML layout parts needed by child class.
 	private function _setupHTMLParts()
 	{
 		// HTML <head>.
-		$this->_apHead = new HTMLHead;
-		$this->_apHead->setAssetsPath(SYSTEM_URL . '/assets');
-		$this->_apHead->title($this->_pageTitle . ' — WizyTówka');
-		$this->_apHead->meta('viewport', 'width=device-width');
-		$this->_apHead->stylesheet('AdminMain.css');
-		$this->_apHead->stylesheet('AdminMobile.css');
+		$this->_HTMLHead = new HTMLHead;
+		$this->_HTMLHead->setAssetsPath(SYSTEM_URL . '/assets');
+		$this->_HTMLHead->title($this->_pageTitle . ' — WizyTówka');
+		$this->_HTMLHead->meta('viewport', 'width=device-width');
+		$this->_HTMLHead->stylesheet('AdminMain.css');
+		$this->_HTMLHead->stylesheet('AdminMobile.css');
 
 		// Main template of page.
 		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".
-		$this->_apTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
+		$this->_HTMLTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
 
 		// Context menu.
-		$this->_apContextMenu = new HTMLMenu;
+		$this->_HTMLContextMenu = new HTMLMenu;
 
 		// HTML message box.
-		$this->_apMessage = new HTMLMessage;
+		$this->_HTMLMessage = new HTMLMessage;
 	}
 
 	// This method sets up admin panel menu elements according to current user permissions.
 	private function _setupMenus()
 	{
 		// Top navigation menu.
-		$this->_apTopMenu = new HTMLMenu;
-		$this->_apTopMenu->add($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
-		$this->_apTopMenu->add('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
-		$this->_apTopMenu->add('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', null, true);
-		$this->_apTopMenu->add('Wyloguj się',             self::URL('logout'),             'iconLogout');
+		$this->_HTMLTopMenu = new HTMLMenu;
+		$this->_HTMLTopMenu->add($this->_currentUser->name, self::URL('userSettings'), 'iconUser');
+		$this->_HTMLTopMenu->add('Zaktualizuj',    self::URL('systemUpdate'),       'iconUpdates');
+		$this->_HTMLTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite', null, true);
+		$this->_HTMLTopMenu->add('Wyloguj się',    self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
-		$this->_apMainMenu = new HTMLMenu;
-		$this->_apMainMenu->add('Strony', self::URL('pages'), 'iconPages');
+		$this->_HTMLMainMenu = new HTMLMenu;
+		$this->_HTMLMainMenu->add('Strony', self::URL('pages'), 'iconPages');
 		if ($this->_currentUser->permissions & User::PERM_CREATING_PAGES) {
-			$this->_apMainMenu->add('Utwórz stronę', self::URL('pageCreate'), 'iconAdd');
+			$this->_HTMLMainMenu->add('Utwórz stronę', self::URL('pageCreate'), 'iconAdd');
 		}
-		$this->_apMainMenu->add('Szkice', self::URL('drafts'), 'iconDrafts');
+		$this->_HTMLMainMenu->add('Szkice', self::URL('drafts'), 'iconDrafts');
 		if ($this->_currentUser->permissions & User::PERM_CREATING_PAGES) {
-			$this->_apMainMenu->add('Utwórz szkic', self::URL('pageCreate', ['draft' => true]), 'iconAdd');
+			$this->_HTMLMainMenu->add('Utwórz szkic', self::URL('pageCreate', ['draft' => true]), 'iconAdd');
 		}
-		$this->_apMainMenu->add('Pliki', self::URL('files'), 'iconFiles');
+		$this->_HTMLMainMenu->add('Pliki', self::URL('files'), 'iconFiles');
 		if ($this->_currentUser->permissions & User::PERM_SENDING_FILES) {
-			$this->_apMainMenu->add('Wyślij pliki', self::URL('filesSend'), 'iconAdd');
+			$this->_HTMLMainMenu->add('Wyślij pliki', self::URL('filesSend'), 'iconAdd');
 		}
 		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_ELEMENTS) {
-			$this->_apMainMenu->add('Menu',           self::URL('menus'),         'iconMenus');
-			$this->_apMainMenu->add('Obszary',        self::URL('areas'),         'iconAreas');
-			$this->_apMainMenu->add('Personalizacja', self::URL('customization'), 'iconCustomization');
+			$this->_HTMLMainMenu->add('Menu',           self::URL('menus'),         'iconMenus');
+			$this->_HTMLMainMenu->add('Obszary',        self::URL('areas'),         'iconAreas');
+			$this->_HTMLMainMenu->add('Personalizacja', self::URL('customization'), 'iconCustomization');
 		}
 		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_CONFIG) {
-			$this->_apMainMenu->add('Ustawienia', self::URL('siteSettings'), 'iconSettings');
+			$this->_HTMLMainMenu->add('Ustawienia', self::URL('siteSettings'), 'iconSettings');
 		}
 		if ($this->_currentUser->permissions & User::PERM_SUPER_USER) {
-			$this->_apMainMenu->add('Użytkownicy',        self::URL('users'),             'iconUsers');
-			$this->_apMainMenu->add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd');
-			$this->_apMainMenu->add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor');
-			$this->_apMainMenu->add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd');
-			$this->_apMainMenu->add('Kopia zapasowa',     self::URL('backup'),            'iconBackup');
+			$this->_HTMLMainMenu->add('Użytkownicy',        self::URL('users'),             'iconUsers');
+			$this->_HTMLMainMenu->add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd');
+			$this->_HTMLMainMenu->add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor');
+			$this->_HTMLMainMenu->add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd');
+			$this->_HTMLMainMenu->add('Kopia zapasowa',     self::URL('backup'),            'iconBackup');
 		}
-		$this->_apMainMenu->add('Informacje', self::URL('about'), 'iconInformation');
+		$this->_HTMLMainMenu->add('Informacje', self::URL('about'), 'iconInformation');
 	}
 
 	// Equivalent of Controller::__construct() method for AdminPanel child classes.

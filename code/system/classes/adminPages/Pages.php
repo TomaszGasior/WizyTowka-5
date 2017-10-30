@@ -19,21 +19,21 @@ class Pages extends WT\AdminPanel
 
 		if (!empty($_GET['hideId']) and $page = WT\Page::getById($_GET['hideId'])) {
 			if ($page->id == WT\Settings::get('websiteHomepageId')) {
-				$this->_apMessage->error('Wybrana do ukrycia strona jest stroną główną witryny. Nie ukryto strony.');
+				$this->_HTMLMessage->error('Wybrana do ukrycia strona jest stroną główną witryny. Nie ukryto strony.');
 			}
 			else {
 				$page->isDraft = true;
 				$page->save();
-				$this->_apMessage->success('Strona „' . $page->title . '” została przeniesiona do szkiców.');
+				$this->_HTMLMessage->success('Strona „' . $page->title . '” została przeniesiona do szkiców.');
 			}
 		}
 		if (!empty($_GET['deleteId']) and $page = WT\Page::getById($_GET['deleteId'])) {
 			if ($page->id == WT\Settings::get('websiteHomepageId')) {
-				$this->_apMessage->error('Wybrana do usunięcia strona jest stroną główną witryny. Nie usunięto strony.');
+				$this->_HTMLMessage->error('Wybrana do usunięcia strona jest stroną główną witryny. Nie usunięto strony.');
 			}
 			else {
 				$page->delete();
-				$this->_apMessage->success('Strona „' . $page->title . '” została usunięta.');
+				$this->_HTMLMessage->success('Strona „' . $page->title . '” została usunięta.');
 			}
 		}
 
@@ -43,9 +43,9 @@ class Pages extends WT\AdminPanel
 	protected function _output()
 	{
 		if (!empty($_GET['msg'])) {
-			$this->_apMessage->success('Strona została utworzona.');
+			$this->_HTMLMessage->success('Strona została utworzona.');
 		}
 
-		$this->_apTemplate->pages = $this->_pages;
+		$this->_HTMLTemplate->pages = $this->_pages;
 	}
 }

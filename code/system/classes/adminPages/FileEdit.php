@@ -13,9 +13,9 @@ class FileEdit extends WT\AdminPanel
 
 	protected function _output()
 	{
-		$this->_apTemplate->setTemplate('Message');
+		$this->_HTMLTemplate->setTemplate('Message');
 
-		$this->_apTemplate->CSSClasses = 'iconInformation';
-		$this->_apTemplate->messageText = 'Jeszcze niezaimplementowane.';
+		$this->_HTMLTemplate->CSSClasses = 'iconInformation';
+		$this->_HTMLTemplate->messageText = 'Jeszcze niezaimplementowane.';
 	}
 }

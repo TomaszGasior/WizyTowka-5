@@ -17,7 +17,7 @@ class Files extends WT\AdminPanel
 	{
 		if (!empty($_GET['deleteId']) and $file = WT\File::getById($_GET['deleteId'])) {
 			$file->delete();
-			$this->_apMessage->success('Plik „' . $file->name . '” został usunięty.');
+			$this->_HTMLMessage->success('Plik „' . $file->name . '” został usunięty.');
 		}
 
 		$this->_files = WT\File::getAll();
@@ -25,6 +25,6 @@ class Files extends WT\AdminPanel
 
 	protected function _output()
 	{
-		$this->_apTemplate->files = $this->_files;
+		$this->_HTMLTemplate->files = $this->_files;
 	}
 }

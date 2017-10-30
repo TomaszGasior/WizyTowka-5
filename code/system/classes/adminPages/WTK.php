@@ -29,12 +29,12 @@ class WTK extends WT\AdminPanel
 			}
 		}
 
-		$this->_apMessage->success('Zmiany konfiguracji zostały zapisane.');
+		$this->_HTMLMessage->success('Zmiany konfiguracji zostały zapisane.');
 	}
 
 	protected function _output()
 	{
-		$this->_apTemplate->settings        = $this->_settings;
-		$this->_apTemplate->defaultSettings = $this->_settingsDefault;
+		$this->_HTMLTemplate->settings        = $this->_settings;
+		$this->_HTMLTemplate->defaultSettings = $this->_settingsDefault;
 	}
 }

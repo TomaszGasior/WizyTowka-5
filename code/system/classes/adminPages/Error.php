@@ -27,8 +27,8 @@ class Error extends WT\AdminPanel
 			'parameters'  => 'Podano błędne parametry bądź brak wymaganych parametrów w&nbsp;adresie URL.',
 		];
 
-		$this->_apTemplate->setTemplate('Message');
-		$this->_apTemplate->CSSClasses  = 'iconWarning';
-		$this->_apTemplate->messageText = isset($messages[$_GET['type']]) ? $messages[$_GET['type']] : $messages['unknown'];
+		$this->_HTMLTemplate->setTemplate('Message');
+		$this->_HTMLTemplate->CSSClasses  = 'iconWarning';
+		$this->_HTMLTemplate->messageText = isset($messages[$_GET['type']]) ? $messages[$_GET['type']] : $messages['unknown'];
 	}
 }

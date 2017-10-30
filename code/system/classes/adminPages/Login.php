@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class Login extends WT\AdminPanel
 {
 	protected $_userMustBeLoggedIn = false;
-	protected $_apAlternateLayout = true;
+	protected $_alternativeLayout = true;
 
 	protected function _prepare()
 	{
@@ -22,7 +22,7 @@ class Login extends WT\AdminPanel
 	public function POSTQuery()
 	{
 		if (empty($_POST['name']) or empty($_POST['password'])) {
-			$this->_apMessage->error('Nie podano danych logowania.');
+			$this->_HTMLMessage->error('Nie podano danych logowania.');
 			return;
 		}
 
@@ -33,7 +33,7 @@ class Login extends WT\AdminPanel
 			$this->_redirect(null);
 		}
 		else {
-			$this->_apMessage->error('Dane logowania są niepoprawne.');
+			$this->_HTMLMessage->error('Dane logowania są niepoprawne.');
 		}
 	}
 
@@ -41,6 +41,6 @@ class Login extends WT\AdminPanel
 	{
 		// Username will be shown, when user specify wrong password. It must be filtered by htmlspecialchars(),
 		// because this form field is not filtered by Controller::filterPOSTData(). See "Login" form template.
-		$this->_apTemplate->lastUsername = (empty($_POST['name'])) ? '' : htmlspecialchars($_POST['name']);
+		$this->_HTMLTemplate->lastUsername = (empty($_POST['name'])) ? '' : htmlspecialchars($_POST['name']);
 	}
 }

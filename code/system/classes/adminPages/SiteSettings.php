@@ -36,7 +36,7 @@ class SiteSettings extends WT\AdminPanel
 	{
 		if (empty($_POST['websiteTitle']) or empty($_POST['websiteTitlePattern']) or empty($_POST['websiteAddress'])
 			or empty($_POST['websiteEmailAddress']) or empty($_POST['websiteHomepageId'])) {
-			$this->_apMessage->error('Nie wypełniono wymaganych pól.');
+			$this->_HTMLMessage->error('Nie wypełniono wymaganych pól.');
 			return;
 		}
 
@@ -44,7 +44,7 @@ class SiteSettings extends WT\AdminPanel
 		// Tell user about problem, when he enabled pretty links and server is other than Apache.
 		if ($this->_settings->websitePrettyLinks != isset($_POST['websitePrettyLinks'])
 			and !$this->_updateHtaccess(isset($_POST['websitePrettyLinks'])) and isset($_POST['websitePrettyLinks'])) {
-			$this->_apMessage->error('Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.');
+			$this->_HTMLMessage->error('Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.');
 		}
 
 		// Date/time format can be changed in configuration file. In this case form field will be disabled.
@@ -71,7 +71,7 @@ class SiteSettings extends WT\AdminPanel
 			$this->_settings->websiteTitlePattern = '%s — ' . $this->_settings->websiteTitlePattern;
 		}
 
-		$this->_apMessage->default('Zmiany zostały zapisane.');
+		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
 	private function _updateHtaccess($enablePrettyLinks)
@@ -104,6 +104,7 @@ HTACCESS;
 			$htaccessContent ? file_put_contents('.htaccess', $htaccessContent) : @unlink('.htaccess');
 		}
 		catch (\ErrorException $e) {
+			WT\ErrorHandler::addToLog($e);
 			return false;
 		}
 
@@ -112,20 +113,20 @@ HTACCESS;
 
 	protected function _output()
 	{
-		$this->_apTemplate->settings = $this->_settings;
+		$this->_HTMLTemplate->settings = $this->_settings;
 
 		// "Website homepage" field — titles of public pages.
 		$pages = WT\Page::getAll();
-		$this->_apTemplate->pagesIds = array_column($pages, 'title', 'id');
+		$this->_HTMLTemplate->pagesIds = array_column($pages, 'title', 'id');
 
 		// "Date/time format" field — list with formats and examples.
 		$dateFormatsAndExamples = [];
 		foreach ($this->_definedDateFormats as $format) {
 			$dateFormatsAndExamples[$format] = (new WT\Text(1472711447))->formatAsDateTime($format)->get();
 		}
-		$this->_apTemplate->dateFormatsAndExamples = $dateFormatsAndExamples;
+		$this->_HTMLTemplate->dateFormatsAndExamples = $dateFormatsAndExamples;
 
 		// "Date/time format" field — disable if setting was changed in configuration file.
-		$this->_apTemplate->disableDateFormatField = !in_array($this->_settings->websiteDateFormat, $this->_definedDateFormats);
+		$this->_HTMLTemplate->disableDateFormatField = !in_array($this->_settings->websiteDateFormat, $this->_definedDateFormats);
 	}
 }

@@ -18,14 +18,14 @@ class Users extends WT\AdminPanel
 	{
 		if (!empty($_GET['deleteId']) and $user = WT\User::getById($_GET['deleteId'])) {
 			if ($user->id == 1) {
-				$this->_apMessage->error('Użytkownik „' . $user->name . '” nie może zostać usunięty.');
+				$this->_HTMLMessage->error('Użytkownik „' . $user->name . '” nie może zostać usunięty.');
 			}
 			elseif ($user->id == $this->_currentUser->id) {
-				$this->_apMessage->error('Nie można usunąć własnego konta użytkownika.');
+				$this->_HTMLMessage->error('Nie można usunąć własnego konta użytkownika.');
 			}
 			else {
 				$user->delete();
-				$this->_apMessage->success('Użytkownik „' . $user->name . '” został usunięty.');
+				$this->_HTMLMessage->success('Użytkownik „' . $user->name . '” został usunięty.');
 			}
 		}
 
@@ -34,6 +34,6 @@ class Users extends WT\AdminPanel
 
 	protected function _output()
 	{
-		$this->_apTemplate->users = $this->_users;
+		$this->_HTMLTemplate->users = $this->_users;
 	}
 }
