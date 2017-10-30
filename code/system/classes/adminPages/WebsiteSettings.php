@@ -2,12 +2,12 @@
 
 /**
 * WizyTówka 5
-* Admin page — site settings.
+* Admin page — website settings.
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class SiteSettings extends WT\AdminPanel
+class WebsiteSettings extends WT\AdminPanel
 {
 	protected $_pageTitle = 'Ustawienia witryny';
 	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_CONFIG;

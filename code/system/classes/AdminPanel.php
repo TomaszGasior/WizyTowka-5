@@ -100,10 +100,10 @@ abstract class AdminPanel extends Controller
 	{
 		// Top navigation menu.
 		$this->_HTMLTopMenu = new HTMLMenu;
-		$this->_HTMLTopMenu->add($this->_currentUser->name, self::URL('userSettings'), 'iconUser');
-		$this->_HTMLTopMenu->add('Zaktualizuj',    self::URL('systemUpdate'),       'iconUpdates');
-		$this->_HTMLTopMenu->add('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite', null, true);
-		$this->_HTMLTopMenu->add('Wyloguj się',    self::URL('logout'),             'iconLogout');
+		$this->_HTMLTopMenu->add($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
+		$this->_HTMLTopMenu->add('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
+		$this->_HTMLTopMenu->add('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', null, true);
+		$this->_HTMLTopMenu->add('Wyloguj się',             self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
@@ -125,7 +125,7 @@ abstract class AdminPanel extends Controller
 			$this->_HTMLMainMenu->add('Personalizacja', self::URL('customization'), 'iconCustomization');
 		}
 		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_CONFIG) {
-			$this->_HTMLMainMenu->add('Ustawienia', self::URL('siteSettings'), 'iconSettings');
+			$this->_HTMLMainMenu->add('Ustawienia', self::URL('websiteSettings'), 'iconSettings');
 		}
 		if ($this->_currentUser->permissions & User::PERM_SUPER_USER) {
 			$this->_HTMLMainMenu->add('Użytkownicy',        self::URL('users'),             'iconUsers');
