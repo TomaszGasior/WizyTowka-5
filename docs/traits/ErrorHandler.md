@@ -3,13 +3,13 @@ ErrorHandler
 
 Mechanizm wychwytujący i obsługujący systemowe błędy PHP oraz niezłapane wyjątki.
 
-Informacja o błędzie obejmuje: kod błędu (jeśli jest wyjątkiem) lub typ błędu (jeśli jest przekonwertowanym błędem PHP), wiadomość, ścieżkę do pliku i linię pliku oraz ścieżkę wykonywanych plików (backtrace).
+Informacje o błędzie zapisywane są w dzienniku błędów i wyświetlane na ekranie. Obejmują kod błędu (jeśli rzucono wyjątek) lub typ błędu (jeśli wystąpił błąd PHP), wiadomość, ścieżkę do pliku i linię pliku oraz backtrace.
 
 ## *static* `handleException(\Throwable $exception)`
 
 Wychwytuje niezłapany wyjątek. Metoda przeznaczona do zarejestrowania przez `set_exception_handler()`.
 
-Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Drukuje komunikat o błędzie, w formie strony HTML bądź w formie komunikatu tekstowego (gdy skrypt jest uruchamiany w wierszu polecenia).
+Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Drukuje komunikat o błędzie w formie strony HTML bądź w formie komunikatu tekstowego (gdy skrypt jest uruchamiany w wierszu polecenia).
 
 ## *static* `handleError($number, $message, $file, $line)`
 
@@ -20,3 +20,9 @@ Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie j
 ## *static* `addToLog(\Throwable $exception)`
 
 Dopisuje informacje o błędzie do dziennika błędów. Znajduje się on w pliku `errors.log`, domyślnie w folderze `data/config`.
+
+## *static* `showErrorDetails($setting = null)`
+
+Jeśli określono argument `$setting` o wartości logicznej, włącza bądź wyłącza szczegóły w komunikatach błędów HTML. Gdy szczegóły są wyłączone, dla bezpieczeństwa zamiast pełnej informacji o błędzie ukazuje się jedynie komunikat „Przepraszamy za usterki”.
+
+Jeśli argumentu nie określono, zwraca bieżące ustawienie.

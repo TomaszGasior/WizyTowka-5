@@ -56,6 +56,11 @@ $init = function($baseController)
 
 	$settings = Settings::get();
 
+	/* Error handler. */
+	if (!$settings->systemShowErrors) {
+		ErrorHandler::showErrorDetails(false);
+	}
+
 	/* PHP settings. */
 	setlocale(LC_ALL, explode('|', $settings->phpLocalesList));
 	date_default_timezone_set($settings->phpTimeZone);
