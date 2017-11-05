@@ -9,7 +9,7 @@ Informacja o błędzie obejmuje: kod błędu (jeśli jest wyjątkiem) lub typ b�
 
 Wychwytuje niezłapany wyjątek. Metoda przeznaczona do zarejestrowania przez `set_exception_handler()`.
 
-Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Drukuje komunikat o błędzie, używając metody `_printAsPlainText()` (gdy zostanie wykryty typ MIME inny niż `text/html` lub gdy skrypt jest uruchamiany w wierszu polecenia) bądź `_printAsHTML()`.
+Dodaje informacje do dziennika błędów za pomocą metody `addToLog()`. Drukuje komunikat o błędzie, w formie strony HTML bądź w formie komunikatu tekstowego (gdy skrypt jest uruchamiany w wierszu polecenia).
 
 ## *static* `handleError($number, $message, $file, $line)`
 

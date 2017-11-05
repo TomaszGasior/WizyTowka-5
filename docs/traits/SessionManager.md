@@ -5,7 +5,7 @@ Menadżer sesji użytkownika. Zarządza sesją, umożliwia zalogowanie i wylogow
 
 Rozpoczęcie sesji powoduje utworzenie po stronie klienta ciastka HTTP z identyfikatorem sesji. Dane sesji przypisane do jej identyfikatora (identyfikator użytkownika, data ważności sesji, WAI) są przechowywane w pliku konfiguracyjnym po stronie serwera. Identyfikator sesji jest, dla zwiększenia bezpieczeństwa, automatycznie zmieniany co kilka minut. Przy wylogowaniu ciastko HTTP i dane z pliku konfiguracyjnego są usuwane.
 
-WAI („where am I?”) — to ciąg znaków używany do zidentyfikowania środowiska (przeglądarki internetowej) używanego przy zalogowaniu. Jest to hasz sha512 z ciągu znaków złożonego z informacji o przeglądarce i użytkowniku (m.in. user agent i adres IP). WAI to skrót od „where am I?”.
+WAI („where am I?”) — to ciąg znaków używany do zidentyfikowania środowiska (przeglądarki internetowej) używanego przy zalogowaniu. Jest to hasz sha512 z ciągu znaków złożonego z informacji o przeglądarce i użytkowniku (m.in. user agent i adres IP).
 
 Sesje są przechowywane w pliku konfiguracyjnym `sessions.conf`, domyślnie w lokalizacji `data/config`.
 

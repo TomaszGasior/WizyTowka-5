@@ -1,5 +1,5 @@
 <h1><?= $websiteTitle ?></h1>
 
 <?php if ($websiteDescription) { ?>
-	<?= $websiteDescription ?>
+	<p><?= $websiteDescription ?></p>
 <?php } ?>

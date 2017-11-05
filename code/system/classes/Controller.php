@@ -16,7 +16,7 @@ abstract class Controller
 			foreach ($array as $key => &$value) {
 				$key = explode('_', $key, 2);
 				if ($key[0] != 'nofilter') {
-					is_array($value) ? $HTMLFilter($value) : $value = htmlspecialchars($value);
+					is_array($value) ? $HTMLFilter($value) : $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 				}
 				elseif (!empty($key[1])) {
 					$aliases[$key[1]] =& $value;
