@@ -30,6 +30,11 @@ abstract class AdminPanel extends Controller
 	{
 		if (SessionManager::isUserLoggedIn()) {
 			$this->_currentUser = User::getById(SessionManager::getUserId());
+
+			// Error handler details — only if user is logged in.
+			if (Settings::get('adminPanelForceShowErrors')) {
+				ErrorHandler::showErrorDetails(true);
+			}
 		}
 		elseif ($this->_userMustBeLoggedIn) {
 			$this->_redirect('login');
@@ -59,8 +64,10 @@ abstract class AdminPanel extends Controller
 		$this->_output();
 
 		// Main HTML layout.
-		$this->_HTMLLayout = new HTMLTemplate(null, SYSTEM_DIR.'/templates');
-		$this->_HTMLLayout->setTemplate($this->_alternativeLayout ? 'AdminPanelAlternate' : 'AdminPanelLayout');
+		$this->_HTMLLayout = new HTMLTemplate(
+			$this->_alternativeLayout ? 'AdminPanelAlternate' : 'AdminPanelLayout',
+			SYSTEM_DIR . '/templates'
+		);
 		$this->_HTMLLayout->head         = $this->_HTMLHead;
 		$this->_HTMLLayout->topMenu      = $this->_HTMLTopMenu;
 		$this->_HTMLLayout->mainMenu     = $this->_HTMLMainMenu;
