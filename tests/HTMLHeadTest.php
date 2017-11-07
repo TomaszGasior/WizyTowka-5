@@ -109,8 +109,10 @@ HTML;
 		$object = new WizyTowka\HTMLHead;
 
 		$object->setAssetsPath('assets');
+		$object->setAssetsPathBase('http://localhost');
 		$object->stylesheet('stylesheet.min.css');
 		$object->stylesheet('http://example.org/stylesheet.min.css');
+		$object->setAssetsPathBase('');
 
 		$object->setAssetsPath('somewhere');
 		$object->script('script.js');
@@ -118,7 +120,7 @@ HTML;
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
-<link rel="stylesheet" href="assets/stylesheet.min.css">
+<link rel="stylesheet" href="http://localhost/assets/stylesheet.min.css">
 <link rel="stylesheet" href="http://example.org/stylesheet.min.css">
 <script src="somewhere/script.js"></script>
 <script src="https://example.org/script.js"></script>
@@ -130,7 +132,7 @@ HTML;
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
-<link rel="stylesheet" href="assets/stylesheet.min.css">
+<link rel="stylesheet" href="http://localhost/assets/stylesheet.min.css">
 <link rel="stylesheet" href="http://example.org/stylesheet.min.css">
 <script src="somewhere/script.js"></script>
 <script src="https://example.org/script.js"></script>

@@ -1,7 +1,7 @@
 HTMLHead
 ===
 
-Klasa generująca zawartość znacznika HTML `<head>`. Umożliwia przejrzyste i proste dodawanie metatagów, arkuszy stylów i skryptów do nagłówka dokumentu HTML. Klasa dziedziczy po klasie `HTMLTag`. Ustawienie klasy CSS z klasy `HTMLTag` w przypadku tej klasy nie ma zastosowania.
+Klasa generująca zawartość znacznika HTML `<head>`. Umożliwia przejrzyste i proste dodawanie metatagów, arkuszy stylów i skryptów do nagłówka dokumentu HTML. Klasa dziedziczy po klasie `HTMLTag`. Ustawienie klasy CSS w konstruktorze klasy `HTMLTag` w przypadku tej klasy nie ma zastosowania.
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
@@ -85,6 +85,8 @@ Usuwa arkusz stylów CSS. Alias dla `removeLink('stylesheet', $href)`.
 
 Ustawia ścieżkę do zewnętrznych arkuszy stylów i skryptów na `$assetsPath`. Ścieżka jest dołączana do nazwy każdego dodawanego skryptu i arkusza stylów.
 
+Atrybut `$assetsPath` powinien zawierać wyłącznie samą ścieżkę adresu URL do folderu, nie domenę bądź protokół — na przykład `theme/assets`, a nie `http://example.org/theme/assets`. Początkowy fragment adresu URL określać należy za pomocą metody `setAssetsPathBase()`.
+
 Uwaga: ścieżka jest dołączana do nazwy pliku już w momencie dodawania skryptu bądź arkusza stylów (w momencie wywołania metody `link()`, `stylesheet()` bądź `script()`), nie zaś w momencie generowania kodu HTML.
 
 Metoda nie zwraca wartości.
@@ -98,6 +100,14 @@ Metoda zwraca prawdę, jeśli przywrócono poprzednią ścieżkę, inaczej — f
 ## `getAssetsPath($assetsPath)`
 
 Zwraca bieżącą ścieżkę do zewnętrznych arkuszy stylów i skryptów.
+
+## `setAssetsPathBase($assetsPathBase)`
+
+Ustawia podstawową część ścieżki dla zewnętrznych arkuszy stylów i skryptów ustawianej za pomocą metody `setAssetsPath()`. Podstawowa część ścieżki doklejana jest przed samą ścieżką. Metoda ta służy głównie do określania początkowej części adresu URL skryptów i arkuszy stylów — na przykład `http://example.org`.
+
+## `getAssetsPathBase()`
+
+Zwraca podstawową część ścieżki do zewnętrznych arkuszy stylów i skryptów.
 
 ## `output()`
 

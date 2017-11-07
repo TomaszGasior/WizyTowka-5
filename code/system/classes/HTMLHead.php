@@ -10,6 +10,7 @@ class HTMLHead extends HTMLTag
 {
 	private $_previousAssetsPath = '';
 	private $_assetsPath = '';
+	private $_assetsPathBase = '';
 
 	private $_tags  = [];
 
@@ -168,6 +169,16 @@ class HTMLHead extends HTMLTag
 		$this->_assetsPath         = (string)$assetsPath;
 	}
 
+	public function getAssetsPathBase()
+	{
+		return $this->_assetsPathBase;
+	}
+
+	public function setAssetsPathBase($assetsPathBase)
+	{
+		$this->_assetsPathBase = (string)$assetsPathBase;
+	}
+
 	public function restoreAssetsPath()
 	{
 		if ($this->_previousAssetsPath) {
@@ -180,7 +191,8 @@ class HTMLHead extends HTMLTag
 
 	private function _prepareAssetPath($file)
 	{
-		return (($this->_assetsPath and !parse_url($file, PHP_URL_HOST)) ? $this->_assetsPath.'/' : '') . $file;
+		$fullAssetsPath = ($this->_assetsPathBase ? $this->_assetsPathBase.'/' : '') . $this->_assetsPath;
+		return (($this->_assetsPath and !parse_url($file, PHP_URL_HOST)) ? $fullAssetsPath.'/' : '') . $file;
 	}
 
 	private function _removeTag($tagName, array $matchHTMLAttributes = [])
