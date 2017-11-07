@@ -53,13 +53,12 @@ class WebsiteRenderer
 	private function _prepareHead()
 	{
 		$head = new HTMLHead;
+		$head->setAssetsPathBase(Settings::get('websiteAddress'));
 		$head->setAssetsPath($this->_theme->getURL());
 
 		$head->title(self::correctTypography(sprintf(Settings::get('websiteTitle'), $this->_page->title)));
 		$head->stylesheet('style.css');
 		$head->meta('Generator', 'WizyTówka CMS — https://wizytowka.tomaszgasior.pl');
-
-		$head->restoreAssetsPath();
 
 		return $head;
 	}

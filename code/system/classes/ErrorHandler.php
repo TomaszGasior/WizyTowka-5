@@ -90,7 +90,7 @@ trait ErrorHandler
 		<?php
 	}
 
-	static public function _prepareName(/*\Throwable*/ $exception)
+	static private function _prepareName(/*\Throwable*/ $exception)
 	{
 		$getPHPErrorName = function($code)
 		{
