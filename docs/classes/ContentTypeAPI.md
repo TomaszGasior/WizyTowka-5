@@ -30,10 +30,6 @@ Setter używany wewnętrznie przez system, ustawiający pola `$_settings` i `$_c
 
 Setter używany wewnętrznie przez system, ustawiający pola `$_template`, `$_head`, `$_message`.
 
-## *protected* `_prepare()`
-
-Ekwiwalent dla metody `__construct()` dla klas dziedziczących. Metoda jest domyślnie pusta.
-
 ## `POSTQuery()`
 
 Obsługuje żądania POST. Nie powinna być wywoływana poza nimi.

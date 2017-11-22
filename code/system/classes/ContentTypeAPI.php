@@ -23,8 +23,6 @@ abstract class ContentTypeAPI
 	final public function __construct(ContentType $myContentTypeInstance)
 	{
 		$this->_contentType = $myContentTypeInstance;
-
-		$this->_prepare();
 	}
 
 	final public function setPageData(\stdClass $contents, \stdClass $settings)
@@ -46,9 +44,6 @@ abstract class ContentTypeAPI
 
 		$this->_HTMLMessage = $message;
 	}
-
-	// Equivalent of __construct() method for child classes.
-	protected function _prepare() {}
 
 	public function POSTQuery()
 	{
