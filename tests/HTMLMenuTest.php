@@ -11,8 +11,9 @@ class HTMLMenuTest extends PHPUnit\Framework\HTMLTestCase
 	{
 		$object = new WizyTowka\HTMLMenu('exampleCSSClass');
 		$object->add('Google', 'http://google.com', 'google');
-		$object->add('Yahoo', 'http://yahoo.com', null, null, true);
+		$object->add('Yahoo', 'http://yahoo.com', null, null, ['target' => '_blank']);
 		$object->add('Facebook', 'http://facebook.com');
+		$object->add('PornHub', 'http://pornhub.com', null, null, [], false);  // Hidden.
 		$object->add('Bing', 'http://bing.com', null, 2);
 
 		$current  = (string)$object;
@@ -64,14 +65,33 @@ HTML;
 		$object->add('Element', new stdClass);
 	}
 
-	public function testRemove()
+	public function testRemoveByContent()
 	{
 		$object = new WizyTowka\HTMLMenu;
 		$object->add('File 1', 'file1.html');
 		$object->add('File 2', 'file2.html');
 		$object->add('File 2', 'file2.html');
 		$object->add('File 3', 'file3.html');
-		$object->remove('File 2');
+		$object->removeByContent('file2.html');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<ul>
+	<li><a href="file1.html">File 1</a></li>
+	<li><a href="file3.html">File 3</a></li>
+</ul>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+	}
+
+	public function testRemoveByLabel()
+	{
+		$object = new WizyTowka\HTMLMenu;
+		$object->add('File 1', 'file1.html');
+		$object->add('File 2', 'file2.html');
+		$object->add('File 2', 'file2.html');
+		$object->add('File 3', 'file3.html');
+		$object->removeByLabel('File 2');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
