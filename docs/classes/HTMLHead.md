@@ -97,7 +97,7 @@ Ustawia ścieżkę do zewnętrznych arkuszy stylów i skryptów na poprzednią (
 
 Metoda zwraca prawdę, jeśli przywrócono poprzednią ścieżkę, inaczej — fałsz.
 
-## `getAssetsPath($assetsPath)`
+## `getAssetsPath()`
 
 Zwraca bieżącą ścieżkę do zewnętrznych arkuszy stylów i skryptów.
 

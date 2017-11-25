@@ -109,39 +109,34 @@ abstract class AdminPanel extends Controller
 		$this->_HTMLTopMenu = new HTMLMenu;
 		$this->_HTMLTopMenu->add($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
 		$this->_HTMLTopMenu->add('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
-		$this->_HTMLTopMenu->add('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', null, true);
+		$this->_HTMLTopMenu->add('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', null, ['target' => '_blank']);
 		$this->_HTMLTopMenu->add('Wyloguj się',             self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
-		$this->_HTMLMainMenu->add('Strony', self::URL('pages'), 'iconPages');
-		if ($this->_currentUser->permissions & User::PERM_CREATING_PAGES) {
-			$this->_HTMLMainMenu->add('Utwórz stronę', self::URL('pageCreate'), 'iconAdd');
-		}
-		$this->_HTMLMainMenu->add('Szkice', self::URL('drafts'), 'iconDrafts');
-		if ($this->_currentUser->permissions & User::PERM_CREATING_PAGES) {
-			$this->_HTMLMainMenu->add('Utwórz szkic', self::URL('pageCreate', ['draft' => true]), 'iconAdd');
-		}
-		$this->_HTMLMainMenu->add('Pliki', self::URL('files'), 'iconFiles');
-		if ($this->_currentUser->permissions & User::PERM_SENDING_FILES) {
-			$this->_HTMLMainMenu->add('Wyślij pliki', self::URL('filesSend'), 'iconAdd');
-		}
-		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_ELEMENTS) {
-			$this->_HTMLMainMenu->add('Menu',           self::URL('menus'),         'iconMenus');
-			$this->_HTMLMainMenu->add('Obszary',        self::URL('areas'),         'iconAreas');
-			$this->_HTMLMainMenu->add('Personalizacja', self::URL('customization'), 'iconCustomization');
-		}
-		if ($this->_currentUser->permissions & User::PERM_EDITING_SITE_CONFIG) {
-			$this->_HTMLMainMenu->add('Ustawienia', self::URL('websiteSettings'), 'iconSettings');
-		}
-		if ($this->_currentUser->permissions & User::PERM_SUPER_USER) {
-			$this->_HTMLMainMenu->add('Użytkownicy',        self::URL('users'),             'iconUsers');
-			$this->_HTMLMainMenu->add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd');
-			$this->_HTMLMainMenu->add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor');
-			$this->_HTMLMainMenu->add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd');
-			$this->_HTMLMainMenu->add('Kopia zapasowa',     self::URL('backup'),            'iconBackup');
-		}
-		$this->_HTMLMainMenu->add('Informacje', self::URL('about'), 'iconInformation');
+		$add = function($label, $url, $CSSClass, $permission = null)
+		{
+			$this->_HTMLMainMenu->add(
+				$label, $url, $CSSClass, null, [],
+				$permission ? ($this->_currentUser->permissions & $permission) : true
+			);
+		};
+		$add('Strony',             self::URL('pages'),             'iconPages');
+		$add('Utwórz stronę',      self::URL('pageCreate'),        'iconAdd',           User::PERM_CREATING_PAGES);
+		$add('Szkice',             self::URL('drafts'),            'iconDrafts');
+		$add('Utwórz szkic',       self::URL('pageCreate', ['draft'=>true]), 'iconAdd', User::PERM_CREATING_PAGES);
+		$add('Pliki',              self::URL('files'),             'iconFiles');
+		$add('Wyślij pliki',       self::URL('filesSend'),         'iconAdd',           User::PERM_SENDING_FILES);
+		$add('Menu',               self::URL('menus'),             'iconMenus' ,        User::PERM_EDITING_SITE_ELEMENTS);
+		$add('Obszary',            self::URL('areas'),             'iconAreas' ,        User::PERM_EDITING_SITE_ELEMENTS);
+		$add('Personalizacja',     self::URL('customization'),     'iconCustomization', User::PERM_EDITING_SITE_ELEMENTS);
+		$add('Ustawienia',         self::URL('websiteSettings'),   'iconSettings',      User::PERM_EDITING_SITE_CONFIG);
+		$add('Użytkownicy',        self::URL('users'),             'iconUsers',         User::PERM_SUPER_USER);
+		$add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd',           User::PERM_SUPER_USER);
+		$add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor',    User::PERM_SUPER_USER);
+		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',           User::PERM_SUPER_USER);
+		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',        User::PERM_SUPER_USER);
+		$add('Informacje',         self::URL('about'),             'iconInformation');
 	}
 
 	// Equivalent of Controller::__construct() method for AdminPanel child classes.
