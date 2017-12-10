@@ -18,8 +18,7 @@ W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnie
 - `PERM_EDITING_OTHERS_PAGES` — uprawnienie do edycji stron stworzonych przez innych użytkowników;
 - `PERM_EDITING_SITE_ELEMENTS` — uprawnienie do modyfikacji elementów witryny (nagłówek, stopka, menu);
 - `PERM_EDITING_SITE_CONFIG` — uprawnienie do zarządzania konfiguracją witryny i systemu;
-- `PERM_SUPER_USER` — uprawnienie do zarządzania kontami użytkowników oraz korzystania z edytora konfiguracji, edytora plików i innych elementów systemu;
-- `PERM_ALL` — wszystkie powyższe uprawniania łącznie.
+- `PERM_SUPER_USER` — uprawnienie do zarządzania kontami użytkowników oraz korzystania z edytora konfiguracji, edytora plików i innych elementów systemu.
 
 ## *static* `getByName($name)`
 
