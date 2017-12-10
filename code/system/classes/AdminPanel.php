@@ -40,26 +40,28 @@ abstract class AdminPanel extends Controller
 			$this->_redirect('login');
 		}
 
-		// When user have not required permissions to view this page of admin panel,
-		// redirect him to permissions error message.
-		if ($this->_userRequiredPermissions and !($this->_userRequiredPermissions & $this->_currentUser->permissions)) {
-			$this->_redirect('error', ['type' => 'permissions']);
+		// Prevent access to this page of admin panel if user have not required permissions.
+		if ($this->_userRequiredPermissions) {
+			$this->_preventFromAccessWithoutPermission($this->_userRequiredPermissions);
 		}
 
-		// Prepare HTML parts for child class.
+		// Prepare HTML parts here for child class.
 		$this->_setupHTMLParts();
 
 		// Run _prepare() method from child class.
 		$this->_prepare();
 	}
 
+	protected function _preventFromAccessWithoutPermission($requiredUserPermission)
+	{
+		// Redirect user to permissions error page if he have not specified permission.
+		if ($this->_userMustBeLoggedIn and !($this->_currentUser->permissions & $requiredUserPermission)) {
+			$this->_redirect('error', ['type' => 'permissions']);
+		}
+	}
+
 	final public function output()
 	{
-		// Top navigation menu and main navigation menu. Only for logged in users.
-		if ($this->_userMustBeLoggedIn) {
-			$this->_setupMenus();
-		}
-
 		// Run _output() method. Child class can specify additional template variables and context menu here.
 		$this->_output();
 
@@ -100,6 +102,11 @@ abstract class AdminPanel extends Controller
 
 		// HTML message box.
 		$this->_HTMLMessage = new HTMLMessage;
+
+		// Top navigation menu and main navigation menu. Only for logged in users.
+		if ($this->_userMustBeLoggedIn) {
+			$this->_setupMenus();
+		}
 	}
 
 	// This method sets up admin panel menu elements according to current user permissions.
@@ -129,7 +136,7 @@ abstract class AdminPanel extends Controller
 		$add('Wyślij pliki',       self::URL('filesSend'),         'iconAdd',           User::PERM_SENDING_FILES);
 		$add('Menu',               self::URL('menus'),             'iconMenus' ,        User::PERM_EDITING_SITE_ELEMENTS);
 		$add('Obszary',            self::URL('areas'),             'iconAreas' ,        User::PERM_EDITING_SITE_ELEMENTS);
-		$add('Personalizacja',     self::URL('customization'),     'iconCustomization', User::PERM_EDITING_SITE_ELEMENTS);
+		$add('Personalizacja',     self::URL('customization'),     'iconCustomization', User::PERM_EDITING_SITE_CONFIG);
 		$add('Ustawienia',         self::URL('websiteSettings'),   'iconSettings',      User::PERM_EDITING_SITE_CONFIG);
 		$add('Użytkownicy',        self::URL('users'),             'iconUsers',         User::PERM_SUPER_USER);
 		$add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd',           User::PERM_SUPER_USER);
