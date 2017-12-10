@@ -15,7 +15,7 @@ class Pages extends WT\AdminPanel
 
 	protected function _prepare()
 	{
-		// Important: page selected as website homepage should not be deleted or moved to drafts.
+		// Important: page selected as website homepage must not be deleted or moved to drafts.
 
 		if (!empty($_GET['hideId']) and $page = WT\Page::getById($_GET['hideId'])) {
 			if ($page->id == WT\Settings::get('websiteHomepageId')) {

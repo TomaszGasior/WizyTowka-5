@@ -2,7 +2,7 @@
 
 <form method="post">
 	<?= (new WizyTowka\HTMLFormFields)
-		->text('Nazwa użytkownika', 'nofilter_name', $lastUsername, ['required'=>true, 'autofocus'=>true])
+		->text('Nazwa użytkownika', 'name', $lastUsername, ['required'=>true, 'autofocus'=>true])
 		->password('Hasło', 'nofilter_password', ['required'=>true])
 	?>
 

@@ -38,6 +38,6 @@ Domyślnie metoda rzuca wyjątek `ContentTypeAPIException` #1, co oznacza, że d
 
 ## *abstract* `HTMLContent()`
 
-Miejsce na wykonywanie operacji związanych z szablonem HTML. Klasa dziedzicząca określa tutaj sposób renderowania typu zawartości. Żaden tekst nie powinien być kierowany tutaj na wyjście, należy operować na szablonie `$_template`, nagłówku `<head>` `$_head` i komunikacie `$_message`.
+Miejsce na wykonywanie operacji związanych z szablonem HTML. Klasa dziedzicząca określa tutaj sposób renderowania typu zawartości. Żaden tekst nie powinien być kierowany tutaj na wyjście, należy operować na szablonie `$_HTMLTemplate`, nagłówku `<head>` `$_HTMLHead` i komunikacie `$_HTMLMessage`.
 
 Domyślnie używany jest szablon o nazwie klasy, ładowany z podfolderu `template` folderu typu zawartości. Domyślnie także nagłówek `<head>` jako ścieżkę dla stylów CSS i skryptów JavaScript ma ustawiony adres URL do podfolderu `assets` folderu typu zawartości.

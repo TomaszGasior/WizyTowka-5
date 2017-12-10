@@ -24,10 +24,11 @@ trait ErrorHandler
 	{
 		self::addToLog($exception);
 
-		$isPlainText = !empty(array_filter(headers_list(), function($value){
-			return stripos($value, 'content-type')!== false and stripos($value, 'text/html')===false;
-			// Use plain text format for error message instead HTML, when 'content-type' HTTP header don't contain 'text/html'.
-		}));
+		// Use plain text format for error message instead HTML, when 'content-type' HTTP header don't contain 'text/html'.
+		$isPlainText = !empty(array_filter(
+			headers_list(),
+			function($value){ return stripos($value, 'content-type') !== false and stripos($value, 'text/html') === false; }
+		));
 
 		(PHP_SAPI == 'cli' or $isPlainText)
 		? self::_printAsPlainText($exception)

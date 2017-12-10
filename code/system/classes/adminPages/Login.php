@@ -39,8 +39,6 @@ class Login extends WT\AdminPanel
 
 	protected function _output()
 	{
-		// Username will be shown, when user specify wrong password. It must be filtered by htmlspecialchars(),
-		// because this form field is not filtered by Controller::filterPOSTData(). See "Login" form template.
-		$this->_HTMLTemplate->lastUsername = (empty($_POST['name'])) ? '' : htmlspecialchars($_POST['name']);
+		$this->_HTMLTemplate->lastUsername = empty($_POST['name']) ? '' : $_POST['name'];
 	}
 }
