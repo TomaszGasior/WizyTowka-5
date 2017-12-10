@@ -16,16 +16,18 @@ class Users extends WT\AdminPanel
 
 	protected function _prepare()
 	{
+		// Important: user with PERM_SUPER_USER permission must not be deleted.
+
 		if (!empty($_GET['deleteId']) and $user = WT\User::getById($_GET['deleteId'])) {
-			if ($user->id == 1) {
-				$this->_HTMLMessage->error('Użytkownik „' . $user->name . '” nie może zostać usunięty.');
-			}
-			elseif ($user->id == $this->_currentUser->id) {
+			if ($user->id == $this->_currentUser->id) {
 				$this->_HTMLMessage->error('Nie można usunąć własnego konta użytkownika.');
+			}
+			elseif ($user->permissions & WT\User::PERM_SUPER_USER) {
+				$this->_HTMLMessage->error('Nie można usunąć super użytkownika „' . $user->name . '”.');
 			}
 			else {
 				$user->delete();
-				$this->_HTMLMessage->success('Użytkownik „' . $user->name . '” został usunięty.');
+				$this->_HTMLMessage->success('Konto użytkownika „' . $user->name . '” zostało usunięte.');
 			}
 		}
 
@@ -34,6 +36,10 @@ class Users extends WT\AdminPanel
 
 	protected function _output()
 	{
+		if (!empty($_GET['msg'])) {
+			$this->_HTMLMessage->success('Konto użytkownika zostało utworzone.');
+		}
+
 		$this->_HTMLTemplate->users = $this->_users;
 	}
 }
