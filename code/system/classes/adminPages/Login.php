@@ -14,6 +14,7 @@ class Login extends WT\AdminPanel
 
 	protected function _prepare()
 	{
+		// Redirect user to default page of admin panel, when user is already logged in.
 		if (WT\SessionManager::isUserLoggedIn()) {
 			$this->_redirect(null);
 		}

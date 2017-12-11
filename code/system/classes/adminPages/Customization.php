@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class Customization extends WT\AdminPanel
 {
 	protected $_pageTitle = 'Personalizacja';
-	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_ELEMENTS;
+	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_CONFIG;
 
 	protected function _output()
 	{

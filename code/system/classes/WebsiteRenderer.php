@@ -21,7 +21,9 @@ class WebsiteRenderer
 	{
 		$this->_page = $page;
 
-		$this->_theme = Theme::getByName(Settings::get('themeName'));
+		if (!$this->_theme = Theme::getByName(Settings::get('themeName'))) {
+			throw WebsiteRendererException::themeNotExists(Settings::get('themeName'));
+		}
 
 		$this->_HTMLLayout = $HTMLLayout;
 		$this->_HTMLLayout->setTemplate('WebsiteLayout');
@@ -191,5 +193,13 @@ class WebsiteRenderer
 	static public function formatDate($unixTimestamp)
 	{
 		return (new Text($unixTimestamp))->formatAsDateTime(Settings::get('websiteDateFormat'))->get();
+	}
+}
+
+class WebsiteRendererException
+{
+	static public function themeNotExists($name)
+	{
+		return self('Theme "' . $name . '" does not exists.', 1);
 	}
 }
