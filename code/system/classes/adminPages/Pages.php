@@ -9,16 +9,33 @@ use WizyTowka as WT;
 
 class Pages extends WT\AdminPanel
 {
+	use PageUserPermissionCommon;
+
 	protected $_pageTitle = 'Strony';
 
 	private $_pages;
 
 	protected function _prepare()
 	{
-		// Important: page selected as website homepage must not be deleted or moved to drafts.
+		if (!empty($_GET['hideId'])) {
+			$this->_hidePage($_GET['hideId']);
+		}
+		elseif (!empty($_GET['deleteId'])) {
+			$this->_deletePage($_GET['deleteId']);
+		}
 
-		if (!empty($_GET['hideId']) and $page = WT\Page::getById($_GET['hideId'])) {
-			if ($page->id == WT\Settings::get('websiteHomepageId')) {
+		$this->_pages = WT\Page::getAll();
+	}
+
+	private function _hidePage($pageId)
+	{
+		// Important: page selected as website homepage must not be moved to drafts.
+
+		if ($page = WT\Page::getById($pageId)) {
+			if (!$this->_isUserAllowedToEditPage($page)) {
+				$this->_HTMLMessage->error('Nie jesteś uprawniony do przenoszenia tej strony.');
+			}
+			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
 				$this->_HTMLMessage->error('Wybrana do ukrycia strona jest stroną główną witryny. Nie ukryto strony.');
 			}
 			else {
@@ -27,8 +44,17 @@ class Pages extends WT\AdminPanel
 				$this->_HTMLMessage->success('Strona „' . $page->title . '” została przeniesiona do szkiców.');
 			}
 		}
-		if (!empty($_GET['deleteId']) and $page = WT\Page::getById($_GET['deleteId'])) {
-			if ($page->id == WT\Settings::get('websiteHomepageId')) {
+	}
+
+	private function _deletePage($pageId)
+	{
+		// Important: page selected as website homepage must not be deleted.
+
+		if ($page = WT\Page::getById($pageId)) {
+			if (!$this->_isUserAllowedToEditPage($page)) {
+				$this->_HTMLMessage->error('Nie jesteś uprawniony do usunięcia tej strony.');
+			}
+			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
 				$this->_HTMLMessage->error('Wybrana do usunięcia strona jest stroną główną witryny. Nie usunięto strony.');
 			}
 			else {
@@ -36,8 +62,6 @@ class Pages extends WT\AdminPanel
 				$this->_HTMLMessage->success('Strona „' . $page->title . '” została usunięta.');
 			}
 		}
-
-		$this->_pages = WT\Page::getAll();
 	}
 
 	protected function _output()

@@ -9,7 +9,10 @@ use WizyTowka as WT;
 
 class PageProperties extends WT\AdminPanel
 {
+	use PageUserPermissionCommon;
+
 	protected $_pageTitle = 'Właściwości strony';
+	protected $_userRequiredPermissions = WT\User::PERM_CREATING_PAGES;
 
 	private $_page;
 
@@ -22,6 +25,9 @@ class PageProperties extends WT\AdminPanel
 
 	public function POSTQuery()
 	{
+		// Redirect user to error page if he is not allowed to edit page.
+		$this->_preventFromAccessIfNotAllowed($this->_page);
+
 		$_POST['title'] = trim($_POST['title']);
 		$_POST['slug']  = trim($_POST['slug']);
 
@@ -54,5 +60,13 @@ class PageProperties extends WT\AdminPanel
 	protected function _output()
 	{
 		$this->_HTMLTemplate->page = $this->_page;
+
+		$users = WT\User::getAll();
+		$this->_HTMLTemplate->userIdList           = array_column($users, 'name', 'id');
+		$this->_HTMLTemplate->userIdSelected       = $this->_page->id;
+		$this->_HTMLTemplate->userIdDisallowChange = !($this->_currentUser->permissions & WT\User::PERM_SUPER_USER);
+
+		$this->_HTMLTemplate->permissionLimitNotification = !$this->_isUserAllowedToEditPage($this->_page);
+		$this->_HTMLTemplate->disableSaveButton           = !$this->_isUserAllowedToEditPage($this->_page);
 	}
 }

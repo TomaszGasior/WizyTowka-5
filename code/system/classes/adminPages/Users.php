@@ -16,9 +16,18 @@ class Users extends WT\AdminPanel
 
 	protected function _prepare()
 	{
+		if (!empty($_GET['deleteId'])) {
+			$this->_deleteUser($_GET['deleteId']);
+		}
+
+		$this->_users = WT\User::getAll();
+	}
+
+	private function _deleteUser($userId)
+	{
 		// Important: user with PERM_SUPER_USER permission must not be deleted.
 
-		if (!empty($_GET['deleteId']) and $user = WT\User::getById($_GET['deleteId'])) {
+		if ($user = WT\User::getById($userId)) {
 			if ($user->id == $this->_currentUser->id) {
 				$this->_HTMLMessage->error('Nie można usunąć własnego konta użytkownika.');
 			}
@@ -30,8 +39,6 @@ class Users extends WT\AdminPanel
 				$this->_HTMLMessage->success('Konto użytkownika „' . $user->name . '” zostało usunięte.');
 			}
 		}
-
-		$this->_users = WT\User::getAll();
 	}
 
 	protected function _output()

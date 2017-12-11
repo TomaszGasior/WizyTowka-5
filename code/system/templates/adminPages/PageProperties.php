@@ -1,9 +1,14 @@
 <form method="post">
+	<?php if ($permissionLimitNotification) { ?>
+		<p class="warning">Nie posiadasz wystarczających uprawnień, by modyfikować zawartość lub ustawienia tej strony i&nbsp;jej&nbsp;właściwości, nie będąc jej właścicielem.</p>
+	<?php } ?>
+
 	<h3>Dane strony</h3>
 
 	<?= (new WizyTowka\HTMLFormFields)
 		->text('Tytuł', 'title', $page->title, ['required'=>true])
 		->text('Identyfikator', 'nofilter_slug', $page->slug)
+		->select('Właściciel', 'userId', $userIdSelected, $userIdList, ['disabled' => $userIdDisallowChange])
 		->option('Strona dostępna publicznie', 'isDraft', '0', $page->isDraft)
 		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $page->isDraft)
 	?>
@@ -17,5 +22,5 @@
 		->textarea('Słowa kluczowe', 'keywords', $page->keywords, ['maxlength'=>500, 'spellcheck'=>true])
 	?>
 
-	<button>Zapisz zmiany</button>
+	<button <?= $disableSaveButton ? 'disabled' : '' ?>>Zapisz zmiany</button>
 </form>
