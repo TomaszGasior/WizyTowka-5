@@ -35,7 +35,9 @@ class PageCreate extends WT\AdminPanel
 			$this->_HTMLMessage->error('Nie określono typu zawartości strony.');
 			return;
 		}
-		$contentType = WT\ContentType::getByName($_POST['type']);
+		if (!$contentType = WT\ContentType::getByName($_POST['type'])) {
+			throw PageCreateException::contentTypeNotExists($_POST['type']);
+		}
 
 		$page = new WT\Page;
 		$page->title   = $_POST['title'];
@@ -69,5 +71,13 @@ class PageCreate extends WT\AdminPanel
 		$this->_HTMLTemplate->contentTypes         = WT\ContentType::getAll();
 		$this->_HTMLTemplate->autocheckContentType = WT\Settings::get('adminPanelDefaultContentType');
 		$this->_HTMLTemplate->autocheckDraft       = !empty($_GET['draft']);
+	}
+}
+
+class PageCreateException extends WT\Exception
+{
+	static public function contentTypeNotExists($name)
+	{
+		return new self('Content type "' . $name . '" does not exists.', 1);
 	}
 }

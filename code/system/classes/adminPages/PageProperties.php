@@ -39,7 +39,9 @@ class PageProperties extends WT\AdminPanel
 		}
 
 		if ($_POST['slug'] != $this->_page->slug) {
-			$newSlug = !empty($_POST['slug']) ? $_POST['slug'] : (new WT\Text($_POST['title']))->makeSlug()->get();
+			$newSlug = (new WT\Text(
+				!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
+			)->makeSlug()->get();
 
 			if (WT\Page::getBySlug($newSlug)) {
 				$this->_HTMLMessage->error('Identyfikator „' . $newSlug . '” jest już wykorzystany w innej stronie.');

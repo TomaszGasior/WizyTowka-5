@@ -77,6 +77,7 @@ abstract class AdminPanel extends Controller
 		$this->_HTMLLayout->message      = $this->_HTMLMessage;
 		$this->_HTMLLayout->pageTitle    = $this->_pageTitle;
 		$this->_HTMLLayout->pageTemplate = $this->_HTMLTemplate;
+		$this->_HTMLLayout->id           = empty($_GET['c']) ? '' : strtolower($_GET['c']);
 
 		// Recursively render all HTML elements and whole layout.
 		$this->_HTMLLayout->render();

@@ -6,7 +6,7 @@
 	<?= $head ?>
 </head>
 
-<body>
+<body id="<?= $id ?>">
 	<div class="adminPanel">
 		<a class="a11yJumpLink" href="#main">Przeskocz do bloku głównego</a>
 		<a class="a11yJumpLink" href="#navigation">Przeskocz do menu</a>

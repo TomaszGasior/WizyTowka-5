@@ -12,7 +12,9 @@ abstract class HTMLTag
 
 	public function __construct($CSSClass = null)
 	{
-		$this->setCSSClass($CSSClass);
+		if ($CSSClass) {
+			$this->setCSSClass($CSSClass);
+		}
 	}
 
 	public function getCSSClass()
@@ -22,9 +24,7 @@ abstract class HTMLTag
 
 	public function setCSSClass($CSSClass)
 	{
-		if ($CSSClass) {
-			$this->_CSSClass = (string)$CSSClass;
-		}
+		$this->_CSSClass = (string)$CSSClass;
 	}
 
 	public function __toString()
