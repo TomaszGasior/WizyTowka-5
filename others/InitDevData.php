@@ -7,11 +7,34 @@
 namespace WizyTowka;
 
 
-const DATA_DIR   = __DIR__ . '/../code/data';
-const CONFIG_DIR = DATA_DIR . '/config';
-const SYSTEM_DIR = __DIR__ . '/../code/system';
-
+include __DIR__ . '/../code/config.php';
 include SYSTEM_DIR . '/init.php';
+
+
+// This function will be moved to installer in the future.
+function generateSchemaSQL($driver)
+{
+	$schemaTemplate = explode("\n", file_get_contents(SYSTEM_DIR . '/defaults/schema.sql'));
+	$schema = '';
+
+	foreach ($schemaTemplate as $line) {
+		if (preg_match('/-- wt_dbms: (?<not>! ){0,1}(?<dbms>[a-z]*)/', $line, $matches)) {
+			if ($matches['dbms'] != $driver xor $matches['not']) {
+				continue;
+			}
+		}
+
+		$line = preg_replace('/--.*/', '', $line);
+
+		if (trim($line) == '') {
+			continue;
+		}
+
+		$schema .= rtrim($line) . "\n";
+	}
+
+	return $schema;
+}
 
 
 // Create structure of "data" directory.
@@ -30,7 +53,7 @@ foreach ($dataDirs as $directory) {
 	}
 }
 
-// Create "sessions.conf" config file.
+// Create new "sessions.conf" config file.
 ConfigurationFile::createNew(CONFIG_DIR . '/sessions.conf');
 
 // Copy default "settings.conf" config file to data directory.
@@ -41,24 +64,50 @@ copy(
 
 // Set various settings.
 $settings = Settings::get();
-$settings->databaseType = 'sqlite';
-$settings->websiteAddress = 'http://localhost';
+$settings->websiteAddress = 'http://wizytowka.localhost';
 $settings->websiteTitle = 'Przykładowa witryna';
 $settings->websiteHomepageId = 1;
 $settings->systemVersion = VERSION;
 $settings->systemShowErrors = true;
 
-// Connect to SQLite database, create database file.
-$databaseFile = CONFIG_DIR . '/database.db';
-if (file_exists($databaseFile)) {
-	unlink($databaseFile);
+// Set database settings.
+if (empty($argv[1]) or $argv[1] == 'sqlite') {
+	$settings->databaseType = 'sqlite';
 }
-Database::connect('sqlite', $databaseFile);
+elseif ($argv[1] == 'mysql' or $argv[1] == 'pgsql') {
+	$settings->databaseType = $argv[1];
+	$settings->databaseName = 'wizytowka';
+	$settings->databaseHost = 'localhost';
+	$settings->databaseUsername = 'wizytowka';
+	$settings->databasePassword = '';
+}
+else {
+	die('Wrong database type!' . PHP_EOL);
+}
+
+// Clean up current database and create new.
+$SQLiteDatabaseFile = CONFIG_DIR . '/database.db';
+if (file_exists($SQLiteDatabaseFile)) {
+	unlink($SQLiteDatabaseFile);
+}
+if ($settings->databaseType == 'mysql') {
+	system('mysql -u ' . $settings->databaseUsername . ' -e "DROP DATABASE IF EXISTS ' . $settings->databaseName . '"');
+	system('mysql -u ' . $settings->databaseUsername . ' -e "CREATE DATABASE ' . $settings->databaseName . '"');
+}
+if ($settings->databaseType == 'pgsql') {
+	system('dropdb --if-exists ' . $settings->databaseName . ' -U ' . $settings->databaseUsername);
+	system('createdb ' . $settings->databaseName . ' -U ' . $settings->databaseUsername);
+}
+
+// Connect to database.
+Database::connect(
+	$settings->databaseType,
+	($settings->databaseType == 'sqlite') ? $SQLiteDatabaseFile : $settings->databaseName,
+	$settings->databaseHost, $settings->databaseUsername, $settings->databasePassword
+);
 
 // Generate database schema.
-system('php '.__DIR__.'/GenerateDBSchema.php sqlite');
-Database::executeSQL(file_get_contents('sqliteSchema.sql'));
-unlink('sqliteSchema.sql');
+Database::executeSQL(generateSchemaSQL($settings->databaseType));
 
 // Example data: users.
 foreach (range(1, 3) as $number) {
