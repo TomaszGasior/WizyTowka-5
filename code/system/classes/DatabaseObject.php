@@ -81,7 +81,8 @@ abstract class DatabaseObject implements \IteratorAggregate
 			}
 
 			$parameters = array_map(function($column){ return ':' . $column; }, static::$_tableColumns);
-			$sqlQuery = 'INSERT INTO ' . static::$_tableName . '(' . implode(', ', static::$_tableColumns) . ') VALUES(' . implode(', ', $parameters) . ')';
+			$sqlQuery = 'INSERT INTO ' . static::$_tableName .
+			            '(' . implode(', ', static::$_tableColumns) . ') VALUES(' . implode(', ', $parameters) . ')';
 		}
 		else {
 			foreach (static::$_tableColumnsTimeAtUpdate as $column) {
@@ -89,7 +90,9 @@ abstract class DatabaseObject implements \IteratorAggregate
 			}
 
 			$columnAndParameterAssignments = array_map(function($column){ return $column . ' = :' . $column; }, static::$_tableColumns);
-			$sqlQuery = 'UPDATE ' . static::$_tableName . ' SET ' . implode(', ', $columnAndParameterAssignments) . ' WHERE ' . static::$_tablePrimaryKey . ' = :' . static::$_tablePrimaryKey;
+			$sqlQuery = 'UPDATE ' . static::$_tableName .
+			            ' SET ' . implode(', ', $columnAndParameterAssignments) .
+			            ' WHERE ' . static::$_tablePrimaryKey . ' = :' . static::$_tablePrimaryKey;
 		}
 
 		$sqlQueryData = $this->_data;
@@ -118,7 +121,12 @@ abstract class DatabaseObject implements \IteratorAggregate
 		$execution = $statement->execute($sqlQueryData);
 
 		if ($execution and $this->_dataNewlyCreated) {
-			$this->_data[static::$_tablePrimaryKey] = Database::pdo()->lastInsertId(static::$_tablePrimaryKey);
+			// Fill in primary key field after INSERT. PostgreSQL needs different strategy.
+			$this->_data[static::$_tablePrimaryKey] = Database::pdo()->lastInsertId(
+				(Database::pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'pgsql')
+				? (static::$_tableName . '_' . static::$_tablePrimaryKey . '_seq')
+				: static::$_tablePrimaryKey
+			);
 			$this->_dataNewlyCreated = false;
 		}
 
@@ -174,8 +182,8 @@ abstract class DatabaseObject implements \IteratorAggregate
 				$object->_dataNewlyCreated = false;
 				$object->_data = array_combine($allColumnsNames, $record);
 				// Normally it is possible to use PDO::FETCH_NAMED fetch mode and $object->_data = $record syntax,
-				// but this is PostgreSQL workaround.
-				// By default PostgreSQL lowercases names of columns and tables — this makes camelCase columns names inaccesible.
+				// but this is PostgreSQL workaround. By default PostgreSQL lowercases unquoted names
+				// of columns and tables — this makes camelCase columns names inaccesible.
 
 				foreach (static::$_tableColumnsJSON as $column) {
 					$object->_data[$column] = $object->_data[$column] ? json_decode($object->_data[$column]) : new \stdClass;
