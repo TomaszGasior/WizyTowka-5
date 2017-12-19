@@ -21,8 +21,8 @@
 	<h3>Hasło</h3>
 
 	<?= (new WizyTowka\HTMLFormFields)
-		->password('Hasło', 'nofilter_passwordText_1')
-		->password('Ponownie hasło', 'nofilter_passwordText_2')
+		->password('Hasło', 'nofilter_passwordText_1', ['required'=>$createInsteadEdit])
+		->password('Ponownie hasło', 'nofilter_passwordText_2', ['required'=>$createInsteadEdit])
 	?>
 
 	<?php if (!$createInsteadEdit) { ?>
