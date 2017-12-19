@@ -104,10 +104,15 @@ abstract class DatabaseObject implements \IteratorAggregate
 		foreach ($sqlQueryData as &$value) {
 			if (is_bool($value)) {
 				$value = (integer)$value;
-				// This line converts boolean values to integers. PostgreSQL has BOOLEAN type, but it's not used for compatibility.
+				// Convert boolean values to integers. PostgreSQL has BOOLEAN type, but it's not used for compatibility.
 				// MySQL and SQLite have not BOOLEAN data type and store logical values as 0/1 integer.
-				// PDOStatement::execute() converts each value to string. "true" bool value is converted to "1", "false" to empty string.
+				// PDOStatement::execute() converts each value to string. "true" is converted to "1", "false" to empty string.
 				// It is needed to convert "false" bool value to "0" to avoid errors of data type and for data consistency.
+			}
+			elseif ($value === '') {
+				$value = null;
+				// Convert empty string (exactly string type) to null to avoid problems with wrong data type
+				// caused by convertion made in PDOStatement::execute() and to put NULL value in DBMS table.
 			}
 		}
 		foreach (static::$_tableColumnsJSON as $column) {

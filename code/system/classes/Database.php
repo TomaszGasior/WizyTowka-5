@@ -19,9 +19,10 @@ trait Database
 		switch ($driver) {
 			case 'sqlite':
 				self::$_pdo = new \PDO('sqlite:'.$database);
+				self::$_pdo->exec('PRAGMA foreign_keys = ON'); // Constraints are disabled by default.
 				break;
 			case 'mysql':
-				self::$_pdo = new \PDO('mysql:host='.$host.';dbname='.$database.';charset=utf8', $login, $password);
+				self::$_pdo = new \PDO('mysql:host='.$host.';dbname='.$database.';charset=utf8mb4', $login, $password);
 				break;
 			case 'pgsql':
 				self::$_pdo = new \PDO('pgsql:host='.$host.';dbname='.$database, $login, $password);
