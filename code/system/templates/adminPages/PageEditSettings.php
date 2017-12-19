@@ -1,0 +1,1 @@
+<p class="warning">Nie posiadasz wystarczających uprawnień, by modyfikować zawartość lub ustawienia tej strony i&nbsp;jej&nbsp;właściwości, nie będąc jej właścicielem.</p>

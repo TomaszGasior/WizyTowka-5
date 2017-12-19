@@ -20,9 +20,9 @@ trait PageEditSettingsCommon
 		if (empty($_GET['id']) or !$this->_page = WT\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
-
-		// Redirect user to error page if he is not allowed to edit page.
-		$this->_preventFromAccessIfNotAllowed($this->_page);
+		if (!$this->_isUserAllowedToEditPage($this->_page)) {
+			return;
+		}
 
 		$this->_pageBoxes = WT\PageBox::getAll($this->_page->id);
 
@@ -30,13 +30,16 @@ trait PageEditSettingsCommon
 			$exceptionClass = self::class . 'Exception';
 			throw $exceptionClass::contentTypeNotExists($this->_pageBoxes[0]->contentType);
 		}
-		$this->_contentTypeAPI = $contentType->{'init' . $this->_contentTypePageName . 'Page'}();
+		$this->_contentTypeAPI = $this->_settingsInsteadEdit ? $contentType->initSettingsPage() : $contentType->initEditorPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
 		$this->_contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
 	}
 
 	public function POSTQuery()
 	{
+		// Redirect user to error page if he is not allowed to edit page.
+		$this->_preventFromAccessIfNotAllowed($this->_page);
+
 		$this->_contentTypeAPI->POSTQuery();
 
 		// Save changes of $contents and $settings property made by content type class.
@@ -48,8 +51,16 @@ trait PageEditSettingsCommon
 
 	protected function _output()
 	{
-		$this->_HTMLContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit');
-		$this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
+		$this->_settingsInsteadEdit
+		? $this->_HTMLContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit')
+		: $this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
+		$this->_HTMLContextMenu->add('Właściwości', self::URL('pageProperties', ['id' => $this->_page->id]), 'iconProperties');
+
+		if (!$this->_isUserAllowedToEditPage($this->_page)) {
+			// Show warning if user isn't permitted to modify page.
+			$this->_HTMLTemplate->setTemplate('PageEditSettings');
+			return;
+		}
 
 		$this->_contentTypeAPI->HTMLContent();
 	}

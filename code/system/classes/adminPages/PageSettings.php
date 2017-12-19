@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class PageSettings extends WT\AdminPanel
 {
 	use PageEditSettingsCommon;
-	private $_contentTypePageName = 'Settings';
+	private $_settingsInsteadEdit = true;
 
 	protected $_pageTitle = 'Ustawienia strony';
 	protected $_userRequiredPermissions = WT\User::PERM_CREATING_PAGES;
