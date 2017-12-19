@@ -55,20 +55,32 @@ class PageProperties extends WT\AdminPanel
 		$this->_page->description = $_POST['description'];
 		$this->_page->keywords    = $_POST['keywords'];
 
+		if ($this->_currentUser->permissions & WT\User::PERM_SUPER_USER) {
+			$this->_page->userId = $_POST['userId'];
+		}
+
 		$this->_page->save();
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
 	protected function _output()
 	{
+		$this->_HTMLContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit');
+		$this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
+
 		$this->_HTMLTemplate->page = $this->_page;
 
-		$users = WT\User::getAll();
-		$this->_HTMLTemplate->userIdList           = array_column($users, 'name', 'id');
-		$this->_HTMLTemplate->userIdSelected       = $this->_page->id;
-		$this->_HTMLTemplate->userIdDisallowChange = !($this->_currentUser->permissions & WT\User::PERM_SUPER_USER);
+		$usersIdList = array_column(WT\User::getAll(), 'name', 'id');
+		if (empty($this->_page->userId)) {
+			// userId column is set to NULL by foreign key of DBMS when user is deleted.
+			$usersIdList += ['' => '(użytkownik został usunięty)'];
+		}
+		$this->_HTMLTemplate->usersIdList = $usersIdList;
 
+		$this->_HTMLTemplate->disableUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_SUPER_USER);
+		$this->_HTMLTemplate->disableSaveButton   = !$this->_isUserAllowedToEditPage($this->_page);
+
+		// Show warning if user isn't permitted to modify page.
 		$this->_HTMLTemplate->permissionLimitNotification = !$this->_isUserAllowedToEditPage($this->_page);
-		$this->_HTMLTemplate->disableSaveButton           = !$this->_isUserAllowedToEditPage($this->_page);
 	}
 }
