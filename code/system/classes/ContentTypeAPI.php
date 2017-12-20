@@ -8,6 +8,9 @@ namespace WizyTowka;
 
 abstract class ContentTypeAPI
 {
+	private $_contentTypePath;
+	private $_contentTypeURL;
+
 	// Data of website page as stdClass objects. It will be set by Website class.
 	protected $_contents;
 	protected $_settings;
@@ -17,12 +20,20 @@ abstract class ContentTypeAPI
 	protected $_HTMLMessage;
 	protected $_HTMLTemplate;
 
-	// Instance of ContentType plugin class. It will be set by ContentType itself.
-	protected $_contentType;
-
 	final public function __construct(ContentType $myContentTypeInstance)
 	{
-		$this->_contentType = $myContentTypeInstance;
+		$this->_contentTypePath = $myContentTypeInstance->getPath();
+		$this->_contentTypeURL  = $myContentTypeInstance->getURL();
+	}
+
+	final protected function _getPath()
+	{
+		return $this->_contentTypePath;
+	}
+
+	final protected function _getURL()
+	{
+		return $this->_contentTypeURL;
 	}
 
 	final public function setPageData(\stdClass $contents, \stdClass $settings)
@@ -37,10 +48,10 @@ abstract class ContentTypeAPI
 
 		$this->_HTMLTemplate = $template;
 		$this->_HTMLTemplate->setTemplate($className);
-		$this->_HTMLTemplate->setTemplatePath($this->_contentType->getPath() . '/templates');
+		$this->_HTMLTemplate->setTemplatePath($this->_contentTypePath . '/templates');
 
 		$this->_HTMLHead = $head;
-		$this->_HTMLHead->setAssetsPath($this->_contentType->getURL() . '/assets');
+		$this->_HTMLHead->setAssetsPath($this->_contentTypeURL . '/assets');
 
 		$this->_HTMLMessage = $message;
 	}
