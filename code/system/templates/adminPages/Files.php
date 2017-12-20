@@ -6,5 +6,5 @@
 		['Edytuj', WizyTowka\AdminPanel::URL('fileEdit', ['id' => $file->id]), 'iconEdit'],
 		['Usuń', WizyTowka\AdminPanel::URL('files', ['deleteId' => $file->id]), 'iconDelete'],
 	]; })
-	->emptyMessage('Nie wysłano jeszcze żadnych plików.')
+	->emptyMessage('Nie wysłano jeszcze żadnych plików. Tutaj zazwyczaj znajdują się pliki dodane jako załączniki do stron czy galerii zdjęć.')
 ?>

@@ -4,13 +4,13 @@
 	<?php if ($createInsteadEdit) { ?>
 		<?= (new WizyTowka\HTMLFormFields)
 			->text('Nazwa użytkownika', 'name', '',
-				['required'=>true, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik']
+				['required'=>true, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 			)
 		?>
 	<?php } else { ?>
 		<?= (new WizyTowka\HTMLFormFields)
 			->text('Nazwa użytkownika', 'name', $user->name,
-				['pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik']
+				['pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 			)
 			->text('Data utworzenia', 'createdTime', $user->createdTime, ['disabled'=>true])
 		?>

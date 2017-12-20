@@ -76,7 +76,7 @@ class HTMLElementsList extends HTMLTag
 
 	public function output()
 	{
-		if (is_null($this->_collection) or empty($this->_callbackTitle) or empty($this->_emptyMessage)) {
+		if (is_null($this->_collection) or empty($this->_callbackTitle)) {
 			throw HTMLElementsListException::missingInformation();
 		}
 
@@ -123,7 +123,7 @@ class HTMLElementsList extends HTMLTag
 
 			echo '</ul>';
 		}
-		else {
+		elseif ($this->_emptyMessage) {
 			echo '<p class="', $this->_CSSClass,' emptyMessage">', $this->_emptyMessage, '</p>';
 		}
 	}
@@ -133,7 +133,7 @@ class HTMLElementsListException extends Exception
 {
 	static public function missingInformation()
 	{
-		return new self('You must provide collection, title callback and empty message at least.', 1);
+		return new self('You must provide collection and title callback at least.', 1);
 	}
 	static public function radioOrLink()
 	{

@@ -573,6 +573,13 @@ ul.elementsList li > span {
 	color: inherit;
 }
 
+p.elementsList.emptyMessage {
+	border: 2px dashed #ccc;
+	font-size: 1.17em;
+	padding: 11em 2em;
+	text-align: center;
+}
+
 
 /* Elements list — table view. */
 

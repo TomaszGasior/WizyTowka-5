@@ -5,7 +5,7 @@
 		->text('Tytuł witryny', 'websiteTitle', $settings->websiteTitle, ['required'=>true])
 		->text('Autor witryny', 'websiteAuthor', $settings->websiteAuthor)
 		->text('Układ tytułu witryny', 'websiteTitlePattern', $settings->websiteTitlePattern,
-			['required'=>true, 'pattern'=>'.*%s.*', 'title'=>'Użyj symbolu %s, by wskazać tytuł aktualnej strony w witrynie']
+			['required'=>true, 'pattern'=>'.*%s.*', 'title'=>'Użyj symbolu %s, by wskazać tytuł aktualnej strony w witrynie.']
 		)
 		->text('Adres witryny', 'websiteAddress', $settings->websiteAddress, ['required'=>true])
 		->select('Strona główna witryny', 'websiteHomepageId', $settings->websiteHomepageId, $pagesIds)

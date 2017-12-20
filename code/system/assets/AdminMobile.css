@@ -141,6 +141,14 @@
 	}
 
 
+	/* Elements list — common styles. */
+
+	p.elementsList.emptyMessage {
+		padding-top: 17vw;
+		padding-bottom: 17vw;
+	}
+
+
 	/* Elements list — table view. */
 
 	ul.elementsList.listView > li:hover {

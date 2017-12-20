@@ -6,5 +6,4 @@
 		['Edytuj', WizyTowka\AdminPanel::URL('userEdit', ['id' => $user->id]), 'iconEdit'],
 		['Usuń', WizyTowka\AdminPanel::URL('users', ['deleteId' => $user->id]), 'iconDelete'],
 	]; })
-	->emptyMessage('<!--  -->')
 ?>

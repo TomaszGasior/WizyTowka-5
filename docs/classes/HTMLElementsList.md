@@ -53,12 +53,10 @@ Tablica elementów menu zawierać powinna tablice zagnieżdżone określające w
 
 Służy do określenia w argumencie `$text` komunikatu generowanego zamiast listy elementów, jeśli kolekcja danych jest pusta.
 
-Określenie tego komunikatu jest obowiązkowe.
-
 ## `output()`
 
-Generuje kod HTML listy elementów. Jeśli kolekcja nie jest pusta, generowana jest lista `<ul>`. Jeżeli jednak kolekcja danych jest pusta, generowany jest akapit `<p>` z dodatkową klasą CSS `emptyMessage` i określonym komunikatem.
+Generuje kod HTML listy elementów. Jeśli kolekcja nie jest pusta, generowana jest lista `<ul>`. Jeżeli jednak kolekcja danych jest pusta, a określono komunikat poprzez `emptyMessage()`, generowany jest akapit `<p>` z dodatkową klasą CSS `emptyMessage` i określonym komunikatem.
 
-Zostanie rzucony wyjątek `HTMLElementsListException` #1, jeśli nie zostanie określony callback tytułów bądź kolekcja danych, bądź komunikat o pustej kolekcji.
+Zostanie rzucony wyjątek `HTMLElementsListException` #1, jeśli nie zostanie określony callback tytułów bądź kolekcja danych.
 
 Metoda nie zwraca wartości.

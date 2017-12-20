@@ -8,5 +8,4 @@
 		['Ukryj', WizyTowka\AdminPanel::URL('pages', ['hideId' => $page->id]), 'iconHide'],
 		['Usuń', WizyTowka\AdminPanel::URL('pages', ['deleteId' => $page->id]), 'iconDelete'],
 	]; })
-	->emptyMessage('Nie dodano jeszcze żadnych stron.')
 ?>

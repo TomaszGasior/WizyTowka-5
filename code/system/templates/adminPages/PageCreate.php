@@ -16,7 +16,6 @@
 		->collection($contentTypes)
 		->title(function($type){ return $type->label; })
 		->option('type', function($type){ return $type->getName(); }, $autocheckContentType)
-		->emptyMessage('Brak zainstalowanych typów zawartości stron.')
 	?>
 
 	<button>Utwórz stronę</button>
