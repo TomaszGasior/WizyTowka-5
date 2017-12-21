@@ -9,8 +9,7 @@ Znajdujące się w zagnieżdżonej przestrzeni nazw `AdminPages` kontrolery posz
 
 - `$_pageTitle` — tytuł strony panelu administracyjnego widoczny na pasku tytułowym przeglądarki;
 - `$_userRequiredPermissions` — flagi uprawnień użytkownika (stałe `PERM_*` klasy `User`) wymaganych do umożliwienia użytkownikowi korzystania ze strony panelu;
-- `$_userMustBeLoggedIn` — określenie wymagania zalogowania się użytkownika w celu dostępu do strony, typ logiczny, domyślnie prawda;
-- `$_alternativeLayout` — użycie uproszczonego układu panelu administracyjnego zamiast pełnego (opcja przeznaczona głównie dla strony logowania i instalatora), typ logiczny, domyślnie fałsz.
+- `$_userMustBeLoggedIn` — określenie wymagania zalogowania się użytkownika w celu dostępu do strony, typ logiczny, domyślnie prawda.
 
 Klasa określa też dla klas dziedziczących następujące pola chronione:
 

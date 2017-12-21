@@ -10,7 +10,6 @@ use WizyTowka as WT;
 class Login extends WT\AdminPanel
 {
 	protected $_userMustBeLoggedIn = false;
-	protected $_alternativeLayout = true;
 
 	protected function _prepare()
 	{

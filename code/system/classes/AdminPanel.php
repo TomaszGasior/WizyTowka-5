@@ -14,7 +14,6 @@ abstract class AdminPanel extends Controller
 	protected $_pageTitle = 'Panel administracyjny';
 	protected $_userRequiredPermissions;
 	protected $_userMustBeLoggedIn = true;
-	protected $_alternativeLayout = false;
 
 	protected $_currentUser;
 
@@ -67,7 +66,7 @@ abstract class AdminPanel extends Controller
 
 		// Main HTML layout.
 		$this->_HTMLLayout = new HTMLTemplate(
-			$this->_alternativeLayout ? 'AdminPanelAlternate' : 'AdminPanelLayout',
+			$this->_userMustBeLoggedIn ? 'AdminPanelLayout' : 'AdminPanelAlternative',
 			SYSTEM_DIR . '/templates'
 		);
 		$this->_HTMLLayout->head         = $this->_HTMLHead;
