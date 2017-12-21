@@ -8,6 +8,8 @@ namespace WizyTowka;
 
 class HTMLTemplate implements \IteratorAggregate, \Countable
 {
+	static private $_autoloaderAdded = false;
+
 	private $_templatesPath;
 
 	private $_variables = [];
@@ -88,6 +90,11 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 	public function render($templateName = null)
 	{
+		if (!self::$_autoloaderAdded) {
+			spl_autoload_register([$this, '_shortHTMLNamesAutoloader']);
+			self::$_autoloaderAdded = true;
+		}
+
 		if (empty($templateName)) {
 			if (empty($this->_templateName)) {
 				throw HTMLTemplateException::templateNotSpecified();
@@ -125,6 +132,29 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 			$this->_variables,
 			(empty($this->_templatesPath) ? null : $this->_templatesPath.'/') . $templateName . '.php'
 		);
+	}
+
+	// This autoloader is used to make creating new classes easier in templates code.
+	// Instead of `new WizyTowka\HTMLFormFields()` it's possible to use shorter `new HTMLFormFields()` syntax.
+	private function _shortHTMLNamesAutoloader($classNamePart)
+	{
+		static $inProgress;  // Avoid endless loop while calling class_exists().
+
+		if ($inProgress) {
+			return false;
+		}
+
+		$potentialClass = '\\' . __NAMESPACE__ . '\\' . $classNamePart;
+
+		$inProgress  = true;
+		$classExists = class_exists($potentialClass);
+		$inProgress  = false;
+
+		if ($classExists) {
+			class_alias($potentialClass, $classNamePart);
+		}
+
+		return $classExists;
 	}
 }
 

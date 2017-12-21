@@ -45,12 +45,10 @@ Metoda zwraca ścieżkę do katalogu szablonów określoną przez `setTemplatePa
 
 ## `render($templateName = null)`
 
-Metoda renderuje szablon — eksportuje zmienne do skryptu PHP szablonu, uruchamia go, kierując go na wyjście.
+Metoda renderuje szablon — eksportuje zmienne do skryptu PHP szablonu, uruchamia go, kierując go na wyjście. Aby zwrócić wyrenderowany szablon np. celem zapisania go do zmiennej, należy zamiast wywołania metody `render()`, rzutować obiekt na ciąg znaków.
 
-Jeśli argument `$templateName` jest określony, używany jest szablon o wskazanej nazwie. W innym wypadku używany jest globalny szablon, którego nazwę określa się za pośrednictwem konstruktora bądź metody `setTemplate()`. Nazwa nie powinna zawierać rozszerzenia `.php`.
+Jeśli argument `$templateName` jest określony, używany jest szablon o wskazanej nazwie. W innym wypadku używany jest globalny szablon, którego nazwę określa się za pośrednictwem konstruktora bądź metody `setTemplate()`. Nazwa nie powinna zawierać rozszerzenia `.php`. Jeśli nazwa szablonu nie zostanie w ogóle określona, zostanie rzucony wyjątek `HTMLTemplateException` #1.
 
-Jeśli nazwa szablonu nie zostanie w ogóle określona, zostanie rzucony wyjątek `HTMLTemplateException` #1.
-
-Aby zwrócić wyrenderowany szablon np. celem zapisania go do zmiennej, należy zamiast wywołania metody `render()`, rzutować obiekt na ciąg znaków.
+Wszelkie klasy wbudowane w system WizyTówka (np. `HTMLFormFields`, `HTMLMessage`, `HTMLElementsList`) mogą być wywoływane w formie skróconej — bez podawania przestrzeni nazw. Na przykład zamiast `WizyTowka\HTMLFormFields` można stworzyć instancję klasy `HTMLFormFields`.
 
 Uwaga: jeśli wewnątrz kodu szablonu zostanie rzucony wyjątek, zostanie on obsłużony wewnętrznie przez metodę. Szablon nie zostanie wtedy w ogóle wyrenderowany, a w jego miejscu pojawi się uproszczony komunikat o błędzie.
