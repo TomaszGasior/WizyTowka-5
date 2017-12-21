@@ -1,7 +1,7 @@
 <form method="post">
 	<h3>Dane strony</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->text('Tytuł', 'title', '', ['required'=>true])
 		->text('Identyfikator', 'nofilter_slug', '')
 		->option('Strona dostępna publicznie', 'isDraft', '0', $autocheckDraft)
@@ -12,7 +12,7 @@
 
 	<h3>Typ zawartości</h3>
 
-	<?= (new WizyTowka\HTMLElementsList('elementsList listView'))
+	<?= (new HTMLElementsList('elementsList listView'))
 		->collection($contentTypes)
 		->title(function($type){ return $type->label; })
 		->option('type', function($type){ return $type->getName(); }, $autocheckContentType)

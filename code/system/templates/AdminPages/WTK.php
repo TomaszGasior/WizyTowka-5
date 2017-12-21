@@ -2,7 +2,7 @@
 
 <form method="post">
 	<?php
-	$fields = new WizyTowka\HTMLFormFields;
+	$fields = new HTMLFormFields;
 	foreach ($settings as $name => $value) {
 		$fields->text(
 			$name, $name, $value,

@@ -1,7 +1,7 @@
 <form method="post">
 	<h3>Ustawienia główne</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->text('Tytuł witryny', 'websiteTitle', $settings->websiteTitle, ['required'=>true])
 		->text('Autor witryny', 'websiteAuthor', $settings->websiteAuthor)
 		->text('Układ tytułu witryny', 'websiteTitlePattern', $settings->websiteTitlePattern,
@@ -13,7 +13,7 @@
 
 	<h3>Pozostałe ustawienia</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->text('Adres e-mail', 'websiteEmailAddress', $settings->websiteEmailAddress, ['required'=>true])
 		->select('Format daty i godziny', 'websiteDateFormat', $settings->websiteDateFormat,
 			$dateFormatsAndExamples, ['disabled'=>$disableDateFormatField]

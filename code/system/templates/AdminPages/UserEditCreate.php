@@ -2,13 +2,13 @@
 	<h3>Dane użytkownika</h3>
 
 	<?php if ($createInsteadEdit) { ?>
-		<?= (new WizyTowka\HTMLFormFields)
+		<?= (new HTMLFormFields)
 			->text('Nazwa użytkownika', 'name', '',
 				['required'=>true, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 			)
 		?>
 	<?php } else { ?>
-		<?= (new WizyTowka\HTMLFormFields)
+		<?= (new HTMLFormFields)
 			->text('Nazwa użytkownika', 'name', $user->name,
 				['pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 			)
@@ -20,7 +20,7 @@
 
 	<h3>Hasło</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->password('Hasło', 'nofilter_passwordText_1', ['required'=>$createInsteadEdit])
 		->password('Ponownie hasło', 'nofilter_passwordText_2', ['required'=>$createInsteadEdit])
 	?>
@@ -31,7 +31,7 @@
 
 	<h3>Uprawnienia</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->checkbox('Tworzenie i edycja stron', 'permissions[CREATING_PAGES]', $permissions['CREATING_PAGES'])
 		->checkbox('Wysyłanie plików', 'permissions[SENDING_FILES]', $permissions['SENDING_FILES'])
 		->checkbox('Edycja stron i plików innych użytkowników', 'permissions[EDITING_OTHERS_PAGES]', $permissions['EDITING_OTHERS_PAGES'])

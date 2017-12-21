@@ -95,7 +95,7 @@ abstract class AdminPanel extends Controller
 
 		// Main template of page.
 		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".
-		$this->_HTMLTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/adminPages');
+		$this->_HTMLTemplate = new HTMLTemplate($className, SYSTEM_DIR.'/templates/AdminPages');
 
 		// Context menu.
 		$this->_HTMLContextMenu = new HTMLMenu;
@@ -189,7 +189,7 @@ abstract class AdminPanel extends Controller
 			$controller        = self::$_defaultPagesNamespace . '\\'. ucfirst($pageName);
 			$defaultController = self::$_defaultPagesNamespace . '\\'. ucfirst(Settings::get('adminPanelDefaultPage'));
 
-			Autoloader::addNamespace(self::$_defaultPagesNamespace, SYSTEM_DIR.'/classes/adminPages');
+			Autoloader::addNamespace(self::$_defaultPagesNamespace, SYSTEM_DIR.'/classes/AdminPages');
 			return class_exists($controller) ? $controller : $defaultController;
 		}
 	}

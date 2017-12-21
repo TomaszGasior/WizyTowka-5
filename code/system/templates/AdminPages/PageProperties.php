@@ -5,7 +5,7 @@
 
 	<h3>Dane strony</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->text('Tytuł', 'title', $page->title, ['required'=>true])
 		->text('Identyfikator', 'nofilter_slug', $page->slug)
 		->select('Właściciel', 'userId', $page->userId, $usersIdList, ['disabled' => $disableUserIdChange])
@@ -17,7 +17,7 @@
 
 	<h3>Informacje dla wyszukiwarek</h3>
 
-	<?= (new WizyTowka\HTMLFormFields)
+	<?= (new HTMLFormFields)
 		->textarea('Opis', 'description', $page->description, ['maxlength'=>500, 'spellcheck'=>true])
 		->textarea('Słowa kluczowe', 'keywords', $page->keywords, ['maxlength'=>500, 'spellcheck'=>true])
 	?>
