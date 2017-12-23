@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class PageEdit extends WT\AdminPanel
+class PageEdit extends WT\AdminPanelPage
 {
 	use PageEditSettingsCommon;
 	private $_settingsInsteadEdit = false;

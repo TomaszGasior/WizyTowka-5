@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class UserCreate extends WT\AdminPanel
+class UserCreate extends WT\AdminPanelPage
 {
 	use UserEditCreateCommon;
 

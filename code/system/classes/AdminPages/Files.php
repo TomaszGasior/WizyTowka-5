@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Files extends WT\AdminPanel
+class Files extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Wysłane pliki';
 

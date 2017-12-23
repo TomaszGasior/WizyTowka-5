@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Logout extends WT\AdminPanel
+class Logout extends WT\AdminPanelPage
 {
 	protected function _prepare()
 	{

@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Menus extends WT\AdminPanel
+class Menus extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Menu';
 	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_ELEMENTS;

@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class WebsiteSettings extends WT\AdminPanel
+class WebsiteSettings extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Ustawienia witryny';
 	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_CONFIG;

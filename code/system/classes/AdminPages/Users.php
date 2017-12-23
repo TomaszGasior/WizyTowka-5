@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Users extends WT\AdminPanel
+class Users extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Użytkownicy';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;

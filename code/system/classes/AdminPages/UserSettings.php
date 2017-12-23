@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class UserSettings extends WT\AdminPanel
+class UserSettings extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Ustawienia użytkownika';
 

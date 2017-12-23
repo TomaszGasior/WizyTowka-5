@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Login extends WT\AdminPanel
+class Login extends WT\AdminPanelPage
 {
 	protected $_userMustBeLoggedIn = false;
 

@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Drafts extends WT\AdminPanel
+class Drafts extends WT\AdminPanelPage
 {
 	use PageUserPermissionCommon;
 

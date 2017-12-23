@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class DataEditor_Editor extends WT\AdminPanel
+class DataEditor_Editor extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Edytor plików';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;

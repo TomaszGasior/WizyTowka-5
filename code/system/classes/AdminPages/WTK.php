@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class WTK extends WT\AdminPanel
+class WTK extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Wyjątkowo Trudna Konfiguracja';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;

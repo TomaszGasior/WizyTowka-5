@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class About extends WT\AdminPanel
+class About extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Informacje o systemie';
 

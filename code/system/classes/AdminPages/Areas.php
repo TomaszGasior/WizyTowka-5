@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Areas extends WT\AdminPanel
+class Areas extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Obszary';
 	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_ELEMENTS;

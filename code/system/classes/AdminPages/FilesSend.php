@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class FilesSend extends WT\AdminPanel
+class FilesSend extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Wyślij pliki';
 	protected $_userRequiredPermissions = WT\User::PERM_SENDING_FILES;

@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Error extends WT\AdminPanel
+class Error extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Wystąpił bląd';
 

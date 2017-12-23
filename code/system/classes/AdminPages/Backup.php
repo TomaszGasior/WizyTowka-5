@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class Backup extends WT\AdminPanel
+class Backup extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Kopia zapasowa';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;

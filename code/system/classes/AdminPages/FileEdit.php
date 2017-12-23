@@ -7,7 +7,7 @@
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;
 
-class FileEdit extends WT\AdminPanel
+class FileEdit extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Edycja pliku';
 
