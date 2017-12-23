@@ -13,4 +13,4 @@ namespace WizyTowka;
 require __DIR__ . '/config.php';
 require SYSTEM_DIR . '/init.php';
 
-$init('Website');
+init('Website');

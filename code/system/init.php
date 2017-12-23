@@ -28,9 +28,9 @@ set_error_handler(__NAMESPACE__.'\ErrorHandler::handleError');
 set_exception_handler(__NAMESPACE__.'\ErrorHandler::handleException');
 
 
-$init = function($baseController)
+function init($controller)
 {
-	defined(__NAMESPACE__.'\INIT') ? exit : define(__NAMESPACE__.'\INIT', 1);
+	static $init; if ($init) { return; } $init = 1;
 
 	$runController = function(Controller $controller)
 	{
@@ -44,9 +44,8 @@ $init = function($baseController)
 
 	/* Installer. */
 	if (!file_exists(CONFIG_DIR)) {
-		$controllerClass = __NAMESPACE__.'\Installer';
-		$runController(new $controllerClass);
-		return;
+		$controller = 'Installer';
+		goto run;
 	}
 
 	/* Initialize plugins. */
@@ -76,7 +75,6 @@ $init = function($baseController)
 	SessionManager::setup();
 
 	/* Controller. */
-	$baseController  = __NAMESPACE__ . '\\'. $baseController;
-	$controllerClass = $baseController::getControllerClass();
+	run: $controllerClass = __NAMESPACE__ . '\\'. $controller;
 	$runController(new $controllerClass);
 };

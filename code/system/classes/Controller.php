@@ -43,14 +43,10 @@ abstract class Controller
 			 ? static::URL($target, $arguments)
 			 : ($target . ($arguments ? '?'.http_build_query($arguments) : ''));
 
-		header('Location: ' . $url);
-		exit;
-	}
+		@header('Location: '.$url);
 
-	// This method should return fully qualified name of controller class according to URL.
-	static public function getControllerClass()
-	{
-		return static::class;
+		in_array('Location: '.$url, headers_list()) and exit();
+		throw ControllerException::unsuccessfulHeader($url);
 	}
 
 	// This method should return URL to specified target (page of site or page of admin panel).
@@ -68,5 +64,9 @@ class ControllerException extends Exception
 	static public function unallowedKeyInURLArgument($unallowedKey)
 	{
 		return new self('Argument of URL must not have key named "' . $unallowedKey . '".', 2);  // Exception used by child classes.
+	}
+	static public function unsuccessfulHeader($url)
+	{
+		return new self('Unsuccessful redirection by HTTP header to URL: "' . $url . '".', 3);
 	}
 }
