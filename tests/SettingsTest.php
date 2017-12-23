@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class SettingsTest extends PHPUnit\Framework\TestCase
+class SettingsTest extends TestCase
 {
 	static private $_settingsFilePath        = WizyTowka\CONFIG_DIR . '/settings.conf';
 	static private $_defaultSettingsFilePath = WizyTowka\SYSTEM_DIR . '/defaults/settings.conf';

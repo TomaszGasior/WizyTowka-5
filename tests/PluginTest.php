@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class PluginTest extends PHPUnit\Framework\TestCase
+class PluginTest extends TestCase
 {
 	static private $_pluginsDirectory = WizyTowka\SYSTEM_DIR . '/addons/plugins';
 	static private $_pluginPathPart   = WizyTowka\SYSTEM_DIR . '/addons/plugins/examplePlugin_';

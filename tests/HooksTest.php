@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class HooksTest extends PHPUnit\Framework\TestCase
+class HooksTest extends TestCase
 {
 	public function testRunAction()
 	{

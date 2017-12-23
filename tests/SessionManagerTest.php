@@ -3,14 +3,19 @@
 /**
 * WizyTówka 5 — unit test
 */
-// Workarounds: overwritten setcookie() PHP function.
-
-class SessionManagerTest extends PHPUnit\Framework\TestCase
+class SessionManagerTest extends TestCase
 {
 	static private $_sessionsConfigFile = WizyTowka\CONFIG_DIR . '/sessions.conf';
 
+	static private $_exampleUserId = 678;
+	static private $_exampleSessionDuration = 3600;
+
 	static public function setUpBeforeClass()
 	{
+		// $_SERVER values undefined in CLI.
+		$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0';
+
 		// Prepare session configuration file for test only.
 		@rename(self::$_sessionsConfigFile, self::$_sessionsConfigFile.'.bak');
 		WizyTowka\ConfigurationFile::createNew(self::$_sessionsConfigFile);
@@ -25,28 +30,28 @@ class SessionManagerTest extends PHPUnit\Framework\TestCase
 		@rename(self::$_sessionsConfigFile.'.bak', self::$_sessionsConfigFile);
 	}
 
+	/**
+	* @runInSeparateProcess
+	*/
 	public function testLogIn()
 	{
-		$exampleUserId = 678;
-		$exampleSessionDuration = 3600;
+		WizyTowka\SessionManager::logIn(self::$_exampleUserId, self::$_exampleSessionDuration);
 
-		WizyTowka\SessionManager::logIn($exampleUserId, $exampleSessionDuration);
-
-		$sessionId          = workaroundsData()->lastCookie['value'];  // See workarounds.php.
+		$cookieExpireTime   = $this->getLastHTTPCookie('expires');
+		$sessionId          = $this->getLastHTTPCookie('value');
 		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
-		$cookieExpireTime   = workaroundsData()->lastCookie['expire'];  // See workarounds.php.
 
 		// Session data in sessions configuration file.
 		$this->assertTrue(isset($sessionsConfigFile->$sessionId));
 
 		// Session ID in session data from configuration file.
 		$current  = $sessionsConfigFile->$sessionId['userId'];
-		$expected = $exampleUserId;
+		$expected = self::$_exampleUserId;
 		$this->assertEquals($expected, $current);
 
 		// Expire time of session cookie.
 		$current  = $cookieExpireTime;
-		$expected = time()+$exampleSessionDuration;
+		$expected = time() + self::$_exampleSessionDuration;
 		$this->assertEquals($expected, $current);
 
 		// Current data in SessionManager trait.
@@ -54,18 +59,24 @@ class SessionManagerTest extends PHPUnit\Framework\TestCase
 			WizyTowka\SessionManager::isUserLoggedIn()
 		);
 		$current  = WizyTowka\SessionManager::getUserId();
-		$expected = $exampleUserId;
+		$expected = self::$_exampleUserId;
 		$this->assertEquals($expected, $current);
 	}
 
+	/**
+	* @runInSeparateProcess
+	*/
 	public function testLogOut()
 	{
-		$sessionId = workaroundsData()->lastCookie['value'];  // From previous setcookie() call.
+		// Log in second time. Cookie from previous test wasn't kept because of @runInSeparateProcess.
+		WizyTowka\SessionManager::logIn(self::$_exampleUserId, self::$_exampleSessionDuration);
+
+		$sessionId = $this->getLastHTTPCookie('value');
 
 		WizyTowka\SessionManager::logOut();
 
 		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
-		$cookieExpireTime   = workaroundsData()->lastCookie['expire'];  // See workarounds.php.
+		$cookieExpireTime   = $this->getLastHTTPCookie('expires');
 
 		// Session data in sessions configuration file.
 		$this->assertFalse(isset($sessionsConfigFile->$sessionId));

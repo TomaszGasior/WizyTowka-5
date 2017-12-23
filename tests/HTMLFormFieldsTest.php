@@ -3,9 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-// Workarounds: HTMLTestCase::assertHTMLEquals().
-
-class HTMLFormFieldsTest extends PHPUnit\Framework\HTMLTestCase
+class HTMLFormFieldsTest extends TestCase
 {
 	public function testText()
 	{

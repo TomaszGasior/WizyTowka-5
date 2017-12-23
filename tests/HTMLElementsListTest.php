@@ -3,9 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-// Workarounds: HTMLTestCase::assertHTMLEquals().
-
-class HTMLElementsListTest extends PHPUnit\Framework\HTMLTestCase
+class HTMLElementsListTest extends TestCase
 {
 	private $_data = [
 		[ 'id' => 1, 'title' => 'Title 1', 'url' => 'http://example.org/e_1', ],

@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class ConfigurationFileTest extends PHPUnit\Framework\TestCase
+class ConfigurationFileTest extends TestCase
 {
 	static private $_exampleData = array(
 		'setting1' => 'value1',

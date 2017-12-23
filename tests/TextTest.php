@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class TextTest extends PHPUnit\Framework\TestCase
+class TextTest extends TestCase
 {
 	public function testGetChar()
 	{

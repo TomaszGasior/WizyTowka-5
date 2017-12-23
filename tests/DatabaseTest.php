@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class DatabaseTest extends PHPUnit\Framework\TestCase
+class DatabaseTest extends TestCase
 {
 	static private $_exampleDatabaseFile = 'exampleSQLiteDatabase.db';
 

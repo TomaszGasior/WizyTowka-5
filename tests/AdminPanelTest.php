@@ -3,23 +3,22 @@
 /**
 * WizyTówka 5 — unit test
 */
-class AdminPanelTest extends PHPUnit\Framework\TestCase
+class AdminPanelTest extends TestCase
 {
 	static private $_examplePageName = 'example';
 	static private $_examplePageClass;
 
 	static public function setUpBeforeClass()
 	{
-		$exampleAdminPanelClass = new class() extends WizyTowka\AdminPanel
+		self::$_examplePageClass = get_class(new class() extends WizyTowka\AdminPanelPage
 		{
+			// It's needed to run test. Without it AdminPanelPage's constructor runs Controller::redirect() method, which exits script.
 			protected $_userMustBeLoggedIn = false;
-			// It's needed to run test. Without it AdminPanel's constructor runs Controller::redirect() method, which exits script.
 
-			public function _prepare() {}
-			public function _output() {}
-		};
-
-		self::$_examplePageClass = get_class($exampleAdminPanelClass);
+			public function showMessage() {
+				echo 'Everything works fine!';
+			}
+		});
 	}
 
 	public function testRegisterPage()
@@ -27,18 +26,19 @@ class AdminPanelTest extends PHPUnit\Framework\TestCase
 		WizyTowka\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
 
 		$_GET['c'] = self::$_examplePageName;
-		// AdminPanel::getControllerClass() reads name of admin panel page from URL address.
+		// AdminPanel reads name of admin panel page from "c" parameter of URL address.
 
-		$current  = WizyTowka\AdminPanel::getControllerClass();
-		$expected = self::$_examplePageClass;
-		$this->assertEquals($expected, $current);
+		// AdminPanel isn't real controller of admin panel. It works as proxy for real class of
+		// proper admin panel page controller, which inherits from AdminPanelPage class (not AdminPanel).
+		$this->expectOutputString('Everything works fine!');
+		(new WizyTowka\AdminPanel)->showMessage();
 	}
 
 	/**
 	 * @expectedException     WizyTowka\AdminPanelException
 	 * @expectedExceptionCode 1
 	 */
-	public function testRegisterPageNameAlreadyRegistered()
+	public function ttestRegisterPageNameAlreadyRegistered()
 	{
 		WizyTowka\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
 	}

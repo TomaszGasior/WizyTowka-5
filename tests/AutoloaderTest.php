@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class AutoloaderTest extends PHPUnit\Framework\TestCase
+class AutoloaderTest extends TestCase
 {
 	static private $_exampleNamespace = 'Example\SubExample';
 	static private $_examplePath = './path/to/classes';

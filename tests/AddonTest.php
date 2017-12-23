@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class AddonTest extends PHPUnit\Framework\TestCase
+class AddonTest extends TestCase
 {
 	static private $_addonsDirectorySystem = WizyTowka\SYSTEM_DIR . '/addons/exampleAddonType';
 	static private $_addonsDirectoryData   = WizyTowka\DATA_DIR   . '/addons/exampleAddonType';
@@ -32,13 +32,13 @@ class AddonTest extends PHPUnit\Framework\TestCase
 		}
 
 		// Example addon class that extends Addon class. PHP 7 syntax.
-		self::$_exampleAddonType = new class() extends WizyTowka\Addon
+		self::$_exampleAddonType = get_class(new class() extends WizyTowka\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
 
 			// Addon class has private constructor. Costructor must be public to create anonymous class.
 			public function __construct() {}
-		};
+		});
 	}
 
 	static public function tearDownAfterClass()
@@ -59,18 +59,18 @@ class AddonTest extends PHPUnit\Framework\TestCase
 		$nameCollision = self::$_exampleAddonType::getByName('nameCollision');
 
 		// Addon from user addons directory.
-		$this->assertInstanceOf(get_class(self::$_exampleAddonType), $dataAddon);
+		$this->assertInstanceOf(self::$_exampleAddonType, $dataAddon);
 		$this->assertEquals('dataAddon', $dataAddon->getName());
 		$this->assertTrue($dataAddon->isFromUser());
 
 		// Addon from system addons directory.
-		$this->assertInstanceOf(get_class(self::$_exampleAddonType), $systemAddon);
+		$this->assertInstanceOf(self::$_exampleAddonType, $systemAddon);
 		$this->assertEquals('systemAddon', $systemAddon->getName());
 		$this->assertTrue($systemAddon->isFromSystem());
 
 		// Name collision: addon "nameCollision" exists in user addons directory and in system addons directory.
 		// If the same name is in user addons and system addons, user addon has higher priority.
-		$this->assertInstanceOf(get_class(self::$_exampleAddonType), $nameCollision);
+		$this->assertInstanceOf(self::$_exampleAddonType, $nameCollision);
 		$this->assertEquals('nameCollision', $nameCollision->getName());
 		$this->assertFalse($nameCollision->isFromSystem());
 		$this->assertTrue($nameCollision->isFromUser());

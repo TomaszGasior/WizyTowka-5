@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class HTMLTemplateTest extends PHPUnit\Framework\TestCase
+class HTMLTemplateTest extends TestCase
 {
 	static private $_exampleTemplateName = 'exampleTemplate';
 	static private $_exampleTemplateFile = 'exampleTemplate.php';

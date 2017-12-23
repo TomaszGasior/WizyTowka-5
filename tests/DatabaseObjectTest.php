@@ -3,11 +3,11 @@
 /**
 * WizyTówka 5 — unit test
 */
-class DatabaseObjectTest extends PHPUnit\Framework\TestCase
+class DatabaseObjectTest extends TestCase
 {
-	static private $_exampleClass;
-	static private $_exampleClassJSON;
-	static private $_exampleClassTime;
+	static private $_exampleDBObj;
+	static private $_exampleDBObjJSON;
+	static private $_exampleDBObjTime;
 
 	static public function setUpBeforeClass()
 	{
@@ -32,7 +32,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		');
 
 		// Example anonymous classes that extend abstract DatabaseObject class. PHP 7 syntax.
-		self::$_exampleClass = new class() extends WizyTowka\DatabaseObject
+		self::$_exampleDBObj = get_class(new class() extends WizyTowka\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTable';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -40,8 +40,8 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 				'column1',
 				'column2',
 			];
-		};
-		self::$_exampleClassJSON = new class() extends WizyTowka\DatabaseObject
+		});
+		self::$_exampleDBObjJSON = get_class(new class() extends WizyTowka\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTableJSON';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -51,8 +51,8 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 			static protected $_tableColumnsJSON = [
 				'dataJSON',
 			];
-		};
-		self::$_exampleClassTime = new class() extends WizyTowka\DatabaseObject
+		});
+		self::$_exampleDBObjTime = get_class(new class() extends WizyTowka\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTableTime';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -66,7 +66,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 			static protected $_tableColumnsTimeAtUpdate = [
 				'updatedAt',
 			];
-		};
+		});
 	}
 
 	static public function tearDownAfterClass()
@@ -74,21 +74,11 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		WizyTowka\Database::disconnect();
 	}
 
-	// Helper function used to do convertion from object to array by foreach loop.
-	private function _convertObjectToArray($obj)
-	{
-		$arr = [];
-		foreach ($obj as $key => $value) {
-			$arr[$key] = $value;
-		}
-		return $arr;
-	}
-
 	public function testGetAll()
 	{
-		$objectsArray = self::$_exampleClass::getAll();
+		$objectsArray = self::$_exampleDBObj::getAll();
 
-		$current  = array_map([$this,'_convertObjectToArray'], $objectsArray);
+		$current  = array_map('iterator_to_array', $objectsArray);
 		$expected = [
 			['primaryKey' => '1', 'column1' => '100', 'column2' => 'hundred'],
 			['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'],
@@ -98,54 +88,54 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testGetById()
 	{
-		$object = self::$_exampleClass::getById(2);
+		$object = self::$_exampleDBObj::getById(2);
 
-		$current  = $this->_convertObjectToArray($object);
+		$current  = iterator_to_array($object);
 		$expected = ['primaryKey' => '2', 'column1' => '1000', 'column2' => 'thousand'];
 		$this->assertEquals($expected, $current);
 	}
 
 	public function testSaveInsert()
 	{
-		$newObject = new self::$_exampleClass;
+		$newObject = new self::$_exampleDBObj;
 		$newObject->column1 = '10';
 		$newObject->column2 = 'ten';
 		$newObject->save();
 
-		$object = self::$_exampleClass::getById($newObject->primaryKey);  // Primary key field is set after save() operation.
+		$object = self::$_exampleDBObj::getById($newObject->primaryKey);  // Primary key field is set after save() operation.
 
-		$current  = $this->_convertObjectToArray($object);
+		$current  = iterator_to_array($object);
 		$expected = ['primaryKey' => '3', 'column1' => '10', 'column2' => 'ten'];
 		$this->assertEquals($expected, $current);
 	}
 
 	public function testSaveUpdate()
 	{
-		$editedObject = self::$_exampleClass::getById(1);
+		$editedObject = self::$_exampleDBObj::getById(1);
 		$editedObject->column1 = '1024';
 		$editedObject->column2 = 'one thousand twenty four';
 		$editedObject->save();
 
-		$object = self::$_exampleClass::getById(1);
+		$object = self::$_exampleDBObj::getById(1);
 
-		$current  = $this->_convertObjectToArray($object);
+		$current  = iterator_to_array($object);
 		$expected = ['primaryKey' => '1', 'column1' => '1024', 'column2' => 'one thousand twenty four'];
 		$this->assertEquals($expected, $current);
 	}
 
 	public function testDelete()
 	{
-		$removedObject = self::$_exampleClass::getById(1);
+		$removedObject = self::$_exampleDBObj::getById(1);
 		$removedObject->delete();
 
-		$object = self::$_exampleClass::getById(1);
+		$object = self::$_exampleDBObj::getById(1);
 
 		$this->assertFalse($object);
 	}
 
 	public function testClone()
 	{
-		$originalObject = self::$_exampleClass::getById(2);
+		$originalObject = self::$_exampleDBObj::getById(2);
 		$clonedObject   = clone $originalObject;
 
 		// Cloned object should be treated as newly created, primary key field should be empty.
@@ -153,9 +143,9 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 		$clonedObject->save();
 
-		$object = self::$_exampleClass::getById($clonedObject->primaryKey);  // Primary key field is set after save() operation.
+		$object = self::$_exampleDBObj::getById($clonedObject->primaryKey);  // Primary key field is set after save() operation.
 
-		$current  = $this->_convertObjectToArray($object);
+		$current  = iterator_to_array($object);
 		$expected = ['primaryKey' => '4', 'column1' => '1000', 'column2' => 'thousand'];
 		$this->assertEquals($expected, $current);
 	}
@@ -169,7 +159,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 			'key4' => 'value4',
 		];
 
-		$newObject = new self::$_exampleClassJSON;
+		$newObject = new self::$_exampleDBObjJSON;
 		foreach ($exampleData as $key => $value) {
 			$newObject->dataJSON->$key = $value;
 		}
@@ -179,7 +169,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 		$expected = (object)$exampleData;
 		$this->assertEquals($expected, $current);
 
-		$object = self::$_exampleClassJSON::getById($newObject->primaryKey);
+		$object = self::$_exampleDBObjJSON::getById($newObject->primaryKey);
 
 		$current  = $object->dataJSON;
 		$expected = (object)$exampleData;
@@ -188,14 +178,14 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testTimeAtInsert()
 	{
-		$newObject = new self::$_exampleClassTime;
+		$newObject = new self::$_exampleDBObjTime;
 		$newObject->save();
 
 		$current  = $newObject->insertedAt;
 		$expected = time();
 		$this->assertEquals($expected, $current);
 
-		$object = self::$_exampleClassTime::getById(1);
+		$object = self::$_exampleDBObjTime::getById(1);
 
 		$current = $object->insertedAt;
 		$this->assertEquals($expected, $current);
@@ -203,14 +193,14 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 
 	public function testTimeAtUpdate()
 	{
-		$editedObject = self::$_exampleClassTime::getById(1);
+		$editedObject = self::$_exampleDBObjTime::getById(1);
 		$editedObject->save();
 
 		$current  = $editedObject->updatedAt;
 		$expected = time();
 		$this->assertEquals($expected, $current);
 
-		$object = self::$_exampleClassTime::getById(1);
+		$object = self::$_exampleDBObjTime::getById(1);
 
 		$current = $object->updatedAt;
 		$this->assertEquals($expected, $current);
@@ -222,7 +212,7 @@ class DatabaseObjectTest extends PHPUnit\Framework\TestCase
 	*/
 	public function testDoNotEditPrimaryKey()
 	{
-		$object = new self::$_exampleClass;
+		$object = new self::$_exampleDBObj;
 
 		$object->primaryKey = 1;
 	}

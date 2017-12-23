@@ -3,9 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-// Workarounds: HTMLTestCase::assertHTMLEquals().
-
-class HTMLTagTest extends PHPUnit\Framework\HTMLTestCase
+class HTMLTagTest extends TestCase
 {
 	static private $_exampleClass;
 

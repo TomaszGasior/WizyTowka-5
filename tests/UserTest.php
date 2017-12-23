@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class UserTest extends PHPUnit\Framework\TestCase
+class UserTest extends TestCase
 {
 	public function testCheckPassword()
 	{

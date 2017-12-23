@@ -3,7 +3,7 @@
 /**
 * WizyTówka 5 — unit test
 */
-class ErrorHandlerTest extends PHPUnit\Framework\TestCase
+class ErrorHandlerTest extends TestCase
 {
 	static private $_errorLogPath;
 
