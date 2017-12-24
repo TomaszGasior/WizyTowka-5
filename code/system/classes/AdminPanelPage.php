@@ -26,14 +26,14 @@ abstract class AdminPanelPage extends Controller
 	{
 		if (SessionManager::isUserLoggedIn()) {
 			$this->_currentUser = User::getById(SessionManager::getUserId());
+
+			// Prevent access to this page of admin panel if user have not required permissions.
+			if ($this->_userRequiredPermissions and !($this->_currentUser->permissions & $this->_userRequiredPermissions)) {
+				$this->_redirect('error', ['type' => 'permissions']);
+			}
 		}
 		elseif ($this->_userMustBeLoggedIn) {
 			$this->_redirect('login');
-		}
-
-		// Prevent access to this page of admin panel if user have not required permissions.
-		if ($this->_userRequiredPermissions) {
-			$this->_preventFromAccessWithoutPermission($this->_userRequiredPermissions);
 		}
 
 		// Prepare HTML parts here for child class.
@@ -41,14 +41,6 @@ abstract class AdminPanelPage extends Controller
 
 		// Run _prepare() method from child class.
 		$this->_prepare();
-	}
-
-	protected function _preventFromAccessWithoutPermission($requiredUserPermission)
-	{
-		// Redirect user to permissions error page if he have not specified permission.
-		if ($this->_userMustBeLoggedIn and !($this->_currentUser->permissions & $requiredUserPermission)) {
-			$this->_redirect('error', ['type' => 'permissions']);
-		}
 	}
 
 	final public function output()

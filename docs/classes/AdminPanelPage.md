@@ -25,12 +25,6 @@ Konstruktor przekierowuje do strony logowania panelu administracyjnego, jeśli w
 
 Tutaj jest wywoływana metoda `_prepare()`.
 
-## *protected* `_preventFromAccessWithoutPermission($requiredUserPermission)`
-
-Jeżeli bieżący użytkownik nie posiada uprawnienia określonego w argumencie `$requiredUserPermission`, metoda natychmiast przerywa wykonywanie skryptu i przekierowuje użytkownika do strony informującej o błędzie niewystarczających uprawnień.
-
-Poziom uprawnienia należy określić za pomocą stałych klasowych `PERM_*` klasy `User`.
-
 ## `output()`
 
 Metoda generuje nagłówek strony HTML, menu główne, menu dodatkowe oraz ładuje główny szablon panelu administracyjnego, a także szablon strony panelu.
