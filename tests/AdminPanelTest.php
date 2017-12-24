@@ -12,10 +12,11 @@ class AdminPanelTest extends TestCase
 	{
 		self::$_examplePageClass = get_class(new class() extends WizyTowka\AdminPanelPage
 		{
-			// It's needed to run test. Without it AdminPanelPage's constructor runs Controller::redirect() method, which exits script.
+			// It's needed to run test. Without it AdminPanelPage's constructor runs Controller::_redirect().
 			protected $_userMustBeLoggedIn = false;
 
-			public function showMessage() {
+			public function showMessage()
+			{
 				echo 'Everything works fine!';
 			}
 		});

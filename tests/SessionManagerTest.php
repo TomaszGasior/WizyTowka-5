@@ -10,7 +10,7 @@ class SessionManagerTest extends TestCase
 	static private $_exampleUserId = 678;
 	static private $_exampleSessionDuration = 3600;
 
-	static public function setUpBeforeClass()
+	public function setUp()
 	{
 		// $_SERVER values undefined in CLI.
 		$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
@@ -24,10 +24,16 @@ class SessionManagerTest extends TestCase
 		WizyTowka\SessionManager::setup();
 	}
 
-	static public function tearDownAfterClass()
+	public function tearDown()
 	{
 		@unlink(self::$_sessionsConfigFile);
 		@rename(self::$_sessionsConfigFile.'.bak', self::$_sessionsConfigFile);
+
+		// Workaround. SessionManager internally uses ConfigurationFile to get access to "sessions.conf".
+		// ConfigurationFile in SessionManager contains old "sessions.conf" contents. It must be reloaded.
+		if (file_exists(self::$_sessionsConfigFile)) {
+			(new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile))->refresh();
+		}
 	}
 
 	/**

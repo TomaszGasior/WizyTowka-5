@@ -60,6 +60,7 @@ abstract class TestCase extends PHPUnit\Framework\TestCase
 	}
 
 	// Get properties of last HTTP cookie sent by setcookie() function.
+	// @runInSeparateProcess annotation is required.
 	protected function getLastHTTPCookie($property)
 	{
 		$found = preg_match(
