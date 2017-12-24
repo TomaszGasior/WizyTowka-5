@@ -25,17 +25,16 @@ class AdminPanel extends Controller
 		// Add admin pages namespace to autoloader.
 		Autoloader::addNamespace(self::$_defaultPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');
 
-		$pageName = !empty($_GET['c']) ? $_GET['c'] : Settings::get('adminPanelDefaultPage');
+		$pageName = !empty($_GET['c']) ? $_GET['c'] : null;
 
-		$controller = isset(self::$_registeredPages[$pageName]) ? self::$_registeredPages[$pageName]
-		              : self::$_defaultPagesNamespace . '\\'. ucfirst($pageName);
+		if ($pageName) {
+			$controller = isset(self::$_registeredPages[$pageName]) ? self::$_registeredPages[$pageName]
+			              : self::$_defaultPagesNamespace . '\\'. ucfirst($pageName);
+		}
 
-		// Redirect to default admin page if class does not exists.
-		if (!class_exists($controller)) {
-			$this->_redirect(
-				// Use default setting if user changed it improperly in configuration file to keep admin panel working.
-				empty($_GET['c']) ? Settings::getDefault('adminPanelDefaultPage') : null
-			);
+		if (!$pageName or !class_exists($controller)) {
+			// Redirect to default admin page if class does not exists or page is not specified in URL.
+			$this->_redirect(null);
 		}
 
 		// Create instance of real admin panel page controller.

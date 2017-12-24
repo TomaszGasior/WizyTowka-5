@@ -30,7 +30,7 @@ class Login extends WT\AdminPanelPage
 
 		if ($user and $user->checkPassword($_POST['password'])) {
 			WT\SessionManager::logIn($user->id, 3600);
-			$this->_redirect(null);
+			$this->_redirectAfterLogIn();
 		}
 		else {
 			$this->_HTMLMessage->error('Dane logowania są niepoprawne.');
@@ -39,6 +39,28 @@ class Login extends WT\AdminPanelPage
 
 	protected function _output()
 	{
+		if (!empty($_GET['msg'])) {
+			$this->_HTMLMessage->default('Wylogowano się z panelu administracyjnego.');
+		}
+		if (!empty($_GET['redirect'])) {
+			$this->_HTMLMessage->default('Po zalogowaniu nastąpi przekierowanie do właściwej strony.');
+		}
+
 		$this->_HTMLTemplate->lastUsername = empty($_POST['name']) ? '' : $_POST['name'];
+	}
+
+	private function _redirectAfterLogIn()
+	{
+		if (!empty($_GET['redirect'])) {
+			parse_str($_GET['redirect'], $arguments);
+
+			if (!empty($arguments['c'])) {
+				$target = $arguments['c'];
+				unset($arguments['c']);
+				$this->_redirect($target, $arguments);
+			}
+		}
+
+		$this->_redirect(null);
 	}
 }

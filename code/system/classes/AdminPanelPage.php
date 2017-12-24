@@ -33,7 +33,10 @@ abstract class AdminPanelPage extends Controller
 			}
 		}
 		elseif ($this->_userMustBeLoggedIn) {
-			$this->_redirect('login');
+			$this->_redirect(
+				'login',
+				!empty($_SERVER['QUERY_STRING']) ? ['redirect'=>$_SERVER['QUERY_STRING']] : []
+			);
 		}
 
 		// Prepare HTML parts here for child class.
