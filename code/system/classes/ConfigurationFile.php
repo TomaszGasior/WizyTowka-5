@@ -24,23 +24,20 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		// We should avoid realpath() when it is possible to limit operations on file system.
 		$filenameHash = md5(($filename[0] == '/') ? $filename : realpath($filename));
 
-		if (!isset(self::$_configurationFiles[$filenameHash])) {
-			$configuration = json_decode(file_get_contents($filename), true);  // "true" means associative array.
+		$readingFirstTime = !isset(self::$_configurationFiles[$filenameHash]);
 
-			if (json_last_error() != JSON_ERROR_NONE) {
-				throw ConfigurationFileException::JSONError($filename);
-			}
-			if (!is_array($configuration)) {
-				throw ConfigurationFileException::invalidArray($filename);
-			}
-
-			self::$_configurationFiles[$filenameHash] = $configuration;
+		if ($readingFirstTime) {
+			self::$_configurationFiles[$filenameHash] = [];
 		}
 
 		// If there is more than one instance of ConfigurationFile class that opens the same file,
 		// configuration changes will not be overwritten and each instance of ConfigurationFile class
 		// will use current configuration without reading file from file system more than once.
 		$this->_configuration =& self::$_configurationFiles[$filenameHash];
+
+		if ($readingFirstTime) {
+			$this->refresh();
+		}
 	}
 
 	public function __destruct()
@@ -48,7 +45,10 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		if ($this->_wasChanged) {
 			file_put_contents(
 				$this->_filename,
-				json_encode($this->_configuration, JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+				json_encode(
+					$this->_configuration,
+					JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+				),
 				LOCK_EX
 			);
 
@@ -80,6 +80,10 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 
 	public function __unset($key)
 	{
+		if ($this->_readOnly) {
+			throw ConfigurationFileException::writingWhenReadOnly($this->_filename);
+		}
+
 		$this->_wasChanged = true;
 		unset($this->_configuration[$key]);
 	}
@@ -100,6 +104,21 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 	public function count()  // For Countable interface.
 	{
 		return count($this->_configuration);
+	}
+
+	// Read configuration file from file system.
+	public function refresh()
+	{
+		$configuration = json_decode(file_get_contents($this->_filename), true);  // "true" means associative array.
+
+		if (json_last_error() != JSON_ERROR_NONE) {
+			throw ConfigurationFileException::JSONError($this->_filename);
+		}
+		if (!is_array($configuration)) {
+			throw ConfigurationFileException::invalidArray($this->_filename);
+		}
+
+		$this->_configuration = $configuration;
 	}
 
 	static public function createNew($filename)
