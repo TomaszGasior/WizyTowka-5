@@ -12,6 +12,13 @@ class TextTest extends TestCase
 		$current  = $textObject->getChar(3);
 		$expected = 'ó';
 		$this->assertEquals($expected, $current);
+
+		$current  = $textObject->getChar(-6);
+		$expected = 'ą';
+		$this->assertEquals($expected, $current);
+
+		$this->assertNull($textObject->getChar(17));
+		$this->assertNull($textObject->getChar(-18));
 	}
 
 	public function testGetLength()
@@ -46,17 +53,43 @@ class TextTest extends TestCase
 	public function testCut()
 	{
 		$textObject1 = new WizyTowka\Text('Zażółć gęślą jaźń');
-		$textObject1->cut(5);
+		$textObject1->cut(1, 5);
 
 		$current  = $textObject1->get();
-		$expected = 'Zażół';
+		$expected = 'ażółć';
 		$this->assertEquals($expected, $current);
 
 		$textObject2 = new WizyTowka\Text('Zażółć gęślą jaźń');
-		$textObject2->cut(-6);
+		$textObject2->cut(-10, -4);
 
 		$current  = $textObject2->get();
-		$expected = 'ą jaźń';
+		$expected = 'gęślą ';
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testReplace()
+	{
+		// https://pl.wikipedia.org/wiki/Pangram#j%C4%99zyk_polski
+		$textObject = new WizyTowka\Text('Myślę: Fruń z płacht gąsko, jedź wbić nóż');
+
+		$textObject->replace([
+			'Myślę' => 'PrzeMYŚLĘ',
+			'gąsko' => 'PTAKU',
+			'nóż'   => 'igłę…',
+		]);
+
+		$current  = $textObject->get();
+		$expected = 'PrzeMYŚLĘ: Fruń z płacht PTAKU, jedź wbić igłę…';
+		$this->assertEquals($expected, $current);
+
+		$textObject->replace([
+			'przemyślę' => 'Myślę',
+			'ptaku,'    => "gąsko,\n",
+			'igłę…'     => 'nóż',
+		], true);
+
+		$current  = $textObject->get();
+		$expected = "Myślę: Fruń z płacht gąsko,\n jedź wbić nóż";
 		$this->assertEquals($expected, $current);
 	}
 
@@ -85,7 +118,10 @@ TEXT;
 TEXT;
 
 		$textObject = new WizyTowka\Text($exampleCodeBefore);
-		$textObject->correctTypography();
+		$textObject->correctTypography(
+			WizyTowka\Text::TYPOGRAPHY_DASHES | WizyTowka\Text::TYPOGRAPHY_ORPHANS |
+			WizyTowka\Text::TYPOGRAPHY_QUOTES | WizyTowka\Text::TYPOGRAPHY_OTHER
+		);
 
 		$current  = $textObject->get();
 		$expected = $exampleCodeAfter;
@@ -144,6 +180,39 @@ TEXT;
 
 		$current  = $textObject2->get();
 		$expected = strftime('%Y-%m-%d', $unixTimestamp);
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testArrayAccess()
+	{
+		$textObject = new WizyTowka\Text('Zazółć gęślą jaźń');
+
+		$textObject[0]  = 'A';
+		$textObject[4]  = 'B';
+		$textObject[16] = 'C';
+
+		$current  = $textObject->get();
+		$expected = 'AazóBć gęślą jaźC';
+		$this->assertEquals($expected, $current);
+
+		$textObject[-17] = 'D';
+		$textObject[-4]  = 'E';
+		$textObject[-1]  = 'F';
+
+		$current  = $textObject->get();
+		$expected = 'DazóBć gęślą EaźF';
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testIterator()
+	{
+		$textObject = new WizyTowka\Text('Zazółć gęślą jaźń');
+
+		$current = '';
+		foreach ($textObject as $char) {
+			$current .= "\n$char";
+		}
+		$expected = "\nZ\na\nz\nó\nł\nć\n \ng\nę\nś\nl\ną\n \nj\na\nź\nń";
 		$this->assertEquals($expected, $current);
 	}
 }

@@ -2,12 +2,17 @@
 
 /**
 * WizyTówka 5
-* This class stores string and manipulates them.
+* This class stores string and gives ability to manipulate it conveniently.
 */
 namespace WizyTowka;
 
-class Text
+class Text implements \ArrayAccess, \IteratorAggregate
 {
+	const TYPOGRAPHY_OTHER   = 0b00000001;
+	const TYPOGRAPHY_QUOTES  = 0b00000010;
+	const TYPOGRAPHY_ORPHANS = 0b00000100;
+	const TYPOGRAPHY_DASHES  = 0b00001000;
+
 	private $_string;
 
 	public function __construct($string)
@@ -25,6 +30,55 @@ class Text
 		return $this->_string;
 	}
 
+	public function offsetExists ($offset)   // ArrayAccess interface.
+	{
+		return ($this->getChar($offset) !== null);
+	}
+
+	public function offsetGet ($offset)   // ArrayAccess interface.
+	{
+		if (($char = $this->getChar($offset)) === null) {
+			trigger_error('Uninitialized string offset: '.$offset, E_USER_NOTICE);
+		}
+
+		return $char;
+	}
+
+	public function offsetSet ($offset, $char)   // ArrayAccess interface.
+	{
+		if ($this->getChar($offset) === null) {
+			trigger_error('Illegal string offset: '.$offset, E_USER_NOTICE);
+			return;
+		}
+
+		$char = mb_substr((string)$char, 0, 1);
+		if ($char === '') {
+			trigger_error('Cannot assign an empty string to a string offset', E_USER_NOTICE);
+			return;
+		}
+
+		if ($offset < 0) {
+			$offset += $this->getLength();
+		}
+
+		$before = mb_substr($this->_string, 0, $offset);
+		$after  = mb_substr($this->_string, $offset+1);
+
+		$this->_string = $before . $char . $after;
+	}
+
+	public function offsetUnset ($offset)   // ArrayAccess interface.
+	{
+		trigger_error('Cannot unset string offsets', E_USER_NOTICE);    // Match PHP native behavior.
+	}
+
+	public function getIterator()   // IteratorAggregate interface.
+	{
+		for ($offset = 0; $offset < $this->getLength(); $offset++) {
+			yield $this[$offset];
+		}
+	}
+
 	public function get()
 	{
 		return $this->_string;
@@ -32,9 +86,15 @@ class Text
 
 	public function getChar($position)
 	{
-		if ($position >= 0) {
-			return mb_substr($this->_string, $position, 1);
+		if (is_integer($position)) {
+			$testNumber = ($position < 0) ? (abs($position) - 1) : $position;
+
+			if ($testNumber < $this->getLength()) {
+				return mb_substr($this->_string, $position, 1);
+			}
 		}
+
+		return null;
 	}
 
 	public function getLength()
@@ -56,72 +116,94 @@ class Text
 		return $this;
 	}
 
-	public function cut($length)
+	public function cut($from, $length = null)
 	{
-		if ($length < 0) {
-			$this->_string = mb_substr($this->_string, $length);
-		}
-		elseif ($length > 0) {
-			$this->_string = mb_substr($this->_string, 0, $length);
+		if (is_integer($from)) {
+			$this->_string = is_integer($length) ? mb_substr($this->_string, $from, $length) : mb_substr($this->_string, $from);
 		}
 
 		return $this;
 	}
 
-	public function correctTypography()
+	public function replace(array $replacements, $caseInsensitive = false)
+	{
+		if ($caseInsensitive) {
+			foreach ($replacements as $from => $to) {
+				$this->_string = mb_ereg_replace($from, $to, $this->_string, 'i');
+			}
+		}
+		else {
+			$this->_string = str_replace(array_keys($replacements), $replacements, $this->_string);
+		}
+
+		return $this;
+	}
+
+	public function correctTypography($flags)
 	{
 		// Do not correct typography in contents of <code> and <pre> HTML tags.
 		$partsPreCode = preg_split('/(<\/{0,1}(?:pre|code)(?: [^<>]*|)>)/', $this->_string, -1,  PREG_SPLIT_DELIM_CAPTURE);
 
 		foreach ($partsPreCode as $key => &$stringPart) {
 			if ($key % 4 != 0) {
-				// Typography corrections should be applied only to $partsPreCode[0], $partsPreCode[4], $partsPreCode[8], $partsPreCode[12], etc.
-				// Other $partsPreCode elements contain <pre>/<code> HTML tags and tags contents.
+				// Typography corrections should be applied only to $partsPreCode[0], $partsPreCode[4], $partsPreCode[8],
+				// $partsPreCode[12], etc. Other $partsPreCode elements contain <pre> or <code> HTML tags and tags contents.
 				continue;
 			}
 
 			// Polish one-letter words at the end of lines. More here: https://pl.wikipedia.org/wiki/Sierotka_(typografia)
-			$stringPart = preg_replace(
-				'/(( |\()(o|u|w|z|i|a)) /i',
-				'$1'.(PHP_VERSION_ID < 70000 ? json_decode('"\u00A0"') : "\u{00A0}"), // "No break space" character.
-				// PHP 5.6 backwards compatibility.
-				// More here: http://php.net/manual/en/migration70.new-features.php#migration70.new-features.unicode-codepoint-escape-syntax
-				$stringPart
-			);
+			if ($flags & self::TYPOGRAPHY_ORPHANS) {
+				$stringPart = preg_replace(
+					'/(( |\()(o|u|w|z|i|a)) /i',
+					'$1'.(PHP_VERSION_ID < 70000 ? json_decode('"\u00A0"') : "\u{00A0}"), // "No break space" character.
+					// PHP 5.6 backwards compatibility.
+					// More here: http://php.net/manual/en/migration70.new-features.php#migration70.new-features.unicode-codepoint-escape-syntax
+					$stringPart
+				);
+			}
 
 			// Em-dash character. More here: https://pl.wikipedia.org/wiki/Pauza_(znak_typograficzny)
-			$stringPart = str_replace(
-				[' - ', ' -<', '>- '],
-				[' — ', ' —<', '>— '],
-				$stringPart
-			);
+			if ($flags & self::TYPOGRAPHY_DASHES) {
+				$stringPart = str_replace(
+					[' - ', ' -<', '>- '],
+					[' — ', ' —<', '>— '],
+					$stringPart
+				);
+			}
 
 			// Ellipsis character. More here: https://pl.wikipedia.org/wiki/Wielokropek
-			$stringPart = str_replace(
-				['... ', ' ...', "...\n", "\n...", '>...', '...<'],
-				['… ',   ' …',   "…\n",   "\n…",   '>…',   '…<'  ],
-				$stringPart
-			);
-
-			// Do not correct apostrophes and quotation marks in HTML open tags.
-			$partsHTMLOpenTags = preg_split('/(<[^\/]* [^<>]*>)/', $stringPart, -1,  PREG_SPLIT_DELIM_CAPTURE);
-
-			foreach ($partsHTMLOpenTags as $key => &$nestedStringPart) {
-				if ($key % 2 != 0) {
-					// Typography corrections should be applied only to $partsHTMLOpenTags[0], $partsHTMLOpenTags[2], $partsHTMLOpenTags[4], $partsHTMLOpenTags[6], etc.
-					// Other $partsHTMLOpenTags elements contain HTML open tags.
-					continue;
-				}
-
-				// Proper Polish apostrophe character. More here: https://pl.wikipedia.org/wiki/Apostrof
-				$nestedStringPart = str_replace('\'', '’', $nestedStringPart);
-
-				// Proper Polish quotation marks. More here: https://pl.wikipedia.org/wiki/Cudzysłów
-				$nestedStringPart = preg_replace('/"([^"]*)"/', '„$1”', $nestedStringPart);
+			if ($flags & self::TYPOGRAPHY_OTHER) {
+				$stringPart = str_replace(
+					['... ', ' ...', "...\n", "\n...", '>...', '...<'],
+					['… ',   ' …',   "…\n",   "\n…",   '>…',   '…<'  ],
+					$stringPart
+				);
 			}
-			unset($nestedStringPart);
 
-			$stringPart = join($partsHTMLOpenTags);
+			if ($flags & self::TYPOGRAPHY_OTHER or $flags & self::TYPOGRAPHY_QUOTES) {
+				// Do not correct apostrophes and quotation marks in HTML open tags.
+				$partsHTMLOpenTags = preg_split('/(<[^\/]* [^<>]*>)/', $stringPart, -1,  PREG_SPLIT_DELIM_CAPTURE);
+
+				foreach ($partsHTMLOpenTags as $key => &$nestedStringPart) {
+					if ($key % 2 != 0) {
+						// Typography corrections should be applied only to $partsHTMLOpenTags[0], $partsHTMLOpenTags[2], $partsHTMLOpenTags[4], $partsHTMLOpenTags[6], etc. Other $partsHTMLOpenTags elements contain HTML open tags.
+						continue;
+					}
+
+					// Proper Polish apostrophe character. More here: https://pl.wikipedia.org/wiki/Apostrof
+					if ($flags & self::TYPOGRAPHY_OTHER) {
+						$nestedStringPart = str_replace('\'', '’', $nestedStringPart);
+					}
+
+					// Proper Polish quotation marks. More here: https://pl.wikipedia.org/wiki/Cudzysłów
+					if ($flags & self::TYPOGRAPHY_QUOTES) {
+						$nestedStringPart = preg_replace('/"([^"]*)"/', '„$1”', $nestedStringPart);
+					}
+				}
+				unset($nestedStringPart);
+
+				$stringPart = join($partsHTMLOpenTags);
+			}
 		}
 
 		$this->_string = join($partsPreCode);
@@ -133,10 +215,10 @@ class Text
 	{
 		if ($maxLength > 0 and $maxLength < $this->getLength()) {
 			$removeBrokenWord = ($this->getChar($maxLength) != ' ');
-			$this->cut($maxLength);
+			$this->cut(0, $maxLength);
 
 			if ($removeBrokenWord and $lastSpace = mb_strrpos($this->_string, ' ')) {
-				$this->cut($lastSpace);
+				$this->cut(0, $lastSpace);
 			}
 
 			$this->_string .= $dots;
@@ -165,12 +247,15 @@ class Text
 		return $this;
 	}
 
-	public function makeSlug()
+	public function makeSlug($lowercase = true)
 	{
 		$charsFrom = [' ', 'ą', 'ć', 'ę', 'ł', 'ó', 'ń', 'ś', 'ż', 'ź'];
 		$charsTo   = ['-', 'a', 'c', 'e', 'l', 'o', 'n', 's', 'z', 'z'];
 
-		$this->lowercase();
+		if ($lowercase) {
+			$this->lowercase();
+		}
+
 		$this->_string = str_replace($charsFrom, $charsTo, $this->_string);
 		$this->_string = preg_replace(['/[^a-z0-9\-_]/', '/\-{2,}/'], ['', '-'], $this->_string);
 
