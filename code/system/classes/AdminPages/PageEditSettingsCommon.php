@@ -46,6 +46,9 @@ trait PageEditSettingsCommon
 		// We don't need to assign values because these properties contain instances of \stdClass.
 		$this->_pageBoxes[0]->save();
 
+		// Save also page to update $updatedTime field in database.
+		$this->_page->save();
+
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
