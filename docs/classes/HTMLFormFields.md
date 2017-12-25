@@ -100,6 +100,8 @@ Zobacz opis argumentów metody `text()`.
 
 Jako `$currentValue` należy podać bieżącą wartość przełącznika. Zostanie ona rzutowana na typ logiczny. Jeśli wartość będzie prawdą – checkbox zostanie zaznaczony, jeśli fałszem — będzie odznaczony.
 
+Uwaga: jeśli w tablicy `$HTMLAttributes` określono dodatkowy atrybut `title`, zostanie on także dodany do etykiety `<label>`.
+
 ## `radio($label, $name, $fieldValue, $currentValue, array $HTMLAttributes = [])`
 
 Dodaje pole wyboru `<input type="radio">`
@@ -107,6 +109,8 @@ Dodaje pole wyboru `<input type="radio">`
 Zobacz opis argumentów metody `text()`.
 
 W argumencie `$fieldValue` należy wprowadzić wartość pola wyboru (atrybut HTML `value`). Jako `$currentValue` należy podać bieżącą wartość przełącznika. Jeżeli `$fieldValue` i `$currentValue` będą sobie równe, pole zostanie zaznaczone, w innym wypadku będzie odznaczone.
+
+Uwaga: jeśli w tablicy `$HTMLAttributes` określono dodatkowy atrybut `title`, zostanie on także dodany do etykiety `<label>`.
 
 ## `option(...)`
 
