@@ -1,19 +1,17 @@
 <form method="post">
 	<h3>Dane użytkownika</h3>
 
-	<?php if ($createInsteadEdit) { ?>
-		<?= (new HTMLFormFields)
-			->text('Nazwa użytkownika', 'name', '',
-				['required'=>true, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
-			)
-		?>
-	<?php } else { ?>
-		<?= (new HTMLFormFields)
-			->text('Nazwa użytkownika', 'name', $user->name,
-				['pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
-			)
-			->text('Data utworzenia', 'createdTime', $user->createdTime, ['disabled'=>true])
-		?>
+	<?= (new HTMLFormFields)
+		->text('Nazwa użytkownika', 'name', $user->name,
+			['required'=>$createInsteadEdit, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
+		)
+	?>
+
+	<?php if (!$createInsteadEdit) { ?>
+		<dl>
+			<dt>Data ostatniego zalogowania</dt><dd><?= $user->lastLoginTime ? HTML::formatDateTime($user->lastLoginTime) : 'nigdy' ?></dd>
+			<dt>Data utworzenia</dt><dd><?= HTML::formatDateTime($user->createdTime) ?></dd>
+		</dl>
 	<?php } ?>
 
 	<p class="information">W nazwie użytkownika dozwolone są wyłącznie litery (bez polskich znaków diakrytycznych), cyfry, minus, kropka i podkreślnik. Wielkość liter ma znaczenie.</p>

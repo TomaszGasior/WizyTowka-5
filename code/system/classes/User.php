@@ -20,6 +20,7 @@ class User extends DatabaseObject
 		'name',
 		'password',
 		'permissions',
+		'lastLoginTime',
 		'createdTime',
 	];
 	static protected $_tableColumnsTimeAtInsert = [

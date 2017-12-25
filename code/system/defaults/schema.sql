@@ -12,6 +12,8 @@ CREATE TABLE Users (
 	name VARCHAR(100) NOT NULL UNIQUE,                     -- wt_dbms: ! mysql
 	password VARCHAR(100) NOT NULL,
 	permissions SMALLINT NOT NULL DEFAULT 0,
+	lastLoginTime INTEGER UNSIGNED DEFAULT 0, -- wt_dbms: mysql
+	lastLoginTime BIGINT DEFAULT 0,           -- wt_dbms: ! mysql
 	createdTime INTEGER UNSIGNED NOT NULL DEFAULT 0 -- wt_dbms: mysql
 	createdTime BIGINT NOT NULL DEFAULT 0           -- wt_dbms: ! mysql
 );

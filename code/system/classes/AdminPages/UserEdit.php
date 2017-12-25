@@ -64,8 +64,6 @@ class UserEdit extends WT\AdminPanelPage
 		$this->_HTMLTemplate->setTemplate('UserEditCreate');
 		$this->_HTMLTemplate->createInsteadEdit = false;
 
-		$this->_user->createdTime = (new WT\Text($this->_user->createdTime))->formatAsDateTime()->get();
-
 		$this->_HTMLTemplate->user        = $this->_user;
 		$this->_HTMLTemplate->permissions = $this->_prepareNamesArrayFromPermissionValue($this->_user->permissions);
 	}

@@ -30,6 +30,11 @@ class Login extends WT\AdminPanelPage
 
 		if ($user and $user->checkPassword($_POST['password'])) {
 			WT\SessionManager::logIn($user->id, 3600);
+
+			// Update last login time statistics in database.
+			$user->lastLoginTime = time();
+			$user->save();
+
 			$this->_redirectAfterLogIn();
 		}
 		else {
