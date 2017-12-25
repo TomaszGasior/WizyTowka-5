@@ -24,7 +24,10 @@ class WTK extends WT\AdminPanelPage
 	public function POSTQuery()
 	{
 		foreach ($this->_settings as $name => $value) {
-			if (isset($_POST[$name])) {
+			if (is_bool($value)) {
+				$this->_settings->$name = isset($_POST[$name]);
+			}
+			elseif (isset($_POST[$name])) {
 				$this->_settings->$name = $_POST[$name];
 			}
 		}
@@ -34,7 +37,27 @@ class WTK extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		$this->_HTMLTemplate->settings        = $this->_settings;
-		$this->_HTMLTemplate->defaultSettings = $this->_settingsDefault;
+		$defaults = $this->_settingsDefault;
+		$fields   = new WT\HTMLFormFields;
+
+		$prepareArrayFields = function($settings, $group = null) use (&$prepareArrayFields, $fields, $defaults)
+		{
+			foreach ($settings as $name => $value) {
+				$name = $group ? ($group.'['.$name.']') : $name;
+
+				if (is_array($value)) {
+					$prepareArrayFields($value, $name);
+				}
+				else {
+					$attributes = (empty($group) and isset($defaults->$name))
+					              ? ['title' => 'Domyślna wartość tego ustawienia: „'.$defaults->$name.'”.'] : [];
+					$fields->{is_bool($value) ? 'checkbox' : 'text'}($name, $name, $value, $attributes);
+				}
+			}
+		};
+
+		$prepareArrayFields($this->_settings);
+
+		$this->_HTMLTemplate->fields = $fields;
 	}
 }
