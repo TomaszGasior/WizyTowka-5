@@ -149,7 +149,7 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		$potentialClass = '\\' . __NAMESPACE__ . '\\' . $classNamePart;
 
 		$inProgress  = true;
-		$classExists = class_exists($potentialClass);
+		$classExists = (class_exists($potentialClass) or trait_exists($potentialClass));
 		$inProgress  = false;
 
 		if ($classExists) {
