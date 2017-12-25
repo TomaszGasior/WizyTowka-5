@@ -20,10 +20,10 @@ trait SessionManager
 		}
 		self::$_started = true;
 
-		$sessionId = (isset($_COOKIE[self::$_cookieName])) ? $_COOKIE[self::$_cookieName] : false;
+		$sessionId = isset($_COOKIE[self::$_cookieName]) ? $_COOKIE[self::$_cookieName] : false;
 		if ($sessionId) {
 			$sessionsConfig = self::_getSessionsConfig();
-			$session = (isset($sessionsConfig->$sessionId)) ? $sessionsConfig->$sessionId : false;
+			$session = isset($sessionsConfig->$sessionId) ? $sessionsConfig->$sessionId : false;
 
 			if ($session and $session['waiString'] == self::_generateWAI($session['userId']) and time() < $session['expireTime']) {
 				self::$_currentUserId = $session['userId'];
@@ -32,6 +32,7 @@ trait SessionManager
 				if (time() > $session['reloginTime']) {
 					self::logOut();
 					self::logIn($session['userId'], $session['expireTime'] - time());
+					self::$_currentUserId = $session['userId'];
 				}
 			}
 			// If session is expired or WAI string is incorrect, destroy session data such as when user is logged out.
@@ -48,6 +49,8 @@ trait SessionManager
 			throw SessionManagerException::wrongState();
 		}
 
+		$session = [];
+
 		$session['userId']      = $userId;
 		$session['waiString']   = self::_generateWAI($userId);
 		$session['expireTime']  = time() + (integer)$sessionDuration;
@@ -60,7 +63,7 @@ trait SessionManager
 		$forceHTTPS = (!empty($_SERVER['HTTPS']) and $_SERVER['HTTPS'] != 'off');
 		setcookie(self::$_cookieName, $sessionId, $session['expireTime'], null, null, $forceHTTPS, true);
 
-		self::$_currentUserId = $userId;
+		// User will be logged in next request!
 	}
 
 	static public function logOut()

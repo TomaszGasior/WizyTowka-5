@@ -21,6 +21,8 @@ Jeżeli menadżer sesji został już uruchomiony, metoda rzuca wyjątek `Session
 
 Dokonuje zalogowania użytkownika o identyfikatorze określonym w argumencie `$userId`. Argument `$sessionDuration` określa czas trwania sesji użytkownika w sekundach.
 
+Uwaga: użytkownik zostanie zalogowany dopiero przy następnym żądaniu HTTP! W bieżącym żądaniu menadżer sesji będzie zachowywać się, jakby użytkownik nie był zalogowany. Zalogowanie nie nastąpi, jeśli klient ma wyłączoną funkcję ciasteczek w przeglądarce.
+
 Jeżeli użytkownik już jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek `SessionManagerException` #2.
 
 ## *static* `logOut()`

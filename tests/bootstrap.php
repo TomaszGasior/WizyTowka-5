@@ -40,6 +40,12 @@ abstract class TestCase extends PHPUnit\Framework\TestCase
 				self::$_object = $object;
 			}
 
+			public function __get($property)
+			{
+				($reflection = new ReflectionProperty(self::$_object, $property))->setAccessible(true);
+				return $reflection->getValue();
+			}
+
 			public function __call($function, $arguments)
 			{
 				($reflection = new ReflectionMethod(self::$_object, $function))->setAccessible(true);
@@ -61,24 +67,21 @@ abstract class TestCase extends PHPUnit\Framework\TestCase
 
 	// Get properties of last HTTP cookie sent by setcookie() function.
 	// @runInSeparateProcess annotation is required.
-	protected function getLastHTTPCookie($property)
+	protected function getLastHTTPCookie()
 	{
 		$found = preg_match(
 			'/^Set-Cookie: (?<name>[^= ]+)=(?<value>[^ ;]+)(?:; expires=(?<expires>[^;]*))?/i',
 			$this->getLastHTTPHeader(), $matches
 		);
 
-		if (isset($matches['value'])) {
-			$matches['value'] = urldecode($matches['value']);
-		}
-		if (isset($matches['expires'])) {
-			$matches['expires'] = strtotime($matches['expires']);
-		}
-
 		if ($found) {
-			$_COOKIE[$matches['name']] = $matches['value'];
+			return [
+				'name'    => $matches['name'],
+				'value'   => urldecode($matches['value']),
+				'expires' => !empty($matches['expires']) ? strtotime($matches['expires']) : '',
+			];
 		}
 
-		return ($found and isset($matches[$property])) ? $matches[$property] : false;
+		return false;
 	}
 }
