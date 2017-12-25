@@ -58,7 +58,7 @@ class WebsiteRenderer
 		$head->setAssetsPathBase(Settings::get('websiteAddress'));
 		$head->setAssetsPath($this->_theme->getURL());
 
-		$head->title(self::correctTypography(sprintf(Settings::get('websiteTitle'), $this->_page->title)));
+		$head->title(HTML::correctTypography(sprintf(Settings::get('websiteTitle'), $this->_page->title)));
 		$head->stylesheet('style.css');
 		$head->meta('Generator', 'WizyTówka CMS — https://wizytowka.tomaszgasior.pl');
 
@@ -93,8 +93,8 @@ class WebsiteRenderer
 		$template = new HTMLTemplate('WebsiteHeader');
 		$this->_setupTemplatePath($template);
 
-		$template->websiteTitle       = self::correctTypography(Settings::get('websiteTitle'));
-		$template->websiteDescription = self::correctTypography(Settings::get('websiteDescription'));
+		$template->websiteTitle       = HTML::correctTypography(Settings::get('websiteTitle'));
+		$template->websiteDescription = HTML::correctTypography(Settings::get('websiteDescription'));
 
 		ob_start();
 		$template->render();
@@ -107,7 +107,7 @@ class WebsiteRenderer
 		$this->_setupTemplatePath($template);
 
 		$elements = [
-			0   => '&copy; ' . self::correctTypography(Settings::get('websiteAuthor')),
+			0   => '&copy; ' . HTML::correctTypography(Settings::get('websiteAuthor')),
 			999 => '<a href="https://wizytowka.tomaszgasior.pl" title="Ta witryna jest oparta na systemie zarządzania treścią WizyTówka.">WizyTówka</a>',
 		];
 
@@ -124,14 +124,14 @@ class WebsiteRenderer
 		$template = new HTMLTemplate('WebsitePageHeader');
 		$this->_setupTemplatePath($template);
 
-		$template->pageTitle = self::correctTypography($this->_page->title);
+		$template->pageTitle = HTML::correctTypography($this->_page->title);
 
 		$properties = [];
 		if ($user = User::getById($this->_page->userId)) {
-			$properties['Autor'] = self::correctTypography($user->name);
+			$properties['Autor'] = HTML::correctTypography($user->name);
 		}
-		$properties['Data utworzenia']  = self::formatDate($this->_page->createdTime);
-		$properties['Data modyfikacji'] = self::formatDate($this->_page->updatedTime);
+		$properties['Data utworzenia']  = HTML::formatDateTime($this->_page->createdTime);
+		$properties['Data modyfikacji'] = HTML::formatDateTime($this->_page->updatedTime);
 
 		$template->properties = $properties;
 
@@ -145,7 +145,7 @@ class WebsiteRenderer
 		$template = new HTMLTemplate('WebsitePageContent');
 		$this->_setupTemplatePath($template);
 
-		$template->message   = self::correctTypography($this->_HTMLMessage);
+		$template->message   = HTML::correctTypography($this->_HTMLMessage);
 		$template->pageBoxes = $this->_HTMLBoxes;
 
 		ob_start();
@@ -161,7 +161,7 @@ class WebsiteRenderer
 		$menu  = new HTMLMenu;
 
 		foreach ($pages as $page) {
-			$menu->add(self::correctTypography($page->title), Website::URL($page->id), $page->slug);
+			$menu->add(HTML::correctTypography($page->title), Website::URL($page->id), $page->slug);
 		}
 
 		ob_start();
@@ -183,16 +183,6 @@ class WebsiteRenderer
 			case 'pageTitle':          return $this->_page->title;
 			case 'version':            return VERSION;
 		}
-	}
-
-	static public function correctTypography($text)
-	{
-		return Settings::get('websiteTypography') ? (new Text($text))->correctTypography()->get() : $text;
-	}
-
-	static public function formatDate($unixTimestamp)
-	{
-		return (new Text($unixTimestamp))->formatAsDateTime(Settings::get('websiteDateFormat'))->get();
 	}
 }
 
