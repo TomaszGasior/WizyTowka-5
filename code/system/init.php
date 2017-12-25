@@ -19,6 +19,7 @@ if (PHP_VERSION_ID < 70000) {
 }
 
 mb_internal_encoding('UTF-8');
+mb_regex_encoding('UTF-8');
 
 include __DIR__ . '/classes/Autoloader.php';
 spl_autoload_register(__NAMESPACE__.'\Autoloader::autoload');
