@@ -13,6 +13,11 @@
 		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $page->isDraft)
 	?>
 
+	<dl>
+		<dt>Data modyfikacji</dt><dd><?= HTML::formatDateTime($page->updatedTime) ?></dd>
+		<dt>Data utworzenia</dt><dd><?= HTML::formatDateTime($page->createdTime) ?></dd>
+	</dl>
+
 	<p class="information">Identyfikator to uproszczona nazwa widoczna w&nbsp;adresie strony w&nbsp;pasku adresu przeglądarki. Nie może zawierać spacji, polskich znaków i&nbsp;niestandardowych symboli.</p>
 
 	<h3>Informacje dla wyszukiwarek</h3>
