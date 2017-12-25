@@ -14,22 +14,30 @@ class WebsiteSettings extends WT\AdminPanelPage
 
 	private $_settings;
 
-	private $_definedDateFormats = [
-		'%Y-%m-%d %H:%M:%S',
-		'%Y-%m-%d %H:%M',
-		'%Y-%m-%d %k:%M',
-		'%d.%m.%Y %H:%M',
-		'%e.%m.%Y %H:%M',
-		'%e.%m.%Y %k:%M',
-		'%e %B %Y, %k:%M',
-		'%A, %e %B %Y, %k:%M',
-		'%e %B %Y, %A, %k:%M',
-		'%m/%d/%y %H:%M',
+	private $_dateTimeFormatCurrent  = '';
+	private $_dateTimeFormatDisable  = false;
+	private $_dateTimeDefinedFormats = [
+		// Order: date format, separator, time format.
+		['%Y-%m-%d'    , ' ' , '%H:%M:%S'],
+		['%Y-%m-%d'    , ' ' , '%H:%M'   ],
+		['%Y-%m-%d'    , ' ' , '%k:%M'   ],
+		['%d.%m.%Y'    , ' ' , '%H:%M'   ],
+		['%e.%m.%Y'    , ' ' , '%H:%M'   ],
+		['%e.%m.%Y'    , ' ' , '%k:%M'   ],
+		['%e %B %Y'    , ', ', '%k:%M'   ],
+		['%A, %e %B %Y', ', ', '%k:%M'   ],
+		['%e %B %Y, %A', ', ', '%k:%M'   ],
+		['%m/%d/%y'    , ' ' , '%H:%M'   ],
 	];
 
 	protected function _prepare()
 	{
 		$this->_settings = WT\Settings::get();
+
+		// Disallow modifying of date time format if settings was changed outside GUI.
+		$this->_dateTimeFormatCurrent = [$this->_settings->dateDateFormat, $this->_settings->dateSeparator,
+		                                 $this->_settings->dateTimeFormat];
+		$this->_dateTimeFormatDisable = !in_array($this->_dateTimeFormatCurrent, $this->_dateTimeDefinedFormats);
 	}
 
 	public function POSTQuery()
@@ -43,13 +51,18 @@ class WebsiteSettings extends WT\AdminPanelPage
 		// Try to update ".htaccess" file, when pretty links setting was changed.
 		// Tell user about problem, when he enabled pretty links and server is other than Apache.
 		if ($this->_settings->websitePrettyLinks != isset($_POST['websitePrettyLinks'])
-			and !$this->_updateHtaccess(isset($_POST['websitePrettyLinks'])) and isset($_POST['websitePrettyLinks'])) {
+			and !$this->_updateHtaccess(isset($_POST['websitePrettyLinks']))
+			and isset($_POST['websitePrettyLinks'])) {
 			$this->_HTMLMessage->error('Zmiany zostały zapisane. Przyjazne odnośniki wymagają ręcznej konfiguracji serwera.');
 		}
 
 		// Date/time format can be changed in configuration file. In this case form field will be disabled.
-		if (isset($_POST['websiteDateFormat']) and in_array($_POST['websiteDateFormat'], $this->_definedDateFormats)) {
-			$this->_settings->websiteDateFormat = $_POST['websiteDateFormat'];
+		if (!$this->_dateTimeFormatDisable and isset($_POST['dateTimeFormat'])
+			and isset($this->_dateTimeDefinedFormats[$_POST['dateTimeFormat']])) {
+			$this->_dateTimeFormatCurrent    = $this->_dateTimeDefinedFormats[$_POST['dateTimeFormat']];
+			$this->_settings->dateDateFormat = $this->_dateTimeFormatCurrent[0];
+			$this->_settings->dateSeparator  = $this->_dateTimeFormatCurrent[1];
+			$this->_settings->dateTimeFormat = $this->_dateTimeFormatCurrent[2];
 		}
 
 		$this->_settings->websiteTitle        = $_POST['websiteTitle'];
@@ -71,7 +84,38 @@ class WebsiteSettings extends WT\AdminPanelPage
 			$this->_settings->websiteTitlePattern = '%s — ' . $this->_settings->websiteTitlePattern;
 		}
 
+		$this->_settings->typographyQuotes  = isset($_POST['typographyQuotes']);
+		$this->_settings->typographyDashes  = isset($_POST['typographyDashes']);
+		$this->_settings->typographyOrphans = isset($_POST['typographyOrphans']);
+		$this->_settings->typographyOther   = isset($_POST['typographyOther']);
+
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
+	}
+
+	protected function _output()
+	{
+		$this->_HTMLTemplate->settings = $this->_settings;
+
+		// "Website homepage" field — titles of public pages.
+		$this->_HTMLTemplate->pagesIds = array_column(WT\Page::getAll(), 'title', 'id');
+
+		// "Date/time format" field — current format and list with formats and examples.
+		$dateTimeFormatList = [];
+		if ($this->_dateTimeFormatDisable) {
+			$dateTimeFormatList[''] = '(format niestandardowy)';
+			$dateTimeFormatSelected = '';
+		}
+		else {
+			foreach ($this->_dateTimeDefinedFormats as $key => $format) {
+				$dateTimeFormatList[$key] = (new WT\Text(1472741330))->formatAsDateTime(
+					join($this->_settings->dateSwapTime ? array_reverse($format) : $format)
+				)->get();
+			}
+			$dateTimeFormatSelected = array_search($this->_dateTimeFormatCurrent, $this->_dateTimeDefinedFormats);
+		}
+		$this->_HTMLTemplate->dateTimeFormatList     = $dateTimeFormatList;
+		$this->_HTMLTemplate->dateTimeFormatSelected = $dateTimeFormatSelected;
+		$this->_HTMLTemplate->dateTimeFormatDisable  = $this->_dateTimeFormatDisable;
 	}
 
 	private function _updateHtaccess($enablePrettyLinks)
@@ -109,24 +153,5 @@ HTACCESS;
 		}
 
 		return true;
-	}
-
-	protected function _output()
-	{
-		$this->_HTMLTemplate->settings = $this->_settings;
-
-		// "Website homepage" field — titles of public pages.
-		$pages = WT\Page::getAll();
-		$this->_HTMLTemplate->pagesIds = array_column($pages, 'title', 'id');
-
-		// "Date/time format" field — list with formats and examples.
-		$dateFormatsAndExamples = [];
-		foreach ($this->_definedDateFormats as $format) {
-			$dateFormatsAndExamples[$format] = (new WT\Text(1472711447))->formatAsDateTime($format)->get();
-		}
-		$this->_HTMLTemplate->dateFormatsAndExamples = $dateFormatsAndExamples;
-
-		// "Date/time format" field — disable if setting was changed in configuration file.
-		$this->_HTMLTemplate->disableDateFormatField = !in_array($this->_settings->websiteDateFormat, $this->_definedDateFormats);
 	}
 }
