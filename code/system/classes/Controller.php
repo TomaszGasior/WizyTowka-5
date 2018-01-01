@@ -16,14 +16,14 @@ abstract class Controller
 			foreach ($array as $key => &$value) {
 				$key = explode('_', $key, 2);
 				if ($key[0] != 'nofilter') {
-					is_array($value) ? $HTMLFilter($value) : $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+					is_array($value) ? $HTMLFilter($value) : $value = HTML::escape($value);
 				}
 				elseif (!empty($key[1])) {
 					$aliases[$key[1]] =& $value;
 				}
 			}
 			$array += $aliases;
-			// $_POST elements with "nofilter_" prefix will not be filtered.
+			// $_POST elements with "nofilter_" prefix won't be escaped.
 			// For these elements referenced aliases without "nofilter_" prefix will be created.
 		};
 

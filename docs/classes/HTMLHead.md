@@ -13,19 +13,19 @@ Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybut
 
 ## `title($title = null, array $HTMLAttributes = [])`
 
-Dodaje tytuł strony `$title` w znaczniku `<title>`. Można dodać tylko jeden znacznik `<title>` — jeżeli dodano ten znacznik wcześniej, poprzedni egzemplarz zostanie usunięty. Tytuł jest filtrowany za pomocą funkcji `htmlspecialchars()`. Jeśli `$title` jest puste, usuwa znacznik.
+Dodaje tytuł strony `$title` w znaczniku `<title>`. Można dodać tylko jeden znacznik `<title>` — jeżeli dodano ten znacznik wcześniej, poprzedni egzemplarz zostanie usunięty. Tytuł jest filtrowany za pomocą `HTML::escape()`. Jeśli `$title` jest puste, usuwa znacznik.
 
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
 
 ## `meta($name, $content, array $HTMLAttributes = [])`
 
-Dodaje metatag `<meta>` o atrybucie `name` równym `$name` i atrybucie `content` równym `$content`. Atrybut `content` jest filtrowany za pomocą funkcji `htmlspecialchars()`.
+Dodaje metatag `<meta>` o atrybucie `name` równym `$name` i atrybucie `content` równym `$content`. Atrybut `content` jest filtrowany za pomocą `HTML::escape()`.
 
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
 
 ## `httpEquiv($header, $content, array $HTMLAttributes = [])`
 
-Dodaje ekwiwalent nagłówka HTTP poprzez znacznik `<meta>` o atrybucie `http-equiv` równym `$header` i atrybucie `content` równym `$content`. Atrybut `content` jest filtrowany za pomocą funkcji `htmlspecialchars()`.
+Dodaje ekwiwalent nagłówka HTTP poprzez znacznik `<meta>` o atrybucie `http-equiv` równym `$header` i atrybucie `content` równym `$content`. Atrybut `content` jest filtrowany za pomocą `HTML::escape()`.
 
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
 

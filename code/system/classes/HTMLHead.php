@@ -49,7 +49,7 @@ class HTMLHead extends HTMLTag
 			$alreadyAdded = true;
 
 			$tagName = __FUNCTION__;
-			$content = htmlspecialchars($title);
+			$content = HTML::escape($title);
 
 			$this->_tags[] = compact('tagName', 'content', 'HTMLAttributes');
 		}
@@ -66,7 +66,7 @@ class HTMLHead extends HTMLTag
 	{
 		$tagName = __FUNCTION__;
 		$HTMLAttributes['name']    = $name;
-		$HTMLAttributes['content'] = htmlspecialchars($content);
+		$HTMLAttributes['content'] = HTML::escape($content);
 
 		$this->_tags[] = compact('tagName', 'HTMLAttributes');
 		return $this;
@@ -76,7 +76,7 @@ class HTMLHead extends HTMLTag
 	{
 		$tagName = 'meta';
 		$HTMLAttributes['http-equiv'] = $header;
-		$HTMLAttributes['content']    = htmlspecialchars($content);
+		$HTMLAttributes['content']    = HTML::escape($content);
 
 		$this->_tags[] = compact('tagName', 'HTMLAttributes');
 		return $this;

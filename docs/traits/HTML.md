@@ -3,6 +3,14 @@ HTML
 
 Trait gromadzący narzędzia przydatne w szablonach HTML, uwzględniające preferencje użytkownika.
 
+## *static* `escape($text)`
+
+Zwraca tekst `$text` ze znakami specjalnymi HTML (`<`, `>`, `"`, `'`, `&`) zamienionymi na ich bezpieczne przy wyświetlaniu odpowiedniki.
+
+## *static* `unescape($text)`
+
+Zwraca tekst `$text` z cofniętymi zmianami wprowadzonymi przez metodę `escape()`.
+
 ## *static* `correctTypography($text)`
 
 Zwraca tekst `$text`, aplikując nań poprawki typograficzne zgodnie z ustawieniami systemu.

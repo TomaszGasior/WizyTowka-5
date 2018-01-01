@@ -8,6 +8,16 @@ namespace WizyTowka;
 
 trait HTML
 {
+	static public function escape($text)
+	{
+		return htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
+	}
+
+	static public function unescape($text)
+	{
+		return htmlspecialchars_decode($text, ENT_QUOTES | ENT_HTML5);
+	}
+
 	static public function correctTypography($text)
 	{
 		$settings = Settings::get();
