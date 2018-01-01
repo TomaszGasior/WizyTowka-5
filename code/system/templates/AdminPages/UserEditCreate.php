@@ -35,7 +35,7 @@
 		->checkbox('Edycja stron i plików innych użytkowników', 'permissions[EDITING_OTHERS_PAGES]', $permissions['EDITING_OTHERS_PAGES'])
 		->checkbox('Modyfikacja elementów witryny (obszary, menu)', 'permissions[EDITING_SITE_ELEMENTS]', $permissions['EDITING_SITE_ELEMENTS'])
 		->checkbox('Modyfikacja konfiguracji witryny (ustawienia, personalizacja)', 'permissions[EDITING_SITE_CONFIG]', $permissions['EDITING_SITE_CONFIG'])
-		->checkbox('<b>Super użytkownik</b>: zarządzanie użytkownikami i dostęp do edytora plików', 'permissions[SUPER_USER]', $permissions['SUPER_USER'])
+		->checkbox('<b>Superużytkownik</b>: zarządzanie użytkownikami i dostęp do edytora plików', 'permissions[SUPER_USER]', $permissions['SUPER_USER'])
 	?>
 	<button>Zapisz zmiany</button>
 </form>

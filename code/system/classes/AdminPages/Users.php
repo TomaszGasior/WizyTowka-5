@@ -32,7 +32,7 @@ class Users extends WT\AdminPanelPage
 				$this->_HTMLMessage->error('Nie można usunąć własnego konta użytkownika.');
 			}
 			elseif ($user->permissions & WT\User::PERM_SUPER_USER) {
-				$this->_HTMLMessage->error('Nie można usunąć super użytkownika „' . $user->name . '”.');
+				$this->_HTMLMessage->error('Nie można usunąć superużytkownika „' . $user->name . '”.');
 			}
 			else {
 				$user->delete();

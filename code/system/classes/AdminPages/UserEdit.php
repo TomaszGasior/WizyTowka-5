@@ -49,7 +49,7 @@ class UserEdit extends WT\AdminPanelPage
 
 		$permissions = $this->_calculatePermissionValueFromNamesArray(isset($_POST['permissions']) ? $_POST['permissions'] : []);
 		if ($this->_user->id == $this->_currentUser->id and !($permissions & WT\User::PERM_SUPER_USER)) {
-			$this->_HTMLMessage->error('Nie można odebrać samemu sobie uprawnień super użytkownika.');
+			$this->_HTMLMessage->error('Nie można odebrać samemu sobie uprawnień superużytkownika.');
 		}
 		else {
 			$this->_user->permissions = $permissions;
