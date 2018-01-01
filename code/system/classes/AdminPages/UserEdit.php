@@ -37,6 +37,13 @@ class UserEdit extends WT\AdminPanelPage
 			}
 		}
 
+		if (empty($_POST['email']) or filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+			$this->_user->email = $_POST['email'];
+		}
+		else {
+			$this->_HTMLMessage->error('Podany adres e-mail jest niepoprawny.');
+		}
+
 		if (!empty($_POST['passwordText_1']) and !empty($_POST['passwordText_2'])) {
 		    if ($_POST['passwordText_1'] === $_POST['passwordText_2']) {
 				$this->_user->setPassword($_POST['passwordText_1']);

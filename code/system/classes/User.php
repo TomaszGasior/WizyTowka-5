@@ -19,6 +19,7 @@ class User extends DatabaseObject
 	static protected $_tableColumns = [
 		'name',
 		'password',
+		'email',
 		'permissions',
 		'lastLoginTime',
 		'createdTime',

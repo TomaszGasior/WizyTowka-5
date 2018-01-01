@@ -11,6 +11,7 @@ CREATE TABLE Users (
 	name VARCHAR(100) NOT NULL UNIQUE COLLATE utf8mb4_bin, -- wt_dbms: mysql  -- Force case sensitive.
 	name VARCHAR(100) NOT NULL UNIQUE,                     -- wt_dbms: ! mysql
 	password VARCHAR(100) NOT NULL,
+	email VARCHAR(100),
 	permissions SMALLINT NOT NULL DEFAULT 0,
 	lastLoginTime INTEGER UNSIGNED DEFAULT 0, -- wt_dbms: mysql
 	lastLoginTime BIGINT DEFAULT 0,           -- wt_dbms: ! mysql

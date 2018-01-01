@@ -2,9 +2,10 @@
 	<h3>Dane użytkownika</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Nazwa użytkownika', 'name', $user->name,
+		->text('Nazwa użytkownika', 'name', $createInsteadEdit ? '' : $user->name,
 			['required'=>$createInsteadEdit, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 		)
+		->email('Adres e-mail', 'email', $createInsteadEdit ? '' : $user->email)
 	?>
 
 	<?php if (!$createInsteadEdit) { ?>

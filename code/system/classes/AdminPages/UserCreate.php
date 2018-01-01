@@ -34,6 +34,14 @@ class UserCreate extends WT\AdminPanelPage
 			$user->name = $_POST['name'];
 		}
 
+		if (empty($_POST['email']) or filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+			$user->email = $_POST['email'];
+		}
+		else {
+			$this->_HTMLMessage->error('Podany adres e-mail jest niepoprawny.');
+			return;
+		}
+
 		if (empty($_POST['passwordText_1']) or empty($_POST['passwordText_2'])) {
 			$this->_HTMLMessage->error('Nie określono hasła użytkownika.');
 			return;
