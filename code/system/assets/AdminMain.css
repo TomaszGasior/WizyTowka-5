@@ -89,8 +89,6 @@ input, button, textarea, select {
 }
 input[disabled], button[disabled], textarea[disabled], select[disabled] {
 	opacity: 0.7;
-}
-input[disabled]:hover, button[disabled]:hover, textarea[disabled]:hover, select[disabled]:hover {
 	cursor: not-allowed;
 }
 
@@ -137,6 +135,11 @@ input[type="checkbox"]:focus + label:before, input[type="radio"]:focus + label:b
 }
 input[type="checkbox"]:active + label:before, input[type="radio"]:active + label:before {
 	opacity: 0.5;
+}
+input[type="checkbox"][disabled] + label, input[type="radio"][disabled] + label,
+input[type="checkbox"][disabled] + label:before, input[type="radio"][disabled] + label:before {
+	opacity: 0.7;
+	cursor: not-allowed;
 }
 
 input[type="checkbox"] + label:before {
