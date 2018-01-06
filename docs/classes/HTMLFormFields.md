@@ -138,6 +138,10 @@ Argument `$selected` określa wartość aktualnie zaznaczonej opcji.
 
 Działa dokładnie tak samo jak `text()` z tą różnicą, że umożliwia dodanie do pola tekstowego podpowiedzi (znacznik HTML `<datalist>`) określonych w argumencie `$hints`.
 
+## `skip()`
+
+Metoda nie robi nic, jedynie zwraca `$this`. Użyteczna przy tworzeniu łańcuchów poleceń, przy konieczności warunkowego wyświetlenia jednego z pól.
+
 ## `remove($name)`
 
 Usuwa wszystkie pola o nazwie (atrybucie HTML `name`) określonym w argumencie `$name`.

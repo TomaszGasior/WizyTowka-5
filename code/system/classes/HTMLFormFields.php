@@ -140,6 +140,11 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
+	public function skip()
+	{
+		return $this;
+	}
+
 	public function remove($name)
 	{
 		foreach ($this->_fields as $key => $field) {

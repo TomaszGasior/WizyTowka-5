@@ -13,6 +13,6 @@ class Logout extends WT\AdminPanelPage
 	{
 		WT\SessionManager::logOut();
 
-		$this->_redirect('login', ['msg'=>1]);
+		$this->_redirect('login', ['msg' => 1]);
 	}
 }
