@@ -94,6 +94,8 @@ class WebsiteSettings extends WT\AdminPanelPage
 
 	protected function _output()
 	{
+		$this->_HTMLContextMenu->add('Informacje wyszukiwarek', self::URL('SearchSettings'), 'iconSearch');
+
 		$this->_HTMLTemplate->settings = $this->_settings;
 
 		// "Website homepage" field — titles of public pages.
