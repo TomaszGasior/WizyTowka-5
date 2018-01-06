@@ -124,6 +124,7 @@ foreach (range(1, 5) as $number) {
 	$page->slug = 'example_' . $number;
 	$page->title = 'Przykładowa strona #' . $number;
 	$page->isDraft = !($number % 2);
+	$page->noIndex = false;
 	$page->userId = 1;
 	$page->save();
 

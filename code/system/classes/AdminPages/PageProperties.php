@@ -52,8 +52,8 @@ class PageProperties extends WT\AdminPanelPage
 		}
 
 		$this->_page->isDraft     = (bool)$_POST['isDraft'];
-		$this->_page->description = $_POST['description'];
-		$this->_page->keywords    = $_POST['keywords'];
+		$this->_page->description = str_replace("\n", ' ', $_POST['description']);
+		$this->_page->noIndex     = isset($_POST['noIndex']);
 
 		if ($this->_currentUser->permissions & WT\User::PERM_SUPER_USER) {
 			$this->_page->userId = $_POST['userId'];

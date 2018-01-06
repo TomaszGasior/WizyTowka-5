@@ -38,7 +38,7 @@ CREATE TABLE Pages (
 	title VARCHAR(500) NOT NULL,
 	titleHead VARCHAR(500),
 	description VARCHAR(500),
-	keywords VARCHAR(500),
+	noIndex SMALLINT NOT NULL CHECK(isDraft IN (0,1)),
 	isDraft SMALLINT NOT NULL CHECK(isDraft IN (0,1)),
 	userId INTEGER,
 	updatedTime INTEGER UNSIGNED NOT NULL DEFAULT 0, -- wt_dbms: mysql

@@ -10,7 +10,7 @@ Posiada następujące pola:
 - `title` — tytuł strony;
 - `titleHead` — tytuł w nagłówku `<head>` witryny;
 - `description` — opis w znaczniku meta `description`;
-- `keywords` — słowa kluczowe w znaczniku meta `keywords`;
+- `noIndex` — indeksowanie w wyszukiwarkach: jeśli `0` — indeksować, jeśli `1` — prosić o nieindeksowanie;
 - `isDraft` — status strony zapisany w formie liczby całkowitej: jeśli `0` — publiczna, jeśli `1` — szkic;
 - `userId` — identyfikator użytkownika, który stworzył stronę; jeśli `null` — użytkownik został usunięty;
 - `updatedTime` — data i czas ostatniej aktualizacji strony w formie uniksowego znacznika czasu;
