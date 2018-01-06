@@ -28,7 +28,8 @@
 			['placeholder' => '(użyj domyślnego tytułu)'])
 		->textarea('Opis dla wyszukiwarek', 'nofilter_description', HTML::escape($page->description),
 			['maxlength' => 300, 'spellcheck' => true, 'placeholder' => '(użyj domyślnego opisu witryny)'])
-		->checkbox('Proś wyszukiwarki, by nie indeksowały zawartości tej strony', 'noIndex', $page->noIndex)
+		->checkbox('Proś wyszukiwarki, by nie indeksowały zawartości tej strony', 'noIndex', $page->noIndex,
+			['disabled' => $disableNoIndex])
 	?>
 
 	<button <?= $disableSaveButton ? 'disabled' : '' ?>>Zapisz zmiany</button>

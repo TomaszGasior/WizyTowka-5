@@ -80,9 +80,15 @@ class PageProperties extends WT\AdminPanelPage
 
 		$this->_HTMLTemplate->hideUserIdChange    = WT\Settings::get('lockdownUsers');
 		$this->_HTMLTemplate->disableUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_SUPER_USER);
-		$this->_HTMLTemplate->disableSaveButton   = !$this->_isUserAllowedToEditPage($this->_page);
+
+		$this->_HTMLTemplate->disableNoIndex = false;
+		if (strpos(WT\Settings::get('searchEnginesRobots'), 'noindex') !== false) {
+			$this->_page->noIndex = true; // Fake value, won't be saved in database.
+			$this->_HTMLTemplate->disableNoIndex = true;
+		}
 
 		// Show warning if user isn't permitted to modify page.
 		$this->_HTMLTemplate->permissionLimitNotification = !$this->_isUserAllowedToEditPage($this->_page);
+		$this->_HTMLTemplate->disableSaveButton           = !$this->_isUserAllowedToEditPage($this->_page);
 	}
 }
