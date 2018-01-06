@@ -6,7 +6,7 @@
 	<h3>Dane strony</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Tytuł', 'nofilter_title', HTML::escape($page->title), ['required'=>true])
+		->text('Tytuł', 'nofilter_title', HTML::escape($page->title), ['required' => true])
 		->text('Identyfikator', 'nofilter_slug', HTML::escape($page->slug))
 		->{$hideUserIdChange ? 'skip' : 'select'}('Właściciel', 'userId', $page->userId, $usersIdList,
 			['disabled' => $disableUserIdChange])
@@ -24,7 +24,10 @@
 	<h3>Informacje wyszukiwarek</h3>
 
 	<?= (new HTMLFormFields)
-		->textarea('Opis', 'description', $page->description, ['maxlength' => 300, 'spellcheck' => true])
+		->text('Tytuł w pasku przeglądarki', 'nofilter_titleHead', HTML::escape($page->titleHead),
+			['placeholder' => '(użyj domyślnego tytułu)'])
+		->textarea('Opis dla wyszukiwarek', 'nofilter_description', HTML::escape($page->description),
+			['maxlength' => 300, 'spellcheck' => true, 'placeholder' => '(użyj domyślnego opisu witryny)'])
 		->checkbox('Proś wyszukiwarki, by nie indeksowały zawartości tej strony', 'noIndex', $page->noIndex)
 	?>
 

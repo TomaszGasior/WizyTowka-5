@@ -51,6 +51,7 @@ class PageProperties extends WT\AdminPanelPage
 			}
 		}
 
+		$this->_page->titleHead   = trim($_POST['titleHead']);
 		$this->_page->isDraft     = (bool)$_POST['isDraft'];
 		$this->_page->description = str_replace("\n", ' ', $_POST['description']);
 		$this->_page->noIndex     = isset($_POST['noIndex']);

@@ -2,12 +2,12 @@
 	<h3>Domyślne informacje wyszukiwarek</h3>
 
 	<?= (new HTMLFormFields)
-		->textarea('Opis witryny', 'searchEnginesDescription', $settings->searchEnginesDescription,
+		->textarea('Opis witryny', 'nofilter_searchEnginesDescription', HTML::escape($settings->searchEnginesDescription),
 			['maxlength' => 300, 'spellcheck' => true])
 		->checkbox('Proś wyszukiwarki, by nie indeksowały zawartości witryny', 'robots[noindex]', $robots['noindex'])
 	?>
 
-	<p class="information">Opis można ustawić indywidualnie dla każdej strony — zastąpi on wtedy opis witryny; powinien mieć maksymalnie 300 znaków. Można także wykluczyć z indeksowania wybrane strony.</p>
+	<p class="information">Opis dla wyszukiwarek można ustawić także indywidualnie dla każdej strony — zastąpi on&nbsp;wtedy opis witryny; powinien mieć maksymalnie 300 znaków. Istnieje też możliwość wykluczenia z indeksowania wybranej strony.</p>
 
 	<h3>Dodatkowe globalne opcje indeksowania</h3>
 

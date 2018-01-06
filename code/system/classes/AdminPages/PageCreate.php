@@ -42,6 +42,7 @@ class PageCreate extends WT\AdminPanelPage
 		$page = new WT\Page;
 		$page->title   = $_POST['title'];
 		$page->slug    = $slug;
+		$page->noIndex = false;
 		$page->isDraft = (bool)$_POST['isDraft'];
 		$page->userId  = $this->_currentUser->id;
 		$page->save();

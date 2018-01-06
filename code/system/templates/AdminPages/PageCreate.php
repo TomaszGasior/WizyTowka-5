@@ -2,7 +2,7 @@
 	<h3>Dane strony</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Tytuł', 'nofilter_title', '', ['required'=>true])
+		->text('Tytuł', 'nofilter_title', '', ['required' => true])
 		->text('Identyfikator', 'nofilter_slug', '')
 		->option('Strona dostępna publicznie', 'isDraft', '0', $autocheckDraft)
 		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $autocheckDraft)
