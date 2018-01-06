@@ -25,7 +25,7 @@ class Error extends WT\AdminPanelPage
 
 			'permissions' => 'Nie posiadasz wystarczających uprawnień do korzystania z&nbsp;tej strony panelu administracyjnego.',
 			'parameters'  => 'Podano błędne parametry bądź brak wymaganych parametrów w&nbsp;adresie URL.',
-			'disabled'    => 'Ta funkcja została wyłączona i&nbsp;jest niedostępna.',
+			'lockdown'    => 'Ta funkcja została wyłączona i&nbsp;jest niedostępna.',
 		];
 
 		$this->_HTMLTemplate->setTemplate('Message');

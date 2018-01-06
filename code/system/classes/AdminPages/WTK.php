@@ -17,6 +17,10 @@ class WTK extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
+		if (WT\Settings::get('lockdownWTK')) {
+			$this->_redirect('error', ['type' => 'lockdown']);
+		}
+
 		$this->_settings        = WT\Settings::get();
 		$this->_settingsDefault = WT\Settings::getDefault();
 	}

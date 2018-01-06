@@ -16,6 +16,10 @@ class Users extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
+		if (WT\Settings::get('lockdownUsers')) {
+			$this->_redirect('error', ['type' => 'lockdown']);
+		}
+
 		if (!empty($_GET['deleteId'])) {
 			$this->_deleteUser($_GET['deleteId']);
 		}

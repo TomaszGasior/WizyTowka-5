@@ -108,12 +108,11 @@ abstract class AdminPanelPage extends Controller
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
-		$add = function($label, $url, $CSSClass, $permission = null)
+		$add = function($label, $url, $CSSClass, $permission = null, $lockdown = null)
 		{
-			$this->_HTMLMainMenu->add(
-				$label, $url, $CSSClass, null, [],
-				$permission ? ($this->_currentUser->permissions & $permission) : true
-			);
+			$hasPermission = $permission ? ($this->_currentUser->permissions & $permission) : true;
+			$isLockdowned  = $lockdown   ? Settings::get('lockdown' . $lockdown)            : false;
+			$this->_HTMLMainMenu->add($label, $url, $CSSClass, null, [], $hasPermission and !$isLockdowned);
 		};
 		$add('Strony',             self::URL('pages'),             'iconPages');
 		$add('Utwórz stronę',      self::URL('pageCreate'),        'iconAdd',           User::PERM_CREATING_PAGES);
@@ -125,11 +124,11 @@ abstract class AdminPanelPage extends Controller
 		$add('Obszary',            self::URL('areas'),             'iconAreas' ,        User::PERM_EDITING_SITE_ELEMENTS);
 		$add('Personalizacja',     self::URL('customization'),     'iconCustomization', User::PERM_EDITING_SITE_CONFIG);
 		$add('Ustawienia',         self::URL('websiteSettings'),   'iconSettings',      User::PERM_EDITING_SITE_CONFIG);
-		$add('Użytkownicy',        self::URL('users'),             'iconUsers',         User::PERM_SUPER_USER);
-		$add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd',           User::PERM_SUPER_USER);
-		$add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor',    User::PERM_SUPER_USER);
-		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',           User::PERM_SUPER_USER);
-		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',        User::PERM_SUPER_USER);
+		$add('Użytkownicy',        self::URL('users'),             'iconUsers',         User::PERM_SUPER_USER,  'Users');
+		$add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd',           User::PERM_SUPER_USER,  'Users');
+		$add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor',    User::PERM_SUPER_USER,  'DataEditor');
+		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',           User::PERM_SUPER_USER,  'DataEditor');
+		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',        User::PERM_SUPER_USER,  'Backup');
 		$add('Informacje',         self::URL('about'),             'iconInformation');
 	}
 

@@ -8,7 +8,7 @@
 	<?= (new HTMLFormFields)
 		->text('Tytuł', 'nofilter_title', HTML::escape($page->title), ['required'=>true])
 		->text('Identyfikator', 'nofilter_slug', HTML::escape($page->slug))
-		->select('Właściciel', 'userId', $page->userId, $usersIdList, ['disabled' => $disableUserIdChange])
+		->{$hideUserIdChange ? 'skip' : 'select'}('Właściciel', 'userId', $page->userId, $usersIdList, ['disabled' => $disableUserIdChange])
 		->option('Strona dostępna publicznie', 'isDraft', '0', $page->isDraft)
 		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $page->isDraft)
 	?>

@@ -77,6 +77,7 @@ class PageProperties extends WT\AdminPanelPage
 		}
 		$this->_HTMLTemplate->usersIdList = $usersIdList;
 
+		$this->_HTMLTemplate->hideUserIdChange    = WT\Settings::get('lockdownUsers');
 		$this->_HTMLTemplate->disableUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_SUPER_USER);
 		$this->_HTMLTemplate->disableSaveButton   = !$this->_isUserAllowedToEditPage($this->_page);
 
