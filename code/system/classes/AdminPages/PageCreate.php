@@ -51,8 +51,8 @@ class PageCreate extends WT\AdminPanelPage
 			$pageBox = new WT\PageBox;
 			$pageBox->pageId         = $page->id;
 			$pageBox->contentType    = $_POST['type'];
-			$pageBox->settings       = (object)(isset($contentType->settings) ? $contentType->settings : []);
-			$pageBox->contents       = (object)(isset($contentType->contents) ? $contentType->contents : []);
+			$pageBox->settings       = (object)$contentType->settings;
+			$pageBox->contents       = (object)$contentType->contents;
 			$pageBox->positionRow    = 1;
 			$pageBox->positionColumn = 1;
 			$pageBox->save();

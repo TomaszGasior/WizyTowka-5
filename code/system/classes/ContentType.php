@@ -10,6 +10,13 @@ class ContentType extends Addon
 {
 	static protected $_addonsSubdir = 'types';
 
+	protected $_defaultConfig = [
+		'namespace' => '',
+		'label'     => 'Untitled content type',
+		'contents'  => [],
+		'settings'  => [],
+	];
+
 	private function _initClass($className)
 	{
 		static $autoloaderConfigured = false;

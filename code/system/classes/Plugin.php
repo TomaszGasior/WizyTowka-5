@@ -10,6 +10,11 @@ class Plugin extends Addon
 {
 	static protected $_addonsSubdir = 'plugins';
 
+	protected $_defaultConfig = [
+		'namespace' => '',
+		'init'      => '',
+	];
+
 	public function init()
 	{
 		// Add plugin's namespace to autoloader.

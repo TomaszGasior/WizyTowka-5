@@ -10,6 +10,8 @@ abstract class Addon
 {
 	static protected $_addonsSubdir = '';
 
+	protected $_defaultConfig = [];
+
 	private $_name;
 	private $_config;
 	private $_isFromSystem;
@@ -20,12 +22,12 @@ abstract class Addon
 
 	public function __get($name)
 	{
-		return $this->_config->$name;
+		return (isset($this->_config->$name) ? $this->_config->$name : $this->_defaultConfig[$name]);
 	}
 
 	public function __isset($name)
 	{
-		return isset($this->_config->$name);
+		return (isset($this->_config->$name) or isset($this->_defaultConfig[$name]));
 	}
 
 	public function __debugInfo()
@@ -33,7 +35,7 @@ abstract class Addon
 		return [
 			'name'   => $this->_name,
 			'system' => $this->_isFromSystem,
-			'addon'  => $this->_config,
+			'config' => $this->_config,
 		];
 	}
 

@@ -1,9 +1,9 @@
 *abstract* Addon
 ===
 
-Klasa abstrakcyjna będąca podstawą dla klas reprezentujących poszczególne typy dodatków systemu WizyTówka. Wtyczki, typy zawartości i motywy są dodatkami.
+Klasa abstrakcyjna będąca podstawą dla klas reprezentujących poszczególne typy dodatków systemu WizyTówka. Wtyczki, typy zawartości i motywy są dodatkami. Klasa dziedzicząca po tej klasie jest abstrakcyjną reprezentacją rodzaju dodatku.
 
-Klasa dziedzicząca po tej klasie jest abstrakcyjną reprezentacją rodzaju dodatku. Klasa dziedzicząca powinna określać chronione i statyczne pole `$_addonsSubdir` zawierające nazwę podfolderu katalogu `addons` przeznaczonego na dany typ dodatku (np. klasa `Themes` może określać podfolder `themes`).
+Klasa dziedzicząca powinna określać chronione i statyczne pole `$_addonsSubdir` zawierające nazwę podfolderu katalogu `addons` przeznaczonego na dany typ dodatku (np. klasa `Themes` może określać podfolder `themes`). Klasa dziedzicząca może też określać pole chronione `$_defaultConfig` w formie tablicy z domyślnymi ustawieniami — jeśli dodatek nie będzie określał ustawienia w swoim pliku konfiguracyjnym `addon.conf`, zostanie ono odczytane z tej tablicy.
 
 Klasa implementuje metody `__get()` i `__isset()`, umożliwiając operowanie na opcjach konfiguracyjnych dodatku jak na polach obiektu. Udostępnia też metodę `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
 

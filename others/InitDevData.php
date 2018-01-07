@@ -133,8 +133,8 @@ foreach (range(1, 5) as $number) {
 	$pageBox = new PageBox;
 	$pageBox->pageId = $page->id;
 	$pageBox->contentType = $contentType->getName();
-	$pageBox->settings = (object)($contentType->settings ?? []);
-	$pageBox->contents = (object)($contentType->contents ?? []);
+	$pageBox->settings = (object)$contentType->settings;
+	$pageBox->contents = (object)$contentType->contents;
 	$pageBox->positionRow = 1;
 	$pageBox->positionColumn = 1;
 	$pageBox->save();
