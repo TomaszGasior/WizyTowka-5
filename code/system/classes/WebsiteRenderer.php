@@ -36,33 +36,10 @@ class WebsiteRenderer
 		foreach ($contentTypeAPIBoxes as $box) {
 			$HTMLBox = new HTMLTemplate;
 
+			// Each content type has its own HTML template.
 			$this->_HTMLBoxes[] = $HTMLBox;
 			$box->setHTMLParts($HTMLBox, $this->_HTMLHead, $this->_HTMLMessage);
 		}
-	}
-
-	private function _setupTemplatePath(HTMLTemplate $template)
-	{
-		$template->setTemplatePath(
-			(
-				(isset($this->_theme->templates) and isset($this->_theme->templates[$template->getTemplate()]))
-				? $this->_theme->getPath() : SYSTEM_DIR
-			)
-			. '/templates'
-		);
-	}
-
-	private function _prepareHead()
-	{
-		$head = new HTMLHead;
-		$head->setAssetsPathBase(Settings::get('websiteAddress'));
-		$head->setAssetsPath($this->_theme->getURL());
-
-		$head->title(HTML::correctTypography(sprintf(Settings::get('websiteTitle'), $this->_page->title)));
-		$head->stylesheet('style.css');
-		$head->meta('Generator', 'WizyTówka CMS — https://wizytowka.tomaszgasior.pl');
-
-		return $head;
 	}
 
 	public function prepareTemplate()
@@ -88,6 +65,58 @@ class WebsiteRenderer
 		$this->_HTMLHead->setAssetsPath($this->_theme->getURL());
 	}
 
+	private function _setupTemplatePath(HTMLTemplate $template)
+	{
+		$template->setTemplatePath(
+			(
+				(isset($this->_theme->templates) and in_array($template->getTemplate(), $this->_theme->templates))
+				? $this->_theme->getPath() : SYSTEM_DIR
+			)
+			. '/templates'
+		);
+	}
+
+	private function _prepareHead()
+	{
+		$head = new HTMLHead;
+		$head->setAssetsPathBase(Settings::get('websiteAddress'));
+		$head->setAssetsPath($this->_theme->getURL());
+
+		// Base website information.
+		$head->title(HTML::correctTypography(sprintf(Settings::get('websiteTitlePattern'),
+			$this->_page->titleHead ? $this->_page->titleHead : $this->_page->title
+		)));
+		if (Settings::get('websiteAuthor')) {
+			$head->meta('author', HTML::correctTypography(Settings::get('websiteAuthor')));
+		}
+
+		// Search engines information.
+		if ($description = $this->_page->description ? $this->_page->description : Settings::get('searchEnginesDescription')) {
+			$head->meta('description', HTML::correctTypography($description));
+		}
+		if ($robots = Settings::get('searchEnginesRobots') or $this->_page->noIndex) {
+			// "noindex" option can be set per page or globally for website.
+			if ($this->_page->noIndex and strpos($robots, 'noindex') === false) {
+				$robots = 'noindex' . ($robots ? ', '.$robots : '');
+			}
+			$head->meta('robots', $robots);
+
+			// Send also HTTP header. It's useful if content type disallow template rendering.
+			header('X-Robots-Tag', $robots);
+		}
+
+		// Theme stylesheet.
+		$head->stylesheet($this->_theme->minified ? 'style.min.css' : 'style.css');
+		if ($this->_theme->responsive) {
+			$head->meta('viewport', 'width=device-width, initial-scale=1');
+		}
+
+		// DO NOT REMOVE THIS LINE.
+		$head->meta('generator', 'WizyTówka CMS — https://wizytowka.tomaszgasior.pl');
+
+		return $head;
+	}
+
 	private function _variable_websiteHeader()
 	{
 		$template = new HTMLTemplate('WebsiteHeader');
@@ -96,9 +125,7 @@ class WebsiteRenderer
 		$template->websiteTitle       = HTML::correctTypography(Settings::get('websiteTitle'));
 		$template->websiteDescription = HTML::correctTypography(Settings::get('websiteDescription'));
 
-		ob_start();
-		$template->render();
-		return ob_get_clean();
+		return (string)$template;
 	}
 
 	private function _variable_websiteFooter()
@@ -107,16 +134,18 @@ class WebsiteRenderer
 		$this->_setupTemplatePath($template);
 
 		$elements = [
-			0   => '&copy; ' . HTML::correctTypography(Settings::get('websiteAuthor')),
-			999 => '<a href="https://wizytowka.tomaszgasior.pl" title="Ta witryna jest oparta na systemie zarządzania treścią WizyTówka.">WizyTówka</a>',
+			0   => '&copy; ' . HTML::correctTypography(
+				Settings::get('websiteAuthor') ? Settings::get('websiteAuthor') : Settings::get('websiteTitle')
+			),
+
+			// DO NOT REMOVE THIS LINE.
+			999 => '<a href="https://wizytowka.tomaszgasior.pl" title="Ta witryna jest oparta na systemie zarządzania treścią WizyTówka." target="_blank">WizyTówka</a>',
 		];
 
 		ksort($elements);
 		$template->elements = $elements;
 
-		ob_start();
-		$template->render();
-		return ob_get_clean();
+		return (string)$template;
 	}
 
 	private function _variable_pageHeader()
@@ -135,9 +164,7 @@ class WebsiteRenderer
 
 		$template->properties = $properties;
 
-		ob_start();
-		$template->render();
-		return ob_get_clean();
+		return (string)$template;
 	}
 
 	private function _variable_pageContent()
@@ -148,9 +175,7 @@ class WebsiteRenderer
 		$template->message   = HTML::correctTypography($this->_HTMLMessage);
 		$template->pageBoxes = $this->_HTMLBoxes;
 
-		ob_start();
-		$template->render();
-		return ob_get_clean();
+		return (string)$template;
 	}
 
 
@@ -161,12 +186,10 @@ class WebsiteRenderer
 		$menu  = new HTMLMenu;
 
 		foreach ($pages as $page) {
-			$menu->add(HTML::correctTypography($page->title), Website::URL($page->id), $page->slug);
+			$menu->add(HTML::correctTypography($page->title), Website::URL($page->slug), $page->slug);
 		}
 
-		ob_start();
-		$menu->output();
-		return ob_get_clean();
+		return (string)$menu;
 	}
 
 	private function _function_area($areaPositionNumber)
@@ -178,10 +201,12 @@ class WebsiteRenderer
 	private function _function_info($option)
 	{
 		switch ($option) {
-			case 'websiteTitle':       return Settings::get('websiteTitle');
-			case 'websiteDescription': return Settings::get('websiteDescription');
-			case 'pageTitle':          return $this->_page->title;
-			case 'version':            return VERSION;
+			case 'websiteTitle':       return HTML::correctTypography(Settings::get('websiteTitle'));
+			case 'websiteDescription': return HTML::correctTypography(Settings::get('websiteDescription'));
+			case 'websiteAuthor':      return HTML::correctTypography(Settings::get('websiteAuthor'));
+			case 'pageTitle':          return HTML::correctTypography($this->_page->title);
+			case 'pageIsDraft':        return $this->_page->isDraft;
+			case 'systemVersion':      return VERSION;
 		}
 	}
 }
