@@ -257,7 +257,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		}
 
 		$this->_string = str_replace($charsFrom, $charsTo, $this->_string);
-		$this->_string = preg_replace(['/[^a-z0-9\-_]/', '/\-{2,}/'], ['', '-'], $this->_string);
+		$this->_string = preg_replace(['/[^a-z0-9\-_\.]/', '/\-{2,}/'], ['', '-'], $this->_string);
 
 		return $this;
 	}
@@ -296,6 +296,38 @@ class Text implements \ArrayAccess, \IteratorAggregate
 			}
 
 			$this->_string = $dateTimeText;
+		}
+
+		return $this;
+	}
+
+	public function formatAsFileSize($binaryUnits = true)
+	{
+		if (ctype_digit($this->_string)) {
+			$nbsp = PHP_VERSION_ID < 70000 ? json_decode('"\u00A0"') : "\u{00A0}";   // PHP 5.6 backwards compatibility.
+
+			$units = $binaryUnits ? [
+				'GiB' => 1073741824,
+				'MiB' => 1048576,
+				'KiB' => 1024,
+			] : [
+				'GB' => 1000000000,
+				'MB' => 1000000,
+				'kB' => 1000,
+			];
+
+			foreach ($units as $unitName => $unitFactor) {
+				if ($this->_string >= $unitFactor) {
+					$fileSizeText = round($this->_string / $unitFactor, 1) . $nbsp . $unitName;
+					break;
+				}
+			}
+
+			if (empty($fileSizeText)) {
+				$fileSizeText = $this->_string . $nbsp . 'B';
+			}
+
+			$this->_string = $fileSizeText;
 		}
 
 		return $this;

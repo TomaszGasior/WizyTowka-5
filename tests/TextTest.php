@@ -183,6 +183,37 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
+	public function testFormatAsFileSize()
+	{
+		$textObject1 = new WizyTowka\Text('914695416');
+		$textObject1->formatAsFileSize();
+
+		$current  = $textObject1->get();
+		$expected = "872.3\u{00A0}MiB";
+		$this->assertEquals($expected, $current);
+
+		$textObject2 = new WizyTowka\Text('914695416');
+		$textObject2->formatAsFileSize(false);
+
+		$current  = $textObject2->get();
+		$expected = "914.7\u{00A0}MB";
+		$this->assertEquals($expected, $current);
+
+		$textObject3 = new WizyTowka\Text('1022');
+		$textObject3->formatAsFileSize();
+
+		$current  = $textObject3->get();
+		$expected = "1022\u{00A0}B";
+		$this->assertEquals($expected, $current);
+
+		$textObject4 = new WizyTowka\Text('497338');
+		$textObject4->formatAsFileSize();
+
+		$current  = $textObject4->get();
+		$expected = "485.7\u{00A0}KiB";
+		$this->assertEquals($expected, $current);
+	}
+
 	public function testArrayAccess()
 	{
 		$textObject = new WizyTowka\Text('Zazółć gęślą jaźń');

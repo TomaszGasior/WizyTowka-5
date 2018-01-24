@@ -85,3 +85,11 @@ Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym 
 Ciąg znaków jest najpierw konwertowany do uniksowego znacznika czasu za pomocą funkcji `strtotime()` (chyba, że string zawiera tylko liczby — wtedy jest używany bezpośrednio). Następnie oryginalny string jest zastępowany przez datę i godzinę zwróconą przez funkcję `strftime()`.
 
 Format określony w argumencie `$format` musi być zatem zgodny ze [składnią formatu funkcji `strftime()`](http://php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters).
+
+## `formatAsFileSize($binaryUnits = true)`
+
+Zamienia przechowywany ciąg znaków na tekst określający rozmiar pliku w czytelnym dla użytkownika formacie.
+
+Jeżeli ciąg znaków zawiera wyłącznie cyfry, jest traktowany jak rozmiar pliku w bajtach. Po zamianie ciąg znaków zawiera przekonwertowaną liczbę określającą rozmiar pliku wraz z jednostką (np. megabajty); elementy połączone są niełamliwą spacją.
+
+Jeżeli argument `$binaryUnits` jest prawdą, używane są jednostki zgodne z układem SI (np. kilobajt = 1000 bajtów), w przeciwnym wypadku używane są jednostki binarne (np. kibibajt = 1024 bajty).
