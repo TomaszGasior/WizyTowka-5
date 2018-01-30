@@ -19,17 +19,6 @@ CREATE TABLE Users (
 	createdTime BIGINT NOT NULL DEFAULT 0           -- wt_dbms: ! mysql
 );
 
-CREATE TABLE Files (
-	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, -- wt_dbms: sqlite
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,         -- wt_dbms: mysql
-	id SERIAL PRIMARY KEY,                         -- wt_dbms: pgsql
-	name VARCHAR(100) NOT NULL UNIQUE,
-	userId INTEGER,
-	uploadedTime INTEGER UNSIGNED NOT NULL DEFAULT 0, -- wt_dbms: mysql
-	uploadedTime BIGINT NOT NULL DEFAULT 0,           -- wt_dbms: ! mysql
-	FOREIGN KEY(userId) REFERENCES Users(id) ON DELETE SET NULL
-);
-
 CREATE TABLE Pages (
 	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, -- wt_dbms: sqlite
 	id INTEGER PRIMARY KEY AUTO_INCREMENT,         -- wt_dbms: mysql
