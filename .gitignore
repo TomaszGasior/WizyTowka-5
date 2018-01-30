@@ -1,12 +1,10 @@
-# Config files of development installation.
-code/data/config/*
-!code/data/config/.gitkeep
+# Development installation files.
+code/data/*/*
+!code/data/*/.gitkeep
 
-# Third party libraries.
+# Third party libraries and assets.
 code/system/thirdparty/*
 !code/system/thirdparty/.gitkeep
-
-# Third party assets.
 code/system/assets/thirdparty/*
 !code/system/assets/thirdparty/.gitkeep
 

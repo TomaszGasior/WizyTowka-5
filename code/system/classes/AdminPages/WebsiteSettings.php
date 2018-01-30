@@ -94,7 +94,7 @@ class WebsiteSettings extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		$this->_HTMLContextMenu->add('Informacje wyszukiwarek', self::URL('SearchSettings'), 'iconSearch');
+		$this->_HTMLContextMenu->add('Informacje wyszukiwarek', self::URL('searchSettings'), 'iconSearch');
 
 		$this->_HTMLTemplate->settings = $this->_settings;
 
