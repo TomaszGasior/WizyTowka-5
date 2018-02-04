@@ -10,23 +10,24 @@ use WizyTowka as WT;
 class Files extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Wysłane pliki';
+	protected $_userRequiredPermissions = WT\User::PERM_SENDING_FILES;
 
 	private $_files;
 
 	protected function _prepare()
 	{
-		if (!empty($_GET['deleteId'])) {
-			$this->_deleteFile($_GET['deleteId']);
+		if (!empty($_GET['deleteName'])) {
+			$this->_deleteFile($_GET['deleteName']);
 		}
 
-		$this->_files = WT\File::getAll();
+		$this->_files = WT\UploadedFile::getAll();
 	}
 
-	private function _deleteFile($fileId)
+	private function _deleteFile($name)
 	{
-		if ($file = WT\File::getById($fileId)) {
+		if ($file = WT\UploadedFile::getByName($name)) {
 			$file->delete();
-			$this->_HTMLMessage->success('Plik „' . $file->name . '” został usunięty.');
+			$this->_HTMLMessage->success('Plik „' . $name . '” został usunięty.');
 		};
 	}
 
