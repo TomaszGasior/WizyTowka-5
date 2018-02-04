@@ -44,7 +44,7 @@ class UploadedFile
 	public function rename($newFilename)
 	{
 		// Avoid creating subdirectories.
-		if (strpos($newFilename, '/') !== false and strpos($newFilename, '\\') !== false) {
+		if (strpos($newFilename, '/') !== false or strpos($newFilename, '\\') !== false) {
 			return false;
 		}
 
@@ -65,6 +65,11 @@ class UploadedFile
 
 	static public function getByName($filename)
 	{
+		// Avoid reading from subdirectories.
+		if (strpos($filename, '/') !== false or strpos($filename, '\\') !== false) {
+			return false;
+		}
+
 		if (is_file(FILES_DIR . '/' . $filename)) {
 			$fileObject = new static;
 			$fileObject->_filename = $filename;
@@ -84,10 +89,11 @@ class UploadedFile
 			// More here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
 			return [];
 		}
+		$uploadedFiles = array_map('basename', $uploadedFiles);
 
 		$elementsToReturn = [];
-		foreach ($uploadedFiles as $filepath) {
-			$elementsToReturn[] = static::getByName(basename($filepath));
+		foreach ($uploadedFiles as $filename) {
+			$elementsToReturn[] = static::getByName($filename);
 		}
 
 		return array_filter($elementsToReturn);  // Skip "false" boolean values returned by getByName().

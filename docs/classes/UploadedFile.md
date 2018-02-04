@@ -43,7 +43,7 @@ Jeżeli operacja się powiedzie, zwraca prawdę, inaczej — zwraca fałsz.
 
 ## *static* `getByName($filename)`
 
-Zwraca wysłany plik (instancję klasy) o nazwie `$filename` bądź fałsz, jeśli plik o takiej nazwie nie istnieje w folderze przesłanych plików.
+Zwraca wysłany plik (instancję klasy) o nazwie `$filename` bądź fałsz, jeśli plik o takiej nazwie nie istnieje w folderze przesłanych plików. Nazwa `$filename` nie może zawierać ukośnika bądź ukośnika wstecznego.
 
 Uwaga: nie są uwzględniane podfoldery folderu wysłanych plików bądź znajdujące się w nich pliki.
 
