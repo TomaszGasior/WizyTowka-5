@@ -30,12 +30,12 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this->_string;
 	}
 
-	public function offsetExists ($offset)   // ArrayAccess interface.
+	public function offsetExists($offset)   // ArrayAccess interface.
 	{
 		return ($this->getChar($offset) !== null);
 	}
 
-	public function offsetGet ($offset)   // ArrayAccess interface.
+	public function offsetGet($offset)   // ArrayAccess interface.
 	{
 		if (($char = $this->getChar($offset)) === null) {
 			trigger_error('Uninitialized string offset: '.$offset, E_USER_NOTICE);
@@ -44,7 +44,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $char;
 	}
 
-	public function offsetSet ($offset, $char)   // ArrayAccess interface.
+	public function offsetSet($offset, $char)   // ArrayAccess interface.
 	{
 		if ($this->getChar($offset) === null) {
 			trigger_error('Illegal string offset: '.$offset, E_USER_NOTICE);
@@ -67,7 +67,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		$this->_string = $before . $char . $after;
 	}
 
-	public function offsetUnset ($offset)   // ArrayAccess interface.
+	public function offsetUnset($offset)   // ArrayAccess interface.
 	{
 		trigger_error('Cannot unset string offsets', E_USER_NOTICE);    // Match PHP native behavior.
 	}
@@ -249,15 +249,15 @@ class Text implements \ArrayAccess, \IteratorAggregate
 
 	public function makeSlug($lowercase = true)
 	{
-		$charsFrom = [' ', 'ą', 'ć', 'ę', 'ł', 'ó', 'ń', 'ś', 'ż', 'ź'];
-		$charsTo   = ['-', 'a', 'c', 'e', 'l', 'o', 'n', 's', 'z', 'z'];
-
 		if ($lowercase) {
 			$this->lowercase();
 		}
 
-		$this->_string = str_replace($charsFrom, $charsTo, $this->_string);
-		$this->_string = preg_replace(['/[^a-z0-9\-_\.]/', '/\-{2,}/'], ['', '-'], $this->_string);
+		$this->replace([
+			' ' => '-', 'ą' => 'a', 'ć' => 'c', 'ę' => 'e', 'ł' => 'l',
+			'ó' => 'o', 'ń' => 'n', 'ś' => 's', 'ż' => 'z', 'ź' => 'z',
+		], true);
+		$this->_string = preg_replace(['/[^a-z0-9\-_\.]/i', '/\-{2,}/'], ['', '-'], $this->_string);
 
 		return $this;
 	}
