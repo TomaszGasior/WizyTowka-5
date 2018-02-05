@@ -59,4 +59,9 @@ trait HTML
 	{
 		return self::_prepateTimeTag($timestamp, Settings::get('dateTimeFormat'), '%T%z');
 	}
+
+	static public function formatFileSize($bytes)
+	{
+		return (new Text((string)$bytes))->formatAsFileSize(Settings::get('filesUseBinaryUnitForSizes'))->get();
+	}
 }

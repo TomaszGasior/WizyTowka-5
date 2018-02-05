@@ -26,3 +26,7 @@ Działa jak `formatDateTime()`, ale zwraca tylko datę.
 ## *static* `formatTime($timestamp)`
 
 Działa jak `formatDateTime()`, ale zwraca tylko godzinę.
+
+## *static* `formatFileSize($bytes)`
+
+Zwraca rozmiar pliku o wielkości `$bytes` bajtów sformatowany w czytelny dla użytkownika sposób z użyciem jednostek SI bądź jednostek binarnych, zgodnie z ustawieniami systemu.
