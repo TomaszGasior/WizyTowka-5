@@ -15,9 +15,17 @@
 		<input id="filePicker" name="sendingFiles[]" type="file" multiple required>
 	</fieldset>
 
-	<p class="information">
-		Jeśli przeglądarka internetowa umożliwia wysyłanie wielu plików jednocześnie, w celu wskazania kilku plików należy przeciągnąć zaznaczenie myszką lub wskazywać każdy oddzielnie, trzymając wciśnięty przycisk <code>Ctrl</code>.
-	</p>
+	<?php if ($featureDisabled) { ?>
+		<p class="warning">Możliwość wysyłania plików jest zablokowana w konfiguracji interpretera PHP. Skontaktuj się z&nbsp;administratorem serwera, by uzyskać pomoc.</p>
+	<?php } ?>
+
+	<?php if ($maxFileSize) { ?>
+		<p class="information">Maksymalna wielkość jednego pliku to <?= HTML::formatFileSize($maxFileSize) ?>.</p>
+	<?php } ?>
+
+	<?php if ($maxFilesNumber > 1) { ?>
+		<p class="information">Jednocześnie można przesłać <?= $maxFilesNumber ?> plików. W&nbsp;celu wskazania kilku plików należy przeciągnąć zaznaczenie myszką lub wskazywać każdy oddzielnie, trzymając wciśnięty przycisk <code>Ctrl</code>.</p>
+	<?php } ?>
 
 	<button>Wyślij pliki</button>
 </form>
