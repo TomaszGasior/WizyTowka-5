@@ -12,7 +12,7 @@ class SessionManagerTest extends TestCase
 
 	static public function setUpBeforeClass()
 	{
-		// Workaround for PHPUnit. This method is invoked improperly when @runInSeparateProcess is used.
+		// Workaround for PHPUnit because of @runInSeparateProcess. Run this method only once before first test.
 		if (!headers_sent()) { return; }
 
 		// $_SERVER values undefined in CLI.
@@ -26,7 +26,7 @@ class SessionManagerTest extends TestCase
 
 	static public function tearDownAfterClass()
 	{
-		// Workaround for PHPUnit. This method is invoked improperly when @runInSeparateProcess is used.
+		// Workaround for PHPUnit because of @runInSeparateProcess. Run this method only once after all tests.
 		if (!headers_sent()) { return; }
 
 		@unlink(self::$_sessionsConfigFile);

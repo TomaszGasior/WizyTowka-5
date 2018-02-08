@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Common code between PageEdit and PageSettings controllers (uses content type API).
+* Common code for PageEdit and PageSettings controllers (uses content type API).
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;

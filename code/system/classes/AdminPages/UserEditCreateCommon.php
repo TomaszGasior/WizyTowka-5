@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Common code between UserEdit and UserCreate controllers.
+* Common code for UserEdit and UserCreate controllers.
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as WT;

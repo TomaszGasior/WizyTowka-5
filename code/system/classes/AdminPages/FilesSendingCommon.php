@@ -67,7 +67,7 @@ trait FilesSendingCommon
 				$safeFileNameParts[1] .= '_' . time();
 				$safeFileName = implode('.', array_reverse($safeFileNameParts));
 
-				// Still file exists!? Skip.
+				// File still exists!? Skip.
 				if (WT\UploadedFile::getByName($safeFileName)) {
 					$this->_sendingErrors[$safeFileName] = $this->_errorMessages['fileExistsWithChangedName'];
 					continue;
