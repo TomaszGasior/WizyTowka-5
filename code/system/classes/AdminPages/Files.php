@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class Files extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Wysłane pliki';
-	protected $_userRequiredPermissions = WT\User::PERM_SENDING_FILES;
+	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_FILES;
 
 	private $_files;
 

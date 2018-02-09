@@ -12,7 +12,7 @@ class PageProperties extends WT\AdminPanelPage
 	use PageUserPermissionCommon;
 
 	protected $_pageTitle = 'Właściwości strony';
-	protected $_userRequiredPermissions = WT\User::PERM_CREATING_PAGES;
+	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
 
 	private $_page;
 
@@ -56,7 +56,7 @@ class PageProperties extends WT\AdminPanelPage
 		$this->_page->description = str_replace("\n", ' ', $_POST['description']);
 		$this->_page->noIndex     = isset($_POST['noIndex']);
 
-		if ($this->_currentUser->permissions & WT\User::PERM_SUPER_USER) {
+		if ($this->_currentUser->permissions & WT\User::PERM_MANAGE_PAGES) {
 			$this->_page->userId = $_POST['userId'];
 		}
 
@@ -79,7 +79,7 @@ class PageProperties extends WT\AdminPanelPage
 		$this->_HTMLTemplate->usersIdList = $usersIdList;
 
 		$this->_HTMLTemplate->hideUserIdChange    = WT\Settings::get('lockdownUsers');
-		$this->_HTMLTemplate->disableUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_SUPER_USER);
+		$this->_HTMLTemplate->disableUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_MANAGE_PAGES);
 
 		$this->_HTMLTemplate->disableNoIndex = false;
 		if (strpos(WT\Settings::get('searchEnginesRobots'), 'noindex') !== false) {

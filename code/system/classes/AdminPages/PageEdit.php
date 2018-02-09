@@ -13,7 +13,7 @@ class PageEdit extends WT\AdminPanelPage
 	private $_settingsInsteadEdit = false;
 
 	protected $_pageTitle = 'Edycja strony';
-	protected $_userRequiredPermissions = WT\User::PERM_CREATING_PAGES;
+	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
 }
 
 class PageEditException extends WT\Exception

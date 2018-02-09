@@ -113,7 +113,7 @@ Database::executeSQL(generateSchemaSQL($settings->databaseType));
 foreach (range(1, 3) as $number) {
 	$user = new User;
 	$user->name = 'user_' . $number;
-	$user->permissions = ($number == 1) ? 0b1111111111 : User::PERM_CREATING_PAGES;
+	$user->permissions = ($number == 1) ? 0b1111111111 : User::PERM_CREATE_PAGES;
 	$user->setPassword($user->name);
 	$user->save();
 }

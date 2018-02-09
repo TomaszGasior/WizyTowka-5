@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class FileEdit extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Edycja pliku';
-	protected $_userRequiredPermissions = WT\User::PERM_SENDING_FILES;
+	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_FILES;
 
 	private $_file;
 

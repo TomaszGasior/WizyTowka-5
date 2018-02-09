@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class WebsiteSettings extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Ustawienia witryny';
-	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_CONFIG;
+	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_SETTINGS;
 
 	private $_settings;
 

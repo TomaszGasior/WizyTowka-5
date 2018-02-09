@@ -12,6 +12,7 @@ class Pages extends WT\AdminPanelPage
 	use PageUserPermissionCommon;
 
 	protected $_pageTitle = 'Strony';
+	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
 
 	private $_pages;
 

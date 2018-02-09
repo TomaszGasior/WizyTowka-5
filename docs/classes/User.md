@@ -13,11 +13,11 @@ Posiada następujące pola:
 
 W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnień użytkownika.
 
-- `PERM_CREATING_PAGES` — uprawnienie do tworzenia stron i szkiców stron w witrynie;
-- `PERM_SENDING_FILES` — uprawnienie do wysyłania plików na serwer;
-- `PERM_EDITING_OTHERS_PAGES` — uprawnienie do edycji stron stworzonych przez innych użytkowników;
-- `PERM_EDITING_SITE_ELEMENTS` — uprawnienie do modyfikacji elementów witryny (nagłówek, stopka, menu);
-- `PERM_EDITING_SITE_CONFIG` — uprawnienie do zarządzania konfiguracją witryny i systemu;
+- `PERM_CREATE_PAGES` — uprawnienie do tworzenia stron i szkiców stron w witrynie;
+- `PERM_MANAGE_PAGES` — uprawnienie do edycji stron stworzonych przez innych użytkowników i zmiany właścicieli stron;
+- `PERM_MANAGE_FILES` — uprawnienie do wysyłania plików na serwer i zarządzania wszystkimi wysłanymi plikami;
+- `PERM_WEBSITE_ELEMENTS` — uprawnienie do modyfikacji obszarów i menu witryny;
+- `PERM_WEBSITE_SETTINGS` — uprawnienie do zarządzania konfiguracją witryny i systemu;
 - `PERM_SUPER_USER` — uprawnienie do zarządzania kontami użytkowników oraz korzystania z edytora konfiguracji, edytora plików i innych elementów systemu.
 
 ## *static* `getByName($name)`

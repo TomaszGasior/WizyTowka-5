@@ -12,6 +12,7 @@ class Drafts extends WT\AdminPanelPage
 	use PageUserPermissionCommon;
 
 	protected $_pageTitle = 'Szkice stron';
+	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
 
 	private $_drafts;
 

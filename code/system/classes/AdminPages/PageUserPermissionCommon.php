@@ -13,8 +13,10 @@ trait PageUserPermissionCommon
 	// User can edit page if he is owner of it or if he have permission to edit pages owned by others.
 	private function _isUserAllowedToEditPage(WT\Page $page)
 	{
-		return ($this->_currentUser->permissions & WT\User::PERM_EDITING_OTHERS_PAGES
-		       or $this->_currentUser->id == $page->userId);
+		return (
+			$this->_currentUser->permissions & WT\User::PERM_MANAGE_PAGES or
+		    ($this->_currentUser->permissions & WT\User::PERM_CREATE_PAGES and $this->_currentUser->id == $page->userId)
+		);
 	}
 
 	// Prevent unauthorized access.

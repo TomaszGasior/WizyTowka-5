@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class PageCreate extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Utwórz stronę';
-	protected $_userRequiredPermissions = WT\User::PERM_CREATING_PAGES;
+	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
 
 	public function POSTQuery()
 	{

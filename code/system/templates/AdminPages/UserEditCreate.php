@@ -31,12 +31,18 @@
 	<h3>Uprawnienia</h3>
 
 	<?= (new HTMLFormFields)
-		->checkbox('Tworzenie i edycja stron', 'permissions[CREATING_PAGES]', $permissions['CREATING_PAGES'])
-		->checkbox('Wysyłanie plików', 'permissions[SENDING_FILES]', $permissions['SENDING_FILES'])
-		->checkbox('Edycja stron i plików innych użytkowników', 'permissions[EDITING_OTHERS_PAGES]', $permissions['EDITING_OTHERS_PAGES'])
-		->checkbox('Modyfikacja elementów witryny (obszary, menu)', 'permissions[EDITING_SITE_ELEMENTS]', $permissions['EDITING_SITE_ELEMENTS'])
-		->checkbox('Modyfikacja konfiguracji witryny (ustawienia, personalizacja)', 'permissions[EDITING_SITE_CONFIG]', $permissions['EDITING_SITE_CONFIG'])
-		->checkbox('<b>Superużytkownik</b>: zarządzanie użytkownikami i dostęp do edytora plików', 'permissions[SUPER_USER]', $permissions['SUPER_USER'])
+		->checkbox('Tworzenie stron i modyfikacja samodzielnie utworzonych stron',
+			'permissions[CREATE_PAGES]',     $permissions['CREATE_PAGES'])
+		->checkbox('Modyfikacja wszystkich stron, również innych użytkowników oraz zmiana właścicieli stron',
+			'permissions[MANAGE_PAGES]',     $permissions['MANAGE_PAGES'])
+		->checkbox('Wysyłanie plików i zarządzanie wszystkimi wysłanymi plikami',
+			'permissions[MANAGE_FILES]',     $permissions['MANAGE_FILES'])
+		->checkbox('Modyfikacja elementów witryny — obszarów i menu',
+			'permissions[WEBSITE_ELEMENTS]', $permissions['WEBSITE_ELEMENTS'])
+		->checkbox('Modyfikacja konfiguracji witryny — ustawienia, personalizacja, informacje wyszukiwarek',
+			'permissions[WEBSITE_SETTINGS]', $permissions['WEBSITE_SETTINGS'])
+		->checkbox('<b>Superużytkownik</b>: zarządzanie użytkownikami, dostęp do edytora plików i kopii zapasowej',
+			'permissions[SUPER_USER]',       $permissions['SUPER_USER'])
 	?>
 	<button>Zapisz zmiany</button>
 </form>

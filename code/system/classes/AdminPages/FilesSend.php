@@ -12,7 +12,7 @@ class FilesSend extends WT\AdminPanelPage
 	use FilesSendingCommon;
 
 	protected $_pageTitle = 'Wyślij pliki';
-	protected $_userRequiredPermissions = WT\User::PERM_SENDING_FILES;
+	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_FILES;
 
 	public function POSTQuery()
 	{

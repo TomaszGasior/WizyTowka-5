@@ -10,7 +10,7 @@ use WizyTowka as WT;
 class Areas extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Obszary';
-	protected $_userRequiredPermissions = WT\User::PERM_EDITING_SITE_ELEMENTS;
+	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_ELEMENTS;
 
 	protected function _output()
 	{
