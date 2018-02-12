@@ -8,7 +8,7 @@ Dodatki tego typu znajdują się w folderze `addons/plugins` w katalogu danych w
 W pliku konfiguracyjnym `addon.conf` wtyczka powinna określać:
 
 - `namespace` — przestrzeń nazw gromadząca wszystkie klasy wtyczki, będą one automatycznie ładowane z podfolderu `classes` wtyczki;
-- `init` — callback w formie metody statycznej klasy uruchamiany przy inicjacji wtyczki; jako argument przekazywana jest do niej instancja klasy `Plugin`.
+- `init` — callback w formie metody statycznej klasy uruchamiany przy inicjacji wtyczki (nie może zawierać przestrzeni nazw określonej w `namespace`); jako argument przekazywana jest do niej instancja klasy `Plugin`.
 
 ## `init()`
 

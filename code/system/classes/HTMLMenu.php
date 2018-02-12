@@ -21,7 +21,7 @@ class HTMLMenu extends HTMLTag
 	public function add($label, $content, $CSSClass = null, $position = null, array $HTMLAttributes = [], $visible = true)
 	{
 		if (!is_string($content) and (!is_object($content) or !($content instanceof $this))) {
-			throw HTMLMenuException::notValidContentValue();
+			throw HTMLMenuException::invalidContentValue();
 		}
 
 		$position = is_numeric($position) ? $position : $this->_autoPosition++;
@@ -75,14 +75,15 @@ class HTMLMenu extends HTMLTag
 					continue;
 				}
 
-				echo '<li', $element['CSSClass'] ? ' class="'.$element['CSSClass'].'">' : '>';
+				echo '<li', $element['CSSClass'] ? ' class="' . $element['CSSClass'] . '">' : '>';
 
 				if (is_object($element['content'])) {
 					echo $element['label'], (string)$element['content'];
 				}
 				else {
 					$element['HTMLAttributes']['href'] = $element['content'];
-					echo $this->_renderHTMLOpenTag('a', $element['HTMLAttributes']), $element['label'], '</a>';
+					echo $this->_renderHTMLOpenTag('a', $element['HTMLAttributes']),
+					     $element['label'], '</a>';
 				}
 
 				echo '</li>';
@@ -97,7 +98,7 @@ class HTMLMenu extends HTMLTag
 
 class HTMLMenuException extends Exception
 {
-	static public function notValidContentValue()
+	static public function invalidContentValue()
 	{
 		return new self('You must pass string with URL address or other instance of menu class as content of menu element.', 1);
 	}

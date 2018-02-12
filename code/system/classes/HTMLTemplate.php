@@ -11,16 +11,14 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 	static private $_autoloaderAdded = false;
 
 	private $_templatesPath;
+	private $_templateName;
 
 	private $_variables = [];
-	private $_templateName;
 
 	public function __construct($templateName = null, $templatePath = null)
 	{
-		$this->_templateName = $templateName;
-		if ($templatePath) {
-			$this->_templatesPath = $templatePath;
-		}
+		$this->_templateName  = (string)$templateName;
+		$this->_templatesPath = (string)$templatePath;
 	}
 
 	public function __get($variable)

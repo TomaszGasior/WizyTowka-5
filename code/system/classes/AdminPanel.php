@@ -8,8 +8,8 @@ namespace WizyTowka;
 
 class AdminPanel extends Controller
 {
-	static private $_defaultPagesNamespace = __NAMESPACE__ . '\AdminPages';
-	static private $_defaultPagesAbstract  = __NAMESPACE__ . '\AdminPanelPage';
+	static private $_systemPagesNamespace = __NAMESPACE__ . '\AdminPages';
+	static private $_pageAbstractClass    = __NAMESPACE__ . '\AdminPanelPage';
 
 	static private $_registeredPages = [];
 
@@ -22,12 +22,11 @@ class AdminPanel extends Controller
 			ErrorHandler::showErrorDetails(true);
 		}
 
-		// Add admin pages namespace to autoloader.
-		Autoloader::addNamespace(self::$_defaultPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');
+		self::_prepareAutoloader();
 
 		$pageName   = !empty($_GET['c']) ? $_GET['c'] : Settings::get('adminPanelDefaultPage');
 		$controller = isset(self::$_registeredPages[$pageName]) ? self::$_registeredPages[$pageName]
-		              : self::$_defaultPagesNamespace . '\\'. ucfirst($pageName);
+		              : self::$_systemPagesNamespace . '\\'. ucfirst($pageName);
 
 		if (!class_exists($controller)) {
 			$this->_redirect(null);
@@ -39,22 +38,22 @@ class AdminPanel extends Controller
 
 	public function filterPOSTData()
 	{
-		$this->_realAdminPanelPage->{__FUNCTION__}();
+		return $this->_realAdminPanelPage->{__FUNCTION__}();
 	}
 
 	public function POSTQuery()
 	{
-		$this->_realAdminPanelPage->{__FUNCTION__}();
+		return $this->_realAdminPanelPage->{__FUNCTION__}();
 	}
 
 	public function output()
 	{
-		$this->_realAdminPanelPage->{__FUNCTION__}();
+		return $this->_realAdminPanelPage->{__FUNCTION__}();
 	}
 
 	public function __call($function, $arguments)
 	{
-		$this->_realAdminPanelPage->$function(...$arguments);
+		return $this->_realAdminPanelPage->$function(...$arguments);
 	}
 
 	static public function URL($target, array $arguments = [])
@@ -68,19 +67,29 @@ class AdminPanel extends Controller
 		}
 		$arguments = ['c' => $target] + $arguments;  // Adds "c" argument to array beginning for better URL readability.
 
-		return Settings::get('adminPanelFile') . ($arguments ? '?'.http_build_query($arguments) : '');
+		return Settings::get('adminPanelFile') . ($arguments ? '?' . http_build_query($arguments) : '');
 	}
 
 	static public function registerPage($name, $controller)
 	{
+		self::_prepareAutoloader();
+
 		if (isset(self::$_registeredPages[$name])) {
 			throw AdminPanelException::pageNameAlreadyRegistered($name);
 		}
-		if (!is_subclass_of($controller, self::$_defaultPagesAbstract)) {
-			throw AdminPanelException::pageControllerInvalid($name, self::$_defaultPagesAbstract);
+		if (!is_subclass_of($controller, self::$_pageAbstractClass)) {
+			throw AdminPanelException::pageControllerInvalid($name, self::$_pageAbstractClass);
 		}
 
 		self::$_registeredPages[$name] = $controller;
+	}
+
+	static private function _prepareAutoloader()
+	{
+		// Add admin pages namespace to autoloader.
+		if (!Autoloader::namespaceExists(self::$_systemPagesNamespace)) {
+			Autoloader::addNamespace(self::$_systemPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');
+		}
 	}
 }
 

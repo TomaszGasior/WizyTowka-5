@@ -169,16 +169,6 @@ class HTMLHead extends HTMLTag
 		$this->_assetsPath         = (string)$assetsPath;
 	}
 
-	public function getAssetsPathBase()
-	{
-		return $this->_assetsPathBase;
-	}
-
-	public function setAssetsPathBase($assetsPathBase)
-	{
-		$this->_assetsPathBase = (string)$assetsPathBase;
-	}
-
 	public function restoreAssetsPath()
 	{
 		if ($this->_previousAssetsPath) {
@@ -187,6 +177,16 @@ class HTMLHead extends HTMLTag
 		}
 
 		return false;
+	}
+
+	public function getAssetsPathBase()
+	{
+		return $this->_assetsPathBase;
+	}
+
+	public function setAssetsPathBase($assetsPathBase)
+	{
+		$this->_assetsPathBase = (string)$assetsPathBase;
 	}
 
 	private function _prepareAssetPath($file)

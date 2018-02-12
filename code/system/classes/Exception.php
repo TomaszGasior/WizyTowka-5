@@ -38,7 +38,7 @@ abstract class Exception extends \Exception
 			$designedForClass = str_replace('Exception', null, static::class);
 			$thrownFromClass = $this->getTrace()[0]['class'];
 			if ($designedForClass != $thrownFromClass and !is_subclass_of($thrownFromClass, $designedForClass)) {
-				trigger_error('Exception designed for '.$designedForClass.' class must not be thrown from '.$thrownFromClass.' class.', E_USER_NOTICE);
+				trigger_error('Exception designed for ' . $designedForClass . ' class must not be thrown from ' . $thrownFromClass . ' class.', E_USER_NOTICE);
 			}
 		}
 		else {

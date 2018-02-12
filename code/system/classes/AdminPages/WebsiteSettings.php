@@ -42,8 +42,8 @@ class WebsiteSettings extends WT\AdminPanelPage
 
 	public function POSTQuery()
 	{
-		if (empty($_POST['websiteTitle']) or empty($_POST['websiteTitlePattern']) or empty($_POST['websiteAddress'])
-			or empty($_POST['websiteEmailAddress']) or empty($_POST['websiteHomepageId'])) {
+		if (!$_POST['websiteTitle'] or !$_POST['websiteTitlePattern'] or !$_POST['websiteAddress']
+			or !$_POST['websiteEmailAddress'] or !$_POST['websiteHomepageId']) {
 			$this->_HTMLMessage->error('Nie wypełniono wymaganych pól.');
 			return;
 		}

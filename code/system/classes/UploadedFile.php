@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 class UploadedFile
 {
-	private $_filename;
+	private $_fileName;
 
 	private function __construct() {}
 
@@ -17,23 +17,23 @@ class UploadedFile
 	public function __debugInfo()
 	{
 		return [
-			'name' => $this->_filename,
+			'name' => $this->_fileName,
 		];
 	}
 
 	public function getName()
 	{
-		return $this->_filename;
+		return $this->_fileName;
 	}
 
 	public function getPath()
 	{
-		return FILES_DIR . '/' . $this->_filename;
+		return FILES_DIR . '/' . $this->_fileName;
 	}
 
 	public function getURL()
 	{
-		return FILES_URL . '/' . $this->_filename;
+		return FILES_URL . '/' . $this->_fileName;
 	}
 
 	public function getSize()
@@ -41,17 +41,17 @@ class UploadedFile
 		return is_file($this->getPath()) ? (int)filesize($this->getPath()) : 0;
 	}
 
-	public function rename($newFilename)
+	public function rename($newFileName)
 	{
 		// Avoid creating subdirectories.
-		if (strpos($newFilename, '/') !== false or strpos($newFilename, '\\') !== false) {
+		if (strpos($newFileName, '/') !== false or strpos($newFileName, '\\') !== false) {
 			return false;
 		}
 
-		$newFilenamePath = FILES_DIR . '/' . $newFilename;
+		$newFileNamePath = FILES_DIR . '/' . $newFileName;
 
-		if (!file_exists($newFilenamePath) and is_file($this->getPath()) and rename($this->getPath(), $newFilenamePath)) {
-			$this->_filename = $newFilename;
+		if (!file_exists($newFileNamePath) and is_file($this->getPath()) and rename($this->getPath(), $newFileNamePath)) {
+			$this->_fileName = $newFileName;
 			return true;
 		}
 
@@ -63,16 +63,16 @@ class UploadedFile
 		return (is_file($this->getPath()) and unlink($this->getPath()));
 	}
 
-	static public function getByName($filename)
+	static public function getByName($fileName)
 	{
 		// Avoid reading from subdirectories.
-		if (strpos($filename, '/') !== false or strpos($filename, '\\') !== false) {
+		if (strpos($fileName, '/') !== false or strpos($fileName, '\\') !== false) {
 			return false;
 		}
 
-		if (is_file(FILES_DIR . '/' . $filename)) {
+		if (is_file(FILES_DIR . '/' . $fileName)) {
 			$fileObject = new static;
-			$fileObject->_filename = $filename;
+			$fileObject->_fileName = $fileName;
 
 			return $fileObject;
 		}
@@ -92,8 +92,8 @@ class UploadedFile
 		$uploadedFiles = array_map('basename', $uploadedFiles);
 
 		$elementsToReturn = [];
-		foreach ($uploadedFiles as $filename) {
-			$elementsToReturn[] = static::getByName($filename);
+		foreach ($uploadedFiles as $fileName) {
+			$elementsToReturn[] = static::getByName($fileName);
 		}
 
 		return array_filter($elementsToReturn);  // Skip "false" boolean values returned by getByName().

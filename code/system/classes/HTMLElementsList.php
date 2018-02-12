@@ -38,6 +38,7 @@ class HTMLElementsList extends HTMLTag
 		if ($this->_callbackRadio) {
 			throw HTMLElementsListException::radioOrLink();
 		}
+
 		$this->_callbackLink = $callback;
 
 		return $this;
@@ -48,9 +49,10 @@ class HTMLElementsList extends HTMLTag
 		if ($this->_callbackLink) {
 			throw HTMLElementsListException::radioOrLink();
 		}
-		$this->_radioFieldName = $name;
+
+		$this->_radioFieldName         = $name;
 		$this->_radioFieldCurrentValue = $currentValue;
-		$this->_callbackRadio = $fieldValueCallback;
+		$this->_callbackRadio          = $fieldValueCallback;
 
 		return $this;
 	}
@@ -81,7 +83,7 @@ class HTMLElementsList extends HTMLTag
 		}
 
 		if ($this->_collection) {
-			echo '<ul', $this->_CSSClass ? ' class="'.$this->_CSSClass.'">' : '>';
+			echo '<ul', $this->_CSSClass ? ' class="' . $this->_CSSClass . '">' : '>';
 
 			foreach ($this->_collection as $element) {
 				$title = call_user_func($this->_callbackTitle, $element);

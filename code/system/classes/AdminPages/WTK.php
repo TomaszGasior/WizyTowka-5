@@ -53,8 +53,12 @@ class WTK extends WT\AdminPanelPage
 					$prepareArrayFields($value, $name);
 				}
 				else {
-					$attributes = (empty($group) and isset($defaults->$name))
-					              ? ['title' => 'Domyślna wartość tego ustawienia: „'.$defaults->$name.'”.'] : [];
+					$attributes = [];
+					if (empty($group) and isset($defaults->$name)) {
+						$attributes = ['title' => 'Domyślna wartość: ' .
+							(is_bool($defaults->$name) ? ($defaults->$name ? 'zaznaczony' : 'odznaczony') : ('„' . $defaults->$name . '”'))
+						. '.'];
+					}
 					$fields->{is_bool($value) ? 'checkbox' : 'text'}($name, $name, $value, $attributes);
 				}
 			}

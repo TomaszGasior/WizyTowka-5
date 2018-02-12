@@ -21,7 +21,8 @@ class Plugin extends Addon
 		Autoloader::addNamespace($this->namespace, $this->getPath().'/classes');
 
 		// Init plugin by specified callback.
-		call_user_func($this->init, $this);
-		// Syntax like ($this->init)($this) cannot be used because of backwards compatibility with PHP 5.6.
+		call_user_func($this->namespace . '\\' . $this->init, $this);
+		// Syntax like ($this->namespace . '\\' . $this->init)($this) cannot be used
+		// because of backwards compatibility with PHP 5.6.
 	}
 }

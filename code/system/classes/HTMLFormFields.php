@@ -172,7 +172,7 @@ class HTMLFormFields extends HTMLTag
 			if ($field['type'] == 'checkable') {
 				$labelTitle = !empty($field['HTMLAttributes']['title']) ? $field['HTMLAttributes']['title'] : null;
 				$this->_renderHTMLOpenTag('input', $field['HTMLAttributes']);
-				echo '<label' . ($labelTitle ? (' title="' . $labelTitle . '" ') : ' ') . 'for="', $id, '">',
+				echo '<label' . ($labelTitle ? ' title="' . $labelTitle . '" ' : ' ') . 'for="', $id, '">',
 				     $field['label'], '</label>';
 			}
 			else {

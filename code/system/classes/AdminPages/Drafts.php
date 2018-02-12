@@ -57,7 +57,7 @@ class Drafts extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		if (!empty($_GET['msg'])) {
+		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->success('Szkic strony został utworzony.');
 		}
 

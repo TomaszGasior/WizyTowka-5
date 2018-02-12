@@ -7,9 +7,9 @@ Implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umo
 
 Jeśli zostanie utworzona więcej niż jedna instancja klasy operującej na tym samym pliku, każda z instancji będzie mieć dostęp do najnowszej zawartości pliku konfiguracyjnego — wprowadzane zmiany są synchronizowane. Odczyt z systemu plików zostanie wykonany tylko przy tworzeniu pierwszej instancji.
 
-## `__construct($filename, $readOnly = false)`
+## `__construct($fileName, $readOnly = false)`
 
-Jako `$filename` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
+Jako `$fileName` przyjmuje ścieżkę do pliku konfiguracyjnego w formacie JSON.
 
 Argument `$readOnly` powinien być typu logicznego i określa, czy konfiguracja jest tylko do odczytu. Wtedy, jeśli nastąpi próba zmiany wartości ustawienia, zostanie rzucony wyjątek `ConfigurationFileException` #3.
 
@@ -27,6 +27,6 @@ Odświeża zawartość pliku konfiguracyjnego, odczytując jego zawartość na n
 
 Jeżeli plik nie istnieje, wystąpi błąd. Jeżeli dojdzie do błędu podczas parsowania pliku JSON, zostanie rzucony wyjątek `ConfigurationFileException` #1. Jeżeli kilka instancji klasy `ConfigurationFile` otwarło ten sam plik, odświeżenie nastąpi we wszystkich jednocześnie.
 
-## *static* `createNew($filename)`
+## *static* `createNew($fileName)`
 
-Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$filename` przyjmuje ścieżkę do pliku. Jeżeli plik istnieje, zostanie nadpisany.
+Tworzy nowy pusty plik konfiguracyjny w formacie JSON. Jako `$fileName` przyjmuje ścieżkę do pliku. Jeżeli plik istnieje, zostanie nadpisany.

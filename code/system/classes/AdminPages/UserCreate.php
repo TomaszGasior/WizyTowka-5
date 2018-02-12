@@ -14,11 +14,18 @@ class UserCreate extends WT\AdminPanelPage
 	protected $_pageTitle = 'Utwórz użytkownika';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
 
+	public function _prepare()
+	{
+		if (WT\Settings::get('lockdownUsers')) {
+			$this->_redirect('error', ['type' => 'lockdown']);
+		}
+	}
+
 	public function POSTQuery()
 	{
 		$user = new WT\User;
 
-		if (empty($_POST['name'])) {
+		if (!$_POST['name']) {
 			$this->_HTMLMessage->error('Nie określono nazwy użytkownika.');
 			return;
 		}
@@ -34,7 +41,7 @@ class UserCreate extends WT\AdminPanelPage
 			$user->name = $_POST['name'];
 		}
 
-		if (empty($_POST['email']) or filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+		if (!$_POST['email'] or filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 			$user->email = $_POST['email'];
 		}
 		else {
@@ -42,7 +49,7 @@ class UserCreate extends WT\AdminPanelPage
 			return;
 		}
 
-		if (empty($_POST['passwordText_1']) or empty($_POST['passwordText_2'])) {
+		if (!$_POST['passwordText_1'] or !$_POST['passwordText_2']) {
 			$this->_HTMLMessage->error('Nie określono hasła użytkownika.');
 			return;
 		}

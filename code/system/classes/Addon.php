@@ -22,12 +22,12 @@ abstract class Addon
 
 	public function __get($name)
 	{
-		return (isset($this->_config->$name) ? $this->_config->$name : $this->_defaultConfig[$name]);
+		return isset($this->_config->$name) ? $this->_config->$name : $this->_defaultConfig[$name];
 	}
 
 	public function __isset($name)
 	{
-		return (isset($this->_config->$name) or isset($this->_defaultConfig[$name]));
+		return isset($this->_config->$name) or isset($this->_defaultConfig[$name]);
 	}
 
 	public function __debugInfo()

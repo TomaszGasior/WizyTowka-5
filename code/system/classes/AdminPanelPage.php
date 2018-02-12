@@ -35,7 +35,7 @@ abstract class AdminPanelPage extends Controller
 		elseif ($this->_userMustBeLoggedIn) {
 			$this->_redirect(
 				'login',
-				!empty($_SERVER['QUERY_STRING']) ? ['redirect'=>$_SERVER['QUERY_STRING']] : []
+				!empty($_SERVER['QUERY_STRING']) ? ['redirect' => $_SERVER['QUERY_STRING']] : []
 			);
 		}
 
@@ -117,7 +117,7 @@ abstract class AdminPanelPage extends Controller
 		$add('Strony',             self::URL('pages'),             'iconPages',         User::PERM_CREATE_PAGES);
 		$add('Utwórz stronę',      self::URL('pageCreate'),        'iconAdd',           User::PERM_CREATE_PAGES);
 		$add('Szkice',             self::URL('drafts'),            'iconDrafts',        User::PERM_CREATE_PAGES);
-		$add('Utwórz szkic',       self::URL('pageCreate', ['draft'=>true]), 'iconAdd', User::PERM_CREATE_PAGES);
+		$add('Utwórz szkic',       self::URL('pageCreate', ['draft' => 1]), 'iconAdd',  User::PERM_CREATE_PAGES);
 		$add('Pliki',              self::URL('files'),             'iconFiles',         User::PERM_MANAGE_FILES);
 		$add('Wyślij pliki',       self::URL('filesSend'),         'iconAdd',           User::PERM_MANAGE_FILES);
 		$add('Menu',               self::URL('menus'),             'iconMenus' ,        User::PERM_WEBSITE_ELEMENTS);

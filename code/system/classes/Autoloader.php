@@ -15,6 +15,7 @@ trait Autoloader
 		if (isset(self::$_directories[$namespace])) {
 			return false;
 		}
+
 		self::$_directories[$namespace] = $pathToClasses;
 		return true;
 	}

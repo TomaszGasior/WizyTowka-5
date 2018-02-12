@@ -26,6 +26,6 @@ class PageBox extends DatabaseObject
 	// PageBox::getAll() returns page boxes only for page specified in first argument.
 	static public function getAll($pageId = null)
 	{
-		return ($pageId ? static::_getByWhereCondition('pageId = :pageId', ['pageId' => $pageId]) : []);
+		return $pageId ? static::_getByWhereCondition('pageId = :pageId', ['pageId' => $pageId]) : [];
 	}
 }

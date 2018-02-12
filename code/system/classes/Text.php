@@ -38,7 +38,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 	public function offsetGet($offset)   // ArrayAccess interface.
 	{
 		if (($char = $this->getChar($offset)) === null) {
-			trigger_error('Uninitialized string offset: '.$offset, E_USER_NOTICE);
+			trigger_error('Uninitialized string offset: ' . $offset, E_USER_NOTICE);
 		}
 
 		return $char;
@@ -47,7 +47,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 	public function offsetSet($offset, $char)   // ArrayAccess interface.
 	{
 		if ($this->getChar($offset) === null) {
-			trigger_error('Illegal string offset: '.$offset, E_USER_NOTICE);
+			trigger_error('Illegal string offset: ' . $offset, E_USER_NOTICE);
 			return;
 		}
 

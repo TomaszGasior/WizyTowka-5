@@ -14,7 +14,6 @@ trait FilesSendingCommon
 	// * specify `<input type="hidden" name="MAX_FILE_SIZE">` field with _getMaxFileSize() as value,
 	// * specify `<input name="sendingFiles[]" type="file" multiple>` field.
 
-
 	private $_errorMessages = [
 		'moveUploadedFileFailed'    => 'Przenoszenie pliku z folderu tymczasowego nie powiodło się.',
 		'maybePOSTRequestFailed'    => 'Przesyłanie nie powiodło się (prawdopodobne błędne żądanie POST).',
@@ -76,7 +75,7 @@ trait FilesSendingCommon
 
 			// Skip if PHP encountered error.
 			// Maximum size of file set by CMS settings is handled here by PHP and $_POST['MAX_FILE_SIZE'].
-			if (!empty($errorCode)) {
+			if ($errorCode) {
 				$this->_sendingErrors[$safeFileName] = isset($this->_PHPErrorMessages[$errorCode])
 				                                       ? $this->_PHPErrorMessages[$errorCode]
 				                                       : $this->_errorMessages['unknownPHPError'];

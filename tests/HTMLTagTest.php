@@ -9,7 +9,7 @@ class HTMLTagTest extends TestCase
 
 	static public function setUpBeforeClass()
 	{
-		self::$_exampleClass = new class() extends WizyTowka\HTMLTag
+		self::$_exampleClass = get_class(new class() extends WizyTowka\HTMLTag
 		{
 			public function output()
 			{
@@ -22,7 +22,7 @@ class HTMLTagTest extends TestCase
 				];
 				$this->_renderHTMLOpenTag('input', $attributes);
 			}
-		};
+		});
 	}
 
 	public function testOutput()

@@ -13,7 +13,7 @@ trait Settings
 
 	static public function get($option = null)
 	{
-		if (empty(self::$_settings)) {
+		if (!self::$_settings) {
 			self::$_settings = new ConfigurationFile(CONFIG_DIR . '/settings.conf');
 		}
 
@@ -22,7 +22,7 @@ trait Settings
 
 	static public function getDefault($option = null)
 	{
-		if (empty(self::$_defaultSettings)) {
+		if (!self::$_defaultSettings) {
 			self::$_defaultSettings = new ConfigurationFile(SYSTEM_DIR . '/defaults/settings.conf', true); // Read only.
 		}
 

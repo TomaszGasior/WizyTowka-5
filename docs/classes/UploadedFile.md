@@ -29,9 +29,9 @@ Zwraca pełen adres URL pliku.
 
 Zwraca rozmiar pliku w bajtach formie liczby całkowitej. Jeśli plik jest pusty, bądź nie istnieje, zwraca liczbę zero.
 
-## `rename($newFilename)`
+## `rename($newFileName)`
 
-Zmienia nazwę pliku na nazwę określoną w argumencie `$newFilename`. Plik o nazwie `$newFilename` nie może istnieć. Argument `$newFilename` nie może zawierać ukośnika bądź ukośnika wstecznego.
+Zmienia nazwę pliku na nazwę określoną w argumencie `$newFileName`. Plik o nazwie `$newFileName` nie może istnieć. Argument `$newFileName` nie może zawierać ukośnika bądź ukośnika wstecznego.
 
 Jeżeli zmiana nazwy się powiedzie, zwraca prawdę, inaczej — zwraca fałsz.
 
@@ -41,9 +41,9 @@ Usuwa plik.
 
 Jeżeli operacja się powiedzie, zwraca prawdę, inaczej — zwraca fałsz.
 
-## *static* `getByName($filename)`
+## *static* `getByName($fileName)`
 
-Zwraca wysłany plik (instancję klasy) o nazwie `$filename` bądź fałsz, jeśli plik o takiej nazwie nie istnieje w folderze przesłanych plików. Nazwa `$filename` nie może zawierać ukośnika bądź ukośnika wstecznego.
+Zwraca wysłany plik (instancję klasy) o nazwie `$fileName` bądź fałsz, jeśli plik o takiej nazwie nie istnieje w folderze przesłanych plików. Nazwa `$fileName` nie może zawierać ukośnika bądź ukośnika wstecznego.
 
 Uwaga: nie są uwzględniane podfoldery folderu wysłanych plików bądź znajdujące się w nich pliki.
 

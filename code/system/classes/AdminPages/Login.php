@@ -21,8 +21,8 @@ class Login extends WT\AdminPanelPage
 
 	public function POSTQuery()
 	{
-		if (empty($_POST['name']) or empty($_POST['password'])) {
-			$this->_HTMLMessage->error('Nie podano danych logowania.');
+		if (!$_POST['name'] or !$_POST['password']) {
+			$this->_HTMLMessage->error('Nie określono danych logowania.');
 			return;
 		}
 
@@ -44,7 +44,7 @@ class Login extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		if (!empty($_GET['msg'])) {
+		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->default('Wylogowano się z panelu administracyjnego.');
 		}
 		if (!empty($_GET['redirect'])) {

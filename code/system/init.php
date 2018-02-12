@@ -12,7 +12,7 @@ const VERSION_DATE   = '2016-09-01';
 const VERSION_STABLE = false;
 
 if (PHP_VERSION_ID < 50600) {
-	exit('WizyTówka content management system cannot be started. PHP 5.6 is required.');
+	exit('WizyTówka CMS cannot be started. PHP 5.6 is required.');
 }
 if (PHP_VERSION_ID < 70000) {
 	include __DIR__ . '/compat.php';
@@ -22,11 +22,11 @@ mb_internal_encoding('UTF-8');
 mb_regex_encoding('UTF-8');
 
 include __DIR__ . '/classes/Autoloader.php';
-spl_autoload_register(__NAMESPACE__.'\Autoloader::autoload');
-Autoloader::addNamespace(__NAMESPACE__, __DIR__.'/classes');
+spl_autoload_register(__NAMESPACE__ . '\Autoloader::autoload');
+Autoloader::addNamespace(__NAMESPACE__, __DIR__ . '/classes');
 
-set_error_handler(__NAMESPACE__.'\ErrorHandler::handleError');
-set_exception_handler(__NAMESPACE__.'\ErrorHandler::handleException');
+set_error_handler(__NAMESPACE__ . '\ErrorHandler::handleError');
+set_exception_handler(__NAMESPACE__ . '\ErrorHandler::handleException');
 
 
 function init($controller)
@@ -68,7 +68,7 @@ function init($controller)
 	/* Database connection. */
 	Database::connect(
 		$settings->databaseType,
-		($settings->databaseType == 'sqlite') ? CONFIG_DIR.'/database.db' : $settings->databaseName,
+		($settings->databaseType == 'sqlite') ? CONFIG_DIR . '/database.db' : $settings->databaseName,
 		$settings->databaseHost, $settings->databaseUsername, $settings->databasePassword
 	);
 
@@ -76,6 +76,6 @@ function init($controller)
 	SessionManager::setup();
 
 	/* Controller. */
-	run: $controllerClass = __NAMESPACE__ . '\\'. $controller;
+	run: $controllerClass = __NAMESPACE__ . '\\' . $controller;
 	$runController(new $controllerClass);
 };

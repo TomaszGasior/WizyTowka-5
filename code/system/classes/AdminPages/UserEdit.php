@@ -18,6 +18,10 @@ class UserEdit extends WT\AdminPanelPage
 
 	public function _prepare()
 	{
+		if (WT\Settings::get('lockdownUsers')) {
+			$this->_redirect('error', ['type' => 'lockdown']);
+		}
+
 		if (empty($_GET['id']) or !$this->_user = WT\User::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
@@ -25,7 +29,7 @@ class UserEdit extends WT\AdminPanelPage
 
 	public function POSTQuery()
 	{
-		if (!empty($_POST['name']) and $this->_user->name != $_POST['name']) {
+		if ($_POST['name'] and $this->_user->name != $_POST['name']) {
 			if (!$this->_checkUserName($_POST['name'])) {
 				$this->_HTMLMessage->error('Nazwa użytkownika jest niepoprawna. Nie zmieniono nazwy użytkownika.');
 			}
@@ -37,14 +41,14 @@ class UserEdit extends WT\AdminPanelPage
 			}
 		}
 
-		if (empty($_POST['email']) or filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+		if (!$_POST['email'] or filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
 			$this->_user->email = $_POST['email'];
 		}
 		else {
 			$this->_HTMLMessage->error('Podany adres e-mail jest niepoprawny.');
 		}
 
-		if (!empty($_POST['passwordText_1']) and !empty($_POST['passwordText_2'])) {
+		if ($_POST['passwordText_1'] and $_POST['passwordText_2']) {
 		    if ($_POST['passwordText_1'] === $_POST['passwordText_2']) {
 				$this->_user->setPassword($_POST['passwordText_1']);
 				$this->_HTMLMessage->success('Hasło zostało zmienione.');

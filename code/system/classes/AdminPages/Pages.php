@@ -37,7 +37,7 @@ class Pages extends WT\AdminPanelPage
 				$this->_HTMLMessage->error('Nie jesteś uprawniony do przenoszenia tej strony.');
 			}
 			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
-				$this->_HTMLMessage->error('Wybrana do ukrycia strona jest stroną główną witryny. Nie ukryto strony.');
+				$this->_HTMLMessage->error('Strona „' . $page->title . '” jest stroną główną witryny. Nie ukryto strony.');
 			}
 			else {
 				$page->isDraft = true;
@@ -56,7 +56,7 @@ class Pages extends WT\AdminPanelPage
 				$this->_HTMLMessage->error('Nie jesteś uprawniony do usunięcia tej strony.');
 			}
 			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
-				$this->_HTMLMessage->error('Wybrana do usunięcia strona jest stroną główną witryny. Nie usunięto strony.');
+				$this->_HTMLMessage->error('Strona „' . $page->title . '” jest stroną główną witryny. Nie usunięto strony.');
 			}
 			else {
 				$page->delete();
@@ -67,7 +67,7 @@ class Pages extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		if (!empty($_GET['msg'])) {
+		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->success('Strona została utworzona.');
 		}
 

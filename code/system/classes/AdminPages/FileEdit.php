@@ -25,7 +25,7 @@ class FileEdit extends WT\AdminPanelPage
 	{
 		$_POST['newFileName'] = trim($_POST['newFileName']);
 
-		if (!empty($_POST['newFileName']) and $_POST['newFileName'] != $this->_file->getName()) {
+		if ($_POST['newFileName'] and $_POST['newFileName'] != $this->_file->getName()) {
 			$newFileName = (new WT\Text($_POST['newFileName']))->makeSlug(WT\Settings::get('filesForceLowercaseNames'))->get();
 
 			if (WT\UploadedFile::getByName($newFileName)) {

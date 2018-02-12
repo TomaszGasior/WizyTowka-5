@@ -11,7 +11,7 @@ class PluginTest extends TestCase
 	static private $_plugin1_addonConf = <<< 'JSON'
 {
 	"namespace": "WizyTowka\\ExamplePlugin_1",
-	"init": "WizyTowka\\ExamplePlugin_1\\PluginClass::init"
+	"init": "PluginClass::init"
 }
 JSON;
 	static private $_plugin1_pluginClass = <<< 'PHP'
@@ -29,7 +29,7 @@ PHP;
 	static private $_plugin2_addonConf = <<< 'JSON'
 {
 	"namespace": "WizyTowka\\ExamplePlugin_2",
-	"init": "WizyTowka\\ExamplePlugin_2\\PluginClass::run"
+	"init": "PluginClass::run"
 }
 JSON;
 	static private $_plugin2_pluginClass = <<< 'PHP'

@@ -17,7 +17,7 @@ class PageCreate extends WT\AdminPanelPage
 		$_POST['title'] = trim($_POST['title']);
 		$_POST['slug']  = trim($_POST['slug']);
 
-		if (empty($_POST['title'])) {
+		if (!$_POST['title']) {
 			$this->_HTMLMessage->error('Nie określono tytułu strony.');
 			return;
 		}
@@ -27,11 +27,11 @@ class PageCreate extends WT\AdminPanelPage
 		)->makeSlug()->get();
 
 		if (WT\Page::getBySlug($slug)) {
-			$this->_HTMLMessage->error('Identyfikator „' . $slug . '” jest już wykorzystany w innej stronie.');
+			$this->_HTMLMessage->error('Identyfikator „' . $slug . '” jest już przypisany innej stronie.');
 			return;
 		}
 
-		if (empty($_POST['type'])) {
+		if (!$_POST['type']) {
 			$this->_HTMLMessage->error('Nie określono typu zawartości strony.');
 			return;
 		}
@@ -71,7 +71,7 @@ class PageCreate extends WT\AdminPanelPage
 	{
 		$this->_HTMLTemplate->contentTypes         = WT\ContentType::getAll();
 		$this->_HTMLTemplate->autocheckContentType = WT\Settings::get('adminPanelDefaultContentType');
-		$this->_HTMLTemplate->autocheckDraft       = !empty($_GET['draft']);
+		$this->_HTMLTemplate->autocheckDraft       = isset($_GET['draft']);
 	}
 }
 

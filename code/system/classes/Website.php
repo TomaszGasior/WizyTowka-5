@@ -81,7 +81,8 @@ class Website extends Controller
 			$arguments = ['id' => $slug] + $arguments;   // Adds "id" argument to array beginning for better URL readability.
 		}
 
-		return Settings::get('websiteAddress') . ($pretty ? '/'.$slug : '/') . ($arguments ? '?'.http_build_query($arguments) : '');
+		return Settings::get('websiteAddress') . ($pretty ? '/' . $slug : '/')
+		       . ($arguments ? '?' . http_build_query($arguments) : '');
 	}
 }
 

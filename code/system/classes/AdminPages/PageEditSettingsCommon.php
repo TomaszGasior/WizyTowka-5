@@ -55,12 +55,12 @@ trait PageEditSettingsCommon
 	protected function _output()
 	{
 		$this->_settingsInsteadEdit
-		? $this->_HTMLContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit')
+		? $this->_HTMLContextMenu->add('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit')
 		: $this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 		$this->_HTMLContextMenu->add('Właściwości', self::URL('pageProperties', ['id' => $this->_page->id]), 'iconProperties');
 
+		// Show warning if user isn't permitted to modify page.
 		if (!$this->_isUserAllowedToEditPage($this->_page)) {
-			// Show warning if user isn't permitted to modify page.
 			$this->_HTMLTemplate->setTemplate('PageEditSettings');
 			return;
 		}

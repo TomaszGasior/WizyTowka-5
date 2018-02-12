@@ -68,6 +68,6 @@ class ContentTypeAPIException extends Exception
 {
 	static public function withoutPOSTQueries($class)
 	{
-		return new self('Content type  ' . $class . ' class does not support POST queries.', 1);
+		return new self('Content type ' . $class . ' class does not support POST queries.', 1);
 	}
 }

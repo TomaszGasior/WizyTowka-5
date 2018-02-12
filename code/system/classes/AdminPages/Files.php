@@ -33,8 +33,8 @@ class Files extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		if (!empty($_GET['msg'])) {
-			$this->_HTMLMessage->success('Przesyłanie zakończono pomyślnie.');
+		if (isset($_GET['msg'])) {
+			$this->_HTMLMessage->success('Przesyłanie zostało zakończone pomyślnie.');
 		}
 
 		$this->_HTMLTemplate->files = $this->_files;

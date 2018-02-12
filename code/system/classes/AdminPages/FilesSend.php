@@ -42,7 +42,7 @@ class FilesSend extends WT\AdminPanelPage
 				$this->_HTMLMessage->error(
 					($this->_sendingCount == count($this->_sendingErrors))
 					? 'Wystąpiły błędy podczas przesyłania plików. Żaden plik nie został przesłany.'
-					: 'Wystąpiły błędy podczas przesyłania niektórych plików. Część została przesłana pomyślnie.'
+					: 'Wystąpiły błędy podczas przesyłania niektórych plików. Część plików została przesłana pomyślnie.'
 				);
 			}
 		}

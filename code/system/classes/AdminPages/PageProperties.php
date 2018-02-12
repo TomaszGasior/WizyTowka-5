@@ -31,7 +31,7 @@ class PageProperties extends WT\AdminPanelPage
 		$_POST['title'] = trim($_POST['title']);
 		$_POST['slug']  = trim($_POST['slug']);
 
-		if (empty($_POST['title'])) {
+		if (!$_POST['title']) {
 			$this->_HTMLMessage->error('Nie określono tytułu strony.');
 		}
 		else {
@@ -44,7 +44,7 @@ class PageProperties extends WT\AdminPanelPage
 			)->makeSlug()->get();
 
 			if (WT\Page::getBySlug($newSlug)) {
-				$this->_HTMLMessage->error('Identyfikator „' . $newSlug . '” jest już wykorzystany w innej stronie.');
+				$this->_HTMLMessage->error('Identyfikator „' . $newSlug . '” jest już przypisany innej stronie.');
 			}
 			else {
 				$this->_page->slug = $newSlug;
@@ -66,13 +66,13 @@ class PageProperties extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		$this->_HTMLContextMenu->add('Edycja', self::URL('pageEdit', ['id' => $this->_page->id]), 'iconEdit');
+		$this->_HTMLContextMenu->add('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit');
 		$this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 
 		$this->_HTMLTemplate->page = $this->_page;
 
 		$usersIdList = array_column(WT\User::getAll(), 'name', 'id');
-		if (empty($this->_page->userId)) {
+		if (!$this->_page->userId) {
 			// userId column is set to NULL by foreign key of DBMS when user is deleted.
 			$usersIdList += ['' => '(użytkownik został usunięty)'];
 		}

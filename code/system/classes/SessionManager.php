@@ -90,12 +90,12 @@ trait SessionManager
 
 	static public function isUserLoggedIn()
 	{
-		return (self::$_currentUserId) ? true : false;
+		return (bool)self::$_currentUserId;
 	}
 
 	static public function getUserId()
 	{
-		return (self::$_currentUserId) ? self::$_currentUserId : false;
+		return self::$_currentUserId ? self::$_currentUserId : false;
 	}
 
 	static private function _generateWAI($userId) // WAI means "where am I?". This string is used to identify user agent.
@@ -112,7 +112,7 @@ trait SessionManager
 	static private function _getSessionsConfig()
 	{
 		static $conf = false;
-		return ($conf) ? $conf : ($conf = new ConfigurationFile(CONFIG_DIR . '/sessions.conf'));
+		return $conf ? $conf : ($conf = new ConfigurationFile(CONFIG_DIR . '/sessions.conf'));
 	}
 }
 
