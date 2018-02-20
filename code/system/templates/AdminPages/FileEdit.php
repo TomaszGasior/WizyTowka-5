@@ -10,7 +10,7 @@
 	<h3>Zmiana nazwy</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Nazwa pliku', 'newFileName', HTML::escape($fileName), ['placeholder' => '(pozostaw dotychczasową nazwę)'])
+		->text('Nazwa pliku', 'nofilter_newFileName', HTML::escape($fileName), ['placeholder' => '(pozostaw dotychczasową nazwę)'])
 	?>
 
 	<p class="warning">Uwaga! Nie należy zmieniać nazwy pliku, jeśli został on wykorzystany na jakiejkolwiek stronie witryny (na przykład został dodany do treści strony czy do galerii zdjęć). W&nbsp;takim wypadku zmiana nazwy pliku spowoduje niepoprawne działanie strony — odnośnik do pliku przestanie działać, obrazek nie będzie się wczytywać.</p>

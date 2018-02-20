@@ -3,7 +3,7 @@
 
 	<?= (new HTMLFormFields)
 		->text('Nazwa użytkownika', 'name', $createInsteadEdit ? '' : $user->name,
-			['required'=>$createInsteadEdit, 'pattern'=>'[a-zA-Z0-9_\-.]*', 'title'=>'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
+			['required' => $createInsteadEdit, 'pattern' => '[a-zA-Z0-9_\-.]*', 'title' => 'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 		)
 		->email('Adres e-mail', 'email', $createInsteadEdit ? '' : $user->email)
 	?>
@@ -20,8 +20,8 @@
 	<h3>Hasło</h3>
 
 	<?= (new HTMLFormFields)
-		->password('Hasło', 'nofilter_passwordText_1', ['required'=>$createInsteadEdit])
-		->password('Ponownie hasło', 'nofilter_passwordText_2', ['required'=>$createInsteadEdit])
+		->password('Hasło', 'nofilter_passwordText_1', ['required' => $createInsteadEdit])
+		->password('Ponownie hasło', 'nofilter_passwordText_2', ['required' => $createInsteadEdit])
 	?>
 
 	<?php if (!$createInsteadEdit) { ?>

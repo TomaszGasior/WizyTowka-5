@@ -27,7 +27,7 @@ class Files extends WT\AdminPanelPage
 	{
 		if ($file = WT\UploadedFile::getByName($name)) {
 			$file->delete();
-			$this->_HTMLMessage->success('Plik „' . $name . '” został usunięty.');
+			$this->_HTMLMessage->success('Plik „' . WT\HTML::escape($name) . '” został usunięty.');
 		};
 	}
 

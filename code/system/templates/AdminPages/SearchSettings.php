@@ -2,7 +2,7 @@
 	<h3>Domyślne informacje wyszukiwarek</h3>
 
 	<?= (new HTMLFormFields)
-		->textarea('Opis witryny', 'nofilter_searchEnginesDescription', HTML::escape($settings->searchEnginesDescription),
+		->textarea('Opis witryny', 'searchEnginesDescription', $settings->searchEnginesDescription,
 			['maxlength' => 300, 'spellcheck' => true])
 		->checkbox('Proś wyszukiwarki, by nie indeksowały zawartości witryny', 'robots[noindex]', $robots['noindex'])
 	?>

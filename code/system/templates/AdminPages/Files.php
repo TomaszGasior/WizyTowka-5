@@ -1,6 +1,6 @@
 <?= (new HTMLElementsList('elementsList listView'))
 	->collection($files)
-	->title(function($file){ return $file->getName(); })
+	->title(function($file){ return HTML::escape($file->getName()); })
 	->link(function($file){ return AdminPanel::URL('fileEdit', ['name' => $file->getName()]); })
 	->menu(function($file){ return [
 		['Edytuj', AdminPanel::URL('fileEdit', ['name' => $file->getName()]), 'iconEdit'],

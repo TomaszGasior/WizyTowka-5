@@ -6,10 +6,10 @@
 	<h3>Dane strony</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Tytuł', 'nofilter_title', HTML::escape($page->title), ['required' => true])
-		->text('Identyfikator', 'nofilter_slug', HTML::escape($page->slug))
-		->{$hideUserIdChange ? 'skip' : 'select'}('Właściciel', 'userId', $page->userId, $usersIdList,
-			['disabled' => $disableUserIdChange])
+		->text('Tytuł', 'title', $page->title, ['required' => true])
+		->text('Identyfikator', 'slug', $page->slug)
+		->{$hideUserIdChange ? 'skip' : 'select'}
+			('Właściciel', 'userId', $page->userId, $usersIdList, ['disabled' => $disableUserIdChange])
 		->option('Strona dostępna publicznie', 'isDraft', '0', $page->isDraft)
 		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $page->isDraft)
 	?>
@@ -24,9 +24,9 @@
 	<h3>Informacje wyszukiwarek</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Tytuł w pasku przeglądarki', 'nofilter_titleHead', HTML::escape($page->titleHead),
+		->text('Tytuł w pasku przeglądarki', 'titleHead', $page->titleHead,
 			['placeholder' => '(użyj domyślnego tytułu)'])
-		->textarea('Opis dla wyszukiwarek', 'nofilter_description', HTML::escape($page->description),
+		->textarea('Opis dla wyszukiwarek', 'description', $page->description,
 			['maxlength' => 300, 'spellcheck' => true, 'placeholder' => '(użyj domyślnego opisu witryny)'])
 		->checkbox('Proś wyszukiwarki, by nie indeksowały zawartości tej strony', 'noIndex', $page->noIndex,
 			['disabled' => $disableNoIndex])
