@@ -98,7 +98,7 @@ class TextTest extends TestCase
 		// Examples sources: https://pl.wikipedia.org, https://sjp.pwn.pl, https://encyklopedia.pwn.pl.
 		$exampleCodeBefore = <<< TEXT
 <h2 class="title">"A oto przykładowy tekst"</h2>
-<p>Nie ma się nad czym zastanawiać, "koń jaki jest, każdy widzi".</p>
+<p>Nie ma się nad czym zastanawiać, &quot;koń jaki jest, każdy widzi&quot;.</p>
 <p>Kandydat na posła potrafił tylko <code style="color: blue">powtarzać za Gierkiem "Pomożecie?"</code>.</p>
 <pre>Czy można jeszcze wątpić, że "tak naprawdę nie dzieje się nic i nie stanie się nic aż do końca"?</pre>
 <dl>

@@ -197,7 +197,10 @@ class Text implements \ArrayAccess, \IteratorAggregate
 
 					// Proper Polish quotation marks. More here: https://pl.wikipedia.org/wiki/Cudzysłów
 					if ($flags & self::TYPOGRAPHY_QUOTES) {
-						$nestedStringPart = preg_replace('/"([^"]*)"/', '„$1”', $nestedStringPart);
+						$nestedStringPart = preg_replace(
+							'/"([^"]*)"/', '„$1”',
+							str_replace('&quot;', '"', $nestedStringPart)
+						);
 					}
 				}
 				unset($nestedStringPart);
