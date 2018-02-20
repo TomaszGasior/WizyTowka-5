@@ -5,7 +5,7 @@ Trait gromadzący narzędzia przydatne w szablonach HTML, uwzględniające prefe
 
 ## *static* `escape($text)`
 
-Zwraca tekst `$text` ze znakami specjalnymi HTML (`<`, `>`, `"`, `'`, `&`) zamienionymi na ich bezpieczne przy wyświetlaniu odpowiedniki.
+Zwraca tekst `$text` ze znakami specjalnymi HTML (`<`, `>`, `"`, `'`, `&`) zamienionymi na ich bezpieczne przy wyświetlaniu odpowiedniki. Raz przekonwertowane znaki nie są konwertowane ponownie — nie zachodzi podwójne escape'owanie.
 
 ## *static* `unescape($text)`
 

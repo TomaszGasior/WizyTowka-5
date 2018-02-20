@@ -27,7 +27,7 @@ trait HTML
 		         ($settings->typographyQuotes  ? Text::TYPOGRAPHY_QUOTES  : 0) |
 		         ($settings->typographyOrphans ? Text::TYPOGRAPHY_ORPHANS : 0);
 
-		return $flags ? (new Text($text))->correctTypography($flags) : $text;
+		return $flags ? (new Text($text))->correctTypography($flags)->get() : $text;
 	}
 
 	static private function _prepateTimeTag($timestamp, $visibleFormat, $HTMLFormat)
