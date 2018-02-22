@@ -37,6 +37,14 @@ class Files extends WT\AdminPanelPage
 			$this->_HTMLMessage->success('Przesyłanie zostało zakończone pomyślnie.');
 		}
 
-		$this->_HTMLTemplate->files = $this->_files;
+		$files = [];
+		foreach ($this->_files as $file) {
+			$files[] = (object)[
+				'name' => $file->getName(),
+				'size' => $file->getSize(),
+				'url'  => $file->getURL(),
+			];
+		}
+		$this->_HTMLTemplate->files = $files;
 	}
 }
