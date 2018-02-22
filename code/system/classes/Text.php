@@ -192,7 +192,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 
 					// Proper Polish apostrophe character. More here: https://pl.wikipedia.org/wiki/Apostrof
 					if ($flags & self::TYPOGRAPHY_OTHER) {
-						$nestedStringPart = str_replace('\'', '’', $nestedStringPart);
+						$nestedStringPart = str_replace(['\'', '&apos;', '&#039;'], '’', $nestedStringPart);
 					}
 
 					// Proper Polish quotation marks. More here: https://pl.wikipedia.org/wiki/Cudzysłów
