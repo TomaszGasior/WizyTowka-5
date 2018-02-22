@@ -7,6 +7,8 @@ Aby wygenerować kod HTML elementu obsługiwanego przez klasę dziedziczącą, n
 
 Niektóre metody klas dziedziczących umożliwiają określenie dodatkowych atrybutów znaczników HTML za pośrednictwem argumentu `$HTMLAttributes` w formie tablicy. Zawartość tej tablicy jest parsowana zgodnie z zasadami określonymi w metodzie chronionej `_renderHTMLOpenTag()`.
 
+Uwaga: treści przekazywane klasom dziedziczącym umieszczane w kodzie HTML, jeśli nie wskazano inaczej, zazwyczaj nie są filtrowane — należy je przefiltrować przez `HTML::escape()`.
+
 ## `__construct($CSSClass = null)`
 
 Konstruktor umożliwia określenie klasy CSS dla głównego znacznika HTML generowanego przez klasę.

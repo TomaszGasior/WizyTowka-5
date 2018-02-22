@@ -20,7 +20,7 @@ class HTMLFormFields extends HTMLTag
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
 		$HTMLAttributes['name']  = $name;
-		$HTMLAttributes['value'] = str_replace("\n", null, $value);
+		$HTMLAttributes['value'] = str_replace("\n", null, HTML::escape($value));
 
 		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
 		return $this;
@@ -134,7 +134,7 @@ class HTMLFormFields extends HTMLTag
 		$type = __FUNCTION__;
 		$HTMLAttributes['type']  = 'text';
 		$HTMLAttributes['name']  = $name;
-		$HTMLAttributes['value'] = str_replace("\n", null, $value);
+		$HTMLAttributes['value'] = str_replace("\n", null, HTML::escape($value));
 
 		$this->_fields[] = compact('type', 'HTMLAttributes', 'label', 'hints');
 		return $this;
@@ -158,7 +158,7 @@ class HTMLFormFields extends HTMLTag
 
 	public function output()
 	{
-		echo '<fieldset', $this->_CSSClass ? ' class="'.$this->_CSSClass.'">' : '>';
+		echo '<fieldset', $this->_CSSClass ? ' class="' . $this->_CSSClass . '">' : '>';
 
 		foreach ($this->_fields as $field) {
 			$id = $field['HTMLAttributes']['name'];
@@ -172,7 +172,7 @@ class HTMLFormFields extends HTMLTag
 			if ($field['type'] == 'checkable') {
 				$labelTitle = !empty($field['HTMLAttributes']['title']) ? $field['HTMLAttributes']['title'] : null;
 				$this->_renderHTMLOpenTag('input', $field['HTMLAttributes']);
-				echo '<label' . ($labelTitle ? ' title="' . $labelTitle . '" ' : ' ') . 'for="', $id, '">',
+				echo '<label' . ($labelTitle ? ' title="' . HTML::escape($labelTitle) . '" ' : ' ') . 'for="', $id, '">',
 				     $field['label'], '</label>';
 			}
 			else {

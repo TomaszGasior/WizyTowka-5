@@ -82,8 +82,9 @@ class HTMLMenu extends HTMLTag
 				}
 				else {
 					$element['HTMLAttributes']['href'] = $element['content'];
-					echo $this->_renderHTMLOpenTag('a', $element['HTMLAttributes']),
-					     $element['label'], '</a>';
+
+					$this->_renderHTMLOpenTag('a', $element['HTMLAttributes']);
+					echo $element['label'], '</a>';
 				}
 
 				echo '</li>';

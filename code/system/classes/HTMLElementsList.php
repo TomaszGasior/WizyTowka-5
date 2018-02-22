@@ -113,9 +113,9 @@ class HTMLElementsList extends HTMLTag
 						// $option[0] — menu item label,
 						// $option[1] — menu item URL address,
 						// $option[2] — optional, menu item CSS class.
-						echo (!empty($option[2]) ? '<li class="'.$option[2].'">' : '<li>'),
-							 '<a href="', $option[1], '" aria-label="', $option[0], ' — ', $title, '">', $option[0], '</a>',
-							 '</li>';
+						echo (!empty($option[2]) ? '<li class="' . $option[2] . '">' : '<li>'),
+							 '<a href="', $option[1], '" aria-label="', HTML::escape($option[0] . ' — ' . $title), '">',
+							 $option[0], '</a>', '</li>';
 					}
 					echo '</ul>';
 				}

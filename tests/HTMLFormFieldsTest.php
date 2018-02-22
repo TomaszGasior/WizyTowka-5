@@ -8,14 +8,14 @@ class HTMLFormFieldsTest extends TestCase
 	public function testText()
 	{
 		$object = new WizyTowka\HTMLFormFields;
-		$object->text('Example field', 'name', 'value');
+		$object->text('Example field', 'name', 'value " value');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
 <fieldset>
 	<div>
 		<label for="name">Example field</label>
-		<span><input type="text" name="name" value="value" id="name"></span>
+		<span><input type="text" name="name" value="value &quot; value" id="name"></span>
 	</div>
 </fieldset>
 HTML;
