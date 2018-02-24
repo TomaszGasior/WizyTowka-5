@@ -23,6 +23,7 @@ trait Database
 				break;
 			case 'mysql':
 				self::$_pdo = new \PDO('mysql:host='.$host.';dbname='.$database.';charset=utf8mb4', $login, $password);
+				self::$_pdo->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 				break;
 			case 'pgsql':
 				self::$_pdo = new \PDO('pgsql:host='.$host.';dbname='.$database, $login, $password);

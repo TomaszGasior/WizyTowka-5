@@ -31,6 +31,6 @@ Metoda powinna być publiczna i statyczna, by inne kontrolery i klasy mogły uzy
 
 ## *protected* `_redirect($target, array $arguments = [])`
 
-Dokonuje przekierowania za pośrednictwem nagłówka HTTP `Location` i przerywa dalsze wykonanie skryptu. Jeśli w argumencie `$target` określony jest pełny adres URL (np. `http://example.org`), przekierowuje do niego bezpośrednio. W innym przypadku obydwa argumenty są wewnętrznie przekazywane do statycznej metody `URL()`, a przekierowanie następuje do uzyskanego od niej adresu.
+Dokonuje przekierowania za pośrednictwem nagłówka HTTP `Location` i **przerywa dalsze wykonanie skryptu**. Jeśli w argumencie `$target` określony jest pełny adres URL (np. `http://example.org`), przekierowuje do niego bezpośrednio. W innym przypadku obydwa argumenty są wewnętrznie przekazywane do statycznej metody `URL()`, a przekierowanie następuje do uzyskanego od niej adresu.
 
 Jeżeli nie uda się ustawić nagłówka HTTP `Location`, zostanie rzucony wyjątek `ControllerException` #3.
