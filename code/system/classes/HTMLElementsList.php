@@ -108,16 +108,17 @@ class HTMLElementsList extends HTMLTag
 				echo '</span>';
 
 				if ($this->_callbackMenu) {
-					echo '<ul>';
-					foreach (call_user_func($this->_callbackMenu, $element) as $option) {
-						// $option[0] — menu item label,
-						// $option[1] — menu item URL address,
-						// $option[2] — optional, menu item CSS class.
-						echo (!empty($option[2]) ? '<li class="' . $option[2] . '">' : '<li>'),
-							 '<a href="', $option[1], '" aria-label="', HTML::escape($option[0] . ' — ' . $title), '">',
-							 $option[0], '</a>', '</li>';
+					$menu = new HTMLMenu;
+					foreach (call_user_func($this->_callbackMenu, $element) as $item) {
+						// $item[0] — menu item label,
+						// $item[1] — menu item URL address,
+						// $item[2] — optional, menu item CSS class.
+						$menu->add(
+							$item[0], $item[1], isset($item[2]) ? $item[2] : '', null,
+							['aria-label' => HTML::escape($item[0] . ' — ' . $title)]
+						);
 					}
-					echo '</ul>';
+					echo $menu;
 				}
 
 				echo '</li>';
