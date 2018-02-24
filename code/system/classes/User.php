@@ -9,11 +9,13 @@ namespace WizyTowka;
 class User extends DatabaseObject
 {
 	const PERM_CREATE_PAGES     = 0b00000001;
-	const PERM_MANAGE_PAGES     = 0b00000010;
-	const PERM_MANAGE_FILES     = 0b00000100;
-	const PERM_WEBSITE_ELEMENTS = 0b00001000;
-	const PERM_WEBSITE_SETTINGS = 0b00010000;
-	const PERM_SUPER_USER       = 0b00100000;
+	const PERM_PUBLISH_PAGES    = 0b00000010;
+	const PERM_EDIT_PAGES       = 0b00000100;
+	const PERM_MANAGE_PAGES     = self::PERM_CREATE_PAGES | self::PERM_PUBLISH_PAGES | self::PERM_EDIT_PAGES;
+	const PERM_MANAGE_FILES     = 0b00001000;
+	const PERM_WEBSITE_ELEMENTS = 0b00010000;
+	const PERM_WEBSITE_SETTINGS = 0b00100000;
+	const PERM_SUPER_USER       = 0b01000000;
 
 	static protected $_tableName = 'Users';
 	static protected $_tableColumns = [

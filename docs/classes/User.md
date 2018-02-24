@@ -13,8 +13,10 @@ Posiada następujące pola:
 
 W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnień użytkownika.
 
-- `PERM_CREATE_PAGES` — uprawnienie do tworzenia stron i szkiców stron w witrynie;
-- `PERM_MANAGE_PAGES` — uprawnienie do edycji stron stworzonych przez innych użytkowników i zmiany właścicieli stron;
+- `PERM_CREATE_PAGES` — uprawnienie do tworzenia szkiców stron oraz do edycji stron i szkiców należących do użytkownika;
+- `PERM_PUBLISH_PAGES` — uprawnienie do publikowania tych szkiców stron i przenoszenia tych stron do szkiców, do których ma się uprawnienie;
+- `PERM_EDIT_PAGES` — uprawnienie do modyfikacji wszystkich stron, również należących do innych użytkowników, i zmiany właścicieli stron;
+- `PERM_MANAGE_PAGES` — suma uprawnień `PERM_CREATE_PAGES`, `PERM_PUBLISH_PAGES` i `PERM_EDIT_PAGES` (uwaga: przy sprawdzaniu bieżących uprawnień użytkownika należy używać tej stałej wyłącznie, gdy oczekiwane jest posiadanie któregokolwiek z tych uprawnień, nie — gdy oczekiwane są wyłącznie wszystkie jednocześnie);
 - `PERM_MANAGE_FILES` — uprawnienie do wysyłania plików na serwer i zarządzania wszystkimi wysłanymi plikami;
 - `PERM_WEBSITE_ELEMENTS` — uprawnienie do modyfikacji obszarów i menu witryny;
 - `PERM_WEBSITE_SETTINGS` — uprawnienie do zarządzania konfiguracją witryny i systemu;
