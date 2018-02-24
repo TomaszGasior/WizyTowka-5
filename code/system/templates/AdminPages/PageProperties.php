@@ -9,9 +9,9 @@
 		->text('Tytuł', 'title', $page->title, ['required' => true])
 		->text('Identyfikator', 'slug', $page->slug)
 		->{$hideUserIdChange ? 'skip' : 'select'}
-			('Właściciel', 'userId', $page->userId, $usersIdList, ['disabled' => $disableUserIdChange])
-		->option('Strona dostępna publicznie', 'isDraft', '0', $page->isDraft)
-		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $page->isDraft)
+			('Właściciel', 'userId', $page->userId, $usersIdList, ['disabled' => $disallowUserIdChange])
+		->option('Strona dostępna publicznie', 'isDraft', '0', $page->isDraft, ['disabled' => $disallowPublicPage])
+		->option('Szkic strony niewidoczny publicznie', 'isDraft', '1', $page->isDraft, ['disabled' => $disallowPublicPage])
 	?>
 
 	<dl>

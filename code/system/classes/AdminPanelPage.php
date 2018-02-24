@@ -114,21 +114,22 @@ abstract class AdminPanelPage extends Controller
 			$isLockdowned  = $lockdown   ? Settings::get('lockdown' . $lockdown)            : false;
 			$this->_HTMLMainMenu->add($label, $url, $CSSClass, null, [], $hasPermission and !$isLockdowned);
 		};
-		$add('Strony',             self::URL('pages'),             'iconPages',         User::PERM_CREATE_PAGES);
-		$add('Utwórz stronę',      self::URL('pageCreate'),        'iconAdd',           User::PERM_CREATE_PAGES);
-		$add('Szkice',             self::URL('drafts'),            'iconDrafts',        User::PERM_CREATE_PAGES);
-		$add('Utwórz szkic',       self::URL('pageCreate', ['draft' => 1]), 'iconAdd',  User::PERM_CREATE_PAGES);
-		$add('Pliki',              self::URL('files'),             'iconFiles',         User::PERM_MANAGE_FILES);
-		$add('Wyślij pliki',       self::URL('filesSend'),         'iconAdd',           User::PERM_MANAGE_FILES);
-		$add('Menu',               self::URL('menus'),             'iconMenus' ,        User::PERM_WEBSITE_ELEMENTS);
-		$add('Obszary',            self::URL('areas'),             'iconAreas' ,        User::PERM_WEBSITE_ELEMENTS);
-		$add('Personalizacja',     self::URL('customization'),     'iconCustomization', User::PERM_WEBSITE_SETTINGS);
-		$add('Ustawienia',         self::URL('websiteSettings'),   'iconSettings',      User::PERM_WEBSITE_SETTINGS);
-		$add('Użytkownicy',        self::URL('users'),             'iconUsers',         User::PERM_SUPER_USER,  'Users');
-		$add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd',           User::PERM_SUPER_USER,  'Users');
-		$add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor',    User::PERM_SUPER_USER,  'DataEditor');
-		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',           User::PERM_SUPER_USER,  'DataEditor');
-		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',        User::PERM_SUPER_USER,  'Backup');
+		$add('Strony',             self::URL('pages'),             'iconPages',           User::PERM_MANAGE_PAGES);
+		$add('Utwórz stronę',      self::URL('pageCreate'),        'iconAdd',
+			($this->_currentUser->permissions & User::PERM_CREATE_PAGES) ? User::PERM_PUBLISH_PAGES : User::PERM_CREATE_PAGES);
+		$add('Szkice',             self::URL('pages',     ['drafts' => 1]), 'iconDrafts', User::PERM_MANAGE_PAGES);
+		$add('Utwórz szkic',       self::URL('pageCreate', ['draft' => 1]), 'iconAdd',    User::PERM_CREATE_PAGES);
+		$add('Pliki',              self::URL('files'),             'iconFiles',           User::PERM_MANAGE_FILES);
+		$add('Wyślij pliki',       self::URL('filesSend'),         'iconAdd',             User::PERM_MANAGE_FILES);
+		$add('Menu',               self::URL('menus'),             'iconMenus' ,          User::PERM_WEBSITE_ELEMENTS);
+		$add('Obszary',            self::URL('areas'),             'iconAreas' ,          User::PERM_WEBSITE_ELEMENTS);
+		$add('Personalizacja',     self::URL('customization'),     'iconCustomization',   User::PERM_WEBSITE_SETTINGS);
+		$add('Ustawienia',         self::URL('websiteSettings'),   'iconSettings',        User::PERM_WEBSITE_SETTINGS);
+		$add('Użytkownicy',        self::URL('users'),             'iconUsers',           User::PERM_SUPER_USER,  'Users');
+		$add('Utwórz użytkownika', self::URL('userCreate'),        'iconAdd',             User::PERM_SUPER_USER,  'Users');
+		$add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor',      User::PERM_SUPER_USER,  'DataEditor');
+		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',             User::PERM_SUPER_USER,  'DataEditor');
+		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',          User::PERM_SUPER_USER,  'Backup');
 		$add('Informacje',         self::URL('about'),             'iconInformation');
 	}
 

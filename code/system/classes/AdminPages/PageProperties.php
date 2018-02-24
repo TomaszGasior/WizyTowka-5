@@ -12,7 +12,7 @@ class PageProperties extends WT\AdminPanelPage
 	use PageUserPermissionCommon;
 
 	protected $_pageTitle = 'Właściwości strony';
-	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
+	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_PAGES;
 
 	private $_page;
 
@@ -38,9 +38,16 @@ class PageProperties extends WT\AdminPanelPage
 			$this->_page->title = $_POST['title'];
 		}
 
+		if ($this->_page->id == WT\Settings::get('websiteHomepageId') and (bool)$_POST['isDraft']) {
+			$this->_HTMLMessage->error('Nie można przenieść do szkiców strony głównej witryny.');
+		}
+		elseif ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
+			$this->_page->isDraft = (bool)$_POST['isDraft'];
+		}
+
 		if ($_POST['slug'] != $this->_page->slug) {
 			$newSlug = (new WT\Text(
-				!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
+				WT\HTML::unescape(!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title']))
 			)->makeSlug()->get();
 
 			if (WT\Page::getBySlug($newSlug)) {
@@ -52,12 +59,12 @@ class PageProperties extends WT\AdminPanelPage
 		}
 
 		$this->_page->titleHead   = trim($_POST['titleHead']);
-		$this->_page->isDraft     = (bool)$_POST['isDraft'];
 		$this->_page->description = str_replace("\n", ' ', $_POST['description']);
 		$this->_page->noIndex     = isset($_POST['noIndex']);
 
-		if ($this->_currentUser->permissions & WT\User::PERM_MANAGE_PAGES) {
+		if ($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES) {
 			$this->_page->userId = $_POST['userId'];
+			// We don't need to validate this value. DBMS won't allow inserting invalid ID because of constraints.
 		}
 
 		$this->_page->save();
@@ -71,15 +78,22 @@ class PageProperties extends WT\AdminPanelPage
 
 		$this->_HTMLTemplate->page = $this->_page;
 
-		$usersIdList = array_column(WT\User::getAll(), 'name', 'id');
-		if (!$this->_page->userId) {
-			// userId column is set to NULL by foreign key of DBMS when user is deleted.
-			$usersIdList += ['' => '(użytkownik został usunięty)'];
-		}
-		$this->_HTMLTemplate->usersIdList = $usersIdList;
+		$this->_HTMLTemplate->hideUserIdChange = true;
+		$this->_HTMLTemplate->usersIdList      = [];
 
-		$this->_HTMLTemplate->hideUserIdChange    = WT\Settings::get('lockdownUsers');
-		$this->_HTMLTemplate->disableUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_MANAGE_PAGES);
+		if (!WT\Settings::get('lockdownUsers')) {
+			$this->_HTMLTemplate->hideUserIdChange = false;
+
+			$usersIdList = array_column(WT\User::getAll(), 'name', 'id');
+			if (!$this->_page->userId) {
+				// userId column is set to NULL by foreign key of DBMS when user is deleted.
+				$usersIdList += ['' => '(użytkownik został usunięty)'];
+			}
+			$this->_HTMLTemplate->usersIdList = $usersIdList;
+		}
+
+		$this->_HTMLTemplate->disallowUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES);
+		$this->_HTMLTemplate->disallowPublicPage   = !($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES);
 
 		$this->_HTMLTemplate->disableNoIndex = false;
 		if (strpos(WT\Settings::get('searchEnginesRobots'), 'noindex') !== false) {

@@ -13,7 +13,7 @@ class PageSettings extends WT\AdminPanelPage
 	private $_settingsInsteadEdit = true;
 
 	protected $_pageTitle = 'Ustawienia strony';
-	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
+	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_PAGES;
 }
 
 class PageSettingsException extends WT\Exception

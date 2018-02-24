@@ -21,6 +21,7 @@ trait PageEditSettingsCommon
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
 		if (!$this->_isUserAllowedToEditPage($this->_page)) {
+			// Don't redirect here to permissions error page. Instead show nice error message in _output().
 			return;
 		}
 

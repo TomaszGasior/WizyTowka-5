@@ -31,10 +31,12 @@
 	<h3>Uprawnienia</h3>
 
 	<?= (new HTMLFormFields)
-		->checkbox('Tworzenie stron i modyfikacja samodzielnie utworzonych stron',
+		->checkbox('Tworzenie szkiców stron oraz edycja stron i szkiców należących do użytkownika',
 			'permissions[CREATE_PAGES]',     $permissions['CREATE_PAGES'])
-		->checkbox('Modyfikacja wszystkich stron, również innych użytkowników oraz zmiana właścicieli stron',
-			'permissions[MANAGE_PAGES]',     $permissions['MANAGE_PAGES'])
+		->checkbox('Publikowanie tych szkiców i ukrywanie tych stron, które użytkownik może edytować',
+			'permissions[PUBLISH_PAGES]',    $permissions['PUBLISH_PAGES'])
+		->checkbox('Edycja wszystkich istniejących stron i szkiców oraz zmiana właścicieli stron i szkiców',
+			'permissions[EDIT_PAGES]',       $permissions['EDIT_PAGES'])
 		->checkbox('Wysyłanie plików i zarządzanie wszystkimi wysłanymi plikami',
 			'permissions[MANAGE_FILES]',     $permissions['MANAGE_FILES'])
 		->checkbox('Modyfikacja elementów witryny — obszarów i menu',

@@ -23,7 +23,7 @@ class PageCreate extends WT\AdminPanelPage
 		}
 
 		$slug = (new WT\Text(
-			!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
+			WT\HTML::unescape(!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title']))
 		)->makeSlug()->get();
 
 		if (WT\Page::getBySlug($slug)) {
@@ -43,8 +43,13 @@ class PageCreate extends WT\AdminPanelPage
 		$page->title   = $_POST['title'];
 		$page->slug    = $slug;
 		$page->noIndex = false;
-		$page->isDraft = (bool)$_POST['isDraft'];
 		$page->userId  = $this->_currentUser->id;
+
+		$page->isDraft = true;
+		if ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
+			$page->isDraft = (bool)$_POST['isDraft'];
+		}
+
 		$page->save();
 
 		try {
@@ -64,14 +69,21 @@ class PageCreate extends WT\AdminPanelPage
 			throw $e;
 		}
 
-		$this->_redirect($page->isDraft ? 'drafts' : 'pages', ['msg' => 1]);
+		$this->_redirect('pages', $page->isDraft ? ['drafts' => true, 'msg' => 1] : ['msg' => 1]);
 	}
 
 	protected function _output()
 	{
 		$this->_HTMLTemplate->contentTypes         = WT\ContentType::getAll();
 		$this->_HTMLTemplate->autocheckContentType = WT\Settings::get('adminPanelDefaultContentType');
-		$this->_HTMLTemplate->autocheckDraft       = isset($_GET['draft']);
+
+		$this->_HTMLTemplate->autocheckDraft     = true;
+		$this->_HTMLTemplate->disallowPublicPage = true;
+
+		if ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
+			$this->_HTMLTemplate->autocheckDraft     = isset($_GET['draft']);
+			$this->_HTMLTemplate->disallowPublicPage = false;
+		}
 	}
 }
 
