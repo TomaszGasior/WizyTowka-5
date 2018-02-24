@@ -19,6 +19,10 @@ class Website extends Controller
 		// Get current page. If isn't specified, use home page.
 		$this->_page = !empty($_GET['id']) ? Page::getBySlug($_GET['id']) : Page::getById(Settings::get('websiteHomepageId'));
 
+		if (!$this->_page or $this->_page->isDraft) {
+			die('404');
+		}
+
 		// Initialize HTML template.
 		$this->_HTMLTemplate = new HTMLTemplate;
 
@@ -62,7 +66,7 @@ class Website extends Controller
 
 	static public function URL($target, array $arguments = [])
 	{
-		if (is_integer($target)) {
+		if (is_numeric($target)) {
 			if ($page = Page::getById($target)) {
 				$slug = $page->slug;
 			}
