@@ -46,36 +46,12 @@ abstract class AdminPanelPage extends Controller
 		$this->_prepare();
 	}
 
-	final public function output()
-	{
-		// Run _output() method. Child class can specify additional template variables and context menu here.
-		$this->_output();
-
-		// Main HTML layout.
-		$this->_HTMLLayout = new HTMLTemplate(
-			$this->_userMustBeLoggedIn ? 'AdminPanelLayout' : 'AdminPanelAlternative',
-			SYSTEM_DIR . '/templates'
-		);
-		$this->_HTMLLayout->head         = $this->_HTMLHead;
-		$this->_HTMLLayout->topMenu      = $this->_HTMLTopMenu;
-		$this->_HTMLLayout->mainMenu     = $this->_HTMLMainMenu;
-		$this->_HTMLLayout->contextMenu  = $this->_HTMLContextMenu;
-		$this->_HTMLLayout->message      = $this->_HTMLMessage;
-		$this->_HTMLLayout->pageTitle    = $this->_pageTitle;
-		$this->_HTMLLayout->pageTemplate = $this->_HTMLTemplate;
-		$this->_HTMLLayout->id           = empty($_GET['c']) ? '' : strtolower($_GET['c']);
-
-		// Recursively render all HTML elements and whole layout.
-		$this->_HTMLLayout->render();
-	}
-
 	// This method sets up HTML layout parts needed by child class.
 	private function _setupHTMLParts()
 	{
 		// HTML <head>.
 		$this->_HTMLHead = new HTMLHead;
 		$this->_HTMLHead->setAssetsPath(SYSTEM_URL . '/assets');
-		$this->_HTMLHead->title($this->_pageTitle . ' — WizyTówka');
 		$this->_HTMLHead->meta('viewport', 'width=device-width');
 		$this->_HTMLHead->stylesheet('AdminMain.css');
 		$this->_HTMLHead->stylesheet('AdminMobile.css');
@@ -115,8 +91,10 @@ abstract class AdminPanelPage extends Controller
 			$this->_HTMLMainMenu->add($label, $url, $CSSClass, null, [], $hasPermission and !$isLockdowned);
 		};
 		$add('Strony',             self::URL('pages'),             'iconPages',           User::PERM_MANAGE_PAGES);
-		$add('Utwórz stronę',      self::URL('pageCreate'),        'iconAdd',
-			($this->_currentUser->permissions & User::PERM_CREATE_PAGES) ? User::PERM_PUBLISH_PAGES : User::PERM_CREATE_PAGES);
+		$add(
+			'Utwórz stronę',       self::URL('pageCreate'),        'iconAdd',
+			($this->_currentUser->permissions & User::PERM_CREATE_PAGES) ? User::PERM_PUBLISH_PAGES : User::PERM_CREATE_PAGES
+		);
 		$add('Szkice',             self::URL('pages',     ['drafts' => 1]), 'iconDrafts', User::PERM_MANAGE_PAGES);
 		$add('Utwórz szkic',       self::URL('pageCreate', ['draft' => 1]), 'iconAdd',    User::PERM_CREATE_PAGES);
 		$add('Pliki',              self::URL('files'),             'iconFiles',           User::PERM_MANAGE_FILES);
@@ -131,6 +109,32 @@ abstract class AdminPanelPage extends Controller
 		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',             User::PERM_SUPER_USER,  'DataEditor');
 		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',          User::PERM_SUPER_USER,  'Backup');
 		$add('Informacje',         self::URL('about'),             'iconInformation');
+	}
+
+	final public function output()
+	{
+		// Run _output() method. Child class can specify additional template variables and context menu here.
+		$this->_output();
+
+		// Set page title in HTML <head>.
+		$this->_HTMLHead->title($this->_pageTitle . ' — WizyTówka');
+
+		// Main HTML layout.
+		$this->_HTMLLayout = new HTMLTemplate(
+			$this->_userMustBeLoggedIn ? 'AdminPanelLayout' : 'AdminPanelAlternative',
+			SYSTEM_DIR . '/templates'
+		);
+		$this->_HTMLLayout->head         = $this->_HTMLHead;
+		$this->_HTMLLayout->topMenu      = $this->_HTMLTopMenu;
+		$this->_HTMLLayout->mainMenu     = $this->_HTMLMainMenu;
+		$this->_HTMLLayout->contextMenu  = $this->_HTMLContextMenu;
+		$this->_HTMLLayout->message      = $this->_HTMLMessage;
+		$this->_HTMLLayout->pageTitle    = $this->_pageTitle;
+		$this->_HTMLLayout->pageTemplate = $this->_HTMLTemplate;
+		$this->_HTMLLayout->id           = empty($_GET['c']) ? '' : strtolower($_GET['c']);
+
+		// Recursively render all HTML elements and whole layout.
+		$this->_HTMLLayout->render();
 	}
 
 	// Equivalent of Controller::__construct() method for AdminPanel child classes.
