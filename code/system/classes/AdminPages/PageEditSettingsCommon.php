@@ -15,23 +15,28 @@ trait PageEditSettingsCommon
 	private $_pageBoxes;
 	private $_contentTypeAPI;
 
+	private $_settingsMode; // True for PageSettings, false for PageEdit class.
+
 	protected function _prepare()
 	{
+		$this->_settingsMode = (self::class == __NAMESPACE__ . '\PageSettings');
+
 		if (empty($_GET['id']) or !$this->_page = WT\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
+
 		if (!$this->_isUserAllowedToEditPage($this->_page)) {
-			// Don't redirect here to permissions error page. Instead show nice error message in _output().
+			// Don't redirect here to permissions error page. Instead show nice error message inside _output().
 			return;
 		}
 
 		$this->_pageBoxes = WT\PageBox::getAll($this->_page->id);
 
 		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->contentType)) {
-			$exceptionClass = self::class . 'Exception';
+			$exceptionClass = self::class . 'Exception';  // Syntax for backwards compatibility with PHP 5.6.
 			throw $exceptionClass::contentTypeNotExists($this->_pageBoxes[0]->contentType);
 		}
-		$this->_contentTypeAPI = $this->_settingsInsteadEdit ? $contentType->initSettingsPage() : $contentType->initEditorPage();
+		$this->_contentTypeAPI = $this->_settingsMode ? $contentType->initSettingsPage() : $contentType->initEditorPage();
 		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
 		$this->_contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
 	}
@@ -55,10 +60,10 @@ trait PageEditSettingsCommon
 
 	protected function _output()
 	{
-		$this->_settingsInsteadEdit
-		? $this->_HTMLContextMenu->add('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit')
-		: $this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
-		$this->_HTMLContextMenu->add('Właściwości', self::URL('pageProperties', ['id' => $this->_page->id]), 'iconProperties');
+		$this->_settingsMode
+		? $this->_HTMLContextMenu->add('Edycja',     self::URL('pageEdit',       ['id' => $this->_page->id]), 'iconEdit')
+		: $this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings',   ['id' => $this->_page->id]), 'iconSettings');
+		$this->_HTMLContextMenu->add('Właściwości',  self::URL('pageProperties', ['id' => $this->_page->id]), 'iconProperties');
 
 		// Show warning if user isn't permitted to modify page.
 		if (!$this->_isUserAllowedToEditPage($this->_page)) {

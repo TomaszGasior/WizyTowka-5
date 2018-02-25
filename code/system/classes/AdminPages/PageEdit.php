@@ -10,7 +10,6 @@ use WizyTowka as WT;
 class PageEdit extends WT\AdminPanelPage
 {
 	use PageEditSettingsCommon;
-	private $_settingsInsteadEdit = false;
 
 	protected $_pageTitle = 'Edycja strony';
 	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_PAGES;
