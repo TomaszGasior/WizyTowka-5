@@ -48,9 +48,9 @@ class UserEdit extends WT\AdminPanelPage
 			$this->_HTMLMessage->error('Podany adres e-mail jest niepoprawny.');
 		}
 
-		if ($_POST['passwordText_1'] and $_POST['passwordText_2']) {
-		    if ($_POST['passwordText_1'] === $_POST['passwordText_2']) {
-				$this->_user->setPassword($_POST['passwordText_1']);
+		if ($_POST['nofilter_passwordText_1'] and $_POST['nofilter_passwordText_2']) {
+		    if ($_POST['nofilter_passwordText_1'] === $_POST['nofilter_passwordText_2']) {
+				$this->_user->setPassword($_POST['nofilter_passwordText_1']);
 				$this->_HTMLMessage->success('Hasło zostało zmienione.');
 			}
 			else {

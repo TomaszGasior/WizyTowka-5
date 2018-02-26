@@ -21,14 +21,14 @@ class Login extends WT\AdminPanelPage
 
 	public function POSTQuery()
 	{
-		if (!$_POST['name'] or !$_POST['password']) {
+		if (!$_POST['name'] or !$_POST['nofilter_password']) {
 			$this->_HTMLMessage->error('Nie określono danych logowania.');
 			return;
 		}
 
 		$user = WT\User::getByName($_POST['name']);
 
-		if ($user and $user->checkPassword($_POST['password'])) {
+		if ($user and $user->checkPassword($_POST['nofilter_password'])) {
 			WT\SessionManager::logIn($user->id, 3600);
 
 			// Update last login time statistics in database.

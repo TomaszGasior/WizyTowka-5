@@ -11,7 +11,7 @@ class EditorPage extends WT\ContentTypeAPI
 {
 	public function POSTQuery()
 	{
-		$this->_contents->html = $_POST['content'];
+		$this->_contents->html = $_POST['nofilter_content'];
 	}
 
 	public function HTMLContent()

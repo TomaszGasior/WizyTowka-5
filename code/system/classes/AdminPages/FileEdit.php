@@ -23,10 +23,10 @@ class FileEdit extends WT\AdminPanelPage
 
 	public function POSTQuery()
 	{
-		$_POST['newFileName'] = trim($_POST['newFileName']);
+		$newFileName = trim($_POST['nofilter_newFileName']);
 
-		if ($_POST['newFileName'] and $_POST['newFileName'] != $this->_file->getName()) {
-			$newFileName = (new WT\Text($_POST['newFileName']))->makeSlug(WT\Settings::get('filesForceLowercaseNames'))->get();
+		if ($newFileName and $newFileName != $this->_file->getName()) {
+			$newFileName = (new WT\Text($newFileName))->makeSlug(WT\Settings::get('filesForceLowercaseNames'))->get();
 
 			if (WT\UploadedFile::getByName($newFileName)) {
 				$this->_HTMLMessage->error('Plik o nazwie „' . $newFileName . '” już istnieje.');
