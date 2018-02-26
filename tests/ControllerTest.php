@@ -27,6 +27,16 @@ class ControllerTest extends TestCase
 			'field1' => 'example content',
 			'field2' => '<strong>example content</strong>',
 			'nofilter_field3' => '<strong>example content</strong>',
+			'array1' => [
+				'field4' => 'example content',
+				'field5' => '<strong>example content</strong>',
+				'nofilter_field6' => '<strong>example content</strong>',
+				'array2' => [
+					'field7' => 'example content',
+					'field8' => '<strong>example content</strong>',
+					'nofilter_field9' => '<strong>example content</strong>',
+				],
+			],
 		];
 
 		$controller = new self::$_exampleController;
@@ -36,7 +46,16 @@ class ControllerTest extends TestCase
 			'field1' => 'example content',
 			'field2' => '&lt;strong&gt;example content&lt;/strong&gt;',
 			'nofilter_field3' => '<strong>example content</strong>',
-			'field3' => '<strong>example content</strong>',  // Automatically created alias of "nofilter_field3".
+			'array1' => [
+				'field4' => 'example content',
+				'field5' => '&lt;strong&gt;example content&lt;/strong&gt;',
+				'nofilter_field6' => '<strong>example content</strong>',
+				'array2' => [
+					'field7' => 'example content',
+					'field8' => '&lt;strong&gt;example content&lt;/strong&gt;',
+					'nofilter_field9' => '<strong>example content</strong>',
+				],
+			],
 		];
 		$this->assertEquals($expected, $_POST);
 	}

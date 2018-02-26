@@ -9,7 +9,7 @@ Klasy dziedziczące muszą definiować metodę `URL()`, powinny definiować `out
 
 Bezpośrednio i rekurencyjnie filtruje wszystkie dane znajdujące się w tablicy `$_POST` przy użyciu `HTML::escape()`. Metoda ta powinna być wywoływana przed użyciem metody `POSTQuery()`.
 
-Aby wykluczyć pole formularza z filtrowania, należy jego nazwę poprzedzić przedrostkiem `nofilter_`, na przykład: `nofilter_pageContent`. W tablicy `$_POST` powstaną aliasy dla takich pól pozbawione tego przedrostka, będące referencjami.
+Aby wykluczyć pole formularza z filtrowania, należy jego nazwę poprzedzić przedrostkiem `nofilter_`, na przykład: `nofilter_pageContent`.
 
 ## `POSTQuery()`
 

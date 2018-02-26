@@ -10,24 +10,12 @@ abstract class Controller
 {
 	public function filterPOSTData()
 	{
-		$HTMLFilter = function(array &$array) use (&$HTMLFilter)
-		{
-			$aliases = [];
-			foreach ($array as $key => &$value) {
-				$key = explode('_', $key, 2);
-				if ($key[0] != 'nofilter') {
-					is_array($value) ? $HTMLFilter($value) : $value = HTML::escape($value);
-				}
-				elseif (!empty($key[1])) {
-					$aliases[$key[1]] =& $value;
-				}
+		array_walk_recursive($_POST, function(&$value, $key) {
+			// Values with key prefixed by "nofilter_" won't be filtered.
+			if (substr($key, 0, 9) != 'nofilter_') {
+				$value = HTML::escape($value);
 			}
-			$array += $aliases;
-			// $_POST elements with "nofilter_" prefix won't be escaped.
-			// For these elements referenced aliases without "nofilter_" prefix will be created.
-		};
-
-		$HTMLFilter($_POST);
+		});
 	}
 
 	public function POSTQuery()
