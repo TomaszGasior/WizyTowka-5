@@ -40,10 +40,15 @@ class PageCreate extends WT\AdminPanelPage
 		}
 
 		$page = new WT\Page;
+
 		$page->title   = $_POST['title'];
 		$page->slug    = $slug;
 		$page->noIndex = false;
 		$page->userId  = $this->_currentUser->id;
+
+		$page->contentType = $_POST['type'];
+		$page->settings    = (object)$contentType->settings;
+		$page->contents    = (object)$contentType->contents;
 
 		$page->isDraft = true;
 		if ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
@@ -51,23 +56,6 @@ class PageCreate extends WT\AdminPanelPage
 		}
 
 		$page->save();
-
-		try {
-			$pageBox = new WT\PageBox;
-			$pageBox->pageId         = $page->id;
-			$pageBox->contentType    = $_POST['type'];
-			$pageBox->settings       = (object)$contentType->settings;
-			$pageBox->contents       = (object)$contentType->contents;
-			$pageBox->positionRow    = 1;
-			$pageBox->positionColumn = 1;
-			$pageBox->save();
-		} catch (\Throwable $e) {
-			$page->delete();   // Delete incomplete created page from database.
-			throw $e;
-		} catch (\Exception $e) {  // PHP 5.6 backwards compatibility.
-			$page->delete();
-			throw $e;
-		}
 
 		$this->_redirect('pages', $page->isDraft ? ['drafts' => true, 'msg' => 1] : ['msg' => 1]);
 	}

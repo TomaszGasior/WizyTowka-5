@@ -16,9 +16,16 @@ class Page extends DatabaseObject
 		'description',
 		'noIndex',
 		'isDraft',
+		'contentType',
+		'contents',
+		'settings',
 		'userId',
 		'updatedTime',
 		'createdTime',
+	];
+	static protected $_tableColumnsJSON = [
+		'contents',
+		'settings',
 	];
 	static protected $_tableColumnsTimeAtInsert = [
 		'updatedTime',

@@ -113,29 +113,22 @@ Database::executeSQL(generateSchemaSQL($settings->databaseType));
 foreach (range(1, 3) as $number) {
 	$user = new User;
 	$user->name = 'user_' . $number;
-	$user->permissions = ($number == 1) ? 0b1111111111 : User::PERM_CREATE_PAGES;
+	$user->permissions = ($number == 1) ? 0b1111111111 : (($number == 2) ? User::PERM_MANAGE_PAGES : User::PERM_CREATE_PAGES);
 	$user->setPassword($user->name);
 	$user->save();
 }
 
 // Example data: pages.
+$contentType = ContentType::getByName(Settings::get('adminPanelDefaultContentType'));
 foreach (range(1, 5) as $number) {
 	$page = new Page;
 	$page->slug = 'example_' . $number;
 	$page->title = 'Przykładowa strona #' . $number;
 	$page->isDraft = !($number % 2);
 	$page->noIndex = false;
+	$page->contentType = $contentType->getName();
+	$page->settings = (object)$contentType->settings;
+	$page->contents = (object)$contentType->contents;
 	$page->userId = 1;
 	$page->save();
-
-	$contentType = ContentType::getByName(Settings::get('adminPanelDefaultContentType'));
-
-	$pageBox = new PageBox;
-	$pageBox->pageId = $page->id;
-	$pageBox->contentType = $contentType->getName();
-	$pageBox->settings = (object)$contentType->settings;
-	$pageBox->contents = (object)$contentType->contents;
-	$pageBox->positionRow = 1;
-	$pageBox->positionColumn = 1;
-	$pageBox->save();
 }

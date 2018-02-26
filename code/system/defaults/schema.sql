@@ -29,6 +29,9 @@ CREATE TABLE Pages (
 	description VARCHAR(500),
 	noIndex SMALLINT NOT NULL CHECK(isDraft IN (0,1)),
 	isDraft SMALLINT NOT NULL CHECK(isDraft IN (0,1)),
+	contentType VARCHAR(50) NOT NULL,
+	contents TEXT NOT NULL,
+	settings TEXT NOT NULL,
 	userId INTEGER,
 	updatedTime INTEGER UNSIGNED NOT NULL DEFAULT 0, -- wt_dbms: mysql
 	updatedTime BIGINT NOT NULL DEFAULT 0,           -- wt_dbms: ! mysql
@@ -38,21 +41,12 @@ CREATE TABLE Pages (
 );
 CREATE INDEX Pages_isDraft ON Pages(isDraft);
 
-CREATE TABLE PageBoxes (
-	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, -- wt_dbms: sqlite
-	id INTEGER PRIMARY KEY AUTO_INCREMENT,         -- wt_dbms: mysql
-	id SERIAL PRIMARY KEY,                         -- wt_dbms: pgsql
-	contentType VARCHAR(50) NOT NULL,
-	contents TEXT NOT NULL,
-	settings TEXT NOT NULL,
-	pageId INTEGER NOT NULL,
-	positionRow SMALLINT NOT NULL,
-	positionColumn SMALLINT NOT NULL,
-	FOREIGN KEY(pageId) REFERENCES Pages(id) ON DELETE CASCADE
-);
-
--- Workaround for Pages.isDraft. MySQL have not support of CHECK constraint.
+-- Workaround for MySQL's lack of support of CHECK constraint.
 CREATE TRIGGER Pages_isDraft_INSERT BEFORE INSERT ON Pages FOR EACH ROW -- wt_dbms: mysql
 	SET NEW.isDraft = IF(NEW.isDraft <> 0, 1, 0);                       -- wt_dbms: mysql
 CREATE TRIGGER Pages_isDraft_UPDATE BEFORE UPDATE ON Pages FOR EACH ROW -- wt_dbms: mysql
 	SET NEW.isDraft = IF(NEW.isDraft <> 0, 1, 0);                       -- wt_dbms: mysql
+CREATE TRIGGER Pages_noIndex_INSERT BEFORE INSERT ON Pages FOR EACH ROW -- wt_dbms: mysql
+	SET NEW.noIndex = IF(NEW.noIndex <> 0, 1, 0);                       -- wt_dbms: mysql
+CREATE TRIGGER Pages_noIndex_UPDATE BEFORE UPDATE ON Pages FOR EACH ROW -- wt_dbms: mysql
+	SET NEW.noIndex = IF(NEW.noIndex <> 0, 1, 0);                       -- wt_dbms: mysql

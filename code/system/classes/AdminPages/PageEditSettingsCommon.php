@@ -12,7 +12,6 @@ trait PageEditSettingsCommon
 	use PageUserPermissionCommon;
 
 	private $_page;
-	private $_pageBoxes;
 	private $_contentTypeAPI;
 
 	private $_settingsMode; // True for PageSettings, false for PageEdit class.
@@ -25,19 +24,17 @@ trait PageEditSettingsCommon
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
 
+		// Don't redirect here to permissions error page. Instead show nice error message inside _output().
 		if (!$this->_isUserAllowedToEditPage($this->_page)) {
-			// Don't redirect here to permissions error page. Instead show nice error message inside _output().
 			return;
 		}
 
-		$this->_pageBoxes = WT\PageBox::getAll($this->_page->id);
-
-		if (!$contentType = WT\ContentType::getByName($this->_pageBoxes[0]->contentType)) {
+		if (!$contentType = WT\ContentType::getByName($this->_page->contentType)) {
 			$exceptionClass = self::class . 'Exception';  // Syntax for backwards compatibility with PHP 5.6.
-			throw $exceptionClass::contentTypeNotExists($this->_pageBoxes[0]->contentType);
+			throw $exceptionClass::contentTypeNotExists($this->_page->contentType);
 		}
 		$this->_contentTypeAPI = $this->_settingsMode ? $contentType->initSettingsPage() : $contentType->initEditorPage();
-		$this->_contentTypeAPI->setPageData($this->_pageBoxes[0]->contents, $this->_pageBoxes[0]->settings);
+		$this->_contentTypeAPI->setPageData($this->_page->contents, $this->_page->settings);
 		$this->_contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
 	}
 
@@ -50,9 +47,7 @@ trait PageEditSettingsCommon
 
 		// Save changes of $contents and $settings property made by content type class.
 		// We don't need to assign values because these properties contain instances of \stdClass.
-		$this->_pageBoxes[0]->save();
-
-		// Save also page to update $updatedTime field in database.
+		// $updatedTime field in database is updated here.
 		$this->_page->save();
 
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');

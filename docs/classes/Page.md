@@ -9,9 +9,12 @@ Posiada następujące pola:
 - `slug` — unikalna nazwa uproszczona strony;
 - `title` — tytuł strony;
 - `titleHead` — tytuł w nagłówku `<head>` witryny;
-- `description` — opis w znaczniku meta `description`;
+- `description` — opis w znaczniku `<meta name="description">`;
 - `noIndex` — indeksowanie w wyszukiwarkach: jeśli `0` — indeksować, jeśli `1` — prosić o nieindeksowanie;
-- `isDraft` — status strony zapisany w formie liczby całkowitej: jeśli `0` — publiczna, jeśli `1` — szkic;
+- `isDraft` — status strony zapisany w formie liczby całkowitej: jeśli `0` — publiczna, jeśli `1` — szkic (strona niedostępna publicznie);
+- `contentType` — nazwa typu zawartości (dokładna nazwa dodatku);
+- `contents` — treść typu zawartości (obiekt zakodowany w formacie JSON);
+- `settings` — ustawienia typu zawartości (obiekt zakodowany w formacie JSON);
 - `userId` — identyfikator użytkownika, który stworzył stronę; jeśli `null` — użytkownik został usunięty;
 - `updatedTime` — data i czas ostatniej aktualizacji strony w formie uniksowego znacznika czasu;
 - `createdTime` — data i czas utworzenia strony w formie uniksowego znacznika czasu.

@@ -97,7 +97,7 @@ class PageProperties extends WT\AdminPanelPage
 
 		$this->_HTMLTemplate->disableNoIndex = false;
 		if (strpos(WT\Settings::get('searchEnginesRobots'), 'noindex') !== false) {
-			$this->_page->noIndex = true; // Fake value, won't be saved in database.
+			$this->_page->noIndex = true; // Fake value used to check the checkbox, won't be saved in database.
 			$this->_HTMLTemplate->disableNoIndex = true;
 		}
 

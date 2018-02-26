@@ -9,7 +9,7 @@ namespace WizyTowka;
 class Website extends Controller
 {
 	private $_page;
-	private $_contentTypeAPIBoxes = [];
+	private $_contentTypeAPI;
 
 	private $_HTMLTemplate;
 	private $_renderer;
@@ -20,45 +20,37 @@ class Website extends Controller
 		$this->_page = !empty($_GET['id']) ? Page::getBySlug($_GET['id']) : Page::getById(Settings::get('websiteHomepageId'));
 
 		if (!$this->_page or $this->_page->isDraft) {
-			die('404');
+			die('404'); // Comming soon.
 		}
 
 		// Initialize HTML template.
 		$this->_HTMLTemplate = new HTMLTemplate;
 
-		// Get page boxes and its contents. Initialize content types.
-		foreach (PageBox::getAll($this->_page->id) as $pageBox) {
-			if (!$contentType = ContentType::getByName($pageBox->contentType)) {
-				throw WebsiteException::contentTypeNotExists($pageBox->contentType);
-			}
-
-			$contentTypeAPI = $contentType->initWebsitePageBox();
-			$contentTypeAPI->setPageData($pageBox->contents, $pageBox->settings);
-			$this->_contentTypeAPIBoxes[] = $contentTypeAPI;
+		// Initialize content type.
+		if (!$contentType = ContentType::getByName($this->_page->contentType)) {
+			throw WebsiteException::contentTypeNotExists($this->_page->contentType);
 		}
+		$this->_contentTypeAPI = $contentType->initWebsitePageBox();
+		$this->_contentTypeAPI->setPageData($this->_page->contents, $this->_page->settings);
 
 		// Initialize website renderer, which will prepare HTML template.
-		$this->_renderer = new WebsiteRenderer($this->_page, $this->_contentTypeAPIBoxes, $this->_HTMLTemplate);
+		$this->_renderer = new WebsiteRenderer($this->_page, $this->_contentTypeAPI, $this->_HTMLTemplate);
 	}
 
 	public function POSTQuery()
 	{
-		foreach ($this->_contentTypeAPIBoxes as $box) {
-			try {
-				$box->POSTQuery();
-				// ContentTypeAPI::POSTQuery() throws an exception if content type does not support POST queries.
-				// Normally it's good, here this behavior is unwanted.
-			} catch (ContentTypeAPIException $e) {}
-		}
+		try {
+			$this->_contentTypeAPI->POSTQuery();
+			// ContentTypeAPI::POSTQuery() throws an exception if content type does not support POST queries.
+			// Normally it's good, here this behavior is unwanted.
+		} catch (ContentTypeAPIException $e) {}
 	}
 
 	public function output()
 	{
-		foreach ($this->_contentTypeAPIBoxes as $box) {
-			$box->HTMLContent();
-		}
-
 		// ContentTypeAPI::HTMLContent() must be called before template preparing by WebsiteRenderer.
+		$this->_contentTypeAPI->HTMLContent();
+
 		$this->_renderer->prepareTemplate();
 
 		$this->_HTMLTemplate->render();

@@ -11,35 +11,35 @@ class WebsiteRenderer
 	private $_page;
 
 	private $_HTMLLayout;
-	private $_HTMLBoxes = [];
+	private $_HTMLTemplate;
 	private $_HTMLHead;
 	private $_HTMLMessage;
 
 	private $_theme;
 
-	public function __construct(Page $page, array $contentTypeAPIBoxes, HTMLTemplate $HTMLLayout)
+	public function __construct(Page $page, ContentTypeAPI $contentTypeAPI, HTMLTemplate $HTMLLayout)
 	{
 		$this->_page = $page;
 
+		// Load theme.
 		if (!$this->_theme = Theme::getByName(Settings::get('themeName'))) {
 			throw WebsiteRendererException::themeNotExists(Settings::get('themeName'));
 		}
 
+		// Initialize HTML layout template.
 		$this->_HTMLLayout = $HTMLLayout;
 		$this->_HTMLLayout->setTemplate('WebsiteLayout');
 		$this->_setupTemplatePath($this->_HTMLLayout);
 
+		// Prepare HTML <head> section.
 		$this->_HTMLHead = $this->_prepareHead();
 
+		// Initialize HTML message box.
 		$this->_HTMLMessage = new HTMLMessage;
 
-		foreach ($contentTypeAPIBoxes as $box) {
-			$HTMLBox = new HTMLTemplate;
-
-			// Each content type has its own HTML template.
-			$this->_HTMLBoxes[] = $HTMLBox;
-			$box->setHTMLParts($HTMLBox, $this->_HTMLHead, $this->_HTMLMessage);
-		}
+		// Initialize HTML template for content type.
+		$this->_HTMLTemplate = new HTMLTemplate;
+		$contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
 	}
 
 	public function prepareTemplate()
@@ -67,11 +67,9 @@ class WebsiteRenderer
 
 	private function _setupTemplatePath(HTMLTemplate $template)
 	{
+		// Themes can override HTML templates of website layout if it's specified in addon.conf.
 		$template->setTemplatePath(
-			(
-				(isset($this->_theme->templates) and in_array($template->getTemplate(), $this->_theme->templates))
-				? $this->_theme->getPath() : SYSTEM_DIR
-			)
+			in_array($template->getTemplate(), $this->_theme->templates) ? $this->_theme->getPath() : SYSTEM_DIR
 			. '/templates'
 		);
 	}
@@ -172,8 +170,8 @@ class WebsiteRenderer
 		$template = new HTMLTemplate('WebsitePageContent');
 		$this->_setupTemplatePath($template);
 
-		$template->message   = HTML::correctTypography($this->_HTMLMessage);
-		$template->pageBoxes = $this->_HTMLBoxes;
+		$template->message = HTML::correctTypography($this->_HTMLMessage);
+		$template->content = $this->_HTMLTemplate;
 
 		return (string)$template;
 	}
@@ -206,6 +204,7 @@ class WebsiteRenderer
 			case 'websiteAuthor':      return HTML::correctTypography(Settings::get('websiteAuthor'));
 			case 'pageTitle':          return HTML::correctTypography($this->_page->title);
 			case 'pageIsDraft':        return $this->_page->isDraft;
+			case 'pageContentType':    return $this->_page->contentType;
 			case 'systemVersion':      return VERSION;
 		}
 	}
