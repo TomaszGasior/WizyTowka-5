@@ -65,12 +65,11 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return $this->_data;
 	}
 
-	public function &getIterator() // For IteratorAggregate interface.
+	public function getIterator() // For IteratorAggregate interface.
 	{
-		foreach ($this->_data as $key => &$value) {
+		foreach ($this->_data as $key => $value) {
 			yield $key => $value;
 		}
-		// Reference is used to allow foreach syntax like it: foreach($object as &$value) { ... }.
 	}
 
 	public function save()

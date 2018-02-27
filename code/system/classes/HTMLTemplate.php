@@ -53,12 +53,11 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		return ob_get_clean();
 	}
 
-	public function &getIterator() // For IteratorAggregate interface.
+	public function getIterator() // For IteratorAggregate interface.
 	{
-		foreach ($this->_variables as $key => &$value) {
+		foreach ($this->_variables as $key => $value) {
 			yield $key => $value;
 		}
-		// Reference is used to allow foreach syntax like it: foreach($object as &$value) { ... }.
 	}
 
 	public function count() // For Countable interface.

@@ -61,14 +61,14 @@ class SettingsTest extends TestCase
 			return mb_strtoupper($string) . date('Y-m-d');
 		};
 
-		foreach (WizyTowka\Settings::get() as &$value) {
-			$value = $modify($value);
+		$settings = WizyTowka\Settings::get();
+		foreach ($settings as $key => $value) {
+			$settings->$key = $modify($value);
 		}
-		unset($value);
 
-		foreach (WizyTowka\Settings::get() as $setting => $value) {
+		foreach (WizyTowka\Settings::get() as $key => $value) {
 			$current  = $value;
-			$expected = $modify(self::$_exampleSettings[$setting]);
+			$expected = $modify(self::$_exampleSettings[$key]);
 			$this->assertEquals($expected, $current);
 		}
 	}

@@ -93,12 +93,11 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		return $this->_configuration;
 	}
 
-	public function &getIterator() // For IteratorAggregate interface.
+	public function getIterator() // For IteratorAggregate interface.
 	{
-		foreach ($this->_configuration as $key => &$value) {
+		foreach ($this->_configuration as $key => $value) {
 			yield $key => $value;
 		}
-		// Reference is used to allow foreach syntax like it: foreach($object as &$value) { ... }.
 	}
 
 	public function count()  // For Countable interface.
