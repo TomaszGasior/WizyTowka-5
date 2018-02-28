@@ -19,12 +19,9 @@ class ContentType extends Addon
 
 	private function _initClass($className)
 	{
-		static $autoloaderConfigured = false;
-
 		// Add namespace of content type to autoloader.
-		if (!$autoloaderConfigured) {
+		if (!Autoloader::namespaceExists($this->namespace)) {
 			Autoloader::addNamespace($this->namespace, $this->getPath().'/classes');
-			$autoloaderConfigured = true;
 		}
 
 		// Content type's classes must extend ContentTypeAPI class.

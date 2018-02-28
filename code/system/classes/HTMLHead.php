@@ -21,49 +21,27 @@ class HTMLHead extends HTMLTag
 
 	public function base($href = null, array $HTMLAttributes = [])
 	{
-		static $alreadyAdded = false;
+		$this->_removeTag(__FUNCTION__);
 
 		if ($href) {
-			if ($alreadyAdded) {
-				$this->_removeTag('base');
-			}
-			$alreadyAdded = true;
-
 			$tagName = __FUNCTION__;
 			$HTMLAttributes['href'] = $href;
 
 			$this->_tags[] = compact('tagName', 'HTMLAttributes');
 		}
-		else {
-			$alreadyAdded = false;
-
-			$this->_removeTag('base');
-		}
-
 		return $this;
 	}
 
 	public function title($title = null, array $HTMLAttributes = [])
 	{
-		static $alreadyAdded = false;
+		$this->_removeTag(__FUNCTION__);
 
 		if ($title) {
-			if ($alreadyAdded) {
-				$this->_removeTag('title');
-			}
-			$alreadyAdded = true;
-
 			$tagName = __FUNCTION__;
 			$content = HTML::escape($title);
 
 			$this->_tags[] = compact('tagName', 'content', 'HTMLAttributes');
 		}
-		else {
-			$alreadyAdded = false;
-
-			$this->_removeTag('title');
-		}
-
 		return $this;
 	}
 
