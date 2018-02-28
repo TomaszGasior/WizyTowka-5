@@ -3,6 +3,8 @@ HTMLHead
 
 Klasa generująca zawartość znacznika HTML `<head>`. Umożliwia przejrzyste i proste dodawanie metatagów, arkuszy stylów i skryptów do nagłówka dokumentu HTML. Klasa dziedziczy po klasie `HTMLTag`. Ustawienie klasy CSS w konstruktorze klasy `HTMLTag` w przypadku tej klasy nie ma zastosowania.
 
+Klasa posiada metodę magiczną `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
+
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
 ## `base($href = null, array $HTMLAttributes = [])`

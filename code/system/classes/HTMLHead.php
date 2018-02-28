@@ -12,7 +12,12 @@ class HTMLHead extends HTMLTag
 	private $_assetsPath = '';
 	private $_assetsPathBase = '';
 
-	private $_tags  = [];
+	private $_tags = [];
+
+	public function __debugInfo()
+	{
+		return $this->_tags;
+	}
 
 	public function base($href = null, array $HTMLAttributes = [])
 	{
