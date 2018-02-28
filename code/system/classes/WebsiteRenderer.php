@@ -184,7 +184,7 @@ class WebsiteRenderer
 		$menu  = new HTMLMenu;
 
 		foreach ($pages as $page) {
-			$menu->add(HTML::correctTypography($page->title), Website::URL($page->slug), $page->slug);
+			$menu->append(HTML::correctTypography($page->title), Website::URL($page->slug), $page->slug);
 		}
 
 		return (string)$menu;

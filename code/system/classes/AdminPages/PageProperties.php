@@ -73,8 +73,8 @@ class PageProperties extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		$this->_HTMLContextMenu->add('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit');
-		$this->_HTMLContextMenu->add('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
+		$this->_HTMLContextMenu->append('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit');
+		$this->_HTMLContextMenu->append('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 
 		$this->_HTMLTemplate->page = $this->_page;
 

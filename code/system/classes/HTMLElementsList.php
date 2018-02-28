@@ -113,8 +113,8 @@ class HTMLElementsList extends HTMLTag
 						// $item[0] — menu item label,
 						// $item[1] — menu item URL address,
 						// $item[2] — optional, menu item CSS class.
-						$menu->add(
-							$item[0], $item[1], isset($item[2]) ? $item[2] : '', null,
+						$menu->append(
+							$item[0], $item[1], isset($item[2]) ? $item[2] : '',
 							['aria-label' => HTML::escape($item[0] . ' — ' . $title)]
 						);
 					}

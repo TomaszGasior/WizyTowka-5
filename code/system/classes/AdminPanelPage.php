@@ -77,10 +77,10 @@ abstract class AdminPanelPage extends Controller
 	{
 		// Top navigation menu.
 		$this->_HTMLTopMenu = new HTMLMenu;
-		$this->_HTMLTopMenu->add($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
-		$this->_HTMLTopMenu->add('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
-		$this->_HTMLTopMenu->add('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', null, ['target' => '_blank']);
-		$this->_HTMLTopMenu->add('Wyloguj się',             self::URL('logout'),             'iconLogout');
+		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
+		$this->_HTMLTopMenu->append('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
+		$this->_HTMLTopMenu->append('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', ['target' => '_blank']);
+		$this->_HTMLTopMenu->append('Wyloguj się',             self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
@@ -88,7 +88,7 @@ abstract class AdminPanelPage extends Controller
 		{
 			$hasPermission = $permission ? ($this->_currentUser->permissions & $permission) : true;
 			$isLockdowned  = $lockdown   ? Settings::get('lockdown' . $lockdown)            : false;
-			$this->_HTMLMainMenu->add($label, $url, $CSSClass, null, [], $hasPermission and !$isLockdowned);
+			$this->_HTMLMainMenu->append($label, $url, $CSSClass, [], $hasPermission and !$isLockdowned);
 		};
 		$add('Strony',             self::URL('pages'),             'iconPages',           User::PERM_MANAGE_PAGES);
 		$add(
