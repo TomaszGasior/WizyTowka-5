@@ -5,21 +5,45 @@ Klasa generująca menu nawigacyjne HTML oparte na znaczniku `<ul>`. Umożliwia d
 
 Poszczególne elementy umieszczane są w znaczniku `<li>`. Zazwyczaj wewnątrz niego znajduje się odnośnik `<a>`. Istnieje też alternatywna możliwość podania innej instancji klasy `HTMLMenu` zamiast adresu docelowego, co spowoduje stworzenie menu zagnieżdżonego (`<ul>` wewnątrz elementu).
 
-Klasa implementuje metodę magiczną `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
+Klasa implementuje interfejsy `Countable` i `IteratorAggregate`, by umożliwiać iterowanie w pętli oraz policzenie elementów menu, a także metodę magiczną `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
-## `add($label, $content, $CSSClass = null, $position = null, array $HTMLAttributes = [], $visible = true)`
+## `append($label, $content, $CSSClass = null, array $HTMLAttributes = [], $visible = true)`
 
-Dodaje element do menu. Argument `$label` określa etykietę elementu. Argument `$CSSClass` umożliwia wskazanie klasy CSS przypisywanej do znacznika `<li>`.
+Dodaje element na koniec menu. Argument `$label` określa etykietę elementu.
 
-Argument `$content` określa zawartość elementu menu. Może być to adres URL w formie ciągu znaków — wtedy zostanie umieszczony znacznik `<a>`, a `$content` określi wartość argumentu `href`. Można też jako argument `$content` podać inną instancję klasy `HTMLMenu` — wtedy zostanie wygenerowane menu zagnieżdżone.
+Argument `$content` określa zawartość elementu menu. Może być to adres URL w formie ciągu znaków — wtedy zostanie umieszczony znacznik `<a>`, a `$content` określi wartość atrybutu `href`. Można też jako argument `$content` podać inną instancję klasy `HTMLMenu` — wtedy zostanie wygenerowane menu zagnieżdżone. Zostanie rzucony wyjątek `HTMLMenuException` #2, jeśli wartość argumentu będzie niepoprawna.
 
-Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika `<a>`. Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami. Argument ma zastosowanie tylko, gdy `$content` jest adresem URL.
-
-W argumencie `$position` można określić pozycję elementu menu w formie liczbowej. Jeśli argument ten nie zostanie określony, element menu zostanie dodany na jego koniec. Jeśli wystąpi kilka elementów menu z określoną tą samą pozycją, ich ułożenie będzie nieprzewidywalne, zgodnie z [dokumentacją funkcji wbudowanej `sort()`](http://php.net/manual/en/function.sort.php#refsect1-function.sort-description).
+Opcjonalny argument `$CSSClass` umożliwia wskazanie klasy CSS przypisywanej do znacznika `<li>`. Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika `<a>`. Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami. Argument ma zastosowanie tylko, gdy `$content` jest adresem URL.
 
 Opcjonalny argument `$visible` o wartości logicznej będącej fałszem ukrywa element menu (nie będzie on w ogóle renderowany w kodzie HTML). Dzięki jego zastosowaniu można uniknąć przesunięcia numeracji pozostałych elementów menu.
+
+## `prepend(...)`
+
+Dodaje element na początek menu. Przyjmuje argumenty jak `append()`.
+
+## `insert($position, ...)`
+
+Dodaje element menu na pozycję określoną argumentem `$position`. Pozostałe argumenty przyjmuje jak `append()`.
+
+W argumencie `$position` należy określić pozycję elementu menu w formie liczby dodatniej bądź ujemnej. Argument `$position` musi być liczbą całkowitą lub zmiennoprzecinkową. W innym wypadku zostanie rzucony wyjątek `HTMLMenuException` #3.
+
+Jeśli wystąpi kilka elementów menu z określoną tą samą pozycją, zostaną posortowane według etykiety.
+
+Uwaga: pozycje elementów menu dodanych za pomocą metod `append()` i `prepend()` są automatyczne. Może dojść do sytuacji, że elementy dodane za pośrednictwem `prepend()` otrzymają pozycje o wartości ujemnej.
+
+## `replace($position, ...)`
+
+Usuwa z menu wszystkie elementy z pozycją `$position`, a następnie dodaje element menu w tej pozycji. Pozostałe argumenty przyjmuje jak `append()`.
+
+Alias dla wywołania metod `removeByPosition($position)` i `insert($position, ...)`.
+
+## `removeByPosition($position)`
+
+Usuwa z menu wszystkie elementy z pozycją określoną jako `$position`.
+
+Argument `$position` musi być liczbą całkowitą lub zmiennoprzecinkową. W innym wypadku zostanie rzucony wyjątek `HTMLMenuException` #3.
 
 ## `removeByContent($content)`
 
@@ -32,5 +56,7 @@ Usuwa z menu wszystkie elementy z etykietą `$label`.
 ## `output()`
 
 Jeśli menu nie jest puste, generuje kod HTML menu — listę `<ul>` z elementami `<li>`.
+
+Zostanie rzucony wyjątek `HTMLMenuException` #1, jeśli jako element menu do instancji klasy została dodana ona sama.
 
 Metoda nie zwraca wartości.
