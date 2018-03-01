@@ -17,7 +17,7 @@ trait Settings
 			self::$_settings = new ConfigurationFile(CONFIG_DIR . '/settings.conf');
 		}
 
-		return ($option) ? self::$_settings->$option : self::$_settings;
+		return $option ? self::$_settings->$option : self::$_settings;
 	}
 
 	static public function getDefault($option = null)
@@ -26,6 +26,6 @@ trait Settings
 			self::$_defaultSettings = new ConfigurationFile(SYSTEM_DIR . '/defaults/settings.conf', true); // Read only.
 		}
 
-		return ($option) ? self::$_defaultSettings->$option : self::$_defaultSettings;
+		return $option ? self::$_defaultSettings->$option : self::$_defaultSettings;
 	}
 }
