@@ -17,6 +17,8 @@ Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybut
 
 Dodaje tytuł strony `$title` w znaczniku `<title>`. Można dodać tylko jeden znacznik `<title>` — jeżeli dodano ten znacznik wcześniej, poprzedni egzemplarz zostanie usunięty. Tytuł jest filtrowany za pomocą `HTML::escape()`. Jeśli `$title` jest puste, usuwa znacznik.
 
+Za pomocą metody `setTitlePattern()` można określić wzór tytułu strony. Gdy wzór jest określony, tytuł `$title` wstawiany jest w określone miejsce wzoru, a do znacznika `<title>` trafia cały zbudowany z jego pomocą ciąg znaków.
+
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów znacznika HTML.
 
 ## `meta($name, $content, array $HTMLAttributes = [])`
@@ -83,6 +85,18 @@ Usuwa znacznik `<link>` o atrybucie `rel` równym `$rel` i, jeśli podano, atryb
 
 Usuwa arkusz stylów CSS. Alias dla `removeLink('stylesheet', $href)`.
 
+## `setTitlePattern($titlePattern)`
+
+Ustawia wzór tytułu strony uwzględniany przy dołączaniu znacznika `<title>` na `$titlePattern`. Wzór powinien zawierać miejsce na docelowy tytuł strony określono za pomocą symbolu `%s`.
+
+Uwaga: wzór jest uwzględniany już w momencie dodawania tytułu (w momencie wywołania metody `title()`), nie zaś w momencie generowania kodu HTML.
+
+Zwraca prawdę, jeśli tytuł jest prawidłowy, inaczej fałsz.
+
+## `getTitlePattern()`
+
+Zwraca bieżący wzór tytułu strony.
+
 ## `setAssetsPath($assetsPath)`
 
 Ustawia ścieżkę do zewnętrznych arkuszy stylów i skryptów na `$assetsPath`. Ścieżka jest dołączana do nazwy każdego dodawanego skryptu i arkusza stylów.
@@ -106,6 +120,8 @@ Zwraca bieżącą ścieżkę do zewnętrznych arkuszy stylów i skryptów.
 ## `setAssetsPathBase($assetsPathBase)`
 
 Ustawia podstawową część ścieżki dla zewnętrznych arkuszy stylów i skryptów ustawianej za pomocą metody `setAssetsPath()`. Podstawowa część ścieżki doklejana jest przed samą ścieżką. Metoda ta służy głównie do określania początkowej części adresu URL skryptów i arkuszy stylów — na przykład `http://example.org`.
+
+Metoda nie zwraca wartości.
 
 ## `getAssetsPathBase()`
 

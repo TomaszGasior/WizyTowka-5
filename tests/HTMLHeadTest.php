@@ -9,13 +9,15 @@ class HTMLHeadTest extends TestCase
 	{
 		$object = new WizyTowka\HTMLHead;
 
+		$object->setTitlePattern('%s — Example website');
+
 		$object->base('http://example.org');
 		$object->title('Title of page');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
 <base href="http://example.org">
-<title>Title of page</title>
+<title>Title of page — Example website</title>
 HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}

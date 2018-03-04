@@ -12,6 +12,8 @@ class HTMLHead extends HTMLTag
 	private $_assetsPath = '';
 	private $_assetsPathBase = '';
 
+	private $_titlePattern = '';
+
 	private $_tags = [];
 
 	public function __debugInfo()
@@ -37,6 +39,10 @@ class HTMLHead extends HTMLTag
 		$this->_removeTag(__FUNCTION__);
 
 		if ($title) {
+			if ($this->_titlePattern) {
+				$title = sprintf($this->_titlePattern, $title);
+			}
+
 			$tagName = __FUNCTION__;
 			$content = HTML::escape($title);
 
@@ -139,6 +145,21 @@ class HTMLHead extends HTMLTag
 	public function removeStylesheet($href)
 	{
 		return $this->removeLink('stylesheet', $href);
+	}
+
+	public function getTitlePattern()
+	{
+		return $this->_titlePattern;
+	}
+
+	public function setTitlePattern($titlePattern)
+	{
+		if (strpos($titlePattern, '%s') !== false) {
+			$this->_titlePattern = (string)$titlePattern;
+			return true;
+		}
+
+		return false;
 	}
 
 	public function getAssetsPath()
