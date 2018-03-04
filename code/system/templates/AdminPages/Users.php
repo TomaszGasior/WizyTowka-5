@@ -1,4 +1,4 @@
-<?= (new HTMLElementsList('elementsList listView'))
+<?= (new HTMLElementsList('elementsList'))
 	->collection($users)
 	->title(function($user){ return $user->name; })
 	->menu(function($user){ return [

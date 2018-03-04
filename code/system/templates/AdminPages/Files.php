@@ -1,4 +1,4 @@
-<?= (new HTMLElementsList('elementsList listView'))
+<?= (new HTMLElementsList('elementsList'))
 	->collection($files)
 	->title(function($file){ return $file->name . ' (' . HTML::formatFileSize($file->size) . ')'; })
 	->link(function($file){ return urlencode($file->url); })

@@ -14,10 +14,10 @@
 	<h3>Typografia</h3>
 
 	<?= (new HTMLFormFields)
-		->checkbox('Przenoś jednoliterowe wyrazy z końca wiersza na początek następnego', 'typographyOrphans', $settings->typographyOrphans)
+		->checkbox('Przenoś jednoliterowe wyrazy z&nbsp;końca wiersza na początek następnego', 'typographyOrphans', $settings->typographyOrphans)
 		->checkbox('Automatycznie zamieniaj cudzysłowy uproszczone na cudzysłowy polskie', 'typographyQuotes', $settings->typographyQuotes)
 		->checkbox('Automatycznie zamieniaj minusy otoczone spacjami na długie pauzy', 'typographyDashes', $settings->typographyDashes)
-		->checkbox('Automatycznie poprawiaj znaki wielokropka i apostrofu', 'typographyOther', $settings->typographyOther)
+		->checkbox('Automatycznie poprawiaj znaki wielokropka i&nbsp;apostrofu', 'typographyOther', $settings->typographyOther)
 	?>
 
 	<h3>Pozostałe ustawienia</h3>

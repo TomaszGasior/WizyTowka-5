@@ -99,7 +99,9 @@ class WebsiteSettings extends WT\AdminPanelPage
 		$this->_HTMLTemplate->settings = $this->_settings;
 
 		// "Website homepage" field — titles of public pages.
-		$this->_HTMLTemplate->pagesIds = array_column(WT\Page::getAll(), 'title', 'id');
+		$pagesIds = array_column(WT\Page::getAll(), 'title', 'id');
+		array_walk($pagesIds, function(&$title){ $title = WT\HTML::correctTypography($title); });
+		$this->_HTMLTemplate->pagesIds = $pagesIds;
 
 		// "Date/time format" field — current format and list with formats and examples.
 		$dateTimeFormatList = [];

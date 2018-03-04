@@ -12,7 +12,7 @@
 
 	<h3>Typ zawartości</h3>
 
-	<?= (new HTMLElementsList('elementsList listView'))
+	<?= (new HTMLElementsList('elementsList'))
 		->collection($contentTypes)
 		->title(function($type){ return $type->label; })
 		->option('type', function($type){ return $type->getName(); }, $autocheckContentType)

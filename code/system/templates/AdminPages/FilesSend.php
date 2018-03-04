@@ -11,8 +11,10 @@
 	<fieldset>
 		<input type="hidden" name="MAX_FILE_SIZE" value="<?= $maxFileSize ?>">
 
-		<label for="filePicker" class="screenReaders">Wskaż pliki do przesłania</label>
-		<input id="filePicker" name="sendingFiles[]" type="file" multiple required>
+		<div>
+			<label for="filePicker" class="screenReaders">Wskaż pliki do przesłania</label>
+			<input id="filePicker" name="sendingFiles[]" type="file" multiple required>
+		</div>
 	</fieldset>
 
 	<?php if ($featureDisabled) { ?>

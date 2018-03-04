@@ -54,7 +54,8 @@ abstract class AdminPanelPage extends Controller
 		$this->_HTMLHead->setAssetsPath(SYSTEM_URL . '/assets');
 		$this->_HTMLHead->meta('viewport', 'width=device-width');
 		$this->_HTMLHead->stylesheet('AdminMain.css');
-		$this->_HTMLHead->stylesheet('AdminMobile.css');
+		$this->_HTMLHead->stylesheet('AdminIcons.css');
+		$this->_HTMLHead->stylesheet('https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin-ext');
 
 		// Main template of page.
 		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\AdminPages\Pages" --> "Pages".

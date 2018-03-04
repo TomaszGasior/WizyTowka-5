@@ -18,7 +18,6 @@ html, body {
 html {
 	overflow-y: scroll;
 	cursor: default;
-	padding: 1px 2em;
 
 	color: #000;
 	background: #E1E1E1;
@@ -48,6 +47,7 @@ a:focus:not(:hover):not(:active) {
 
 *[tabindex="-1"] {
 	outline: none;
+	/* WebKit workaround: avoid outline of containers with skiplink. */
 }
 
 .columns {
@@ -60,23 +60,28 @@ a:focus:not(:hover):not(:active) {
 	vertical-align: top;
 }
 
-.centered {
-	display: table;
-	width: 100%;
-	height: 100%;
-}
-.centered > * {
-	display: table-cell;
-	vertical-align: middle;
-}
-.centered > * > * {
-	margin-left: auto;
-	margin-right: auto;
+.center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .screenReaders {
 	position: absolute;
 	clip: rect(1px, 1px, 1px, 1px);
+	opacity: 0;
+}
+
+
+/* Icons class. */
+
+*[class^="icon"] > *:before {
+	font-family: 'icomoon_wt' !important;
+	padding-right: 0.5em;
+	vertical-align: -1px;
+
+	line-height: 0;
+	font-weight: normal;
 }
 
 
@@ -120,13 +125,18 @@ input[type="checkbox"], input[type="radio"] {
 	opacity: 0;
 }
 
+input[type="checkbox"] + label, input[type="radio"] + label {
+	padding-left: 1.65em;
+}
 input[type="checkbox"] + label:before, input[type="radio"] + label:before {
 	font-family: 'icomoon_wt' !important;
-	font-size: 1.1rem;
-	margin-right: 0.5em;
-	line-height: 0;
-	vertical-align: -0.1em;
 	color: #426FA3;
+	font-size: 1.1rem;
+	line-height: 1;
+
+	position: absolute;
+	margin-left: -1.5em;
+	margin-top: 4px;
 }
 input[type="checkbox"]:focus + label:before, input[type="radio"]:focus + label:before {
 	outline: 2px solid #50BCFF;
@@ -165,14 +175,16 @@ select {
 	-webkit-appearance: none;
 	appearance: none;
 
-	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='8.933' width='1.5em' viewBox='0 0 12.21093 11.187008'%3E%3Cpath d='M0-1.06h12.211l-6.11 12.25L0-1.06z' fill='%23BDBDBD'/%3E%3C/svg%3E") right 0.64em no-repeat;
+	background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='8.933' width='1.5em' viewBox='0 0 12.21093 11.187008'%3E%3Cpath d='M0-1.06h12.211l-6.11 12.25L0-1.06z' fill='%23666'/%3E%3C/svg%3E") right 0.66em no-repeat;
 }
 select::-ms-expand {
     display: none;
+    /* MSIE: hide bult-in arrow inside <select>. */
 }
 @supports (-moz-user-select: none) {
+	/* Gecko workaround: remove dotted border inside <select>. */
 	select {
-		color: rgba(0,0,0,0);   /* Removes dotted border inside select in Firefox. */
+		color: rgba(0,0,0,0);
 		text-shadow: -3px 0 0 #000;
 	}
 }
@@ -199,7 +211,7 @@ button:focus {
 }
 button:active {
 	opacity: 0.7;
-	transform: scale(0.95);  /*@buttonPressedUpTransition*/
+	transform: scale(0.95);
 	transition: transform 0.1s ease-in;
 }
 button[disabled] {
@@ -221,14 +233,14 @@ header#header h1 {
 	margin: 0;
 	text-indent: -9999px;
 
-	background: #232323 url('WTLogo.svg') no-repeat;   /*@sidebarBackground*/
+	background: #232323 url('WTLogo.svg') no-repeat;
 }
 
 div.adminPanel, div.adminPanelAlternative {
 	margin: 2em auto;
 
 	box-shadow: 0 0 5px rgba(0,0,0, 0.4);
-	background: #FFF;   /*@mainBlockBackground*/
+	background: #FFF;
 }
 
 a.mobileMenuOpen, a.mobileMenuClose {
@@ -247,7 +259,7 @@ div.adminPanel > div.columns {
 
 div.adminPanel a.a11yJumpLink {
 	position: absolute;
-	margin: 0.8em 0 0 230px;  /*@sidebarWidth*/
+	margin: 0.8em 0 0 230px;  /* 230px = sidebar size + additional padding. */
 	display: inline-block;
 	overflow: hidden;
 
@@ -275,14 +287,14 @@ div.adminPanel a.a11yJumpLink:focus {
 
 div.adminPanel header#header h1 {
 	background-position: 16px 22px;
-	width: 210px;  /*@sidebarWidth*/
+	width: 210px;  /* Sidebar width. */
 }
 div.adminPanel header#header ul {
 	text-align: right;
 	vertical-align: middle;
-	padding: 0 1.5em;    /*@mainBlockPadding*/
-	background: #F7F7F7;  /*@topHeaderBackground*/
-	border-bottom: 1px solid #E7E7E7;  /*@topHeaderBottomBorder*/
+	padding: 0 1.5em;  /* Vertical padding = padding of main block. */
+	background: #F7F7F7;
+	border-bottom: 1px solid #E7E7E7;
 
 	list-style: none;
 	margin: 0;
@@ -294,17 +306,17 @@ div.adminPanel header#header li {
 div.adminPanel header#header li a:hover {
 	text-decoration: none;
 	color: #005BA8;
-	text-shadow: 0 0 3px rgba(0,0,0, 0.1);  /*@systemAnchorHover*/
+	text-shadow: 0 0 3px rgba(0,0,0, 0.1);
 }
-div.adminPanel header#header li:first-of-type a {  /* User account anchor. */
+div.adminPanel header#header li:first-of-type a {  /* User account menu item. */
 	color: inherit;
 	font-weight: bold;
 }
 
 nav#navigation {
-	width: 210px;   /*@sidebarWidth*/
+	width: 210px;
 
-	background: #232323;   /*@sidebarBackground*/
+	background: #232323;
 	color: #CCCCCC;
 }
 nav#navigation ul {
@@ -331,7 +343,7 @@ nav#navigation li a:hover, nav#navigation li a:focus {
 }
 nav#navigation li a:active {
 	opacity: 0.7;
-	transform: scale(0.91);  /*@buttonPressedUpTransition*/
+	transform: scale(0.91);
 	transition: transform 0.05s ease-out;
 }
 
@@ -372,10 +384,11 @@ div.adminPanelAlternative main header {
 /* Main block. */
 
 main {
-	padding: 0 1.5em 1.5em;   /*@mainBlockPadding*/
+	padding: 0 1.5em 1.5em;
 }
+
 main > header {
-	border-bottom: 1px solid #E7E7E7;  /*@topHeaderBottomBorder*/
+	border-bottom: 1px solid #E7E7E7;
 	margin: 1.2em 0 1em 0;
 
 	table-layout: auto !important;   /* Override style from .columns class. */
@@ -405,17 +418,20 @@ main > header ul a {
 	display: inline-block;
 	margin: 0 0 -1px 0.3em;
 
-	background: #F7F7F7;  /*@topHeaderBackground*/
-	border: 1px solid #E7E7E7;  /*@topHeaderBottomBorder*/
+	background: #F7F7F7;
+	border: 1px solid #E7E7E7;
 	border-bottom: 2px solid #007BC2;
 	padding: 0.15em 0.8em;
 
 	outline-offset: 0 !important;
 }
+main > header ul li:first-child a {
+	margin-left: 0;
+}
 main > header ul a:hover {
 	text-decoration: none;
 	color: #005BA8;
-	text-shadow: 0 0 3px rgba(0,0,0, 0.1);  /*@systemAnchorHover*/
+	text-shadow: 0 0 3px rgba(0,0,0, 0.1);
 }
 
 main h3 {
@@ -427,10 +443,10 @@ main h3 {
 }
 
 
-/* Messages — on the top of page. */
+/* Notifications/messages. */
 
-@keyframes messageFading {
-	to {
+@keyframes messageFadeIn {
+	from {
 		padding-top: 0;
 		padding-bottom: 0;
 		line-height: 0;
@@ -440,7 +456,7 @@ main h3 {
 }
 
 div.message {
-	margin: 0 -1.5em -0.9em; /*@mainBlockPadding*/
+	margin: 0 -1.5em -0.9em;  /* Horizonal negative margin = padding of main block. */
 
 	text-align: center;
 	font-weight: bold;
@@ -452,20 +468,12 @@ div.message {
 	box-sizing: border-box;
 	overflow: hidden;
 
-	animation: messageFading 0.35s ease-in-out;
-	animation-delay: -1ms;
-	animation-direction: reverse;
-	animation-fill-mode: none;
+	animation: messageFadeIn 0.35s ease-in-out;
 }
 div.message.success {
 	background: #FFFDB9;
 	color: #734000;
 	border-color: #FFED00;
-
-	animation: messageFading 0.35s ease-in-out, messageFading 0.65s ease-in-out;
-	animation-delay: -1ms, 10s;
-	animation-direction: reverse, normal;
-	animation-fill-mode: none, forwards;
 }
 div.message.error {
 	background: #C70000;
@@ -492,7 +500,7 @@ p.messagePage > *:before {
 }
 
 
-/* Tips: warnings and explanations. */
+/* Tips — warnings and explanations. */
 
 p.warning, p.information {
 	padding: 0.7em 1.3em 0.7em 3.8rem;
@@ -532,145 +540,97 @@ fieldset {
 }
 
 fieldset > div {
-	display: table;
-	table-layout: fixed;
+	display: flex;
+	align-items: center;
 	width: 100%;
 
 	margin: 0.5em 0;
 }
-fieldset > div > label:first-child, fieldset > div > span:last-child {
-	display: table-cell;
-	vertical-align: middle;
+fieldset > div > * {
+	flex-basis: 100%;
 }
 
-form label:first-child:after {
+fieldset label:first-child:after { /* Not for checkbox label. */
 	content: ":";
 }
-form label:last-child {
-	display: block;
+
+
+/* DLs inside forms (style similar to fieldsets). */
+
+form dl {
+	display: flex;
+	flex-wrap: wrap;
+
+	margin: 0.3em 0;
+}
+
+form dl > * {
+	width: 50%;
+	margin: 0.45em 0;
+}
+
+form dl dt:after {
+	content: ":";
 }
 
 
-/* Elements list — common styles. */
+/* Elements list. */
 
 ul.elementsList, ul.elementsList ul {
 	list-style: none;
 	padding-left: 0;
 }
-ul.elementsList li, ul.elementsList ul li {
-	display: inline-block;
-}
-
 ul.elementsList a:hover {
 	text-decoration: none;
 	color: #005BA8;
-	text-shadow: 0 0 3px rgba(0,0,0, 0.1);  /*@systemAnchorHover*/
+	text-shadow: 0 0 3px rgba(0,0,0, 0.1);
 }
 
-ul.elementsList li > ul li a {
-	font-size: 0.9em;
-	display: inline-block;
-}
-ul.elementsList li > span {
-	font-size: 1.2em;
-	color: inherit;
-}
-
-p.elementsList.emptyMessage {
-	border: 2px dashed #ccc;
-	font-size: 1.17em;
-	padding: 11em 2em;
-	text-align: center;
-}
-
-
-/* Elements list — table view. */
-
-ul.elementsList.listView {
+ul.elementsList {
 	margin: 1.2em 0;
 }
 
-ul.elementsList.listView > li {
-	display: table;
-	width: 100%;
+ul.elementsList > li {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 
 	padding: 0.2em 0;
 	margin-top: -1px;
 	border-bottom: 1px solid #F1F1F1;
 }
-ul.elementsList.listView > li:last-of-type {
+ul.elementsList > li:last-child {
 	border-bottom: 0;
 }
-ul.elementsList.listView > li:hover {
+ul.elementsList > li:hover {
 	background: #F3F3F3;
-	box-shadow: -1.5em 0 0 #F3F3F3, 1.5em 0 0 #F3F3F3;   /*@mainBlockPadding*/
+	box-shadow: -1.5em 0 0 #F3F3F3, 1.5em 0 0 #F3F3F3;  /* Shadow offset = main block padding */
 }
 
-ul.elementsList.listView > li > * {
-	display: table-cell;
-	vertical-align: top;
-}
-ul.elementsList.listView > li > ul {
-	width: 1px;
-	white-space: nowrap;
-}
-
-ul.elementsList.listView li > span {
+ul.elementsList > li > span {
 	padding: 0.15rem 0;
-}
-ul.elementsList.listView li > ul li a {
-	margin: 0.4rem 0 0.3rem 0.7rem;
-}
-
-
-/* Elements list — tiles view. */
-
-ul.elementsList.tilesView {
-	width: 102%;
+	font-size: 1.2em;
+	color: inherit;
 }
 
-ul.elementsList.tilesView > li {
-	box-sizing: border-box;
-	width: 241px;
-	margin: 0.3em 0.6em 0.3em 0;
-
-	padding: 0.35em 0.7em;
-	background: #F5F5F5;
-	border-left: 4px solid #D8D8D8;
-
-	overflow: hidden;
-}
-ul.elementsList.tilesView > li:hover {
-	border-color: #449BFF;
-	background: #EBEBEB;
-}
-
-ul.elementsList.tilesView > li > * {
-	display: block;
-	overflow: hidden;
-	text-overflow: ellipsis;
+ul.elementsList > li > ul {
 	white-space: nowrap;
 }
+ul.elementsList > li > ul li {
+	display: inline-block;
+}
+ul.elementsList > li > ul li a {
+	margin: 0.4rem 0 0.3rem 0.9rem;
 
-ul.elementsList.tilesView li > ul {
-	margin-top: -0.3em;
-}
-ul.elementsList.tilesView li a:focus {
-	outline-offset: -1px;
-}
-ul.elementsList.tilesView li > ul li:not(:first-child) a {
-	margin-left: 0.65em;
-}
-ul.elementsList.tilesView li > ul li a:before {
-	display: none;
+	font-size: 0.9em;
+	display: inline-block;
 }
 
-ul.elementsList.tilesView > li > span label {
-	margin-left: 1.35em;
-}
-ul.elementsList.tilesView > li > span label:before {
-	position: absolute;
-	margin: 0.85em 0 0 -1.45em;
+p.elementsList.emptyMessage {
+	background: radial-gradient(rgba(0,0,0, 0.08), transparent 70%);
+	font-size: 1.15em;
+	padding: 4em 3em;
+	text-align: center;
 }
 
 
@@ -696,95 +656,262 @@ div.systemVersion p:last-child {
 
 
 
-/* Menu icons from icon font. */
+/* Mobile styles. */
 
-*[class^="icon"] > *:before {
-	font-family: 'icomoon_wt' !important;
-	padding-right: 0.5em;
-	vertical-align: -1px;
+@media (max-width: 1050px)
+{
+	/* Reset unneeded margins, widths, shadows. */
 
-	line-height: 0;
-	font-weight: normal;
+	html {
+		padding: 0;
+		background: #FFF;
+	}
+
+	div.adminPanel, div.adminPanelAlternative {
+		margin: 0;
+		max-width: none;
+		box-shadow: none;
+	}
+
+	div.adminPanel a.a11yJumpLink {
+		display: none;
+	}
 }
 
-.iconHamburger > *:before {
-	content: "\e900";
+@media (max-width: 900px)
+{
+	/* Overwrite main styles for mobile purposes. */
+
+	.columns, .columns > * {
+		display: block;
+	}
+
+	div.adminPanel header#header h1, nav#navigation {
+		width: auto;
+	}
+	div.adminPanel > div.columns {
+		height: auto;
+	}
+
+
+	/* Centered logo. */
+
+	div.adminPanel header#header h1, div.adminPanelAlternative header#header h1 {
+		background-position: center 20px;
+		padding-bottom: 0.1em;
+	}
+
+
+	/* Main navigation. */
+
+	@keyframes navigationMenuSliding {
+		from {
+			margin-left: 100vw;
+			margin-right: -100vw;
+		}
+		to {
+			margin-left: 0;
+			margin-right: 0;
+		}
+	}
+
+	nav#navigation:not(:target) {
+		display: none;
+	}
+	nav#navigation {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		top: 60px;
+
+		overflow-y: auto;
+
+		animation: navigationMenuSliding 0.3s ease-in-out;
+		box-shadow: inset 0 10px 3px -6px rgba(0,0,0, 0.08);
+	}
+	nav#navigation ul {
+		margin: 0.8em 0 2em;
+	}
+
+	a.mobileMenuOpen, a.mobileMenuClose {
+		display: inline-block;
+		overflow: hidden;
+		white-space: nowrap;
+
+		font-size: 1.8em;
+		width: 1em;
+
+		position: absolute;
+		top: 0.7rem;
+		right: 5vw;  /* Padding of main block */
+
+		opacity: 1 !important;
+		color: #DDD;
+		background: #232323; /* Sidebar background. */
+		text-decoration: none !important;
+	}
+	a.mobileMenuClose {
+		position: fixed;
+	}
+
+	a.mobileMenuOpen:before, a.mobileMenuClose:before {
+		font-family: 'icomoon_wt' !important;
+		padding-right: 10px;
+	}
+	a.mobileMenuOpen:before {
+		content: "\e900";
+	}
+	a.mobileMenuClose:before {
+		content: "\e901";
+	}
+
+
+	/* Header navigation. */
+
+	div.adminPanel header#header ul {
+		padding: 0;
+		text-align: center;
+	}
+
+	div.adminPanel header#header li {
+		margin: 0 0.35em;
+	}
+	div.adminPanel header#header li a {
+		display: inline-block;
+		white-space: nowrap;
+		overflow: hidden;
+		height: 1em;
+		padding: 0.5em;
+	}
+
+
+	/* Main block. */
+
+	main {
+		padding: 0.1em 5vw 1em;
+	}
+
+	main > header h2 {
+		font-size: 1.6em;
+	}
+	main > header ul {
+		width: auto;
+	}
+
+
+	/* Elements list. */
+
+	ul.elementsList > li:hover {
+		box-shadow: none;
+		background: none;
+	}
+
+	p.elementsList.emptyMessage {
+		padding-top: 17vw;
+		padding-bottom: 17vw;
+	}
+
+	/* Notifications/messages. */
+
+	div.message {
+		margin: -0.1em -5vw;  /* Main block padding. */
+		animation: none;
+	}
+
+
+	/* Message pages. */
+
+	p.messagePage {
+		font-weight: normal;
+		font-size: 1.2em;
+		padding: 0;
+	}
+
+	p.messagePage > *:before {
+		font-size: 3em;
+	}
 }
-.iconClose > *:before {
-	content: "\e901";
+
+@media (max-width: 600px)
+{
+	/* Header navigation. */
+
+	div.adminPanel header#header li:not(:first-child) a {
+		width: 1em;
+	}
+
+
+	/* Main block. */
+
+	main > header ul {
+		font-size: 0.85em;
+		margin-top: 0.5em;
+	}
+
+
+	/* Forms fieldsets. */
+
+	fieldset > div {
+		flex-direction: column;
+		align-items: stretch;
+	}
+	fieldset > div > * {
+		margin: 0.2em 0;
+	}
+
+	/* DLs inside forms (style similar to fieldsets). */
+
+	form dl > * {
+		width: 100%;
+		margin: 0.25em 0;
+	}
+	form dl dd {
+		margin-top: 0em;
+	}
+
+	/* Elements list. */
+
+	ul.elementsList {
+		margin: 0.8em 0;
+	}
+	ul.elementsList > li {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	ul.elementsList > li {
+		padding: 0.5em 0;
+	}
+
+	ul.elementsList > li > span {
+		padding: 0;
+	}
+	ul.elementsList > li > ul li:first-child a {
+		margin-left: 0;
+	}
+
+
+	/* Special styles — about system page. */
+
+	div.systemVersion p:first-child {
+		font-size: 2em;
+	}
 }
-.iconEdit > *:before {
-	content: "\e906";
-}
-.iconDrafts > *:before {
-	content: "\e924";
-}
-.iconPages > *:before {
-	content: "\e926";
-}
-.iconFiles > *:before {
-	content: "\e927";
-}
-.iconDataEditor > *:before {
-	content: "\e930";
-}
-.iconBackup > *:before {
-	content: "\e95e";
-}
-.iconUser > *:before {
-	content: "\e971";
-}
-.iconUsers > *:before {
-	content: "\e972";
-}
-.iconCustomization > *:before {
-	content: "\e992";
-}
-.iconSettings > *:before {
-	content: "\e994";
-}
-.iconDelete > *:before {
-	content: "\e9ac";
-}
-.iconMenus > *:before {
-	content: "\e9ba";
-}
-.iconWebsite > *:before {
-	content: "\e9ca";
-}
-.iconShow > *:before {
-	content: "\e9ce";
-}
-.iconHide > *:before {
-	content: "\e9d1";
-}
-.iconWarning > *:before {
-	content: "\ea07";
-}
-.iconAdd > *:before {
-	content: "\ea0a";
-}
-.iconInformation > *:before {
-	content: "\ea0c";
-}
-.iconLogout > *:before {
-	content: "\ea13";
-}
-.iconUpdates > *:before {
-	content: "\ea2e";
-}
-.iconCheckboxChecked > *:before {
-	content: "\ea52";
-}
-.iconCheckboxUnchecked > *:before {
-	content: "\ea53";
-}
-.iconRadioChecked > *:before {
-	content: "\ea55";
-}
-.iconRadioUnchecked > *:before {
-	content: "\ea56";
-}
-.iconAreas > *:before {
-	content: "\ea72";
+
+@media (max-width: 400px)
+{
+	/* Left-aligned logo. */
+
+	div.adminPanel header#header h1, div.adminPanelAlternative header#header h1 {
+		background-position: 5vw 20px;  /* Left = main block padding */
+	}
+
+
+	/* Elements list — table view. */
+
+	ul.elementsList li > ul li a {
+		font-size: 0.7em;
+		padding: 0.3em 0;
+		margin-bottom: -0.1em;
+	}
 }

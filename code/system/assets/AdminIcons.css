@@ -1,0 +1,81 @@
+.iconHamburger > *:before {
+	content: "\e900";
+}
+.iconClose > *:before {
+	content: "\e901";
+}
+.iconEdit > *:before {
+	content: "\e906";
+}
+.iconDrafts > *:before {
+	content: "\e924";
+}
+.iconPages > *:before {
+	content: "\e926";
+}
+.iconFiles > *:before {
+	content: "\e927";
+}
+.iconDataEditor > *:before {
+	content: "\e930";
+}
+.iconBackup > *:before {
+	content: "\e95e";
+}
+.iconUser > *:before {
+	content: "\e971";
+}
+.iconUsers > *:before {
+	content: "\e972";
+}
+.iconCustomization > *:before {
+	content: "\e992";
+}
+.iconSettings > *:before {
+	content: "\e994";
+}
+.iconDelete > *:before {
+	content: "\e9ac";
+}
+.iconMenus > *:before {
+	content: "\e9ba";
+}
+.iconWebsite > *:before {
+	content: "\e9ca";
+}
+.iconShow > *:before {
+	content: "\e9ce";
+}
+.iconHide > *:before {
+	content: "\e9d1";
+}
+.iconWarning > *:before {
+	content: "\ea07";
+}
+.iconAdd > *:before {
+	content: "\ea0a";
+}
+.iconInformation > *:before {
+	content: "\ea0c";
+}
+.iconLogout > *:before {
+	content: "\ea13";
+}
+.iconUpdates > *:before {
+	content: "\ea2e";
+}
+.iconCheckboxChecked > *:before {
+	content: "\ea52";
+}
+.iconCheckboxUnchecked > *:before {
+	content: "\ea53";
+}
+.iconRadioChecked > *:before {
+	content: "\ea55";
+}
+.iconRadioUnchecked > *:before {
+	content: "\ea56";
+}
+.iconAreas > *:before {
+	content: "\ea72";
+}

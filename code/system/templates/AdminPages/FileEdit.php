@@ -1,9 +1,11 @@
 <form method="post">
 	<h3>Adres URL</h3>
 
-	<?= (new HTMLFormFields)
-		->text('Adres URL tego pliku', 'fileFullURL', HTML::escape($fileFullURL), ['readonly' => true])
-	?>
+	<fieldset>
+		<div>
+			<input type="text" id="fileFullURL" value="<?= HTML::escape($fileFullURL) ?>" readonly title="Adres URL tego pliku.">
+		</div>
+	</fieldset>
 
 	<p class="information">Użyj powyższego adresu URL, by udostępnić plik w formie linku.</p>
 
@@ -20,7 +22,7 @@
 
 <script>
 (function(){
-	document.querySelector('input[name="fileFullURL"]').addEventListener('click', function(){
+	document.querySelector('input#fileFullURL').addEventListener('click', function(){
 		this.select();
 	});
 })();
