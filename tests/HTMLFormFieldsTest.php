@@ -130,11 +130,11 @@ HTML;
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
 <fieldset>
-	<div>
+	<div class="checkable">
 		<input type="checkbox" name="name_1" checked id="name_1">
 		<label for="name_1">Example checkbox</label>
 	</div>
-	<div>
+	<div class="checkable">
 		<input type="checkbox" name="name_2" id="name_2">
 		<label for="name_2">Example checkbox</label>
 	</div>
@@ -154,15 +154,15 @@ HTML;
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
 <fieldset>
-	<div>
+	<div class="checkable">
 		<input type="radio" name="operating_system" value="windows" id="operating_system_windows">
 		<label for="operating_system_windows">I use Windows</label>
 	</div>
-	<div>
+	<div class="checkable">
 		<input type="radio" name="operating_system" value="linux" checked id="operating_system_linux">
 		<label for="operating_system_linux">I use Linux</label>
 	</div>
-	<div>
+	<div class="checkable">
 		<input type="radio" name="operating_system" value="mac_os" id="operating_system_mac_os">
 		<label for="operating_system_mac_os">I use Mac OS</label>
 	</div>

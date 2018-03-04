@@ -167,12 +167,16 @@ class HTMLFormFields extends HTMLTag
 			}
 			$field['HTMLAttributes']['id'] = $id;   // Unique ID is used to assign form control to label.
 
-			echo '<div>';
+			$isCheckable = ($field['type'] == 'checkable');
 
-			if ($field['type'] == 'checkable') {
-				$labelTitle = !empty($field['HTMLAttributes']['title']) ? $field['HTMLAttributes']['title'] : null;
+			echo '<div', $isCheckable ? ' class="checkable">' : '>';
+
+			if ($isCheckable) {
+				$fieldTitle = !empty($field['HTMLAttributes']['title']) ? $field['HTMLAttributes']['title'] : '';
+				// If checkbox/radio has "title" attribute apply it to label also.
+
 				$this->_renderHTMLOpenTag('input', $field['HTMLAttributes']);
-				echo '<label' . ($labelTitle ? ' title="' . HTML::escape($labelTitle) . '" ' : ' ') . 'for="', $id, '">',
+				echo '<label for="', $id, '"', ($fieldTitle ? ' title="' . $fieldTitle . '">' : '>'),
 				     $field['label'], '</label>';
 			}
 			else {

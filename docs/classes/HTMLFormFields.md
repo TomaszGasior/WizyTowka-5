@@ -28,14 +28,14 @@ Przykładowy kod generowany przez klasę (z dodanymi dla czytelności wcięciami
 				</select>
 			</span>
 		</div>
-		<div>
+		<div class="checkable">
 			<input type="checkbox" name="example4" checked id="example4">
 			<label for="example4">Checkbox</label>
 		</div>
 	</fieldset>
 
 Pola zgrupowane są w znaczniku HTML `<fieldset>`. Każde pole wraz z etykietą otoczone jest blokiem `<div>`. Klasa generuje poprawny semantycznie kod, przypisując etykiety do pól za pośrednictwem identyfikatorów. Kontrolki pól otoczone są znacznikiem `<span>` dla łatwiejszego stylizowania przez CSS.
-Ze względu na stylizację CSS oraz czytelność, nieco inny układ ma kod HTML pól typu `checkbox` i `radio` — kolejność etykiety i kontrolki jest odwrócona, kontrolka nie jest otoczona znacznikiem.
+Ze względu na stylizację CSS oraz czytelność, nieco inny układ ma kod HTML pól typu `checkbox` i `radio` — kolejność etykiety i kontrolki jest odwrócona, kontrolka nie jest otoczona znacznikiem. Główny znacznik `<div>` zawierający te pola otrzymuje dodatkową klasę CSS `checkable`.
 
 Elementy są renderowane w kolejności dodawania. Klasa nie generuje kodu znacznika `<form>` i przycisków.
 
