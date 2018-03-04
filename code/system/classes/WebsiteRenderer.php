@@ -81,9 +81,10 @@ class WebsiteRenderer
 		$head->setAssetsPath($this->_theme->getURL());
 
 		// Base website information.
-		$head->title(HTML::correctTypography(sprintf(Settings::get('websiteTitlePattern'),
+		$head->setTitlePattern(HTML::correctTypography(Settings::get('websiteTitlePattern')));
+		$head->title(HTML::correctTypography(
 			$this->_page->titleHead ? $this->_page->titleHead : $this->_page->title
-		)));
+		));
 		if (Settings::get('websiteAuthor')) {
 			$head->meta('author', HTML::correctTypography(Settings::get('websiteAuthor')));
 		}
