@@ -31,20 +31,20 @@
 	<h3>Uprawnienia</h3>
 
 	<?= (new HTMLFormFields)
-		->checkbox('Tworzenie szkiców stron oraz edycja stron i szkiców należących do użytkownika',
+		->checkbox('Tworzenie szkiców stron oraz edycja stron i&nbsp;szkiców należących do użytkownika',
 			'permissions[CREATE_PAGES]',     $permissions['CREATE_PAGES'])
-		->checkbox('Publikowanie tych szkiców i ukrywanie tych stron, które użytkownik może edytować',
+		->checkbox('Publikowanie tych szkiców i&nbsp;ukrywanie tych stron, które użytkownik może edytować',
 			'permissions[PUBLISH_PAGES]',    $permissions['PUBLISH_PAGES'])
-		->checkbox('Edycja wszystkich istniejących stron i szkiców oraz zmiana właścicieli stron i szkiców',
+		->checkbox('Edycja wszystkich istniejących stron i&nbsp;szkiców oraz zmiana właścicieli stron i&nbsp;szkiców',
 			'permissions[EDIT_PAGES]',       $permissions['EDIT_PAGES'])
-		->checkbox('Wysyłanie plików i zarządzanie wszystkimi wysłanymi plikami',
+		->checkbox('Wysyłanie plików i&nbsp;zarządzanie wszystkimi wysłanymi plikami',
 			'permissions[MANAGE_FILES]',     $permissions['MANAGE_FILES'])
-		->checkbox('Modyfikacja elementów witryny — obszarów i menu',
+		->checkbox('Modyfikacja elementów witryny — obszarów i&nbsp;menu',
 			'permissions[WEBSITE_ELEMENTS]', $permissions['WEBSITE_ELEMENTS'])
 		->checkbox('Modyfikacja konfiguracji witryny — ustawienia, personalizacja, informacje wyszukiwarek',
 			'permissions[WEBSITE_SETTINGS]', $permissions['WEBSITE_SETTINGS'])
-		->checkbox('<b>Superużytkownik</b>: zarządzanie użytkownikami, dostęp do edytora plików i kopii zapasowej',
+		->checkbox('<b>Superużytkownik</b>: zarządzanie użytkownikami, dostęp do edytora plików i&nbsp;kopii zapasowej',
 			'permissions[SUPER_USER]',       $permissions['SUPER_USER'])
 	?>
-	<button>Zapisz zmiany</button>
+	<button><?= $createInsteadEdit ? 'Utwórz użytkownika' : 'Zapisz zmiany' ?></button>
 </form>

@@ -37,6 +37,8 @@ class Files extends WT\AdminPanelPage
 			$this->_HTMLMessage->success('Przesyłanie zostało zakończone pomyślnie.');
 		}
 
+		$this->_HTMLContextMenu->append('Wyślij pliki', self::URL('filesSend'), 'iconAdd');
+
 		$files = [];
 		foreach ($this->_files as $file) {
 			$files[] = (object)[

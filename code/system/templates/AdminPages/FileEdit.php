@@ -9,11 +9,18 @@
 
 	<p class="information">Użyj powyższego adresu URL, by udostępnić plik w formie linku.</p>
 
-	<h3>Zmiana nazwy</h3>
+	<h3>Informacje o pliku</h3>
 
 	<?= (new HTMLFormFields)
 		->text('Nazwa pliku', 'nofilter_newFileName', HTML::escape($fileName), ['placeholder' => '(pozostaw dotychczasową nazwę)'])
 	?>
+
+	<dl>
+		<dt>Data modyfikacji pliku</dt>
+		<dd><?= HTML::formatDateTime($fileModTime) ?>
+		<dt>Rozmiar pliku</dt>
+		<dd><?= HTML::formatFileSize($fileSize) ?>
+	</dl>
 
 	<p class="warning">Uwaga! Nie należy zmieniać nazwy pliku, jeśli został on wykorzystany na jakiejkolwiek stronie witryny (na przykład został dodany do treści strony czy do galerii zdjęć). W&nbsp;takim wypadku zmiana nazwy pliku spowoduje niepoprawne działanie strony — odnośnik do pliku przestanie działać, obrazek nie będzie się wczytywać.</p>
 

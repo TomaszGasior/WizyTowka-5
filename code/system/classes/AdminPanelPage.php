@@ -79,10 +79,12 @@ abstract class AdminPanelPage extends Controller
 	{
 		// Top navigation menu.
 		$this->_HTMLTopMenu = new HTMLMenu;
-		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('userSettings'),       'iconUser');
-		$this->_HTMLTopMenu->append('Zaktualizuj',             self::URL('systemUpdate'),       'iconUpdates');
-		$this->_HTMLTopMenu->append('Zobacz witrynę',          Settings::get('websiteAddress'), 'iconWebsite', ['target' => '_blank']);
-		$this->_HTMLTopMenu->append('Wyloguj się',             self::URL('logout'),             'iconLogout');
+		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('userSettings'), 'iconUser');
+		if (false) {
+			$this->_HTMLTopMenu->append('Zaktualizuj', self::URL('systemUpdate'),'iconUpdates');
+		}
+		$this->_HTMLTopMenu->append('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite');
+		$this->_HTMLTopMenu->append('Wyloguj się',    self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
@@ -110,7 +112,7 @@ abstract class AdminPanelPage extends Controller
 		$add('Edytor plików',      self::URL('dataEditor_List'),   'iconDataEditor',      User::PERM_SUPER_USER,  'DataEditor');
 		$add('Utwórz plik',        self::URL('dataEditor_Editor'), 'iconAdd',             User::PERM_SUPER_USER,  'DataEditor');
 		$add('Kopia zapasowa',     self::URL('backup'),            'iconBackup',          User::PERM_SUPER_USER,  'Backup');
-		$add('Informacje',         self::URL('about'),             'iconInformation');
+		$add('Informacje',         self::URL('about'),             'iconAbout');
 	}
 
 	final public function output()

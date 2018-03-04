@@ -92,7 +92,7 @@ input, button, textarea, select {
 	font: inherit;
 	color: inherit;
 }
-input[disabled], button[disabled], textarea[disabled], select[disabled] {
+input:disabled, button:disabled, textarea:disabled, select:disabled {
 	opacity: 0.7;
 	cursor: not-allowed;
 }
@@ -110,7 +110,7 @@ input:focus, textarea:focus, select:focus {
 	border-color: #50BCFF;
 	outline: 1px solid #50BCFF;
 }
-input[disabled], textarea[disabled], select[disabled] {
+input:disabled, textarea:disabled, select:disabled {
 	background: #E9E9E9;
 }
 
@@ -146,8 +146,8 @@ input[type="checkbox"]:focus + label:before, input[type="radio"]:focus + label:b
 input[type="checkbox"]:active + label:before, input[type="radio"]:active + label:before {
 	opacity: 0.5;
 }
-input[type="checkbox"][disabled] + label, input[type="radio"][disabled] + label,
-input[type="checkbox"][disabled] + label:before, input[type="radio"][disabled] + label:before {
+input[type="checkbox"]:disabled + label, input[type="radio"]:disabled + label,
+input[type="checkbox"]:disabled + label:before, input[type="radio"]:disabled + label:before {
 	opacity: 0.7;
 	cursor: not-allowed;
 }
@@ -214,7 +214,7 @@ button:active {
 	transform: scale(0.95);
 	transition: transform 0.1s ease-in;
 }
-button[disabled] {
+button:disabled {
 	background: #D40000;
 }
 @supports (-moz-user-select: none) {
@@ -704,32 +704,43 @@ div.systemVersion p:last-child {
 
 	/* Main navigation. */
 
-	@keyframes navigationMenuSliding {
-		from {
-			margin-left: 100vw;
-			margin-right: -100vw;
-		}
-		to {
-			margin-left: 0;
-			margin-right: 0;
-		}
-	}
-
-	nav#navigation:not(:target) {
-		display: none;
-	}
 	nav#navigation {
 		position: fixed;
 		left: 0;
 		right: 0;
 		bottom: 0;
-		top: 60px;
+		top: 60px; /* Header logo size. */
+		z-index: 100;
 
 		overflow-y: auto;
 
-		animation: navigationMenuSliding 0.3s ease-in-out;
+		transition: margin 0.3s ease-in-out;
 		box-shadow: inset 0 10px 3px -6px rgba(0,0,0, 0.08);
+
+		margin-left: 100vw;
+		margin-right: -100vw;
 	}
+	nav#navigation:target {
+		margin-left: 0;
+		margin-right: 0;
+	}
+	nav#navigation:not(:target) > * {
+		display: none;
+		/* Hide all children to disallow access from keyboard. */
+	}
+
+	nav#navigation:target:before { /* Used to cover header when menu is shown. */
+		content: "";
+		display: block;
+		position: fixed;
+		left: 0;
+		right: 0;
+		top: 0;
+		height: 60px; /* Header logo size. */
+
+		background: #232323;  /* Sidebar background. */
+	}
+
 	nav#navigation ul {
 		margin: 0.8em 0 2em;
 	}
@@ -740,14 +751,14 @@ div.systemVersion p:last-child {
 		white-space: nowrap;
 
 		font-size: 1.8em;
-		width: 1em;
+		width: 1.1em;
 
 		position: absolute;
 		top: 0.7rem;
 		right: 5vw;  /* Padding of main block */
 
 		opacity: 1 !important;
-		color: #DDD;
+		color: #CCC;
 		background: #232323; /* Sidebar background. */
 		text-decoration: none !important;
 	}

@@ -51,6 +51,8 @@ class Users extends WT\AdminPanelPage
 			$this->_HTMLMessage->success('Konto użytkownika zostało utworzone.');
 		}
 
+		$this->_HTMLContextMenu->append('Utwórz użytkownika', self::URL('userCreate'), 'iconAdd');
+
 		$this->_HTMLTemplate->users = $this->_users;
 	}
 }

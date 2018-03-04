@@ -36,6 +36,21 @@
 			</main>
 		</div>
 	</div>
+
+	<script>
+	(function(){
+		// Change URL hash manually by script below and don't mess up browser history.
+		// Native behavior of HTML anchor is kept for users without JavaScript.
+		document.querySelector('a.mobileMenuOpen').addEventListener('click', function(e){
+			location.replace('#navigation');
+			e.preventDefault();
+		});
+		document.querySelector('a.mobileMenuClose').addEventListener('click', function(e){
+			location.replace('#');
+			e.preventDefault();
+		});
+	})();
+	</script>
 </body>
 
 </html>

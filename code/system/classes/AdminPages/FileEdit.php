@@ -48,5 +48,7 @@ class FileEdit extends WT\AdminPanelPage
 
 		$this->_HTMLTemplate->fileName    = $this->_file->getName();
 		$this->_HTMLTemplate->fileFullURL = WT\Settings::get('websiteAddress') . '/' . $this->_file->getURL();
+		$this->_HTMLTemplate->fileSize    = $this->_file->getSize();
+		$this->_HTMLTemplate->fileModTime = filemtime($this->_file->getPath());
 	}
 }

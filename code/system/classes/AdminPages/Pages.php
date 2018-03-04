@@ -100,6 +100,12 @@ class Pages extends WT\AdminPanelPage
 			$this->_HTMLTemplate->setTemplate('PagesDrafts');
 		}
 
+		$this->_HTMLContextMenu->append(
+			$this->_draftsMode ? 'Utwórz szkic' : 'Utwórz stronę',
+			self::URL('pageCreate', $this->_draftsMode ? ['draft' => true] : []),
+			'iconAdd'
+		);
+
 		$this->_HTMLTemplate->pages = $this->_pages;
 	}
 }

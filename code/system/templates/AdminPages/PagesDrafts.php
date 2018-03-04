@@ -3,7 +3,7 @@
 	->title(function($page){ return HTML::correctTypography($page->title); })
 	->menu(function($page){ return [
 		['Edytuj',      AdminPanel::URL('pageEdit', ['id' => $page->id]),       'iconEdit'],
-		['Właściwości', AdminPanel::URL('pageProperties', ['id' => $page->id]), 'iconSettings'],
+		['Właściwości', AdminPanel::URL('pageProperties', ['id' => $page->id]), 'iconProperties'],
 		['Opublikuj',   AdminPanel::URL('pages', ['drafts' => true, 'publishId' => $page->id]),  'iconShow'],
 		['Usuń',        AdminPanel::URL('pages', ['drafts' => true, 'deleteId' => $page->id]),   'iconDelete'],
 	]; })
