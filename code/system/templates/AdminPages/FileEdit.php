@@ -7,7 +7,7 @@
 		</div>
 	</fieldset>
 
-	<p class="information">Użyj powyższego adresu URL, by udostępnić plik w formie linku.</p>
+	<p class="information">Użyj powyższego adresu URL, by udostępnić plik w&nbsp;formie linku.</p>
 
 	<h3>Informacje o pliku</h3>
 

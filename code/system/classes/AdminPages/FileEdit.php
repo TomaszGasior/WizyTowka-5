@@ -46,6 +46,10 @@ class FileEdit extends WT\AdminPanelPage
 			$this->_HTMLMessage->default('Nazwa pliku została zmieniona.');
 		}
 
+		// Replace default admin page title by file name.
+		$this->_pageTitle = WT\HTML::escape($this->_file->getName()) . ' — edycja pliku';
+		$this->_HTMLHead->title('Edycja pliku: „' . WT\HTML::escape($this->_file->getName()) . '”');
+
 		$this->_HTMLTemplate->fileName    = $this->_file->getName();
 		$this->_HTMLTemplate->fileFullURL = WT\Settings::get('websiteAddress') . '/' . $this->_file->getURL();
 		$this->_HTMLTemplate->fileSize    = $this->_file->getSize();

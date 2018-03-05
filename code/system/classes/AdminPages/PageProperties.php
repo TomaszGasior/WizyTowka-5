@@ -73,11 +73,16 @@ class PageProperties extends WT\AdminPanelPage
 
 	protected function _output()
 	{
+		// Replace default admin page title by website page title.
+		$this->_pageTitle = WT\HTML::correctTypography($this->_page->title);
+		$this->_HTMLHead->title('Właściwości: „' . $this->_pageTitle . '”');
+
 		$this->_HTMLContextMenu->append('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit');
 		$this->_HTMLContextMenu->append('Ustawienia', self::URL('pageSettings', ['id' => $this->_page->id]), 'iconSettings');
 
 		$this->_HTMLTemplate->page = $this->_page;
 
+		// "userId" property.
 		$this->_HTMLTemplate->hideUserIdChange = true;
 		$this->_HTMLTemplate->usersIdList      = [];
 
@@ -92,14 +97,16 @@ class PageProperties extends WT\AdminPanelPage
 			$this->_HTMLTemplate->usersIdList = $usersIdList;
 		}
 
-		$this->_HTMLTemplate->disallowUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES);
-		$this->_HTMLTemplate->disallowPublicPage   = !($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES);
-
+		// "noIndex" property.
 		$this->_HTMLTemplate->disableNoIndex = false;
 		if (strpos(WT\Settings::get('searchEnginesRobots'), 'noindex') !== false) {
 			$this->_page->noIndex = true; // Fake value used to check the checkbox, won't be saved in database.
 			$this->_HTMLTemplate->disableNoIndex = true;
 		}
+
+		// Check current user permissions.
+		$this->_HTMLTemplate->disallowUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES);
+		$this->_HTMLTemplate->disallowPublicPage   = !($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES);
 
 		// Show warning if user isn't permitted to modify page.
 		$this->_HTMLTemplate->permissionLimitNotification = !$this->_isUserAllowedToEditPage($this->_page);

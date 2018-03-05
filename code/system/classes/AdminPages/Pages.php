@@ -97,6 +97,7 @@ class Pages extends WT\AdminPanelPage
 
 		if ($this->_draftsMode) {
 			$this->_pageTitle = 'Szkice stron';
+			$this->_HTMLHead->title($this->_pageTitle);
 			$this->_HTMLTemplate->setTemplate('PagesDrafts');
 		}
 

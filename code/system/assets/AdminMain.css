@@ -709,13 +709,13 @@ div.systemVersion p:last-child {
 		left: 0;
 		right: 0;
 		bottom: 0;
-		top: 60px; /* Header logo size. */
+		top: 0; /* Header logo size. */
+		padding-top: 60px; /* Header logo size. */
 		z-index: 100;
 
 		overflow-y: auto;
 
 		transition: margin 0.3s ease-in-out;
-		box-shadow: inset 0 10px 3px -6px rgba(0,0,0, 0.08);
 
 		margin-left: 100vw;
 		margin-right: -100vw;
@@ -737,8 +737,10 @@ div.systemVersion p:last-child {
 		right: 0;
 		top: 0;
 		height: 60px; /* Header logo size. */
+		z-index: 101; /* Above navigation. */
 
 		background: #232323;  /* Sidebar background. */
+		box-shadow: 0 10px 3px -6px rgba(0,0,0, 0.08);
 	}
 
 	nav#navigation ul {
@@ -764,6 +766,7 @@ div.systemVersion p:last-child {
 	}
 	a.mobileMenuClose {
 		position: fixed;
+		z-index: 102; /* Above :before. */
 	}
 
 	a.mobileMenuOpen:before, a.mobileMenuClose:before {

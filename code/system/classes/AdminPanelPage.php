@@ -53,7 +53,9 @@ abstract class AdminPanelPage extends Controller
 		$this->_HTMLHead = new HTMLHead;
 		$this->_HTMLHead->setAssetsPath(SYSTEM_URL . '/assets');
 		$this->_HTMLHead->setTitlePattern('%s — WizyTówka');
+		$this->_HTMLHead->title($this->_pageTitle);
 		$this->_HTMLHead->meta('viewport', 'width=device-width');
+		$this->_HTMLHead->meta('theme-color', '#232323');
 		$this->_HTMLHead->stylesheet('AdminMain.css');
 		$this->_HTMLHead->stylesheet('AdminIcons.css');
 		$this->_HTMLHead->stylesheet('https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin-ext');
@@ -119,9 +121,6 @@ abstract class AdminPanelPage extends Controller
 	{
 		// Run _output() method. Child class can specify additional template variables and context menu here.
 		$this->_output();
-
-		// Set page title in HTML <head>.
-		$this->_HTMLHead->title($this->_pageTitle);
 
 		// Main HTML layout.
 		$this->_HTMLLayout = new HTMLTemplate(

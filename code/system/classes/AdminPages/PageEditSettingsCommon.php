@@ -55,6 +55,13 @@ trait PageEditSettingsCommon
 
 	protected function _output()
 	{
+		// Replace default admin page title by website page title.
+		$this->_pageTitle = WT\HTML::correctTypography($this->_page->title);
+		$this->_HTMLHead->title(
+			($this->_settingsMode ? 'Ustawienia' : 'Edycja') .  ': „' . $this->_pageTitle . '”'
+		);
+
+		// Context menu. Show "Edit" link on "Settings" admin page and "Settings" link on "Edit" page.
 		$this->_settingsMode
 		? $this->_HTMLContextMenu->append('Edycja',     self::URL('pageEdit',       ['id' => $this->_page->id]), 'iconEdit')
 		: $this->_HTMLContextMenu->append('Ustawienia', self::URL('pageSettings',   ['id' => $this->_page->id]), 'iconSettings');
