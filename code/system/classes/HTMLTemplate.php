@@ -8,8 +8,6 @@ namespace WizyTowka;
 
 class HTMLTemplate implements \IteratorAggregate, \Countable
 {
-	static private $_autoloaderAdded = false;
-
 	private $_templatesPath;
 	private $_templateName;
 
@@ -28,7 +26,16 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 	public function __set($variable, $value)
 	{
-		$this->_variables[$variable] = $value;
+		try {
+			$this->_variables[$variable] = $this->_escapeValue($value);
+		} catch (\UnexpectedValueException $e) {
+			throw HTMLTemplateException::valueCantBeEscaped($variable);
+		}
+	}
+
+	public function setRaw($variable, $value)
+	{
+		$this->_variables[$variable] = $value;  // Don't escape value.
 	}
 
 	public function __isset($variable)
@@ -87,9 +94,10 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 	public function render($templateName = null)
 	{
-		if (!self::$_autoloaderAdded) {
-			spl_autoload_register([$this, '_shortHTMLNamesAutoloader']);
-			self::$_autoloaderAdded = true;
+		static $autoloaderAdded = false;
+		if (!$autoloaderAdded) {
+			spl_autoload_register([$this, '_systemNamespaceAlias']);
+			$autoloaderAdded = true;
 		}
 
 		if (empty($templateName)) {
@@ -133,9 +141,40 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		);
 	}
 
+	public function _escapeValue($value)
+	{
+		switch (gettype($value)) {
+			case 'integer':
+			case 'double':
+			case 'boolean':
+			case 'NULL':
+				return $value;
+
+			case 'string':
+				return HTML::escape($value);
+
+			case 'array':
+				return array_map(__METHOD__, $value);
+
+			case 'object':
+				if ($value instanceof $this or $value instanceof HTMLTag) {
+					return $value;
+				}
+				elseif ($value instanceof \Traversable) {
+					return (object)$this->{__FUNCTION__}(iterator_to_array($value));
+				}
+				elseif ($value instanceof \stdClass) {
+					return (object)$this->{__FUNCTION__}((array)$value);
+				}
+
+			default:
+				throw new \UnexpectedValueException;
+		}
+	}
+
 	// This autoloader is used to make creating new classes easier in templates code.
 	// Instead of `new WizyTowka\HTMLFormFields()` it's possible to use shorter `new HTMLFormFields()` syntax.
-	private function _shortHTMLNamesAutoloader($classNamePart)
+	private function _systemNamespaceAlias($classNamePart)
 	{
 		static $inProgress;  // Avoid endless loop while calling class_exists().
 
@@ -162,5 +201,9 @@ class HTMLTemplateException extends Exception
 	static public function templateNotSpecified()
 	{
 		return new self('Template name was not specified.', 1);
+	}
+	static public function valueCantBeEscaped($variable)
+	{
+		return new self('Value of "' . $variable . '" variable cannot be escaped. Allowed types: integer, float, boolean, array, template instance, iterator, stdClass. Convert variable value or escape it and use setRaw() instead.', 2);
 	}
 }

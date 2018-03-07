@@ -19,6 +19,8 @@ Przykładowy plik szablonu może prezentować się następująco:
 
 Klasa implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umożliwiając operowanie na poszczególnych zmiennych szablonu jak na polach obiektu — aby dodać zmienną do szablonu, należy utworzyć nową zmienną w obiekcie. Implementuje też interfejsy `Countable` i `IteratorAggregate`, by umożliwiać iterowanie w pętli oraz policzenie zmiennych, a także metodę `__debugInfo()` dla funkcji `var_dump()`.
 
+Aby ustawić zmienną szablonu, należy stworzyć nową zmienną w obiekcie szablonu. **Zmienne szablonu są automatycznie escapowane za pomocą `HTML::escape()`.** Tablice są escapowane rekurencyjnie. Instancje klas `HTMLTemplate` i `HTMLTag` są pomijane. Instancje klasy `stdClass` i iteratory (obiekty klas implementujących interfejs `Traversable`) są konwertowane do tablic, escapowane, a następnie konwertowane do obiektów `stdClass`. Zostanie rzucony wyjątek `HTMLTemplateException` #2, jeśli podana dla zmiennej wartość będzie nieoczekiwanego typu. Aby uniknąć escapowania, należy użyć metody `setRaw()`.
+
 ## `__construct($templateName = null, $templatePath = null)`
 
 Konstruktor klasy umożliwia określenie globalnej nazwy szablonu (argument `$templateName`) oraz ścieżki do katalogu gromadzącego szablony (argument `$templatePath`).
@@ -26,6 +28,10 @@ Konstruktor klasy umożliwia określenie globalnej nazwy szablonu (argument `$te
 ## `__toString()`
 
 Jeśli zostanie dokonane rzutowanie obiektu na ciąg znaków, wykonana zostanie metoda `render()`. Wyrenderowany szablon jest wtedy zwracany, nie wyświetlany.
+
+## `setRaw($variable, $value)`
+
+Ustawia zmienną szablonu `$variable` o wartości `$value` podobnie jak zwyczajnie utworzenie zmiennej na obiekcie, ale **z pominięciem escapowania**. Używając tej metody, jesteś odpowiedzialny za prawidłowe zabezpieczenie wartości zmiennej przed niechcianym kodem HTML.
 
 ## `setTemplate($templateName)`
 
