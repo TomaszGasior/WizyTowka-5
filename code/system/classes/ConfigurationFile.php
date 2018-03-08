@@ -17,7 +17,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 
 	public function __construct($fileName, $readOnly = false)
 	{
-		$this->_fileName = $fileName;
+		$this->_fileName = (string)$fileName;
 		$this->_readOnly = (boolean)$readOnly;
 
 		// It is a hash of full path of configuration file.
@@ -42,20 +42,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 
 	public function __destruct()
 	{
-		if ($this->_wasChanged) {
-			file_put_contents(
-				$this->_fileName,
-				json_encode(
-					$this->_configuration,
-					JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-				),
-				LOCK_EX
-			);
-
-			if (json_last_error() != JSON_ERROR_NONE) {
-				throw ConfigurationFileException::JSONError($this->_fileName);
-			}
-		}
+		$this->save();
 	}
 
 	public function __get($key)
@@ -105,7 +92,6 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		return count($this->_configuration);
 	}
 
-	// Read configuration file from file system.
 	public function refresh()
 	{
 		$configuration = json_decode(file_get_contents($this->_fileName), true);  // "true" means associative array.
@@ -118,6 +104,24 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		}
 
 		$this->_configuration = $configuration;
+	}
+
+	public function save()
+	{
+		if ($this->_wasChanged) {
+			file_put_contents(
+				$this->_fileName,
+				json_encode(
+					$this->_configuration,
+					JSON_PRETTY_PRINT | JSON_NUMERIC_CHECK | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+				),
+				LOCK_EX
+			);
+
+			if (json_last_error() != JSON_ERROR_NONE) {
+				throw ConfigurationFileException::JSONError($this->_fileName);
+			}
+		}
 	}
 
 	static public function createNew($fileName)

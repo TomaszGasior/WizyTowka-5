@@ -19,7 +19,11 @@ Plik JSON powinien zawierać tablicę wartości, inaczej przy odczycie zostanie 
 
 ## `__destruct()`
 
-W destruktorze następuje automatyczny zapis pliku konfiguracyjnego JSON wyłącznie, gdy jakiekolwiek ustawienie zostanie zmodyfikowane bądź usunięte.
+W destruktorze następuje automatyczny zapis pliku konfiguracyjnego JSON — wywołanie metody `save()`.
+
+## `save()`
+
+Zapisuje zawartość pliku konfiguracyjnego do pliku JSON wyłącznie, gdy jakiekolwiek ustawienie zostanie zmodyfikowane bądź usunięte.
 
 ## `refresh()`
 

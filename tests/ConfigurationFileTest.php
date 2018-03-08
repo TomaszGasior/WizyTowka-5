@@ -34,7 +34,7 @@ class ConfigurationFileTest extends TestCase
 		foreach (self::$_exampleData as $key => $value) {
 			$config->$key = $value;
 		}
-		unset($config); // Destructor of ConfigurationFile class saves config changes.
+		$config->save();
 
 		$current  = json_decode(file_get_contents(self::$_exampleFileName), true);  // "true" means associative array.
 		$expected = self::$_exampleData;
