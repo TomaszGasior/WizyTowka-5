@@ -6,11 +6,10 @@
 */
 namespace WizyTowka;
 
-abstract class Addon
+abstract class Addon implements \IteratorAggregate
 {
 	static protected $_addonsSubdir = '';
-
-	protected $_defaultConfig = [];
+	static protected $_defaultConfig = [];
 
 	private $_name;
 	private $_config;
@@ -22,12 +21,12 @@ abstract class Addon
 
 	public function __get($name)
 	{
-		return isset($this->_config->$name) ? $this->_config->$name : $this->_defaultConfig[$name];
+		return $this->_config[$name];
 	}
 
 	public function __isset($name)
 	{
-		return isset($this->_config->$name) or isset($this->_defaultConfig[$name]);
+		return isset($this->_config[$name]);
 	}
 
 	public function __debugInfo()
@@ -37,6 +36,13 @@ abstract class Addon
 			'system' => $this->_isFromSystem,
 			'config' => $this->_config,
 		];
+	}
+
+	public function getIterator() // For IteratorAggregate interface.
+	{
+		foreach ($this->_config as $key => $value) {
+			yield $key => $value;
+		}
 	}
 
 	public function getName()
@@ -66,20 +72,18 @@ abstract class Addon
 
 	static public function getByName($name)
 	{
-		$configFilePath = '/addons/' . static::$_addonsSubdir . '/' . $name . '/addon.conf';
-		$addonObject = new static;
+		$configPath = '/addons/' . static::$_addonsSubdir . '/' . $name . '/addon.conf';
 
-		if (file_exists(DATA_DIR.$configFilePath)) {
-			$addonObject->_config = new ConfigurationFile(DATA_DIR.$configFilePath, true); // Read only.
-			$addonObject->_name = $name;
-			$addonObject->_isFromSystem = false;
+		// Check first in data folder allowing to override system addons.
+		if (($isFromUser = file_exists(DATA_DIR . $configPath)) or file_exists(SYSTEM_DIR . $configPath)) {
+			$addonObject = new static;
 
-			return $addonObject;
-		}
-		elseif (file_exists(SYSTEM_DIR.$configFilePath)) {
-			$addonObject->_config = new ConfigurationFile(SYSTEM_DIR.$configFilePath, true); // Read only.
 			$addonObject->_name = $name;
-			$addonObject->_isFromSystem = true;
+			$addonObject->_isFromSystem = !$isFromUser;
+
+			$addonObject->_config = iterator_to_array(
+				new ConfigurationFile(($isFromUser ? DATA_DIR : SYSTEM_DIR) . $configPath)
+			) + static::$_defaultConfig;
 
 			return $addonObject;
 		}

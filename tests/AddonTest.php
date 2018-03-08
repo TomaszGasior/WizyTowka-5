@@ -35,10 +35,24 @@ class AddonTest extends TestCase
 		self::$_exampleAddonType = get_class(new class() extends WizyTowka\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
+			static protected $_defaultConfig = [
+				'setting_1' => 1,
+				'setting_2' => 2,
+				'setting_3' => 3,
+			];
 
 			// Addon class has private constructor. Costructor must be public to create anonymous class.
 			public function __construct() {}
 		});
+
+		// Example "addon.conf" settings for "systemAddon" addon.
+		$addonConfFile = <<< 'JSON'
+{
+	"setting_1": 10,
+	"setting_3": 30
+}
+JSON;
+		file_put_contents(self::$_addonsDirectorySystem . '/systemAddon/addon.conf', $addonConfFile);
 	}
 
 	static public function tearDownAfterClass()
@@ -112,6 +126,19 @@ class AddonTest extends TestCase
 
 		$current  = $systemAddon->getURL();
 		$expected = self::$_addonsURLPathSystem . '/systemAddon';
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testAddonSettings()
+	{
+		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
+
+		$current  = iterator_to_array($systemAddon);
+		$expected = [
+			'setting_1' => 10,
+			'setting_2' => 2,
+			'setting_3' => 30,
+		];
 		$this->assertEquals($expected, $current);
 	}
 }

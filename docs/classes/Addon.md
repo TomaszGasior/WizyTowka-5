@@ -3,9 +3,12 @@
 
 Klasa abstrakcyjna będąca podstawą dla klas reprezentujących poszczególne typy dodatków systemu WizyTówka. Wtyczki, typy zawartości i motywy są dodatkami. Klasa dziedzicząca po tej klasie jest abstrakcyjną reprezentacją rodzaju dodatku.
 
-Klasa dziedzicząca powinna określać chronione i statyczne pole `$_addonsSubdir` zawierające nazwę podfolderu katalogu `addons` przeznaczonego na dany typ dodatku (np. klasa `Themes` może określać podfolder `themes`). Klasa dziedzicząca może też określać pole chronione `$_defaultConfig` w formie tablicy z domyślnymi ustawieniami — jeśli dodatek nie będzie określał ustawienia w swoim pliku konfiguracyjnym `addon.conf`, zostanie ono odczytane z tej tablicy.
+**Konfiguracja klasy dziedziczącej polega na określeniu statycznych i chronionych pól:**
 
-Klasa implementuje metody `__get()` i `__isset()`, umożliwiając operowanie na opcjach konfiguracyjnych dodatku jak na polach obiektu. Udostępnia też metodę `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
+- `$_addonsSubdir` — nazwa podfolderu katalogu `addons` przeznaczonego na dany typ dodatku (np. klasa `Themes` może określać podfolder `themes`);
+- `$_defaultConfig` — tablica z domyślnymi ustawieniami nadpisywanymi przez ustawienia w pliku konfiguracyjnym `addon.conf` dodatku.
+
+Klasa implementuje metody `__get()` i `__isset()`, umożliwiając operowanie na opcjach konfiguracyjnych dodatku jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po opcjach w pętli. Udostępnia też metodę `__debugInfo()` dla debugowania przy użyciu funkcji `var_dump()`.
 
 ## *private* `__construct()`
 
