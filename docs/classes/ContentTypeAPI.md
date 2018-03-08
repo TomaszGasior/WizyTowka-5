@@ -9,8 +9,8 @@ Instancje klas dziedziczących po tej klasie powinny być tworzone wyłącznie w
 
 Klasa dziedziczące otrzymuje następujące pola chronione:
 
-- `$_contents` — instancja klasy `\stdClass` gromadząca treść strony w witrynie;
-- `$_settings` — instancja klasy `\stdClass` gromadząca ustawienia strony typu zawartości w witrynie;
+- `$_contents` — instancja klasy `stdClass` gromadząca treść strony w witrynie;
+- `$_settings` — instancja klasy `stdClass` gromadząca ustawienia strony typu zawartości w witrynie;
 - `$_HTMLHead` — instancja klasy `HTMLHead` nagłówka `<head>` witryny;
 - `$_HTMLTemplate` — instancja klasy `HTMLTemplate` szablonu typu zawartości;
 - `$_HTMLMessage` — instancja klasy `HTMLMessage` komunikatu strony.

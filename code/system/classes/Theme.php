@@ -9,8 +9,7 @@ namespace WizyTowka;
 class Theme extends Addon
 {
 	static protected $_addonsSubdir = 'themes';
-
-	protected $_defaultConfig = [
+	static protected $_defaultConfig = [
 		'label'      => 'Untitled theme',
 		'minified'   => false,
 		'responsive' => false,

@@ -9,8 +9,7 @@ namespace WizyTowka;
 class Plugin extends Addon
 {
 	static protected $_addonsSubdir = 'plugins';
-
-	protected $_defaultConfig = [
+	static protected $_defaultConfig = [
 		'namespace' => '',
 		'init'      => '',
 	];

@@ -9,8 +9,7 @@ namespace WizyTowka;
 class ContentType extends Addon
 {
 	static protected $_addonsSubdir = 'types';
-
-	protected $_defaultConfig = [
+	static protected $_defaultConfig = [
 		'namespace' => '',
 		'label'     => 'Untitled content type',
 		'contents'  => [],
