@@ -36,10 +36,8 @@ function init($controller)
 	$runController = function(Controller $controller)
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$controller->filterPOSTData();
 			$controller->POSTQuery();
 		}
-
 		$controller->output();
 	};
 

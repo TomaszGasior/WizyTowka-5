@@ -1,15 +1,9 @@
 *abstract* Controller
 ===
 
-Klasa abstrakcyjna będąca podstawą dla kontrolerów. W systemie WizyTówka kontroler reprezentuje część systemu (panel administracyjny bądź witrynę internetową) i zajmuje się obsługą żądania: renderowaniem strony za pomocą szablonów, filtrowaniem i obsługą żądań POST oraz wykonywaniem wynikających z kontekstu zadań za pośrednictwem innych klas narzędziowych.
+Klasa abstrakcyjna będąca podstawą dla kontrolerów. W systemie WizyTówka kontroler reprezentuje część systemu (panel administracyjny bądź witrynę internetową) i zajmuje się obsługą żądania: renderowaniem strony za pomocą szablonów, obsługą żądań POST oraz wykonywaniem wynikających z kontekstu zadań za pośrednictwem innych klas narzędziowych.
 
 Klasy dziedziczące muszą definiować metodę `URL()`, powinny definiować `output()`, a jeśli potrzebna jest obsługa zapytań POST — także metodę `POSTQuery()`.
-
-## `filterPOSTData()`
-
-Bezpośrednio i rekurencyjnie filtruje wszystkie dane znajdujące się w tablicy `$_POST` przy użyciu `HTML::escape()`. Metoda ta powinna być wywoływana przed użyciem metody `POSTQuery()`.
-
-Aby wykluczyć pole formularza z filtrowania, należy jego nazwę poprzedzić przedrostkiem `nofilter_`, na przykład: `nofilter_pageContent`.
 
 ## `POSTQuery()`
 

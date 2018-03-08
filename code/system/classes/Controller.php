@@ -8,16 +8,6 @@ namespace WizyTowka;
 
 abstract class Controller
 {
-	public function filterPOSTData()
-	{
-		array_walk_recursive($_POST, function(&$value, $key){
-			// Values with key prefixed by "nofilter_" won't be filtered.
-			if (substr($key, 0, 9) != 'nofilter_') {
-				$value = HTML::escape($value);
-			}
-		});
-	}
-
 	public function POSTQuery()
 	{
 		throw ControllerException::withoutPOSTQueries(static::class);
