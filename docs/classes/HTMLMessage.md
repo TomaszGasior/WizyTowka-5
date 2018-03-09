@@ -11,23 +11,25 @@ Ostatnia klasa CSS zależna jest od typu komunikatu, pierwsza zaś wskazywana je
 
 Klasa implementuje metodę magiczną `__debugInfo()` w celu debugowania przy użyciu funkcji `var_dump()`.
 
-## `success($message)`
+## `success($message, $arg1, $arg2, …)`
 
 Określa komunikat o powodzeniu (klasa CSS: `success`) o treści `$message`. Jeżeli określono wcześniej inny komunikat, zostaje on nadpisany.
 
-## `error($message)`
+Opcjonalnie można przekazać dodatkowe argumenty `$arg1`, `$arg2` i kolejne. W przypadku, gdy zostaną podane, zostaną wyescapowane za pośrednictwem `HTML::escape()`, a wynikowy komunikat zostanie spreparowany za pomocą funkcji wbudowanej `sprintf()`, do której argumenty zostaną przekazane razem z treścią komunikatu `$message` — musi być ona sformatowana zgodnie z [dokumentacją funkcji `sprintf()`](http://php.net/manual/en/function.sprintf.php), inaczej wystąpi błąd.
 
-Określa komunikat o błędzie (klasa CSS: `error`) o treści `$message`. Jeżeli określono wcześniej inny komunikat, zostaje on nadpisany.
+## `error($message, $arg1, $arg2, …)`
 
-## `info($message)`
+Określa komunikat o błędzie (klasa CSS: `error`) o treści `$message`. Zobacz opis metody `success()`.
 
-Określa neutralny komunikat (klasa CSS: `info`) o treści `$message`. Jeżeli określono wcześniej inny komunikat, zostaje on nadpisany.
+## `info($message, $arg1, $arg2, …)`
+
+Określa neutralny komunikat (klasa CSS: `info`) o treści `$message`. Zobacz opis metody `success()`.
 
 ## `information(...)`
 
 Alias dla metody `info()`.
 
-## `default($message)`
+## `default($message, $arg1, $arg2, …)`
 
 Działa jak metoda `success()` z tą różnicą, że nie nadpisuje określonego wcześniej komunikatu. Określony przez tę metodę komunikat o powodzeniu zostanie wyrenderowany wyłącznie, jeśli nie określono żadnego innego komunikatu.
 

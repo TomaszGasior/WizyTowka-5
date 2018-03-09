@@ -41,10 +41,22 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
+	public function testArguments()
+	{
+		$object = new WizyTowka\HTMLMessage();
+		$object->success('These files were removed: "%s", "%s".', 'example".jpg', 'example<br>.png');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<div class="message success" role="alert">These files were removed: "example&quot;.jpg", "example&lt;br&gt;.png".</div>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+	}
+
 	public function testOverwriting()
 	{
 		$object = new WizyTowka\HTMLMessage();
-		$object->information('Example neutral message.');
+		$object->info('Example neutral message.');
 		$object->error('Example error message.');
 
 		$current  = (string)$object;
