@@ -47,11 +47,11 @@ class PageProperties extends WT\AdminPanelPage
 
 		if ($_POST['slug'] != $this->_page->slug) {
 			$newSlug = (new WT\Text(
-				WT\HTML::unescape(!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title']))
+				!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
 			)->makeSlug()->get();
 
 			if (WT\Page::getBySlug($newSlug)) {
-				$this->_HTMLMessage->error('Identyfikator „' . $newSlug . '” jest już przypisany innej stronie.');
+				$this->_HTMLMessage->error('Identyfikator „%s” jest już przypisany innej stronie.', $newSlug);
 			}
 			else {
 				$this->_page->slug = $newSlug;

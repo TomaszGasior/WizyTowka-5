@@ -47,15 +47,17 @@ class Pages extends WT\AdminPanelPage
 			}
 			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
 				$this->_HTMLMessage->error(
-					'Strona „' . WT\HTML::correctTypography($page->title) . '” jest stroną główną witryny. Nie ukryto strony.'
+					'Strona „%s” jest stroną główną witryny. Nie ukryto strony.',
+					WT\HTML::correctTypography($page->title)
 				);
 			}
 			else {
 				$page->isDraft = $isDraft;
 				$page->save();
 				$this->_HTMLMessage->success(
-					$page->isDraft ? 'Strona „' . WT\HTML::correctTypography($page->title) . '” została przeniesiona do szkiców.'
-					               : 'Szkic strony „' . WT\HTML::correctTypography($page->title) . '” został opublikowany.'
+					$page->isDraft ? 'Strona „%s” została przeniesiona do szkiców.'
+					               : 'Szkic strony „%s” został opublikowany.',
+					WT\HTML::correctTypography($page->title)
 				);
 			}
 		}
@@ -74,14 +76,16 @@ class Pages extends WT\AdminPanelPage
 			}
 			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
 				$this->_HTMLMessage->error(
-					'Strona „' . WT\HTML::correctTypography($page->title) . '” jest stroną główną witryny. Nie usunięto strony.'
+					'Strona „%s” jest stroną główną witryny. Nie usunięto strony.',
+					WT\HTML::correctTypography($page->title)
 				);
 			}
 			else {
 				$page->delete();
 				$this->_HTMLMessage->success(
-					$page->isDraft ? 'Szkic strony „' . WT\HTML::correctTypography($page->title) . '” został usunięty.'
-					               : 'Strona „' . WT\HTML::correctTypography($page->title) . '” została usunięta.'
+					$page->isDraft ? 'Szkic strony „%s” został usunięty.'
+					               : 'Strona „%s” została usunięta.',
+					WT\HTML::correctTypography($page->title)
 				);
 			}
 		}

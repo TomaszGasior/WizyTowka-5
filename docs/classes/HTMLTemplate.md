@@ -19,7 +19,7 @@ Przykładowy plik szablonu może prezentować się następująco:
 
 Klasa implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()`, umożliwiając operowanie na poszczególnych zmiennych szablonu jak na polach obiektu — aby dodać zmienną do szablonu, należy utworzyć nową zmienną w obiekcie. Implementuje też interfejsy `Countable` i `IteratorAggregate`, by umożliwiać iterowanie w pętli oraz policzenie zmiennych, a także metodę `__debugInfo()` dla funkcji `var_dump()`.
 
-Aby ustawić zmienną szablonu, należy stworzyć nową zmienną w obiekcie szablonu. **Zmienne szablonu są automatycznie escapowane za pomocą `HTML::escape()`.** Tablice są escapowane rekurencyjnie. Instancje klas `HTMLTemplate` i `HTMLTag` są pomijane. Instancje klasy `stdClass` i iteratory (obiekty klas implementujących interfejs `Traversable`) są konwertowane do tablic, escapowane, a następnie konwertowane do obiektów `stdClass`. Zostanie rzucony wyjątek `HTMLTemplateException` #2, jeśli podana dla zmiennej wartość będzie nieoczekiwanego typu. Aby uniknąć escapowania, należy użyć metody `setRaw()`.
+Aby ustawić zmienną szablonu, należy stworzyć nową zmienną w obiekcie szablonu. **Zmienne szablonu są automatycznie escapowane za pomocą `HTML::escape()`.** Tablice są escapowane rekurencyjnie. Instancje klasy `stdClass` i iteratory (obiekty klas implementujących interfejs `Traversable`) są konwertowane do tablic, escapowane, a następnie konwertowane do obiektów `stdClass`. Instancje klas `HTMLTemplate` i `HTMLTag` nie są escapowane. Zostanie rzucony wyjątek `HTMLTemplateException` #2, jeśli podana dla zmiennej wartość będzie nieoczekiwanego typu. Aby uniknąć escapowania, należy użyć metody `setRaw()`.
 
 ## `__construct($templateName = null, $templatePath = null)`
 

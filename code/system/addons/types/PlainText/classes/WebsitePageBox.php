@@ -11,6 +11,6 @@ class WebsitePageBox extends WT\ContentTypeAPI
 {
 	public function HTMLContent()
 	{
-		$this->_HTMLTemplate->content = $this->_contents->html;
+		$this->_HTMLTemplate->setRaw('content', $this->_contents->html);
 	}
 }

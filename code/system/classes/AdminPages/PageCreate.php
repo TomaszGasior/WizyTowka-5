@@ -23,11 +23,11 @@ class PageCreate extends WT\AdminPanelPage
 		}
 
 		$slug = (new WT\Text(
-			WT\HTML::unescape(!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title']))
+			!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
 		)->makeSlug()->get();
 
 		if (WT\Page::getBySlug($slug)) {
-			$this->_HTMLMessage->error('Identyfikator „' . $slug . '” jest już przypisany innej stronie.');
+			$this->_HTMLMessage->error('Identyfikator „%s” jest już przypisany innej stronie.', $slug);
 			return;
 		}
 
@@ -62,7 +62,15 @@ class PageCreate extends WT\AdminPanelPage
 
 	protected function _output()
 	{
-		$this->_HTMLTemplate->contentTypes         = WT\ContentType::getAll();
+		$contentTypes = [];
+		foreach (WT\ContentType::getAll() as $contentType) {
+			$contentTypes[] = (object)[
+				'label' => $contentType->label,
+				'name'  => $contentType->getName(),
+			];
+		}
+		$this->_HTMLTemplate->contentTypes = $contentTypes;
+
 		$this->_HTMLTemplate->autocheckContentType = WT\Settings::get('adminPanelDefaultContentType');
 
 		$this->_HTMLTemplate->autocheckDraft     = true;

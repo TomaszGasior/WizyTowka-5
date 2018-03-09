@@ -34,7 +34,7 @@ class UserCreate extends WT\AdminPanelPage
 			return;
 		}
 		elseif (WT\User::getByName($_POST['name'])) {
-			$this->_HTMLMessage->error('Nazwa użytkownika „' . $_POST['name'] . '” jest zajęta.');
+			$this->_HTMLMessage->error('Nazwa użytkownika „%s” jest zajęta.', $_POST['name']);
 			return;
 		}
 		else {
@@ -49,12 +49,12 @@ class UserCreate extends WT\AdminPanelPage
 			return;
 		}
 
-		if (!$_POST['nofilter_passwordText_1'] or !$_POST['nofilter_passwordText_2']) {
+		if (!$_POST['passwordText_1'] or !$_POST['passwordText_2']) {
 			$this->_HTMLMessage->error('Nie określono hasła użytkownika.');
 			return;
 		}
-	    elseif ($_POST['nofilter_passwordText_1'] === $_POST['nofilter_passwordText_2']) {
-			$user->setPassword($_POST['nofilter_passwordText_1']);
+	    elseif ($_POST['passwordText_1'] === $_POST['passwordText_2']) {
+			$user->setPassword($_POST['passwordText_1']);
 		}
 		else {
 			$this->_HTMLMessage->error('Podane hasła nie są identyczne.');

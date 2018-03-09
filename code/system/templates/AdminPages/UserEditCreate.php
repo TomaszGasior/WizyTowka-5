@@ -20,8 +20,8 @@
 	<h3>Hasło</h3>
 
 	<?= (new HTMLFormFields)
-		->password('Hasło', 'nofilter_passwordText_1', ['required' => $createInsteadEdit])
-		->password('Ponownie hasło', 'nofilter_passwordText_2', ['required' => $createInsteadEdit])
+		->password('Hasło', 'passwordText_1', ['required' => $createInsteadEdit])
+		->password('Ponownie hasło', 'passwordText_2', ['required' => $createInsteadEdit])
 	?>
 
 	<?php if (!$createInsteadEdit) { ?>

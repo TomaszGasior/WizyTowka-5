@@ -34,7 +34,7 @@ class UserEdit extends WT\AdminPanelPage
 				$this->_HTMLMessage->error('Nazwa użytkownika jest niepoprawna. Nie zmieniono nazwy użytkownika.');
 			}
 			elseif (WT\User::getByName($_POST['name'])) {
-				$this->_HTMLMessage->error('Nazwa użytkownika „' . $_POST['name'] . '” jest zajęta.');
+				$this->_HTMLMessage->error('Nazwa użytkownika „%s” jest zajęta.', $_POST['name']);
 			}
 			else {
 				$this->_user->name = $_POST['name'];
@@ -48,9 +48,9 @@ class UserEdit extends WT\AdminPanelPage
 			$this->_HTMLMessage->error('Podany adres e-mail jest niepoprawny.');
 		}
 
-		if ($_POST['nofilter_passwordText_1'] and $_POST['nofilter_passwordText_2']) {
-		    if ($_POST['nofilter_passwordText_1'] === $_POST['nofilter_passwordText_2']) {
-				$this->_user->setPassword($_POST['nofilter_passwordText_1']);
+		if ($_POST['passwordText_1'] and $_POST['passwordText_2']) {
+		    if ($_POST['passwordText_1'] === $_POST['passwordText_2']) {
+				$this->_user->setPassword($_POST['passwordText_1']);
 				$this->_HTMLMessage->success('Hasło zostało zmienione.');
 			}
 			else {

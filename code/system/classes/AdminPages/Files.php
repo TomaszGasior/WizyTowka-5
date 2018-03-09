@@ -27,7 +27,7 @@ class Files extends WT\AdminPanelPage
 	{
 		if ($file = WT\UploadedFile::getByName($name)) {
 			$file->delete();
-			$this->_HTMLMessage->success('Plik „' . WT\HTML::escape($name) . '” został usunięty.');
+			$this->_HTMLMessage->success('Plik „%s” został usunięty.', $name);
 		};
 	}
 
@@ -42,11 +42,12 @@ class Files extends WT\AdminPanelPage
 		$files = [];
 		foreach ($this->_files as $file) {
 			$files[] = (object)[
-				'name' => $file->getName(),
-				'size' => $file->getSize(),
-				'url'  => $file->getURL(),
+				'name'    => WT\HTML::escape($file->getName()),
+				'rawName' => $file->getName(), // Raw file name is needed for admin pages URLs.
+				'size'    => $file->getSize(),
+				'url'     => $file->getURL(),
 			];
 		}
-		$this->_HTMLTemplate->files = $files;
+		$this->_HTMLTemplate->setRaw('files', $files);
 	}
 }

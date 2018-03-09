@@ -3,7 +3,7 @@
 
 	<fieldset>
 		<div>
-			<input type="text" id="fileFullURL" value="<?= HTML::escape($fileFullURL) ?>" readonly title="Adres URL tego pliku.">
+			<input type="text" id="fileFullURL" value="<?= $fileFullURL ?>" readonly title="Adres URL tego pliku.">
 		</div>
 	</fieldset>
 
@@ -12,7 +12,7 @@
 	<h3>Informacje o pliku</h3>
 
 	<?= (new HTMLFormFields)
-		->text('Nazwa pliku', 'nofilter_newFileName', HTML::escape($fileName), ['placeholder' => '(pozostaw dotychczasową nazwę)'])
+		->text('Nazwa pliku', 'newFileName', $fileName, ['placeholder' => '(pozostaw dotychczasową nazwę)'])
 	?>
 
 	<dl>

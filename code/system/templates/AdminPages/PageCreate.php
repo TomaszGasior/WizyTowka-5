@@ -15,7 +15,7 @@
 	<?= (new HTMLElementsList('elementsList'))
 		->collection($contentTypes)
 		->title(function($type){ return $type->label; })
-		->option('type', function($type){ return $type->getName(); }, $autocheckContentType)
+		->option('type', function($type){ return $type->name; }, $autocheckContentType)
 	?>
 
 	<button>Utwórz stronę</button>

@@ -23,13 +23,13 @@ class FileEdit extends WT\AdminPanelPage
 
 	public function POSTQuery()
 	{
-		$newFileName = trim($_POST['nofilter_newFileName']);
+		$newFileName = trim($_POST['newFileName']);
 
 		if ($newFileName and $newFileName != $this->_file->getName()) {
 			$newFileName = (new WT\Text($newFileName))->makeSlug(WT\Settings::get('filesForceLowercaseNames'))->get();
 
 			if (WT\UploadedFile::getByName($newFileName)) {
-				$this->_HTMLMessage->error('Plik o nazwie „' . $newFileName . '” już istnieje.');
+				$this->_HTMLMessage->error('Plik o nazwie „%s” już istnieje.', $newFileName);
 			}
 			elseif ($this->_file->rename($newFileName)) {
 				$this->_redirect('fileEdit', ['name' => $newFileName, 'msg' => 1]);
@@ -47,8 +47,8 @@ class FileEdit extends WT\AdminPanelPage
 		}
 
 		// Replace default admin page title by file name.
-		$this->_pageTitle = WT\HTML::escape($this->_file->getName()) . ' — edycja pliku';
-		$this->_HTMLHead->title('Edycja pliku: „' . WT\HTML::escape($this->_file->getName()) . '”');
+		$this->_pageTitle = $this->_file->getName() . ' — edycja pliku';
+		$this->_HTMLHead->title('Edycja pliku: „' . $this->_file->getName() . '”');
 
 		$this->_HTMLTemplate->fileName    = $this->_file->getName();
 		$this->_HTMLTemplate->fileFullURL = WT\Settings::get('websiteAddress') . '/' . $this->_file->getURL();

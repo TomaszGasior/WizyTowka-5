@@ -26,7 +26,7 @@ class WebsiteRenderer
 			throw WebsiteRendererException::themeNotExists(Settings::get('themeName'));
 		}
 
-		// Initialize HTML layout template.
+		// Prepare HTML layout template.
 		$this->_HTMLLayout = $HTMLLayout;
 		$this->_HTMLLayout->setTemplate('WebsiteLayout');
 		$this->_setupTemplatePath($this->_HTMLLayout);
@@ -35,7 +35,7 @@ class WebsiteRenderer
 		$this->_HTMLHead = $this->_prepareHead();
 
 		// Initialize HTML message box.
-		$this->_HTMLMessage = new HTMLMessage;
+		$this->_HTMLMessage = new HTMLMessage('wt_message');
 
 		// Initialize HTML template for content type.
 		$this->_HTMLTemplate = new HTMLTemplate;
@@ -49,15 +49,15 @@ class WebsiteRenderer
 		$layout->lang = Settings::get('websiteLanguage');
 		$layout->head = $this->_HTMLHead;
 
-		$layout->websiteHeader = $this->_variable_websiteHeader();
-		$layout->websiteFooter = $this->_variable_websiteFooter();
+		$layout->setRaw('websiteHeader', $this->_variable_websiteHeader());
+		$layout->setRaw('websiteFooter', $this->_variable_websiteFooter());
 
-		$layout->pageHeader  = $this->_variable_pageHeader();
-		$layout->pageContent = $this->_variable_pageContent();
+		$layout->setRaw('pageHeader',  $this->_variable_pageHeader());
+		$layout->setRaw('pageContent', $this->_variable_pageContent());
 
-		$layout->menu = function(...$a) { return $this->_function_menu(...$a); };
-		$layout->area = function(...$a) { return $this->_function_area(...$a); };
-		$layout->info = function(...$a) { return $this->_function_info(...$a); };
+		$layout->setRaw('menu', function(...$a){ return $this->_function_menu(...$a); });
+		$layout->setRaw('area', function(...$a){ return $this->_function_area(...$a); });
+		$layout->setRaw('info', function(...$a){ return $this->_function_info(...$a); });
 
 		// Change HTML <head> assets path to theme path. Thanks to this adding assets from theme layout will be
 		// more convenient. Assets path must be changed at the end of this method because other assets path
@@ -77,6 +77,7 @@ class WebsiteRenderer
 	private function _prepareHead()
 	{
 		$head = new HTMLHead;
+
 		$head->setAssetsPathBase(Settings::get('websiteAddress'));
 		$head->setAssetsPath($this->_theme->getURL());
 
@@ -99,9 +100,6 @@ class WebsiteRenderer
 				$robots = 'noindex' . ($robots ? ', '.$robots : '');
 			}
 			$head->meta('robots', $robots);
-
-			// Send also HTTP header. It's useful if content type disallow template rendering.
-			header('X-Robots-Tag', $robots);
 		}
 
 		// Theme stylesheet.
@@ -142,7 +140,7 @@ class WebsiteRenderer
 		];
 
 		ksort($elements);
-		$template->elements = $elements;
+		$template->setRaw('elements', $elements);
 
 		return (string)$template;
 	}
@@ -155,13 +153,13 @@ class WebsiteRenderer
 		$template->pageTitle = HTML::correctTypography($this->_page->title);
 
 		$properties = [];
-		if ($user = User::getById($this->_page->userId)) {
+		if ($user = User::getById($this->_page->userId) and !Settings::get('lockdownUsers')) {
 			$properties['Autor'] = HTML::correctTypography($user->name);
 		}
 		$properties['Data utworzenia']  = HTML::formatDateTime($this->_page->createdTime);
 		$properties['Data modyfikacji'] = HTML::formatDateTime($this->_page->updatedTime);
 
-		$template->properties = $properties;
+		$template->setRaw('properties', $properties);
 
 		return (string)$template;
 	}
@@ -172,7 +170,7 @@ class WebsiteRenderer
 		$this->_setupTemplatePath($template);
 
 		$template->message = HTML::correctTypography($this->_HTMLMessage);
-		$template->content = $this->_HTMLTemplate;
+		$template->setRaw('content', $this->_HTMLTemplate);
 
 		return (string)$template;
 	}
@@ -185,7 +183,10 @@ class WebsiteRenderer
 		$menu  = new HTMLMenu;
 
 		foreach ($pages as $page) {
-			$menu->append(HTML::correctTypography($page->title), Website::URL($page->slug), $page->slug);
+			$menu->append(
+				HTML::escape(HTML::correctTypography($page->title)),
+				Website::URL($page->slug), $page->slug
+			);
 		}
 
 		return (string)$menu;
@@ -193,8 +194,7 @@ class WebsiteRenderer
 
 	private function _function_area($areaPositionNumber)
 	{
-		// More comming soon.
-		return '';
+		return '<!-- area ' . $areaPositionNumber . ' comming soon -->';
 	}
 
 	private function _function_info($option)
