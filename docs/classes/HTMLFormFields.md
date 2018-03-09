@@ -47,7 +47,9 @@ Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzen
 
 Dodaje pole `<input type="text">`.
 
-Jako argument `$label` należy podać etykietę pola. Argument `$name` zawierać powinien nazwę pola (atrybut HTML `name`), która zostanie użyta przy odbiorze informacji z tablicy `$_POST` lub `$_GET`. W argumencie `$value` podać należy bieżącą wartość pola (atrybut HTML `value`). Z wartości pola usuwane są przełamania wierszy, jest ona filtrowana za pomocą `HTML::escape()`.
+Jako argument `$label` należy podać etykietę pola. Uwaga: etykieta nie jest escapowana — niepożądane znaczniki HTML muszą zostać odfiltrowane manualnie.
+
+Argument `$name` zawierać powinien nazwę pola (atrybut HTML `name`), która zostanie użyta przy odbiorze informacji z tablicy `$_POST` lub `$_GET`. W argumencie `$value` podać należy bieżącą wartość pola (atrybut HTML `value`). Z wartości pola usuwane są przełamania wierszy, jest ona filtrowana za pomocą `HTML::escape()`.
 
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów kontrolki formularza w HTML (takich jak `disabled`, `readonly`, `tabindex`, `spellcheck`, `autofocus`, `accesskey` bądź jakichkolwiek innych). Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami. Nie ma możliwości nadpisania atrybutów generowanych przez metodę (takich jak `id`, `value`, `name`).
 Jeżeli atrybut jest typu logicznego i ma wartość prawda, zostanie wygenerowany w kodzie HTML bez żadnej wartości (np. `<input checked>`), jeżeli ma wartość fałsz — zostanie pominięty.

@@ -19,6 +19,8 @@ Umożliwia określenie w argumencie `$callback` callbacka, który jako argument 
 
 Określenie callbacka tytułów elementów jest obowiązkowe.
 
+Uwaga: tytuł elementu listy nie jest escapowany — niepożądane znaczniki HTML muszą zostać usunięte ręcznie.
+
 ## `link(callable $callback)`
 
 Dodaje do tytułów elementów odnośnik. W argumencie `$callback` należy wskazać callback, który jako argument otrzyma element kolekcji danych, a zwróci adres URL odnośnika.

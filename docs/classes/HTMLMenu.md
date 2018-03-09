@@ -11,7 +11,9 @@ Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzen
 
 ## `append($label, $content, $CSSClass = null, array $HTMLAttributes = [], $visible = true)`
 
-Dodaje element na koniec menu. Argument `$label` określa etykietę elementu.
+Dodaje element na koniec menu.
+
+Argument `$label` określa etykietę elementu. Uwaga: etykieta nie jest escapowana — niepożądane znaczniki HTML muszą zostać usunięte ręcznie.
 
 Argument `$content` określa zawartość elementu menu. Może być to adres URL w formie ciągu znaków — wtedy zostanie umieszczony znacznik `<a>`, a `$content` określi wartość atrybutu `href`. Można też jako argument `$content` podać inną instancję klasy `HTMLMenu` — wtedy zostanie wygenerowane menu zagnieżdżone. Zostanie rzucony wyjątek `HTMLMenuException` #2, jeśli wartość argumentu będzie niepoprawna.
 

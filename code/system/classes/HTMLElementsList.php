@@ -115,7 +115,7 @@ class HTMLElementsList extends HTMLTag
 						// $item[2] — optional, menu item CSS class.
 						$menu->append(
 							$item[0], $item[1], isset($item[2]) ? $item[2] : '',
-							['aria-label' => HTML::escape($item[0] . ' — ' . $title)]
+							['aria-label' => $item[0] . ' — ' . strip_tags($title)]
 						);
 					}
 					echo $menu;

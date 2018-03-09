@@ -116,6 +116,9 @@ class HTMLHead extends HTMLTag
 
 	public function removeMeta($name, $content = null)
 	{
+		if ($content) {
+			$content = HTML::escape($content);
+		}
 		$this->_removeTag('meta', array_filter(['name' => $name, 'content' => $content]));
 
 		return $this;
@@ -123,6 +126,9 @@ class HTMLHead extends HTMLTag
 
 	public function removeHttpEquiv($header, $content = null)
 	{
+		if ($content) {
+			$content = HTML::escape($content);
+		}
 		$this->_removeTag('meta', array_filter(['http-equiv' => $header, 'content' => $content]));
 
 		return $this;
