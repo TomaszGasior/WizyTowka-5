@@ -78,7 +78,9 @@ class WebsiteRenderer
 	{
 		$head = new HTMLHead;
 
-		$head->setAssetsPathBase(Settings::get('websiteAddress'));
+		if (!Settings::get('websiteAddressRelative')) {
+			$head->setAssetsPathBase(Settings::get('websiteAddress'));
+		}
 		$head->setAssetsPath($this->_theme->getURL());
 
 		// Base website information.

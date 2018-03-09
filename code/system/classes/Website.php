@@ -58,13 +58,11 @@ class Website extends Controller
 
 	static public function URL($target, array $arguments = [])
 	{
-		if (is_numeric($target)) {
-			if ($page = Page::getById($target)) {
-				$slug = $page->slug;
-			}
-			else {
+		if (is_integer($target)) {
+			if (!$page = Page::getById($target)) {
 				return false;
 			}
+			$slug = $page->slug;
 		}
 		else {
 			$slug = $target;
@@ -77,7 +75,8 @@ class Website extends Controller
 			$arguments = ['id' => $slug] + $arguments;   // Adds "id" argument to array beginning for better URL readability.
 		}
 
-		return Settings::get('websiteAddress') . ($pretty ? '/' . $slug : '/')
+		return (Settings::get('websiteAddressRelative') ? '' : Settings::get('websiteAddress'))
+		       . ($pretty ? '/' . $slug : '/')
 		       . ($arguments ? '?' . http_build_query($arguments) : '');
 	}
 }
