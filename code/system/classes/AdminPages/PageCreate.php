@@ -57,7 +57,12 @@ class PageCreate extends WT\AdminPanelPage
 
 		$page->save();
 
-		$this->_redirect('pages', $page->isDraft ? ['drafts' => true, 'msg' => 1] : ['msg' => 1]);
+		if (WT\Settings::get('adminPanelEditAfterCreate')) {
+			$this->_redirect('pageEdit', ['id' => $page->id]);
+		}
+		else {
+			$this->_redirect('pages', $page->isDraft ? ['drafts' => true, 'msg' => 1] : ['msg' => 1]);
+		}
 	}
 
 	protected function _output()
