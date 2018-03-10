@@ -83,9 +83,9 @@ abstract class AdminPanelPage extends Controller
 		$this->_HTMLTopMenu = new HTMLMenu;
 		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('userSettings'), 'iconUser');
 		if (false) {
-			$this->_HTMLTopMenu->append('Zaktualizuj', self::URL('systemUpdate'),'iconUpdates');
+			$this->_HTMLTopMenu->append('Zaktualizuj', self::URL('systemUpdate'), 'iconUpdates');
 		}
-		$this->_HTMLTopMenu->append('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite');
+		$this->_HTMLTopMenu->append('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite', ['target' => '_blank']);
 		$this->_HTMLTopMenu->append('Wyloguj się',    self::URL('logout'),             'iconLogout');
 
 		// Main navigation menu.
@@ -134,7 +134,7 @@ abstract class AdminPanelPage extends Controller
 		$this->_HTMLLayout->message      = $this->_HTMLMessage;
 		$this->_HTMLLayout->pageTitle    = $this->_pageTitle;
 		$this->_HTMLLayout->pageTemplate = $this->_HTMLTemplate;
-		$this->_HTMLLayout->id           = empty($_GET['c']) ? '' : strtolower($_GET['c']);
+		$this->_HTMLLayout->id           = empty($_GET['c']) ? '' : lcfirst($_GET['c']);
 
 		// Recursively render all HTML elements and whole layout.
 		$this->_HTMLLayout->render();

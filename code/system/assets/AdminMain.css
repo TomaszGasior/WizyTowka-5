@@ -636,21 +636,21 @@ p.elementsList.emptyMessage {
 
 /* Special styles — about system page. */
 
-div.systemVersion {
+body#about div.systemVersion {
 	text-align: center;
 	margin: 1.3em 0;
 }
 
-div.systemVersion p {
+body#about div.systemVersion p {
 	margin: 0;
 	font-size: 1.05em;
 }
-div.systemVersion p:first-child {
+body#about div.systemVersion p:first-child {
 	font-size: 4.1em;
 	font-weight: bold;
 	margin: 0.4em 0;
 }
-div.systemVersion p:last-child {
+body#about div.systemVersion p:last-child {
 	font-weight: bold;
 }
 
