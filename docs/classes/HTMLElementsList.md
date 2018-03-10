@@ -21,17 +21,21 @@ Określenie callbacka tytułów elementów jest obowiązkowe.
 
 Uwaga: tytuł elementu listy nie jest escapowany — niepożądane znaczniki HTML muszą zostać usunięte ręcznie.
 
-## `link(callable $callback)`
+## `link(callable $callback, array $HTMLAttributes = [])`
 
 Dodaje do tytułów elementów odnośnik. W argumencie `$callback` należy wskazać callback, który jako argument otrzyma element kolekcji danych, a zwróci adres URL odnośnika.
 
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów dla znacznika `<a>`. Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami.
+
 Nie można dla tytułu elementu określić jednocześnie pola radio i odnośnika. W takim wypadku zostanie rzucony wyjątek `HTMLElementsListException` #2.
 
-## `radio($name, callable $fieldValueCallback, $currentValue)`
+## `radio($name, callable $fieldValueCallback, $currentValue, array $HTMLAttributes = [])`
 
 Dodaje do tytułów elementów pole wyboru radio.
 
 Argument `$name` określa atrybut `name` znacznika `<input>`. W argumencie `$fieldValueCallback` należy wskazać callback, który jako argument otrzyma element kolekcji danych, a zwróci wartość pola radio (atrybut `value` znacznika `<input>`). Argument `$currentValue` określa bieżącą wartość przełącznika — jeżeli wartość pola (wartość zwrócona przez wywołanie zwrotne `$fieldValueCallback`) będzie równa `$currentValue`, pole zostanie zaznaczone.
+
+Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów dla znacznika `<input>`. Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami.
 
 Nie można dla tytułu elementu określić jednocześnie pola radio i odnośnika. W takim wypadku zostanie rzucony wyjątek `HTMLElementsListException` #2.
 

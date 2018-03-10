@@ -50,15 +50,15 @@ HTML;
 		$object = new WizyTowka\HTMLElementsList;
 		$object->collection($this->_data)
 			->title(function($row){ return $row['title']; })
-			->link(function($row){ return $row['url']; })
+			->link(function($row){ return $row['url']; }, ['target' => '_blank'])
 			->emptyMessage('Empty.');
 
 		$current  = (string)$object;
 		$expected = <<< 'HTML'
 <ul>
-	<li><span><a href="http://example.org/e_1">Title 1</a></span></li>
-	<li><span><a href="http://example.org/e_2">Title 2</a></span></li>
-	<li><span><a href="http://example.org/e_3">Title 3</a></span></li>
+	<li><span><a target="_blank" href="http://example.org/e_1">Title 1</a></span></li>
+	<li><span><a target="_blank" href="http://example.org/e_2">Title 2</a></span></li>
+	<li><span><a target="_blank" href="http://example.org/e_3">Title 3</a></span></li>
 </ul>
 HTML;
 		$this->assertHTMLEquals($expected, $current);
@@ -95,9 +95,9 @@ HTML;
 		$object->collection($this->_data)
 			->title(function($row){ return $row['title']; })
 			->menu(function($row){ return [
-				['Preview', '?action=preview'],
-				['Edit', '?action=edit'],
-				['Remove', '?action=remove', 'danger'],
+				['Preview', '?action=preview&id=' . $row['id']          ],
+				['Edit',    '?action=edit&id='    . $row['id']          ],
+				['Remove',  '?action=remove&id='  . $row['id'], 'danger'],
 			]; })
 			->emptyMessage('Empty.');
 
@@ -107,25 +107,25 @@ HTML;
 	<li>
 		<span>Title 1</span>
 		<ul>
-			<li><a aria-label="Preview — Title 1" href="?action=preview">Preview</a></li>
-			<li><a aria-label="Edit — Title 1" href="?action=edit">Edit</a></li>
-			<li class="danger"><a aria-label="Remove — Title 1" href="?action=remove">Remove</a></li>
+			<li><a aria-label="Preview — Title 1" href="?action=preview&id=1">Preview</a></li>
+			<li><a aria-label="Edit — Title 1" href="?action=edit&id=1">Edit</a></li>
+			<li class="danger"><a aria-label="Remove — Title 1" href="?action=remove&id=1">Remove</a></li>
 		</ul>
 	</li>
 	<li>
 		<span>Title 2</span>
 		<ul>
-			<li><a aria-label="Preview — Title 2" href="?action=preview">Preview</a></li>
-			<li><a aria-label="Edit — Title 2" href="?action=edit">Edit</a></li>
-			<li class="danger"><a aria-label="Remove — Title 2" href="?action=remove">Remove</a></li>
+			<li><a aria-label="Preview — Title 2" href="?action=preview&id=2">Preview</a></li>
+			<li><a aria-label="Edit — Title 2" href="?action=edit&id=2">Edit</a></li>
+			<li class="danger"><a aria-label="Remove — Title 2" href="?action=remove&id=2">Remove</a></li>
 		</ul>
 	</li>
 	<li>
 		<span>Title 3</span>
 		<ul>
-			<li><a aria-label="Preview — Title 3" href="?action=preview">Preview</a></li>
-			<li><a aria-label="Edit — Title 3" href="?action=edit">Edit</a></li>
-			<li class="danger"><a aria-label="Remove — Title 3" href="?action=remove">Remove</a></li>
+			<li><a aria-label="Preview — Title 3" href="?action=preview&id=3">Preview</a></li>
+			<li><a aria-label="Edit — Title 3" href="?action=edit&id=3">Edit</a></li>
+			<li class="danger"><a aria-label="Remove — Title 3" href="?action=remove&id=3">Remove</a></li>
 		</ul>
 	</li>
 </ul>

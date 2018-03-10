@@ -13,11 +13,14 @@ class HTMLElementsList extends HTMLTag
 
 	private $_callbackTitle;
 	private $_callbackLink;
-	private $_callbackMenu;
 	private $_callbackRadio;
+	private $_callbackMenu;
 
 	private $_radioFieldName;
 	private $_radioFieldCurrentValue;
+
+	private $_HTMLAttributesLink = [];
+	private $_HTMLAttributesRadio = [];
 
 	public function collection(array &$collection)
 	{
@@ -33,18 +36,19 @@ class HTMLElementsList extends HTMLTag
 		return $this;
 	}
 
-	public function link(callable $callback)
+	public function link(callable $callback, array $HTMLAttributes = [])
 	{
 		if ($this->_callbackRadio) {
 			throw HTMLElementsListException::radioOrLink();
 		}
 
-		$this->_callbackLink = $callback;
+		$this->_callbackLink       = $callback;
+		$this->_HTMLAttributesLink = $HTMLAttributes;
 
 		return $this;
 	}
 
-	public function radio($name, callable $fieldValueCallback, $currentValue)
+	public function radio($name, callable $fieldValueCallback, $currentValue, array $HTMLAttributes = [])
 	{
 		if ($this->_callbackLink) {
 			throw HTMLElementsListException::radioOrLink();
@@ -53,6 +57,7 @@ class HTMLElementsList extends HTMLTag
 		$this->_radioFieldName         = $name;
 		$this->_radioFieldCurrentValue = $currentValue;
 		$this->_callbackRadio          = $fieldValueCallback;
+		$this->_HTMLAttributesRadio    = $HTMLAttributes;
 
 		return $this;
 	}
@@ -93,14 +98,27 @@ class HTMLElementsList extends HTMLTag
 
 				echo '<span>';
 				if ($this->_callbackLink) {
-					echo '<a href="', call_user_func($this->_callbackLink, $element), '">', $title, '</a>';
+					$HTMLAttributes = [
+						'href' => call_user_func($this->_callbackLink, $element)
+					] + $this->_HTMLAttributesLink;
+
+					$this->_renderHTMLOpenTag('a', $HTMLAttributes);
+					echo $title, '</a>';
 				}
 				elseif ($this->_callbackRadio) {
 					isset($id) ? ++$id : $id=0;
 					$fieldValue = call_user_func($this->_callbackRadio, $element);
-					echo '<input type="radio" id="', $this->_radioFieldName, $id, '" name="', $this->_radioFieldName, '" value="', $fieldValue, '"',
-						 ($this->_radioFieldCurrentValue == $fieldValue ? ' checked>' : '>'),
-						 '<label for="', $this->_radioFieldName, $id, '">', $title, '</label>';
+
+					$HTMLAttributes = [
+						'type'    => 'radio',
+						'id'      => $this->_radioFieldName . $id,
+						'name'    => $this->_radioFieldName,
+						'value'   => $fieldValue,
+						'checked' => ($this->_radioFieldCurrentValue == $fieldValue)
+					] + $this->_HTMLAttributesRadio;
+
+					$this->_renderHTMLOpenTag('input', $HTMLAttributes);
+					echo  '<label for="', $this->_radioFieldName, $id, '">', $title, '</label>';
 				}
 				else {
 					echo $title;
