@@ -9,6 +9,7 @@ namespace WizyTowka;
 class WebsiteRenderer
 {
 	private $_page;
+	private $_404Error = false;
 
 	private $_HTMLLayout;
 	private $_HTMLTemplate;
@@ -17,9 +18,17 @@ class WebsiteRenderer
 
 	private $_theme;
 
-	public function __construct(Page $page, ContentTypeAPI $contentTypeAPI, HTMLTemplate $HTMLLayout)
+	public function __construct(HTMLTemplate $HTMLLayout, Page $page = null, ContentTypeAPI $contentTypeAPI = null)
 	{
-		$this->_page = $page;
+		if ($page) {
+			$this->_page = $page;
+		}
+		else {
+			$this->_page = new Page;   // Fake object.
+			$this->_page->title = Settings::get('website404ErrorTitle');
+
+			$this->_404Error = true;
+		}
 
 		// Load theme.
 		if (!$this->_theme = Theme::getByName(Settings::get('themeName'))) {
@@ -39,7 +48,10 @@ class WebsiteRenderer
 
 		// Initialize HTML template for content type.
 		$this->_HTMLTemplate = new HTMLTemplate;
-		$contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
+		if ($contentTypeAPI) {
+			// Template name and path are set by content type here.
+			$contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
+		}
 	}
 
 	public function prepareTemplate()
@@ -96,12 +108,15 @@ class WebsiteRenderer
 		if ($description = $this->_page->description ? $this->_page->description : Settings::get('searchEnginesDescription')) {
 			$head->meta('description', HTML::correctTypography($description));
 		}
-		if ($robots = Settings::get('searchEnginesRobots') or $this->_page->noIndex) {
-			// "noindex" option can be set per page or globally for website.
-			if ($this->_page->noIndex and strpos($robots, 'noindex') === false) {
-				$robots = 'noindex' . ($robots ? ', '.$robots : '');
-			}
-			$head->meta('robots', $robots);
+		$robotsTag = explode(',', Settings::get('searchEnginesRobots'));
+		if ($this->_page->noIndex) {
+			$robotsTag[] = 'noindex';
+		}
+		if ($robotsTag) {
+			$robotsTag = implode(', ', array_unique(array_map('trim', $robotsTag)));
+			$head->meta('robots', $robotsTag);
+
+			header('X-Robots-Tag: ' . $robotsTag); // Useful when content type breaks HTML rendering.
 		}
 
 		// Theme stylesheet.
@@ -155,11 +170,14 @@ class WebsiteRenderer
 		$template->pageTitle = HTML::correctTypography($this->_page->title);
 
 		$properties = [];
-		if ($user = User::getById($this->_page->userId) and !Settings::get('lockdownUsers')) {
-			$properties['Autor'] = HTML::correctTypography($user->name);
+
+		if (!$this->_404Error) {
+			if ($user = User::getById($this->_page->userId) and !Settings::get('lockdownUsers')) {
+				$properties['Autor'] = HTML::correctTypography($user->name);
+			}
+			$properties['Data utworzenia']  = HTML::formatDateTime($this->_page->createdTime);
+			$properties['Data modyfikacji'] = HTML::formatDateTime($this->_page->updatedTime);
 		}
-		$properties['Data utworzenia']  = HTML::formatDateTime($this->_page->createdTime);
-		$properties['Data modyfikacji'] = HTML::formatDateTime($this->_page->updatedTime);
 
 		$template->setRaw('properties', $properties);
 
@@ -170,6 +188,14 @@ class WebsiteRenderer
 	{
 		$template = new HTMLTemplate('WebsitePageContent');
 		$this->_setupTemplatePath($template);
+
+		// Setup 404 error message if it's needed.
+		if ($this->_404Error) {
+			$this->_HTMLTemplate->setTemplate('Website404Error');
+			$this->_setupTemplatePath($this->_HTMLTemplate);
+
+			$this->_HTMLTemplate->homePageURL = Website::URL(Settings::get('websiteHomepageId'));
+		}
 
 		$template->message = HTML::correctTypography($this->_HTMLMessage);
 		$template->setRaw('content', $this->_HTMLTemplate);
@@ -187,7 +213,7 @@ class WebsiteRenderer
 		foreach ($pages as $page) {
 			$menu->append(
 				HTML::escape(HTML::correctTypography($page->title)),
-				Website::URL($page->slug), $page->slug
+				Website::URL($page->id), $page->slug
 			);
 		}
 

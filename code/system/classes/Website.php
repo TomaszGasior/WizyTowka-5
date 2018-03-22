@@ -8,8 +8,8 @@ namespace WizyTowka;
 
 class Website extends Controller
 {
-	private $_page;
-	private $_contentTypeAPI;
+	private $_page = null;   // 404 error if it's null.
+	private $_contentTypeAPI = null;
 
 	private $_HTMLTemplate;
 	private $_renderer;
@@ -19,37 +19,62 @@ class Website extends Controller
 		// Get current page. If isn't specified, use home page.
 		$this->_page = !empty($_GET['id']) ? Page::getBySlug($_GET['id']) : Page::getById(Settings::get('websiteHomepageId'));
 
+		// There is 404 error if page doesn't exist or if page is hidden (it's a draft).
 		if (!$this->_page or $this->_page->isDraft) {
-			die('404'); // Comming soon.
+			$this->_page = null;
 		}
+
+		$this->_sendHTTPHeaders();
 
 		// Initialize HTML template.
 		$this->_HTMLTemplate = new HTMLTemplate;
 
 		// Initialize content type.
-		if (!$contentType = ContentType::getByName($this->_page->contentType)) {
-			throw WebsiteException::contentTypeNotExists($this->_page->contentType);
+		if ($this->_page) {
+			if (!$contentType = ContentType::getByName($this->_page->contentType)) {
+				throw WebsiteException::contentTypeNotExists($this->_page->contentType);
+			}
+			$this->_contentTypeAPI = $contentType->initWebsitePageBox();
+			$this->_contentTypeAPI->setPageData($this->_page->contents, $this->_page->settings);
 		}
-		$this->_contentTypeAPI = $contentType->initWebsitePageBox();
-		$this->_contentTypeAPI->setPageData($this->_page->contents, $this->_page->settings);
 
 		// Initialize website renderer, which will prepare HTML template.
-		$this->_renderer = new WebsiteRenderer($this->_page, $this->_contentTypeAPI, $this->_HTMLTemplate);
+		$this->_renderer = new WebsiteRenderer($this->_HTMLTemplate, $this->_page, $this->_contentTypeAPI);
+	}
+
+	private function _sendHTTPHeaders()
+	{
+		// 404 error header.
+		if (!$this->_page) {
+			header('HTTP/1.1 404 Not Found');
+		}
+
+		// Better security.
+		header('X-XSS-Protection: 1; mode=block');  // Works in MSIE and WebKit/Blink.
+		header('X-Content-Type-Options: nosniff');
+		header('X-Frame-Options: Deny');
+
+		// DO NOT REMOVE THIS LINE.
+		header('X-Powered-By: WizyTowka CMS');
 	}
 
 	public function POSTQuery()
 	{
-		try {
-			$this->_contentTypeAPI->POSTQuery();
-			// ContentTypeAPI::POSTQuery() throws an exception if content type does not support POST queries.
-			// Normally it's good, here this behavior is unwanted.
-		} catch (ContentTypeAPIException $e) {}
+		if ($this->_page) {
+			try {
+				$this->_contentTypeAPI->POSTQuery();
+				// ContentTypeAPI::POSTQuery() throws an exception if content type does not support POST queries.
+				// Normally it's good, here this behavior is unwanted.
+			} catch (ContentTypeAPIException $e) {}
+		}
 	}
 
 	public function output()
 	{
 		// ContentTypeAPI::HTMLContent() must be called before template preparing by WebsiteRenderer.
-		$this->_contentTypeAPI->HTMLContent();
+		if ($this->_page) {
+			$this->_contentTypeAPI->HTMLContent();
+		}
 
 		$this->_renderer->prepareTemplate();
 
@@ -58,25 +83,32 @@ class Website extends Controller
 
 	static public function URL($target, array $arguments = [])
 	{
+		$slug = (string)$target;
+
 		if (is_integer($target)) {
 			if (!$page = Page::getById($target)) {
 				return false;
 			}
+
 			$slug = $page->slug;
+
+			// Don't append slug to absolute page URL if it's current home page.
+			if ($page->id == Settings::get('websiteHomepageId') and !Settings::get('websiteAddressRelative')) {
+				$slug = '';
+			}
 		}
-		else {
-			$slug = $target;
-		}
+
+		$prettyLinks = Settings::get('websitePrettyLinks');
 
 		if (isset($arguments['id'])) {
 			throw ControllerException::unallowedKeyInURLArgument('id');
 		}
-		if (!$pretty = Settings::get('websitePrettyLinks')) {
+		if (!$prettyLinks and $slug) {
 			$arguments = ['id' => $slug] + $arguments;   // Adds "id" argument to array beginning for better URL readability.
 		}
 
-		return (Settings::get('websiteAddressRelative') ? '' : Settings::get('websiteAddress'))
-		       . ($pretty ? '/' . $slug : '/')
+		return (Settings::get('websiteAddressRelative') ? '' : Settings::get('websiteAddress') . '/')
+		       . (($prettyLinks and $slug) ? '/' . $slug : '')
 		       . ($arguments ? '?' . http_build_query($arguments) : '');
 	}
 }
