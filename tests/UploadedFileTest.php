@@ -16,14 +16,15 @@ class UploadedFileTest extends TestCase
 		// Prepare example files.
 		$files = [
 			'file_2048_bytes'  => str_repeat('a', 2048),
+			'file_to_change'   => 'Contents of this file will be changed to test modification time.',
 			'file_to_delete'   => 'This file will be moved to the end of earth.',
 			'file_to_rename'   => 'Name of this file will be changed.',
 		];
 		foreach ($files as $file => $contents) {
-			file_put_contents(self::$_uploadsDir.'/'.$file, $contents);
+			file_put_contents(self::$_uploadsDir . '/' . $file, $contents);
 		}
 		foreach ($files as $file => $contents) {
-			file_put_contents(self::$_uploadsDir.'/subdir/'.$file, $contents);
+			file_put_contents(self::$_uploadsDir . '/subdir/' . $file, $contents);
 		}
 	}
 
@@ -47,6 +48,7 @@ class UploadedFileTest extends TestCase
 		$current  = UploadedFile::getAll();
 		$expected = [
 			UploadedFile::getByName('file_2048_bytes'),
+			UploadedFile::getByName('file_to_change'),
 			UploadedFile::getByName('file_to_delete'),
 			UploadedFile::getByName('file_to_rename'),
 		];
@@ -77,6 +79,17 @@ class UploadedFileTest extends TestCase
 
 		$current  = $file->getSize();
 		$expected = 2048;
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testGetModificationTime()
+	{
+		$file = UploadedFile::getByName('file_to_change');
+
+		file_put_contents($file->getPath(), rand(9, 99999));
+
+		$current  = $file->getModificationTime();
+		$expected = time();
 		$this->assertEquals($expected, $current);
 	}
 

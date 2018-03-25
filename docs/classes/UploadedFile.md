@@ -29,6 +29,10 @@ Zwraca pełen adres URL pliku.
 
 Zwraca rozmiar pliku w bajtach formie liczby całkowitej. Jeśli plik jest pusty, bądź nie istnieje, zwraca liczbę zero.
 
+## `getModificationTime()`
+
+Zwraca czas ostatniej modyfikacji pliku jako uniksowy znacznik czasu w formie liczby całkowitej. Jeśli plik nie istnieje, zwraca liczbę zero.
+
 ## `rename($newFileName)`
 
 Zmienia nazwę pliku na nazwę określoną w argumencie `$newFileName`. Plik o nazwie `$newFileName` nie może istnieć. Argument `$newFileName` nie może zawierać ukośnika bądź ukośnika wstecznego.

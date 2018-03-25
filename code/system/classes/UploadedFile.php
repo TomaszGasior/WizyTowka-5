@@ -41,6 +41,11 @@ class UploadedFile
 		return is_file($this->getPath()) ? (int)filesize($this->getPath()) : 0;
 	}
 
+	public function getModificationTime()
+	{
+		return is_file($this->getPath()) ? (int)filemtime($this->getPath()) : 0;
+	}
+
 	public function rename($newFileName)
 	{
 		// Avoid creating subdirectories.
