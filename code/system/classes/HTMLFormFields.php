@@ -9,6 +9,14 @@ namespace WizyTowka;
 class HTMLFormFields extends HTMLTag
 {
 	private $_fields = [];
+	private $_disabled;
+
+	public function __construct($disabled = false, ...$arguments)
+	{
+		$this->_disabled = (bool)$disabled;
+
+		parent::__construct(...$arguments);
+	}
 
 	public function __debugInfo()
 	{
@@ -158,7 +166,8 @@ class HTMLFormFields extends HTMLTag
 
 	public function output()
 	{
-		echo '<fieldset', $this->_CSSClass ? ' class="' . $this->_CSSClass . '">' : '>';
+		echo '<fieldset', $this->_CSSClass ? ' class="' . $this->_CSSClass . '"' : '',
+		     $this->_disabled ? ' disabled>' : '>';
 
 		foreach ($this->_fields as $field) {
 			$id = $field['HTMLAttributes']['name'];

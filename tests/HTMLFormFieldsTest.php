@@ -247,7 +247,7 @@ HTML;
 
 	public function testRemove()
 	{
-		$object = new WizyTowka\HTMLFormFields('exampleCSSClass');
+		$object = new WizyTowka\HTMLFormFields(false, 'exampleCSSClass');
 		$object->text('Example field 1.', 'name_1', 'value');
 		$object->text('Example field 2.', 'name_2', 'value');
 		$object->text('Example field 2.', 'name_2', 'value');
@@ -264,6 +264,28 @@ HTML;
 	<div>
 		<label for="name_3">Example field 3.</label>
 		<span><input type="text" name="name_3" value="value" id="name_3"></span>
+	</div>
+</fieldset>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+	}
+
+	public function testDisabled()
+	{
+		$object = new WizyTowka\HTMLFormFields(true, 'exampleCSSClass');
+		$object->text('Example field 1.', 'name_1', 'value');
+		$object->text('Example field 2.', 'name_2', 'value');
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<fieldset disabled class="exampleCSSClass">
+	<div>
+		<label for="name_1">Example field 1.</label>
+		<span><input type="text" name="name_1" value="value" id="name_1"></span>
+	</div>
+	<div>
+		<label for="name_2">Example field 2.</label>
+		<span><input type="text" name="name_2" value="value" id="name_2"></span>
 	</div>
 </fieldset>
 HTML;

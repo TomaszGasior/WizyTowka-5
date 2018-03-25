@@ -43,6 +43,12 @@ Klasa implementuje metodę magiczną `__debugInfo()` dla debugowania przy użyci
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
+## `__construct($disabled = false, $CSSClass = null)`
+
+Jeśli argument `$disabled` jest prawdą, znacznik `<fieldset>` otrzyma atrybut `disabled`, dzięki czemu wszystkie dodane kontrolki zostaną zablokowane przez przeglądarkę internetową (jakby same oddzielnie otrzymały atrybut `disabled`).
+
+Zobacz `HTMLTag::__construct()`.
+
 ## `text($label, $name, $value, array $HTMLAttributes = [])`
 
 Dodaje pole `<input type="text">`.
