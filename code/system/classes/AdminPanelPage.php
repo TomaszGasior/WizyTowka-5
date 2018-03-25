@@ -81,7 +81,7 @@ abstract class AdminPanelPage extends Controller
 	{
 		// Top navigation menu.
 		$this->_HTMLTopMenu = new HTMLMenu;
-		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('userSettings'), 'iconUser');
+		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('preferences'), 'iconUser');
 		if (false) {
 			$this->_HTMLTopMenu->append('Zaktualizuj', self::URL('systemUpdate'), 'iconUpdates');
 		}
