@@ -50,9 +50,9 @@ class FileEdit extends WT\AdminPanelPage
 		$this->_pageTitle = $this->_file->getName() . ' — edycja pliku';
 		$this->_HTMLHead->title('Edycja pliku: „' . $this->_file->getName() . '”');
 
-		$this->_HTMLTemplate->fileName    = $this->_file->getName();
 		$this->_HTMLTemplate->fileFullURL = WT\Settings::get('websiteAddress') . '/' . $this->_file->getURL();
+		$this->_HTMLTemplate->fileName    = $this->_file->getName();
 		$this->_HTMLTemplate->fileSize    = $this->_file->getSize();
-		$this->_HTMLTemplate->fileModTime = filemtime($this->_file->getPath());
+		$this->_HTMLTemplate->fileModTime = $this->_file->getModificationTime();
 	}
 }

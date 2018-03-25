@@ -11,16 +11,18 @@
 
 	<h3>Informacje o pliku</h3>
 
-	<?= (new HTMLFormFields)
-		->text('Nazwa pliku', 'newFileName', $fileName, ['placeholder' => '(pozostaw dotychczasową nazwę)'])
-	?>
-
 	<dl>
 		<dt>Data modyfikacji pliku</dt>
 		<dd><?= HTML::formatDateTime($fileModTime) ?>
 		<dt>Rozmiar pliku</dt>
 		<dd><?= HTML::formatFileSize($fileSize) ?>
 	</dl>
+
+	<h3>Zmiana nazwy pliku</h3>
+
+	<?= (new HTMLFormFields)
+		->text('Nowa nazwa pliku', 'newFileName', $fileName, ['placeholder' => '(pozostaw dotychczasową nazwę)'])
+	?>
 
 	<p class="warning">Uwaga! Nie należy zmieniać nazwy pliku, jeśli został on wykorzystany na jakiejkolwiek stronie witryny (na przykład został dodany do treści strony czy do galerii zdjęć). W&nbsp;takim wypadku zmiana nazwy pliku spowoduje niepoprawne działanie strony — odnośnik do pliku przestanie działać, obrazek nie będzie się wczytywać.</p>
 
