@@ -12,7 +12,8 @@ class SessionManagerTest extends TestCase
 
 	static public function setUpBeforeClass()
 	{
-		// Workaround for PHPUnit because of @runInSeparateProcess. Run this method only once before first test.
+		// Workaround for PHPUnit because of @runInSeparateProcess.
+		// Run this method only once before first test.
 		if (!headers_sent()) { return; }
 
 		// $_SERVER values undefined in CLI.
@@ -26,7 +27,8 @@ class SessionManagerTest extends TestCase
 
 	static public function tearDownAfterClass()
 	{
-		// Workaround for PHPUnit because of @runInSeparateProcess. Run this method only once after all tests.
+		// Workaround for PHPUnit because of @runInSeparateProcess.
+		// Run this method only once after all tests.
 		if (!headers_sent()) { return; }
 
 		@unlink(self::$_sessionsConfigFile);
@@ -37,22 +39,22 @@ class SessionManagerTest extends TestCase
 
 	public function setUp()
 	{
-		// Restore kept HTTP cookie to $_COOKIE superglobal.
-		if ($keptHTTPCookie = $this->_getKeptHTTPCookie()) {
+		// Restore kept HTTP cookie to $_COOKIE superglobal, simulate next HTTP request.
+		$keptHTTPCookie = file_exists('keptHTTPCookie') ? unserialize(file_get_contents('keptHTTPCookie')) : false;
+		if ($keptHTTPCookie and $keptHTTPCookie['expires'] >= time()) {
 			$_COOKIE[$keptHTTPCookie['name']] = $keptHTTPCookie['value'];
 		}
 
+		// Start session manager.
 		WizyTowka\SessionManager::setup();
 	}
 
-	private function _keepHTTPCookie()
+	public function tearDown()
 	{
-		file_put_contents('keptHTTPCookie', serialize($this->getLastHTTPCookie()));
-	}
-
-	private function _getKeptHTTPCookie()
-	{
-		return file_exists('keptHTTPCookie') ? unserialize(file_get_contents('keptHTTPCookie')) : false;
+		// Save last HTTP cookie to use it in next unit test.
+		if ($this->getLastHTTPCookie()) {
+			file_put_contents('keptHTTPCookie', serialize($this->getLastHTTPCookie()));
+		}
 	}
 
 	/**
@@ -74,9 +76,6 @@ class SessionManagerTest extends TestCase
 		$current  = $this->getLastHTTPCookie()['expires'];
 		$expected = time() + self::$_exampleSessionDuration;
 		$this->assertEquals($expected, $current);
-
-		// Save HTTP cookie for next tests. User should be corretly logged in during next HTTP request.
-		$this->_keepHTTPCookie();
 	}
 
 	/**
@@ -99,7 +98,7 @@ class SessionManagerTest extends TestCase
 	{
 		WizyTowka\SessionManager::logOut();
 
-		$sessionId          = $this->_getKeptHTTPCookie()['value'];
+		$sessionId          = array_pop($_COOKIE);  // Value of cookie set inside testLogIn().
 		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFile);
 
 		// Check whether session data was removed from sessions configuration file.

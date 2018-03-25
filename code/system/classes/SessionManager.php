@@ -53,7 +53,7 @@ trait SessionManager
 
 		$session['userId']      = $userId;
 		$session['waiString']   = self::_generateWAI($userId);
-		$session['expireTime']  = time() + (integer)$sessionDuration;
+		$session['expireTime']  = time() + (integer)$sessionDuration;  // Unix timestamp.
 		$session['reloginTime'] = time() + 120;
 
 		$sessionId = hash('sha512', random_int(PHP_INT_MIN, PHP_INT_MAX));
@@ -62,6 +62,7 @@ trait SessionManager
 
 		$forceHTTPS = (!empty($_SERVER['HTTPS']) and $_SERVER['HTTPS'] != 'off');
 		setcookie(self::$_cookieName, $sessionId, $session['expireTime'], null, null, $forceHTTPS, true);
+		// Force HTTPS if it's possible and enable HTTPOnly option.
 
 		// User will be logged in next request!
 	}
@@ -73,7 +74,7 @@ trait SessionManager
 		}
 
 		$sessionsConfig = self::_getSessionsConfig();
-		$sessionId = $_COOKIE[self::$_cookieName];
+		$sessionId      = $_COOKIE[self::$_cookieName];
 		unset($sessionsConfig->$sessionId);
 
 		setcookie(self::$_cookieName, null, 1);
@@ -86,6 +87,28 @@ trait SessionManager
 				unset($sessionsConfig->$sessionId);
 			}
 		}
+	}
+
+	static public function closeOtherSessions()
+	{
+		if (!self::$_started or !self::isUserLoggedIn()) {
+			throw SessionManagerException::wrongState();
+		}
+
+		$successful = false;
+
+		$sessionsConfig   = self::_getSessionsConfig();
+		$currentSessionId = $_COOKIE[self::$_cookieName];
+
+		foreach ($sessionsConfig as $sessionId => $session) {
+			if ($session['userId'] == self::$_currentUserId and $sessionId != $currentSessionId) {
+				unset($sessionsConfig->$sessionId);
+
+				$successful = true;
+			}
+		}
+
+		return $successful;
 	}
 
 	static public function isUserLoggedIn()

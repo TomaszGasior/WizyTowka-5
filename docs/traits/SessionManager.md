@@ -31,6 +31,12 @@ Wylogowuje aktualnie zalogowanego użytkownika oraz usuwa z pliku konfiguracyjne
 
 Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek `SessionManagerException` #2.
 
+## *static* `closeOtherSessions()`
+
+Wylogowuje wszystkie pozostałe sesje aktualnie zalogowanego użytkownika. Zwraca prawdę, jeśli istniała choć jedna inna sesja aktualnie zalogowanego użytkownika, która została usunięta; w innym przypadku — zwraca fałsz.
+
+Jeżeli żaden użytkownik nie jest zalogowany bądź menadżer nie został zainicjowany, zostanie rzucony wyjątek `SessionManagerException` #2.
+
 ## *static* `isUserLoggedIn()`
 
 Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jest.
