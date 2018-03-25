@@ -108,8 +108,7 @@ class PageProperties extends WT\AdminPanelPage
 		$this->_HTMLTemplate->disallowUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES);
 		$this->_HTMLTemplate->disallowPublicPage   = !($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES);
 
-		// Show warning if user isn't permitted to modify page.
-		$this->_HTMLTemplate->permissionLimitNotification = !$this->_isUserAllowedToEditPage($this->_page);
-		$this->_HTMLTemplate->disableSaveButton           = !$this->_isUserAllowedToEditPage($this->_page);
+		// Show warning and lock form controls when user isn't permitted to modify page.
+		$this->_HTMLTemplate->disallowModifications = !$this->_isUserAllowedToEditPage($this->_page);
 	}
 }

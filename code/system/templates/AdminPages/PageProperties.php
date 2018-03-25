@@ -1,11 +1,11 @@
 <form method="post">
-	<?php if ($permissionLimitNotification) { ?>
+	<?php if ($disallowModifications) { ?>
 		<p class="warning">Nie posiadasz wystarczających uprawnień, by modyfikować zawartość lub ustawienia tej strony i&nbsp;jej&nbsp;właściwości, nie będąc jej właścicielem.</p>
 	<?php } ?>
 
 	<h3>Dane strony</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new HTMLFormFields($disallowModifications))
 		->text('Tytuł', 'title', $page->title, ['required' => true])
 		->text('Identyfikator', 'slug', $page->slug)
 		->{$hideUserIdChange ? 'skip' : 'select'}
@@ -23,7 +23,7 @@
 
 	<h3>Informacje wyszukiwarek</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new HTMLFormFields($disallowModifications))
 		->text('Tytuł w pasku przeglądarki', 'titleHead', $page->titleHead,
 			['placeholder' => '(użyj domyślnego tytułu)'])
 		->textarea('Opis dla wyszukiwarek', 'description', $page->description,
@@ -32,5 +32,5 @@
 			['disabled' => $disableNoIndex])
 	?>
 
-	<button <?= $disableSaveButton ? 'disabled' : '' ?>>Zapisz zmiany</button>
+	<button <?= $disallowModifications ? 'disabled' : '' ?>>Zapisz zmiany</button>
 </form>
