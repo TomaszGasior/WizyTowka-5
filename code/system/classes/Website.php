@@ -87,7 +87,7 @@ class Website extends Controller
 
 		if (is_integer($target)) {
 			if (!$page = Page::getById($target)) {
-				return false;
+				return null;
 			}
 
 			$slug = $page->slug;

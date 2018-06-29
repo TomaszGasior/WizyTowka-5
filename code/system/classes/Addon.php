@@ -88,7 +88,7 @@ abstract class Addon implements \IteratorAggregate
 			return $addonObject;
 		}
 
-		return false;
+		return null;
 	}
 
 	static public function getAll()

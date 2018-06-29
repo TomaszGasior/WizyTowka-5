@@ -201,7 +201,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		}
 
 		if ($onlyOneRecord) {
-			return isset($elementsToReturn[0]) ? $elementsToReturn[0] : false;
+			return isset($elementsToReturn[0]) ? $elementsToReturn[0] : null;
 		}
 		return $elementsToReturn;
 	}

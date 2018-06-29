@@ -42,7 +42,7 @@ Zwraca odwrotność wartości z metody `isFromSystem()`.
 
 ## *static* `getByName($name)`
 
-Zwraca dodatek (instancję klasy) o nazwie `$name` bądź fałsz, jeśli dodatek o takiej nazwie nie istnieje.
+Zwraca dodatek (instancję klasy) o nazwie `$name` bądź `null`, jeśli dodatek o takiej nazwie nie istnieje.
 
 Nazwa dodatku określona w argumencie `$name` jest w rzeczywistości nazwą podfolderu znajdującego się w folderze danego typu dodatków (ten folder określony jest w polu `$_addonsSubdir`).
 

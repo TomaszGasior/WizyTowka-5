@@ -72,7 +72,7 @@ class UploadedFile
 	{
 		// Avoid reading from subdirectories.
 		if (strpos($fileName, '/') !== false or strpos($fileName, '\\') !== false) {
-			return false;
+			return null;
 		}
 
 		if (is_file(FILES_DIR . '/' . $fileName)) {
@@ -82,7 +82,7 @@ class UploadedFile
 			return $fileObject;
 		}
 
-		return false;
+		return null;
 	}
 
 	static public function getAll()

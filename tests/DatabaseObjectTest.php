@@ -130,7 +130,7 @@ class DatabaseObjectTest extends TestCase
 
 		$object = self::$_exampleDBObj::getById(1);
 
-		$this->assertFalse($object);
+		$this->assertNull($object);
 	}
 
 	public function testClone()

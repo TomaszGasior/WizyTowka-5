@@ -46,7 +46,7 @@ Zwraca tablicę gromadzącą wszystkie rekordy tabeli (każdy rekord jest indywi
 
 ## *static* `getById($id)`
 
-Zwraca rekord o wartości klucza podstawowego podanej w argumencie `$id` (instancję klasy). Jeśli taki rekord nie istnieje, zwraca fałsz.
+Zwraca rekord o wartości klucza podstawowego podanej w argumencie `$id` (instancję klasy). Jeśli taki rekord nie istnieje, zwraca `null`.
 
 ## *static protected* `_getByWhereCondition($sqlQueryWhere = null, $parameters = [], $onlyOneRecord = false)`
 

@@ -36,19 +36,14 @@ class AdminPanel extends Controller
 		$this->_realAdminPanelPage = new $controller;
 	}
 
-	public function filterPOSTData()
+	public function POSTQuery(...$arguments)
 	{
-		return $this->_realAdminPanelPage->{__FUNCTION__}();
+		return $this->__call(__FUNCTION__, $arguments);
 	}
 
-	public function POSTQuery()
+	public function output(...$arguments)
 	{
-		return $this->_realAdminPanelPage->{__FUNCTION__}();
-	}
-
-	public function output()
-	{
-		return $this->_realAdminPanelPage->{__FUNCTION__}();
+		return $this->__call(__FUNCTION__, $arguments);
 	}
 
 	public function __call($function, $arguments)
