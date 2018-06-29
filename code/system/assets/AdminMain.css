@@ -445,18 +445,8 @@ main h3 {
 
 /* Notifications/messages. */
 
-@keyframes messageFadeIn {
-	from {
-		padding-top: 0;
-		padding-bottom: 0;
-		line-height: 0;
-		border-width: 0;
-		margin-bottom: 0;
-	}
-}
-
 div.message {
-	margin: 0 -1.5em -0.9em;  /* Horizonal negative margin = padding of main block. */
+	margin: 0 -1.5em -0.5em;  /* Horizonal negative margin = padding of main block. */
 
 	text-align: center;
 	font-weight: bold;
@@ -467,8 +457,6 @@ div.message {
 
 	box-sizing: border-box;
 	overflow: hidden;
-
-	animation: messageFadeIn 0.35s ease-in-out;
 }
 div.message.success {
 	background: #FFFDB9;
