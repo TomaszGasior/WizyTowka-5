@@ -18,62 +18,21 @@ if (PHP_VERSION_ID < 70000) {
 	include __DIR__ . '/compat.php';
 }
 
-mb_internal_encoding('UTF-8');
-mb_regex_encoding('UTF-8');
+require SYSTEM_DIR . '/classes/_Private/System.php';
 
-include __DIR__ . '/classes/Autoloader.php';
-spl_autoload_register(__NAMESPACE__ . '\Autoloader::autoload');
-Autoloader::addNamespace(__NAMESPACE__, __DIR__ . '/classes');
-
-set_error_handler(__NAMESPACE__ . '\ErrorHandler::handleError');
-set_exception_handler(__NAMESPACE__ . '\ErrorHandler::handleException');
-
-
-function init($controller)
+function WT($controllerName = null)
 {
-	static $init; if ($init) { return; } $init = 1;
+	static $system;
 
-	$runController = function(Controller $controller)
-	{
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-			$controller->POSTQuery();
-		}
-		$controller->output();
-	};
-
-	/* Installer. */
-	if (!file_exists(CONFIG_DIR)) {
-		$controller = 'Installer';
-		goto run;
+	if (!$system) {
+		$system = new _Private\System;
 	}
 
-	/* Initialize plugins. */
-	foreach (Plugin::getAll() as $plugin) {
-		$plugin->init();
+	if ($controllerName) {
+		return $system($controllerName);
 	}
 
-	$settings = Settings::get();
+	return $system;
+}
 
-	/* Error handler. */
-	if (!$settings->systemShowErrors) {
-		ErrorHandler::showErrorDetails(false);
-	}
-
-	/* PHP settings. */
-	setlocale(LC_ALL, explode('|', $settings->phpLocalesList));
-	date_default_timezone_set($settings->phpTimeZone);
-
-	/* Database connection. */
-	Database::connect(
-		$settings->databaseType,
-		($settings->databaseType == 'sqlite') ? CONFIG_DIR . '/database.db' : $settings->databaseName,
-		$settings->databaseHost, $settings->databaseUsername, $settings->databasePassword
-	);
-
-	/* User session manager. */
-	SessionManager::setup();
-
-	/* Controller. */
-	run: $controllerClass = __NAMESPACE__ . '\\' . $controller;
-	$runController(new $controllerClass);
-};
+WT();
