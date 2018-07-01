@@ -3,11 +3,14 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLFormFieldsTest extends TestCase
 {
 	public function testText()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->text('Example field', 'name', 'value " value');
 
 		$current  = (string)$object;
@@ -24,7 +27,7 @@ HTML;
 
 	public function testNumber()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->number('Example field', 'name', 8.5, ['min' => 5, 'max' => '10']);
 
 		$current  = (string)$object;
@@ -41,7 +44,7 @@ HTML;
 
 	public function testColor()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->color('Example field', 'name', '#00ff00');
 
 		$current  = (string)$object;
@@ -58,7 +61,7 @@ HTML;
 
 	public function testUrl()
 	{
-		$object1 = new WizyTowka\HTMLFormFields;
+		$object1 = new __\HTMLFormFields;
 		$object1->url('Example field', 'name', 'https://example.com');
 
 		$current  = (string)$object1;
@@ -72,7 +75,7 @@ HTML;
 HTML;
 		$this->assertHTMLEquals($expected, $current);
 
-		$object2 = new WizyTowka\HTMLFormFields;
+		$object2 = new __\HTMLFormFields;
 		$object2->url('Example field', 'name', 'http://example.org:80');
 
 		$current  = (string)$object2;
@@ -89,7 +92,7 @@ HTML;
 
 	public function testEmail()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->email('Example field', 'name', 'email@example.com');
 
 		$current  = (string)$object;
@@ -106,7 +109,7 @@ HTML;
 
 	public function testPassword()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->password('Example field', 'name', ['required' => true, 'disabled' => false]);
 
 		$current  = (string)$object;
@@ -123,7 +126,7 @@ HTML;
 
 	public function testCheckbox()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->checkbox('Example checkbox', 'name_1', true);
 		$object->checkbox('Example checkbox', 'name_2', false);
 
@@ -146,7 +149,7 @@ HTML;
 	public function testRadio()
 	{
 		$selectedValue = 'linux';
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->radio('I use Windows', 'operating_system', 'windows', $selectedValue);
 		$object->radio('I use Linux', 'operating_system', 'linux', $selectedValue);
 		$object->option('I use Mac OS', 'operating_system', 'mac_os', $selectedValue);  // "option" is an alias of "radio".
@@ -173,7 +176,7 @@ HTML;
 
 	public function testTextarea()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->textarea('Example field', 'name', "Line 1.\nLine 2.\nLine 3.");
 
 		$current  = (string)$object;
@@ -192,7 +195,7 @@ HTML;
 
 	public function testSelect()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->select('Select your OS', 'operating_system', 'linux', [
 			'windows' => 'Windows',
 			'linux' => 'Linux',
@@ -219,7 +222,7 @@ HTML;
 
 	public function testTextWithHints()
 	{
-		$object = new WizyTowka\HTMLFormFields;
+		$object = new __\HTMLFormFields;
 		$object->textWithHints('Select your OS', 'operating_system', '', [
 			'windows' => 'Windows',
 			'linux' => 'Linux',
@@ -247,7 +250,7 @@ HTML;
 
 	public function testRemove()
 	{
-		$object = new WizyTowka\HTMLFormFields(false, 'exampleCSSClass');
+		$object = new __\HTMLFormFields(false, 'exampleCSSClass');
 		$object->text('Example field 1.', 'name_1', 'value');
 		$object->text('Example field 2.', 'name_2', 'value');
 		$object->text('Example field 2.', 'name_2', 'value');
@@ -272,7 +275,7 @@ HTML;
 
 	public function testDisabled()
 	{
-		$object = new WizyTowka\HTMLFormFields(true, 'exampleCSSClass');
+		$object = new __\HTMLFormFields(true, 'exampleCSSClass');
 		$object->text('Example field 1.', 'name_1', 'value');
 		$object->text('Example field 2.', 'name_2', 'value');
 

@@ -3,11 +3,14 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class TextTest extends TestCase
 {
 	public function testGetChar()
 	{
-		$textObject = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject = new __\Text('Zażółć gęślą jaźń');
 
 		$current  = $textObject->getChar(3);
 		$expected = 'ó';
@@ -23,7 +26,7 @@ class TextTest extends TestCase
 
 	public function testGetLength()
 	{
-		$textObject = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject = new __\Text('Zażółć gęślą jaźń');
 
 		$current  = $textObject->getLength();
 		$expected = 17;
@@ -32,7 +35,7 @@ class TextTest extends TestCase
 
 	public function testLowercase()
 	{
-		$textObject = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject = new __\Text('Zażółć gęślą jaźń');
 		$textObject->lowercase();
 
 		$current  = $textObject->get();
@@ -42,7 +45,7 @@ class TextTest extends TestCase
 
 	public function testUppercase()
 	{
-		$textObject = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject = new __\Text('Zażółć gęślą jaźń');
 		$textObject->uppercase();
 
 		$current  = $textObject->get();
@@ -52,14 +55,14 @@ class TextTest extends TestCase
 
 	public function testCut()
 	{
-		$textObject1 = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject1 = new __\Text('Zażółć gęślą jaźń');
 		$textObject1->cut(1, 5);
 
 		$current  = $textObject1->get();
 		$expected = 'ażółć';
 		$this->assertEquals($expected, $current);
 
-		$textObject2 = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject2 = new __\Text('Zażółć gęślą jaźń');
 		$textObject2->cut(-10, -4);
 
 		$current  = $textObject2->get();
@@ -70,7 +73,7 @@ class TextTest extends TestCase
 	public function testReplace()
 	{
 		// https://pl.wikipedia.org/wiki/Pangram#j%C4%99zyk_polski
-		$textObject = new WizyTowka\Text('Myślę: Fruń z płacht gąsko, jedź wbić nóż');
+		$textObject = new __\Text('Myślę: Fruń z płacht gąsko, jedź wbić nóż');
 
 		$textObject->replace([
 			'Myślę' => 'PrzeMYŚLĘ',
@@ -117,10 +120,10 @@ TEXT;
 </dl>
 TEXT;
 
-		$textObject = new WizyTowka\Text($exampleCodeBefore);
+		$textObject = new __\Text($exampleCodeBefore);
 		$textObject->correctTypography(
-			WizyTowka\Text::TYPOGRAPHY_DASHES | WizyTowka\Text::TYPOGRAPHY_ORPHANS |
-			WizyTowka\Text::TYPOGRAPHY_QUOTES | WizyTowka\Text::TYPOGRAPHY_OTHER
+			__\Text::TYPOGRAPHY_DASHES | __\Text::TYPOGRAPHY_ORPHANS |
+			__\Text::TYPOGRAPHY_QUOTES | __\Text::TYPOGRAPHY_OTHER
 		);
 
 		$current  = $textObject->get();
@@ -130,14 +133,14 @@ TEXT;
 
 	public function testMakeFragment()
 	{
-		$textObject1 = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject1 = new __\Text('Zażółć gęślą jaźń');
 		$textObject1->makeFragment(12, '…');
 
 		$current  = $textObject1->get();
 		$expected = 'Zażółć gęślą…';
 		$this->assertEquals($expected, $current);
 
-		$textObject2 = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject2 = new __\Text('Zażółć gęślą jaźń');
 		$textObject2->makeFragment(15, '…');
 
 		$current  = $textObject2->get();
@@ -147,7 +150,7 @@ TEXT;
 
 	public function testMakeMiddleFragment()
 	{
-		$textObject = new WizyTowka\Text('Zażółć gęślą jaźń');
+		$textObject = new __\Text('Zażółć gęślą jaźń');
 		$textObject->makeMiddleFragment(12, ' (...) ');
 
 		$current  = $textObject->get();
@@ -157,7 +160,7 @@ TEXT;
 
 	public function testMakeSlug()
 	{
-		$textObject = new WizyTowka\Text('Zażółć  gęślą _ jaźń');
+		$textObject = new __\Text('Zażółć  gęślą _ jaźń');
 		$textObject->makeSlug();
 
 		$current  = $textObject->get();
@@ -167,7 +170,7 @@ TEXT;
 
 	public function testFormatAsDateTime()
 	{
-		$textObject1 = new WizyTowka\Text('1997-06-03 16:30');
+		$textObject1 = new __\Text('1997-06-03 16:30');
 		$textObject1->formatAsDateTime('%R %d.%m.%Y');
 
 		$current  = $textObject1->get();
@@ -175,7 +178,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 
 		$unixTimestamp = time();
-		$textObject2 = new WizyTowka\Text($unixTimestamp);
+		$textObject2 = new __\Text($unixTimestamp);
 		$textObject2->formatAsDateTime('%Y-%m-%d');
 
 		$current  = $textObject2->get();
@@ -185,28 +188,28 @@ TEXT;
 
 	public function testFormatAsFileSize()
 	{
-		$textObject1 = new WizyTowka\Text('914695416');
+		$textObject1 = new __\Text('914695416');
 		$textObject1->formatAsFileSize();
 
 		$current  = $textObject1->get();
 		$expected = "872,3\u{00A0}MiB";
 		$this->assertEquals($expected, $current);
 
-		$textObject2 = new WizyTowka\Text('914695416');
+		$textObject2 = new __\Text('914695416');
 		$textObject2->formatAsFileSize(false);
 
 		$current  = $textObject2->get();
 		$expected = "914,7\u{00A0}MB";
 		$this->assertEquals($expected, $current);
 
-		$textObject3 = new WizyTowka\Text('1022');
+		$textObject3 = new __\Text('1022');
 		$textObject3->formatAsFileSize();
 
 		$current  = $textObject3->get();
 		$expected = "1022\u{00A0}B";
 		$this->assertEquals($expected, $current);
 
-		$textObject4 = new WizyTowka\Text('497338');
+		$textObject4 = new __\Text('497338');
 		$textObject4->formatAsFileSize();
 
 		$current  = $textObject4->get();
@@ -216,7 +219,7 @@ TEXT;
 
 	public function testArrayAccess()
 	{
-		$textObject = new WizyTowka\Text('Zazółć gęślą jaźń');
+		$textObject = new __\Text('Zazółć gęślą jaźń');
 
 		$textObject[0]  = 'A';
 		$textObject[4]  = 'B';
@@ -237,7 +240,7 @@ TEXT;
 
 	public function testIterator()
 	{
-		$textObject = new WizyTowka\Text('Zazółć gęślą jaźń');
+		$textObject = new __\Text('Zazółć gęślą jaźń');
 
 		$current = '';
 		foreach ($textObject as $char) {

@@ -3,10 +3,13 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class SessionManagerTest extends TestCase
 {
 	static private $_sessionsCookieName = 'ExampleSessionInstance';
-	static private $_sessionsConfigFilePath = WizyTowka\CONFIG_DIR . '/sessions_test.conf';
+	static private $_sessionsConfigFilePath = __\CONFIG_DIR . '/sessions_test.conf';
 
 	static private $_sessionsConfigFileContent = <<< 'CODE_JSON'
 {
@@ -53,10 +56,10 @@ CODE_JSON;
 	*/
 	public function testLogIn()
 	{
-		WizyTowka\ConfigurationFile::createNew(self::$_sessionsConfigFilePath);
-		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFilePath);
+		__\ConfigurationFile::createNew(self::$_sessionsConfigFilePath);
+		$sessionsConfigFile = new __\ConfigurationFile(self::$_sessionsConfigFilePath);
 
-		$sessionManager = new WizyTowka\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
+		$sessionManager = new __\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
 
 		$sessionManager->logIn(self::$_exampleUserId, self::$_exampleSessionDuration);
 
@@ -84,9 +87,9 @@ CODE_JSON;
 	public function testIsUserLoggedIn()
 	{
 		$this->_prepareFakeSession();
-		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFilePath);
+		$sessionsConfigFile = new __\ConfigurationFile(self::$_sessionsConfigFilePath);
 
-		$sessionManager = new WizyTowka\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
+		$sessionManager = new __\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
 
 		// Check current user ID.
 		$current  = $sessionManager->getUserId();
@@ -102,9 +105,9 @@ CODE_JSON;
 	public function testLogOut()
 	{
 		$this->_prepareFakeSession();
-		$sessionsConfigFile = new WizyTowka\ConfigurationFile(self::$_sessionsConfigFilePath);
+		$sessionsConfigFile = new __\ConfigurationFile(self::$_sessionsConfigFilePath);
 
-		$sessionManager = new WizyTowka\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
+		$sessionManager = new __\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
 
 		$sessionManager->logOut();
 

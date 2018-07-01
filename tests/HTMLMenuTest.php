@@ -3,11 +3,14 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLMenuTest extends TestCase
 {
 	public function testAdd()
 	{
-		$object = new WizyTowka\HTMLMenu('exampleCSSClass');
+		$object = new __\HTMLMenu('exampleCSSClass');
 		$object->append('Yahoo', 'http://yahoo.com', null, ['target' => '_blank']);
 		$object->prepend('Bing', 'http://bing.com', null);
 		$object->insert(-1, 'Google', 'http://google.com', 'google');
@@ -28,12 +31,12 @@ HTML;
 
 	public function testAddNested()
 	{
-		$objectNested = new WizyTowka\HTMLMenu;
+		$objectNested = new __\HTMLMenu;
 		$objectNested->prepend('File 3', 'file3.html');
 		$objectNested->prepend('File 2', 'file2.html');
 		$objectNested->prepend('File 1', 'file1.html');
 
-		$object = new WizyTowka\HTMLMenu;
+		$object = new __\HTMLMenu;
 		$object->append('Files', $objectNested);
 		$object->append('Webpage 2', 'http://example.com');
 		$object->prepend('Webpage 1', 'http://example.org');
@@ -59,13 +62,13 @@ HTML;
 	*/
 	public function testAddWrongObject()
 	{
-		$object = new WizyTowka\HTMLMenu;
-		$object->prepend('Element', new stdClass);
+		$object = new __\HTMLMenu;
+		$object->prepend('Element', new \stdClass);
 	}
 
 	public function testReplace()
 	{
-		$object = new WizyTowka\HTMLMenu;
+		$object = new __\HTMLMenu;
 		$object->insert(5, 'File 5', 'file5.html');
 		$object->insert(7, 'File 7', 'file7.html');
 		$object->insert(1, 'File 1', 'file1.html');
@@ -84,7 +87,7 @@ HTML;
 
 	public function testRemoveByPosition()
 	{
-		$object = new WizyTowka\HTMLMenu;
+		$object = new __\HTMLMenu;
 		$object->insert(7, 'File 7', 'file7.html');
 		$object->insert(8, 'File 8', 'file8.html');
 		$object->insert(1, 'File 1', 'file1.html');
@@ -106,7 +109,7 @@ HTML;
 
 	public function testRemoveByContent()
 	{
-		$object = new WizyTowka\HTMLMenu;
+		$object = new __\HTMLMenu;
 		$object->append('File 1', 'file1.html');
 		$object->append('File 2', 'file2.html');
 		$object->append('File 2', 'file2.html');
@@ -125,7 +128,7 @@ HTML;
 
 	public function testRemoveByLabel()
 	{
-		$object = new WizyTowka\HTMLMenu;
+		$object = new __\HTMLMenu;
 		$object->append('File 1', 'file1.html');
 		$object->append('File 2', 'file2.html');
 		$object->append('File 2', 'file2.html');

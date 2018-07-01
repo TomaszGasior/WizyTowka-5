@@ -3,13 +3,16 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLTagTest extends TestCase
 {
 	static private $_exampleClass;
 
 	static public function setUpBeforeClass()
 	{
-		self::$_exampleClass = get_class(new class() extends WizyTowka\HTMLTag
+		self::$_exampleClass = get_class(new class() extends __\HTMLTag
 		{
 			public function output()
 			{

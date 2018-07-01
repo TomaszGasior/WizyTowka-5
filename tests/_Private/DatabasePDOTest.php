@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class DatabasePDOTest extends TestCase
 {
 	static private $_exampleDatabaseFile = 'exampleSQLiteDatabase.db';
@@ -14,7 +17,7 @@ class DatabasePDOTest extends TestCase
 
 	public function testWrapper()
 	{
-		$databasePDO = new WizyTowka\_Private\DatabasePDO('sqlite', self::$_exampleDatabaseFile);
+		$databasePDO = new __\_Private\DatabasePDO('sqlite', self::$_exampleDatabaseFile);
 
 		$this->assertFileExists(self::$_exampleDatabaseFile);
 

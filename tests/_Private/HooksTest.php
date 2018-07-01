@@ -3,11 +3,14 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HooksTest extends TestCase
 {
 	public function testRunAction()
 	{
-		$hooksManager = new WizyTowka\_Private\Hooks;
+		$hooksManager = new __\_Private\Hooks;
 
 		$action1 = function($text)
 		{
@@ -35,7 +38,7 @@ class HooksTest extends TestCase
 
 	public function testApplyFilter()
 	{
-		$hooksManager = new WizyTowka\_Private\Hooks;
+		$hooksManager = new __\_Private\Hooks;
 
 		$filter1 = function($text)
 		{
@@ -67,7 +70,7 @@ class HooksTest extends TestCase
 
 	public function testRemoveAction()
 	{
-		$hooksManager = new WizyTowka\_Private\Hooks;
+		$hooksManager = new __\_Private\Hooks;
 
 		$function = function()
 		{
@@ -88,7 +91,7 @@ class HooksTest extends TestCase
 	*/
 	public function testInvalidCallbackArguments()
 	{
-		$hooksManager = new WizyTowka\_Private\Hooks;
+		$hooksManager = new __\_Private\Hooks;
 
 		$function = function($requiredArgument1, $requiredArgument2, $requiredArgument3)
 		{

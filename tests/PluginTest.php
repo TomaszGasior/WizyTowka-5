@@ -3,20 +3,23 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class PluginTest extends TestCase
 {
-	static private $_pluginsDirectory = WizyTowka\SYSTEM_DIR . '/addons/plugins';
-	static private $_pluginPathPart   = WizyTowka\SYSTEM_DIR . '/addons/plugins/examplePlugin_';
+	static private $_pluginsDirectory = __\SYSTEM_DIR . '/addons/plugins';
+	static private $_pluginPathPart   = __\SYSTEM_DIR . '/addons/plugins/examplePlugin_';
 
 	static private $_plugin1_addonConf = <<< 'JSON'
 {
-	"namespace": "WizyTowka\\ExamplePlugin_1",
+	"namespace": "__\\ExamplePlugin_1",
 	"init": "PluginClass::init"
 }
 JSON;
 	static private $_plugin1_pluginClass = <<< 'PHP'
 <?php
-namespace WizyTowka\ExamplePlugin_1;
+namespace __\ExamplePlugin_1;
 class PluginClass
 {
 	static public function init()
@@ -28,13 +31,13 @@ PHP;
 
 	static private $_plugin2_addonConf = <<< 'JSON'
 {
-	"namespace": "WizyTowka\\ExamplePlugin_2",
+	"namespace": "__\\ExamplePlugin_2",
 	"init": "PluginClass::run"
 }
 JSON;
 	static private $_plugin2_pluginClass = <<< 'PHP'
 <?php
-namespace WizyTowka\ExamplePlugin_2;
+namespace __\ExamplePlugin_2;
 class PluginClass
 {
 	static public function run()
@@ -74,7 +77,7 @@ PHP;
 
 	public function testInit()
 	{
-		foreach (WizyTowka\Plugin::getAll() as $plugin) {
+		foreach (__\Plugin::getAll() as $plugin) {
 			$plugin->init();
 		}
 

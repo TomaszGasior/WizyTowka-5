@@ -3,11 +3,14 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLMessageTest extends TestCase
 {
 	public function testSuccess()
 	{
-		$object = new WizyTowka\HTMLMessage('pageMessage');
+		$object = new __\HTMLMessage('pageMessage');
 		$object->success('Example success message.');
 
 		$current  = (string)$object;
@@ -19,7 +22,7 @@ HTML;
 
 	public function testError()
 	{
-		$object = new WizyTowka\HTMLMessage();
+		$object = new __\HTMLMessage();
 		$object->error('Example error message.');
 
 		$current  = (string)$object;
@@ -31,7 +34,7 @@ HTML;
 
 	public function testInfo()
 	{
-		$object = new WizyTowka\HTMLMessage();
+		$object = new __\HTMLMessage();
 		$object->information('Example neutral message.');  // information() is an alias of info().
 
 		$current  = (string)$object;
@@ -43,7 +46,7 @@ HTML;
 
 	public function testArguments()
 	{
-		$object = new WizyTowka\HTMLMessage();
+		$object = new __\HTMLMessage();
 		$object->success('These files were removed: "%s", "%s".', 'example".jpg', 'example<br>.png');
 
 		$current  = (string)$object;
@@ -55,7 +58,7 @@ HTML;
 
 	public function testOverwriting()
 	{
-		$object = new WizyTowka\HTMLMessage();
+		$object = new __\HTMLMessage();
 		$object->info('Example neutral message.');
 		$object->error('Example error message.');
 
@@ -68,7 +71,7 @@ HTML;
 
 	public function testDefault()
 	{
-		$object1 = new WizyTowka\HTMLMessage();
+		$object1 = new __\HTMLMessage();
 		$object1->error('Example error message.');
 		$object1->default('Example default success message.');
 
@@ -78,7 +81,7 @@ HTML;
 HTML;
 		$this->assertHTMLEquals($expected, $current);
 
-		$object2 = new WizyTowka\HTMLMessage();
+		$object2 = new __\HTMLMessage();
 		$object2->default('Example default success message.');
 
 		$current  = (string)$object2;
@@ -90,7 +93,7 @@ HTML;
 
 	public function testClear()
 	{
-		$object = new WizyTowka\HTMLMessage();
+		$object = new __\HTMLMessage();
 		$object->error('Example error message.');
 		$object->clear();
 

@@ -3,11 +3,14 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLHeadTest extends TestCase
 {
 	public function testBaseAndTitle()
 	{
-		$object = new WizyTowka\HTMLHead;
+		$object = new __\HTMLHead;
 
 		$object->setTitlePattern('%s — Example website');
 
@@ -24,7 +27,7 @@ HTML;
 
 	public function testScripts()
 	{
-		$object = new WizyTowka\HTMLHead;
+		$object = new __\HTMLHead;
 
 		$object->script('script.js', ['defer' => true]);
 		$object->script('script.js', ['async' => true]);
@@ -42,7 +45,7 @@ HTML;
 
 	public function testStyles()
 	{
-		$object = new WizyTowka\HTMLHead;
+		$object = new __\HTMLHead;
 
 		$object->stylesheet('stylesheet.css');
 		$object->stylesheet('stylesheetMobile.css', ['media' => 'all and (max-width: 900px)']);
@@ -70,7 +73,7 @@ HTML;
 
 	public function testMeta()
 	{
-		$object = new WizyTowka\HTMLHead;
+		$object = new __\HTMLHead;
 
 		$object->meta('description', 'HTML tutorial: "<HEAD>" tag examples');
 		$object->meta('keywords', 'tutorial, coding, website');
@@ -106,7 +109,7 @@ HTML;
 
 	public function testAssetsPath()
 	{
-		$object = new WizyTowka\HTMLHead;
+		$object = new __\HTMLHead;
 
 		$object->setAssetsPath('assets');
 		$object->setAssetsPathBase('http://localhost');

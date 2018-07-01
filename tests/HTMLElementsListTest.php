@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLElementsListTest extends TestCase
 {
 	private $_data = [
@@ -13,7 +16,7 @@ class HTMLElementsListTest extends TestCase
 
 	public function testSimpleList()
 	{
-		$object = new WizyTowka\HTMLElementsList('exampleClass');
+		$object = new __\HTMLElementsList('exampleClass');
 		$object->collection($this->_data)
 			->title(function($row){ return strtoupper($row['title']); })
 			->emptyMessage('Empty.');
@@ -33,7 +36,7 @@ HTML;
 	{
 		$emptyArray = [];
 
-		$object = new WizyTowka\HTMLElementsList('exampleClass');
+		$object = new __\HTMLElementsList('exampleClass');
 		$object->collection($emptyArray)
 			->title(function(){ return 'something'; })
 			->emptyMessage('Empty.');
@@ -47,7 +50,7 @@ HTML;
 
 	public function testListWithLink()
 	{
-		$object = new WizyTowka\HTMLElementsList;
+		$object = new __\HTMLElementsList;
 		$object->collection($this->_data)
 			->title(function($row){ return $row['title']; })
 			->link(function($row){ return $row['url']; }, ['target' => '_blank'])
@@ -66,7 +69,7 @@ HTML;
 
 	public function testListWithRadio()
 	{
-		$object = new WizyTowka\HTMLElementsList;
+		$object = new __\HTMLElementsList;
 		$object->collection($this->_data)
 			->title(function($row){ return $row['title']; })
 			->radio('field_name', function($row){ return $row['id']; }, 2)
@@ -91,7 +94,7 @@ HTML;
 
 	public function testListWithMenu()
 	{
-		$object = new WizyTowka\HTMLElementsList;
+		$object = new __\HTMLElementsList;
 		$object->collection($this->_data)
 			->title(function($row){ return $row['title']; })
 			->menu(function($row){ return [

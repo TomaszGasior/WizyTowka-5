@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class ConfigurationFileTest extends TestCase
 {
 	static private $_exampleData = array(
@@ -21,7 +24,7 @@ class ConfigurationFileTest extends TestCase
 
 	public function testCreateNew()
 	{
-		WizyTowka\ConfigurationFile::createNew(self::$_exampleFileName);
+		__\ConfigurationFile::createNew(self::$_exampleFileName);
 
 		$current  = file_get_contents(self::$_exampleFileName);
 		$expected = json_encode([]);
@@ -30,7 +33,7 @@ class ConfigurationFileTest extends TestCase
 
 	public function testWrite()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_exampleFileName);
+		$config = new __\ConfigurationFile(self::$_exampleFileName);
 		foreach (self::$_exampleData as $key => $value) {
 			$config->$key = $value;
 		}
@@ -47,14 +50,14 @@ class ConfigurationFileTest extends TestCase
 	 */
 	public function testWriteWhenReadOnly()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_exampleFileName, true);
+		$config = new __\ConfigurationFile(self::$_exampleFileName, true);
 
 		$config->setting1 = '';
 	}
 
 	public function testRead()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_exampleFileName);
+		$config = new __\ConfigurationFile(self::$_exampleFileName);
 
 		foreach ($config as $key => $value) {
 			$current  = $value;
@@ -65,7 +68,7 @@ class ConfigurationFileTest extends TestCase
 
 	public function testCountable()
 	{
-		$config = new WizyTowka\ConfigurationFile(self::$_exampleFileName);
+		$config = new __\ConfigurationFile(self::$_exampleFileName);
 
 		$current  = count($config);
 		$expected = 5;
@@ -74,8 +77,8 @@ class ConfigurationFileTest extends TestCase
 
 	public function testReferences()
 	{
-		$config_firstInstance  = new WizyTowka\ConfigurationFile(self::$_exampleFileName);
-		$config_secondInstance = new WizyTowka\ConfigurationFile(self::$_exampleFileName);
+		$config_firstInstance  = new __\ConfigurationFile(self::$_exampleFileName);
+		$config_secondInstance = new __\ConfigurationFile(self::$_exampleFileName);
 
 		$config_firstInstance->setting1  = strrev(self::$_exampleData['setting1']);
 		$config_secondInstance->setting2 = strtolower(self::$_exampleData['setting2']);

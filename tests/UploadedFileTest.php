@@ -3,9 +3,12 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class UploadedFileTest extends TestCase
 {
-	static private $_uploadsDir = WizyTowka\FILES_DIR;
+	static private $_uploadsDir = __\FILES_DIR;
 
 	static public function setUpBeforeClass()
 	{
@@ -45,19 +48,19 @@ class UploadedFileTest extends TestCase
 
 	public function testGetAll()
 	{
-		$current  = UploadedFile::getAll();
+		$current  = __\UploadedFile::getAll();
 		$expected = [
-			UploadedFile::getByName('file_2048_bytes'),
-			UploadedFile::getByName('file_to_change'),
-			UploadedFile::getByName('file_to_delete'),
-			UploadedFile::getByName('file_to_rename'),
+			__\UploadedFile::getByName('file_2048_bytes'),
+			__\UploadedFile::getByName('file_to_change'),
+			__\UploadedFile::getByName('file_to_delete'),
+			__\UploadedFile::getByName('file_to_rename'),
 		];
 		$this->assertEquals($expected, $current);
 	}
 
 	public function testGetPath()
 	{
-		$file = UploadedFile::getByName('file_2048_bytes');
+		$file = __\UploadedFile::getByName('file_2048_bytes');
 
 		$current  = $file->getPath();
 		$expected = self::$_uploadsDir . '/file_2048_bytes';
@@ -66,16 +69,16 @@ class UploadedFileTest extends TestCase
 
 	public function testGetURL()
 	{
-		$file = UploadedFile::getByName('file_2048_bytes');
+		$file = __\UploadedFile::getByName('file_2048_bytes');
 
 		$current  = $file->getURL();
-		$expected = WizyTowka\FILES_URL . '/file_2048_bytes';
+		$expected = __\FILES_URL . '/file_2048_bytes';
 		$this->assertEquals($expected, $current);
 	}
 
 	public function testGetSize()
 	{
-		$file = UploadedFile::getByName('file_2048_bytes');
+		$file = __\UploadedFile::getByName('file_2048_bytes');
 
 		$current  = $file->getSize();
 		$expected = 2048;
@@ -84,7 +87,7 @@ class UploadedFileTest extends TestCase
 
 	public function testGetModificationTime()
 	{
-		$file = UploadedFile::getByName('file_to_change');
+		$file = __\UploadedFile::getByName('file_to_change');
 
 		file_put_contents($file->getPath(), rand(9, 99999));
 
@@ -95,7 +98,7 @@ class UploadedFileTest extends TestCase
 
 	public function testRename()
 	{
-		$file = UploadedFile::getByName('file_to_rename');
+		$file = __\UploadedFile::getByName('file_to_rename');
 
 		$this->assertTrue($file->rename('successfully_renamed_file'));
 
@@ -105,7 +108,7 @@ class UploadedFileTest extends TestCase
 
 	public function testRenameNotOverwrite()
 	{
-		$file = UploadedFile::getByName('successfully_renamed_file');
+		$file = __\UploadedFile::getByName('successfully_renamed_file');
 
 		$this->assertFalse($file->rename('file_2048_bytes'));
 
@@ -115,7 +118,7 @@ class UploadedFileTest extends TestCase
 
 	public function testDelete()
 	{
-		$file = UploadedFile::getByName('file_to_delete');
+		$file = __\UploadedFile::getByName('file_to_delete');
 
 		$this->assertTrue($file->delete());
 

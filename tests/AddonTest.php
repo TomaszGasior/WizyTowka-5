@@ -3,12 +3,15 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class AddonTest extends TestCase
 {
-	static private $_addonsDirectorySystem = WizyTowka\SYSTEM_DIR . '/addons/exampleAddonType';
-	static private $_addonsDirectoryData   = WizyTowka\DATA_DIR   . '/addons/exampleAddonType';
-	static private $_addonsURLPathSystem   = WizyTowka\SYSTEM_URL . '/addons/exampleAddonType';
-	static private $_addonsURLPathData     = WizyTowka\DATA_URL   . '/addons/exampleAddonType';
+	static private $_addonsDirectorySystem = __\SYSTEM_DIR . '/addons/exampleAddonType';
+	static private $_addonsDirectoryData   = __\DATA_DIR   . '/addons/exampleAddonType';
+	static private $_addonsURLPathSystem   = __\SYSTEM_URL . '/addons/exampleAddonType';
+	static private $_addonsURLPathData     = __\DATA_URL   . '/addons/exampleAddonType';
 
 	static private $_exampleAddonsSubdirs = [];
 	static private $_exampleAddonType;
@@ -28,11 +31,11 @@ class AddonTest extends TestCase
 		];
 		foreach (self::$_exampleAddonsSubdirs as $directory) {
 			@mkdir($directory);
-			WizyTowka\ConfigurationFile::createNew($directory . '/addon.conf');
+			__\ConfigurationFile::createNew($directory . '/addon.conf');
 		}
 
 		// Example addon class that extends Addon class. PHP 7 syntax.
-		self::$_exampleAddonType = get_class(new class() extends WizyTowka\Addon
+		self::$_exampleAddonType = get_class(new class() extends __\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
 			static protected $_defaultConfig = [

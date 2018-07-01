@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class AutoloaderTest extends TestCase
 {
 	static private $_exampleNamespace = 'Example\SubExample';
@@ -10,7 +13,7 @@ class AutoloaderTest extends TestCase
 
 	public function testAddNamespace()
 	{
-		$autoloader = new WizyTowka\_Private\Autoloader;
+		$autoloader = new __\_Private\Autoloader;
 
 		$this->assertFalse(
 			$autoloader->namespaceExists(self::$_exampleNamespace)
@@ -31,7 +34,7 @@ class AutoloaderTest extends TestCase
 
 	public function testRemoveNamespace()
 	{
-		$autoloader = new WizyTowka\_Private\Autoloader;
+		$autoloader = new __\_Private\Autoloader;
 		$autoloader->addNamespace(self::$_exampleNamespace, self::$_examplePath);
 
 		$this->assertTrue(

@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class HTMLTemplateTest extends TestCase
 {
 	static private $_exampleTemplateName = 'exampleTemplate';
@@ -51,7 +54,7 @@ HTML;
 
 	public function testRenderWithLocalName()
 	{
-		$object = new WizyTowka\HTMLTemplate;
+		$object = new __\HTMLTemplate;
 		$object->setTemplatePath('.');
 
 		foreach (self::$_exampleVariables as $variable => $value) {
@@ -65,7 +68,7 @@ HTML;
 
 	public function testRenderWithGlobalName()
 	{
-		$object = new WizyTowka\HTMLTemplate;
+		$object = new __\HTMLTemplate;
 		$object->setTemplate(self::$_exampleTemplateName);
 		$object->setTemplatePath('.');
 
@@ -80,7 +83,7 @@ HTML;
 
 	public function testRenderWithGlobalNameInConstructor()
 	{
-		$object = new WizyTowka\HTMLTemplate(self::$_exampleTemplateName, '.');
+		$object = new __\HTMLTemplate(self::$_exampleTemplateName, '.');
 
 		foreach (self::$_exampleVariables as $variable => $value) {
 			$object->$variable = $value;
@@ -93,7 +96,7 @@ HTML;
 
 	public function testRenderWithOverwrittenName()
 	{
-		$object = new WizyTowka\HTMLTemplate('nonexistentTemplate', '.');
+		$object = new __\HTMLTemplate('nonexistentTemplate', '.');
 
 		foreach (self::$_exampleVariables as $variable => $value) {
 			$object->$variable = $value;
@@ -110,14 +113,14 @@ HTML;
 	*/
 	public function testRenderWithoutName()
 	{
-		$object = new WizyTowka\HTMLTemplate;
+		$object = new __\HTMLTemplate;
 
 		$object->render();
 	}
 
 	public function testSetRaw()
 	{
-		$object = new WizyTowka\HTMLTemplate;
+		$object = new __\HTMLTemplate;
 		$object->setTemplatePath('.');
 
 		foreach (self::$_exampleVariables as $variable => $value) {
@@ -136,7 +139,7 @@ HTML;
 	*/
 	public function testSetEscapedWithWrongType()
 	{
-		$object = new WizyTowka\HTMLTemplate;
+		$object = new __\HTMLTemplate;
 
 		// Types allowed for automatically escaped variables are:
 		// integer, float, boolean, null, array, stdClass object, Traversable object, HTMLTemplate or HTMLTag object.

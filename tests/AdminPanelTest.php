@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class AdminPanelTest extends TestCase
 {
 	static private $_examplePageName = 'example';
@@ -10,7 +13,7 @@ class AdminPanelTest extends TestCase
 
 	static public function setUpBeforeClass()
 	{
-		self::$_examplePageClass = get_class(new class() extends WizyTowka\AdminPanelPage
+		self::$_examplePageClass = get_class(new class() extends __\AdminPanelPage
 		{
 			// It's needed to run test. Without it AdminPanelPage's constructor runs Controller::_redirect().
 			protected $_userMustBeLoggedIn = false;
@@ -24,7 +27,7 @@ class AdminPanelTest extends TestCase
 
 	public function testRegisterPage()
 	{
-		WizyTowka\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
+		__\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
 
 		$_GET['c'] = self::$_examplePageName;
 		// AdminPanel reads name of admin panel page from "c" parameter of URL address.
@@ -32,7 +35,7 @@ class AdminPanelTest extends TestCase
 		// AdminPanel isn't real controller of admin panel. It works as proxy for real class of
 		// proper admin panel page controller, which inherits from AdminPanelPage class (not AdminPanel).
 		$this->expectOutputString('Everything works fine!');
-		(new WizyTowka\AdminPanel)->showMessage();
+		(new __\AdminPanel)->showMessage();
 	}
 
 	/**
@@ -41,6 +44,6 @@ class AdminPanelTest extends TestCase
 	 */
 	public function ttestRegisterPageNameAlreadyRegistered()
 	{
-		WizyTowka\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
+		__\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
 	}
 }

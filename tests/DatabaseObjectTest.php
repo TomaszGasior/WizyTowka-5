@@ -3,6 +3,9 @@
 /**
 * WizyTówka 5 — unit test
 */
+namespace WizyTowka\UnitTests;
+use WizyTowka as __;
+
 class DatabaseObjectTest extends TestCase
 {
 	static private $_exampleDBObj;
@@ -12,7 +15,7 @@ class DatabaseObjectTest extends TestCase
 	static public function setUpBeforeClass()
 	{
 		// Connect to SQLite database in memory. Prepare database structure and content.
-		$databasePDO = new WizyTowka\_Private\DatabasePDO('sqlite', ':memory:');
+		$databasePDO = new __\_Private\DatabasePDO('sqlite', ':memory:');
 		$databasePDO->exec('
 			CREATE TABLE exampleTable (
 				primaryKey INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -30,10 +33,10 @@ class DatabaseObjectTest extends TestCase
 			);
 			INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");
 		');
-		WizyTowka\WT()->overwrite('database', $databasePDO);
+		__\WT()->overwrite('database', $databasePDO);
 
 		// Example anonymous classes that extend abstract DatabaseObject class. PHP 7 syntax.
-		self::$_exampleDBObj = get_class(new class() extends WizyTowka\DatabaseObject
+		self::$_exampleDBObj = get_class(new class() extends __\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTable';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -42,7 +45,7 @@ class DatabaseObjectTest extends TestCase
 				'column2',
 			];
 		});
-		self::$_exampleDBObjJSON = get_class(new class() extends WizyTowka\DatabaseObject
+		self::$_exampleDBObjJSON = get_class(new class() extends __\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTableJSON';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -53,7 +56,7 @@ class DatabaseObjectTest extends TestCase
 				'dataJSON',
 			];
 		});
-		self::$_exampleDBObjTime = get_class(new class() extends WizyTowka\DatabaseObject
+		self::$_exampleDBObjTime = get_class(new class() extends __\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTableTime';
 			static protected $_tablePrimaryKey = 'primaryKey';
