@@ -5,17 +5,17 @@
 * Admin page — page editor (uses content type API).
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class PageEdit extends WT\AdminPanelPage
+class PageEdit extends __\AdminPanelPage
 {
 	use PageEditSettingsCommon;
 
 	protected $_pageTitle = 'Edycja strony';
-	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_PAGES;
+	protected $_userRequiredPermissions = __\User::PERM_MANAGE_PAGES;
 }
 
-class PageEditException extends WT\Exception
+class PageEditException extends __\Exception
 {
 	static public function contentTypeNotExists($name)
 	{

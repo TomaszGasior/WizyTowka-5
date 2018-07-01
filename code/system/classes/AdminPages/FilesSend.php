@@ -5,14 +5,14 @@
 * Admin page — send file(s).
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class FilesSend extends WT\AdminPanelPage
+class FilesSend extends __\AdminPanelPage
 {
 	use FilesSendingCommon;
 
 	protected $_pageTitle = 'Wyślij pliki';
-	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_FILES;
+	protected $_userRequiredPermissions = __\User::PERM_MANAGE_FILES;
 
 	public function POSTQuery()
 	{

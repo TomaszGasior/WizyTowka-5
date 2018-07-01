@@ -5,18 +5,18 @@
 * Admin page — backup manager.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Backup extends WT\AdminPanelPage
+class Backup extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Kopia zapasowa';
-	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
+	protected $_userRequiredPermissions = __\User::PERM_SUPER_USER;
 
 	private $_settings;
 
 	protected function _prepare()
 	{
-		$this->_settings = WT\WT()->settings;
+		$this->_settings = __\WT()->settings;
 
 		if ($this->_settings->lockdownBackup) {
 			$this->_redirect('error', ['type' => 'lockdown']);

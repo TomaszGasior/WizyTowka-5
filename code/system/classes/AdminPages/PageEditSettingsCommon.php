@@ -5,7 +5,7 @@
 * Common code for PageEdit and PageSettings controllers (uses content type API).
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
 trait PageEditSettingsCommon
 {
@@ -20,7 +20,7 @@ trait PageEditSettingsCommon
 	{
 		$this->_settingsMode = (self::class == __NAMESPACE__ . '\PageSettings');
 
-		if (empty($_GET['id']) or !$this->_page = WT\Page::getById($_GET['id'])) {
+		if (empty($_GET['id']) or !$this->_page = __\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
 
@@ -29,7 +29,7 @@ trait PageEditSettingsCommon
 			return;
 		}
 
-		if (!$contentType = WT\ContentType::getByName($this->_page->contentType)) {
+		if (!$contentType = __\ContentType::getByName($this->_page->contentType)) {
 			$exceptionClass = self::class . 'Exception';  // Syntax for backwards compatibility with PHP 5.6.
 			throw $exceptionClass::contentTypeNotExists($this->_page->contentType);
 		}
@@ -56,7 +56,7 @@ trait PageEditSettingsCommon
 	protected function _output()
 	{
 		// Replace default admin page title by website page title.
-		$this->_pageTitle = WT\HTML::correctTypography($this->_page->title);
+		$this->_pageTitle = __\HTML::correctTypography($this->_page->title);
 		$this->_HTMLHead->title(
 			($this->_settingsMode ? 'Ustawienia' : 'Edycja') .  ': „' . $this->_pageTitle . '”'
 		);

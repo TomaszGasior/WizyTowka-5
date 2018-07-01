@@ -5,14 +5,14 @@
 * Admin page — page properties.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class PageProperties extends WT\AdminPanelPage
+class PageProperties extends __\AdminPanelPage
 {
 	use PageUserPermissionCommon;
 
 	protected $_pageTitle = 'Właściwości strony';
-	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_PAGES;
+	protected $_userRequiredPermissions = __\User::PERM_MANAGE_PAGES;
 
 	private $_page;
 
@@ -20,11 +20,11 @@ class PageProperties extends WT\AdminPanelPage
 
 	public function _prepare()
 	{
-		if (empty($_GET['id']) or !$this->_page = WT\Page::getById($_GET['id'])) {
+		if (empty($_GET['id']) or !$this->_page = __\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
 
-		$this->_settings = WT\WT()->settings;
+		$this->_settings = __\WT()->settings;
 	}
 
 	public function POSTQuery()
@@ -45,16 +45,16 @@ class PageProperties extends WT\AdminPanelPage
 		if ($this->_page->id == $this->_settings->websiteHomepageId and (bool)$_POST['isDraft']) {
 			$this->_HTMLMessage->error('Nie można przenieść do szkiców strony głównej witryny.');
 		}
-		elseif ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
+		elseif ($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES) {
 			$this->_page->isDraft = (bool)$_POST['isDraft'];
 		}
 
 		if ($_POST['slug'] != $this->_page->slug) {
-			$newSlug = (new WT\Text(
+			$newSlug = (new __\Text(
 				!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
 			)->makeSlug()->get();
 
-			if (WT\Page::getBySlug($newSlug)) {
+			if (__\Page::getBySlug($newSlug)) {
 				$this->_HTMLMessage->error('Identyfikator „%s” jest już przypisany innej stronie.', $newSlug);
 			}
 			else {
@@ -66,7 +66,7 @@ class PageProperties extends WT\AdminPanelPage
 		$this->_page->description = str_replace("\n", ' ', $_POST['description']);
 		$this->_page->noIndex     = isset($_POST['noIndex']);
 
-		if ($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES) {
+		if ($this->_currentUser->permissions & __\User::PERM_EDIT_PAGES) {
 			$this->_page->userId = $_POST['userId'];
 			// We don't need to validate this value. DBMS won't allow inserting invalid ID because of constraints.
 		}
@@ -78,7 +78,7 @@ class PageProperties extends WT\AdminPanelPage
 	protected function _output()
 	{
 		// Replace default admin page title by website page title.
-		$this->_pageTitle = WT\HTML::correctTypography($this->_page->title);
+		$this->_pageTitle = __\HTML::correctTypography($this->_page->title);
 		$this->_HTMLHead->title('Właściwości: „' . $this->_pageTitle . '”');
 
 		$this->_HTMLContextMenu->append('Edycja',     self::URL('pageEdit',     ['id' => $this->_page->id]), 'iconEdit');
@@ -93,7 +93,7 @@ class PageProperties extends WT\AdminPanelPage
 		if (!$this->_settings->lockdownUsers) {
 			$this->_HTMLTemplate->hideUserIdChange = false;
 
-			$usersIdList = array_column(WT\User::getAll(), 'name', 'id');
+			$usersIdList = array_column(__\User::getAll(), 'name', 'id');
 			if (!$this->_page->userId) {
 				// userId column is set to NULL by foreign key of DBMS when user is deleted.
 				$usersIdList += ['' => '(użytkownik został usunięty)'];
@@ -109,8 +109,8 @@ class PageProperties extends WT\AdminPanelPage
 		}
 
 		// Check current user permissions.
-		$this->_HTMLTemplate->disallowUserIdChange = !($this->_currentUser->permissions & WT\User::PERM_EDIT_PAGES);
-		$this->_HTMLTemplate->disallowPublicPage   = !($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES);
+		$this->_HTMLTemplate->disallowUserIdChange = !($this->_currentUser->permissions & __\User::PERM_EDIT_PAGES);
+		$this->_HTMLTemplate->disallowPublicPage   = !($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES);
 
 		// Show warning and lock form controls when user isn't permitted to modify page.
 		$this->_HTMLTemplate->disallowModifications = !$this->_isUserAllowedToEditPage($this->_page);

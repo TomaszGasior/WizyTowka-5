@@ -5,12 +5,12 @@
 * Admin page — areas.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Areas extends WT\AdminPanelPage
+class Areas extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Obszary';
-	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_ELEMENTS;
+	protected $_userRequiredPermissions = __\User::PERM_WEBSITE_ELEMENTS;
 
 	protected function _output()
 	{

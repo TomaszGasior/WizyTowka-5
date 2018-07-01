@@ -5,12 +5,12 @@
 * Admin page — search engines settings settings.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class SearchSettings extends WT\AdminPanelPage
+class SearchSettings extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Informacje wyszukiwarek';
-	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_SETTINGS;
+	protected $_userRequiredPermissions = __\User::PERM_WEBSITE_SETTINGS;
 
 	private $_robotsSettings = [];
 
@@ -18,7 +18,7 @@ class SearchSettings extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
-		$this->_settings = WT\WT()->settings;
+		$this->_settings = __\WT()->settings;
 
 		$this->_robotsSettings = array_map('strtolower', array_map('trim',
 			explode(',', $this->_settings->searchEnginesRobots)

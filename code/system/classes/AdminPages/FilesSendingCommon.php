@@ -5,7 +5,7 @@
 * Common code for FilesSend controller.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
 trait FilesSendingCommon
 {
@@ -57,17 +57,17 @@ trait FilesSendingCommon
 		foreach ($_FILES['sendingFiles']['name'] as $key => $fileName) {
 			$tempFilePath = $_FILES['sendingFiles']['tmp_name'][$key];
 			$errorCode    = $_FILES['sendingFiles']['error'][$key];
-			$safeFileName = (new WT\Text($fileName))->makeSlug(WT\WT()->settings->filesForceLowercaseNames)->get();
+			$safeFileName = (new __\Text($fileName))->makeSlug(__\WT()->settings->filesForceLowercaseNames)->get();
 
 			// Avoid overwriting of existing files. Try to append unix timestamp to file name.
-			if (WT\UploadedFile::getByName($safeFileName)) {
+			if (__\UploadedFile::getByName($safeFileName)) {
 				// "example.file.name.png" --> "example.file.name_1517779327.png"
 				$safeFileNameParts = array_reverse(explode('.', $safeFileName));
 				$safeFileNameParts[1] .= '_' . time();
 				$safeFileName = implode('.', array_reverse($safeFileNameParts));
 
 				// File still exists!? Skip.
-				if (WT\UploadedFile::getByName($safeFileName)) {
+				if (__\UploadedFile::getByName($safeFileName)) {
 					$this->_sendingErrors[$safeFileName] = $this->_errorMessages['fileExistsWithChangedName'];
 					continue;
 				}
@@ -84,11 +84,11 @@ trait FilesSendingCommon
 
 			// Try to move uploaded file to proper place.
 			try {
-				$desitationFilePath     = WT\FILES_DIR . '/' . $safeFileName;
+				$desitationFilePath     = __\FILES_DIR . '/' . $safeFileName;
 				$moveUploadedFileResult = move_uploaded_file($tempFilePath, $desitationFilePath);
 			} catch (\ErrorException $e) {
 				$moveUploadedFileResult = false;
-				WT\WT()->errors->addToLog($e);
+				__\WT()->errors->addToLog($e);
 			}
 
 			// Skip if move_uploaded_file() failed.
@@ -124,7 +124,7 @@ trait FilesSendingCommon
 		$possibleValues = array_filter([
 			$parseIniOption('post_max_size'),
 			$parseIniOption('upload_max_filesize'),
-			WT\WT()->settings->filesSentMaximumSizeBytes,
+			__\WT()->settings->filesSentMaximumSizeBytes,
 		], function($value){ return $value > 0; });
 
 		return $possibleValues ? min($possibleValues) : 0;

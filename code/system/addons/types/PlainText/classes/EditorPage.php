@@ -5,9 +5,9 @@
 * Plain text content type — editor page.
 */
 namespace WizyTowka\PlainText;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class EditorPage extends WT\ContentTypeAPI
+class EditorPage extends __\ContentTypeAPI
 {
 	public function POSTQuery()
 	{

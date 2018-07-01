@@ -5,7 +5,7 @@
 * Common code for UserEdit and UserCreate controllers.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
 trait UserEditCreateCommon
 {
@@ -19,7 +19,7 @@ trait UserEditCreateCommon
 	private function _prepareNamesArrayFromPermissionValue($currentPermissionsValue)
 	{
 		$possibleUserPermissions = array_filter(
-			(new \ReflectionClass(WT\User::class))->getConstants(),
+			(new \ReflectionClass(__\User::class))->getConstants(),
 			function($constantName){ return (strpos($constantName, 'PERM_') === 0); },
 			ARRAY_FILTER_USE_KEY
 		);
@@ -38,7 +38,7 @@ trait UserEditCreateCommon
 		$permisionsValue = 0;
 		foreach ($currentNamedPermissions as $constantNamePart => $permissionEnabled) {
 			if ($permissionEnabled) {
-				$permisionsValue = $permisionsValue | constant(WT\User::class . '::PERM_' . $constantNamePart);
+				$permisionsValue = $permisionsValue | constant(__\User::class . '::PERM_' . $constantNamePart);
 			}
 		}
 		return $permisionsValue;

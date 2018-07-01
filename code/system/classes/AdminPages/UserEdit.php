@@ -5,24 +5,24 @@
 * Admin page — user editor.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class UserEdit extends WT\AdminPanelPage
+class UserEdit extends __\AdminPanelPage
 {
 	use UserEditCreateCommon;
 
 	protected $_pageTitle = 'Edycja użytkownika';
-	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
+	protected $_userRequiredPermissions = __\User::PERM_SUPER_USER;
 
 	private $_user;
 
 	public function _prepare()
 	{
-		if (WT\WT()->settings->lockdownUsers) {
+		if (__\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 
-		if (empty($_GET['id']) or !$this->_user = WT\User::getById($_GET['id'])) {
+		if (empty($_GET['id']) or !$this->_user = __\User::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
 	}
@@ -33,7 +33,7 @@ class UserEdit extends WT\AdminPanelPage
 			if (!$this->_checkUserName($_POST['name'])) {
 				$this->_HTMLMessage->error('Nazwa użytkownika jest niepoprawna. Nie zmieniono nazwy użytkownika.');
 			}
-			elseif (WT\User::getByName($_POST['name'])) {
+			elseif (__\User::getByName($_POST['name'])) {
 				$this->_HTMLMessage->error('Nazwa użytkownika „%s” jest zajęta.', $_POST['name']);
 			}
 			else {
@@ -59,7 +59,7 @@ class UserEdit extends WT\AdminPanelPage
 		}
 
 		$permissions = $this->_calculatePermissionValueFromNamesArray(isset($_POST['permissions']) ? $_POST['permissions'] : []);
-		if ($this->_user->id == $this->_currentUser->id and !($permissions & WT\User::PERM_SUPER_USER)) {
+		if ($this->_user->id == $this->_currentUser->id and !($permissions & __\User::PERM_SUPER_USER)) {
 			$this->_HTMLMessage->error('Nie można odebrać samemu sobie uprawnień superużytkownika.');
 		}
 		else {

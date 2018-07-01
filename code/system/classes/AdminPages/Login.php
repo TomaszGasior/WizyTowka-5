@@ -5,9 +5,9 @@
 * Admin page — login form.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Login extends WT\AdminPanelPage
+class Login extends __\AdminPanelPage
 {
 	protected $_userMustBeLoggedIn = false;
 
@@ -15,7 +15,7 @@ class Login extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
-		$this->_session = WT\WT()->session;
+		$this->_session = __\WT()->session;
 
 		// Redirect user to default page of admin panel, when user is already logged in.
 		if ($this->_session->isUserLoggedIn()) {
@@ -30,7 +30,7 @@ class Login extends WT\AdminPanelPage
 			return;
 		}
 
-		$user = WT\User::getByName($_POST['name']);
+		$user = __\User::getByName($_POST['name']);
 
 		if ($user and $user->checkPassword($_POST['password'])) {
 			$this->_session->logIn($user->id, 3600);

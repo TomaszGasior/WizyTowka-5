@@ -5,12 +5,12 @@
 * Admin page — file editor.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class FileEdit extends WT\AdminPanelPage
+class FileEdit extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Edycja pliku';
-	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_FILES;
+	protected $_userRequiredPermissions = __\User::PERM_MANAGE_FILES;
 
 	private $_file;
 
@@ -18,11 +18,11 @@ class FileEdit extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
-		if (empty($_GET['name']) or !$this->_file = WT\UploadedFile::getByName($_GET['name'])) {
+		if (empty($_GET['name']) or !$this->_file = __\UploadedFile::getByName($_GET['name'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
 
-		$this->_settings = WT\WT()->settings;
+		$this->_settings = __\WT()->settings;
 	}
 
 	public function POSTQuery()
@@ -30,9 +30,9 @@ class FileEdit extends WT\AdminPanelPage
 		$newFileName = trim($_POST['newFileName']);
 
 		if ($newFileName and $newFileName != $this->_file->getName()) {
-			$newFileName = (new WT\Text($newFileName))->makeSlug($this->_settings->filesForceLowercaseNames)->get();
+			$newFileName = (new __\Text($newFileName))->makeSlug($this->_settings->filesForceLowercaseNames)->get();
 
-			if (WT\UploadedFile::getByName($newFileName)) {
+			if (__\UploadedFile::getByName($newFileName)) {
 				$this->_HTMLMessage->error('Plik o nazwie „%s” już istnieje.', $newFileName);
 			}
 			elseif ($this->_file->rename($newFileName)) {

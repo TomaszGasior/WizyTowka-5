@@ -5,9 +5,9 @@
 * Plain text content type — settings page.
 */
 namespace WizyTowka\PlainText;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class SettingsPage extends WT\ContentTypeAPI
+class SettingsPage extends __\ContentTypeAPI
 {
 	public function HTMLContent() {}
 }

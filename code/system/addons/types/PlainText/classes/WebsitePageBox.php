@@ -5,9 +5,9 @@
 * Plain text content type — website page box.
 */
 namespace WizyTowka\PlainText;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class WebsitePageBox extends WT\ContentTypeAPI
+class WebsitePageBox extends __\ContentTypeAPI
 {
 	public function HTMLContent()
 	{

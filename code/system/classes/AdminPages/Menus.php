@@ -5,12 +5,12 @@
 * Admin page — menus.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Menus extends WT\AdminPanelPage
+class Menus extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Menu';
-	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_ELEMENTS;
+	protected $_userRequiredPermissions = __\User::PERM_WEBSITE_ELEMENTS;
 
 	protected function _output()
 	{

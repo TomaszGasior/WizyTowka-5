@@ -5,18 +5,18 @@
 * Admin page — create page/draft.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class PageCreate extends WT\AdminPanelPage
+class PageCreate extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Utwórz stronę';
-	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
+	protected $_userRequiredPermissions = __\User::PERM_CREATE_PAGES;
 
 	private $_settings;
 
 	protected function _prepare()
 	{
-		$this->_settings = WT\WT()->settings;
+		$this->_settings = __\WT()->settings;
 	}
 
 	public function POSTQuery()
@@ -29,11 +29,11 @@ class PageCreate extends WT\AdminPanelPage
 			return;
 		}
 
-		$slug = (new WT\Text(
+		$slug = (new __\Text(
 			!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
 		)->makeSlug()->get();
 
-		if (WT\Page::getBySlug($slug)) {
+		if (__\Page::getBySlug($slug)) {
 			$this->_HTMLMessage->error('Identyfikator „%s” jest już przypisany innej stronie.', $slug);
 			return;
 		}
@@ -42,11 +42,11 @@ class PageCreate extends WT\AdminPanelPage
 			$this->_HTMLMessage->error('Nie określono typu zawartości strony.');
 			return;
 		}
-		if (!$contentType = WT\ContentType::getByName($_POST['type'])) {
+		if (!$contentType = __\ContentType::getByName($_POST['type'])) {
 			throw PageCreateException::contentTypeNotExists($_POST['type']);
 		}
 
-		$page = new WT\Page;
+		$page = new __\Page;
 
 		$page->title   = $_POST['title'];
 		$page->slug    = $slug;
@@ -58,7 +58,7 @@ class PageCreate extends WT\AdminPanelPage
 		$page->contents    = (object)$contentType->contents;
 
 		$page->isDraft = true;
-		if ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
+		if ($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES) {
 			$page->isDraft = (bool)$_POST['isDraft'];
 		}
 
@@ -75,7 +75,7 @@ class PageCreate extends WT\AdminPanelPage
 	protected function _output()
 	{
 		$contentTypes = [];
-		foreach (WT\ContentType::getAll() as $contentType) {
+		foreach (__\ContentType::getAll() as $contentType) {
 			$contentTypes[] = (object)[
 				'label' => $contentType->label,
 				'name'  => $contentType->getName(),
@@ -88,14 +88,14 @@ class PageCreate extends WT\AdminPanelPage
 		$this->_HTMLTemplate->autocheckDraft     = true;
 		$this->_HTMLTemplate->disallowPublicPage = true;
 
-		if ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
+		if ($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES) {
 			$this->_HTMLTemplate->autocheckDraft     = isset($_GET['draft']);
 			$this->_HTMLTemplate->disallowPublicPage = false;
 		}
 	}
 }
 
-class PageCreateException extends WT\Exception
+class PageCreateException extends __\Exception
 {
 	static public function contentTypeNotExists($name)
 	{

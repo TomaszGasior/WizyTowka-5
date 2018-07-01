@@ -5,18 +5,18 @@
 * Admin page — files.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Users extends WT\AdminPanelPage
+class Users extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Użytkownicy';
-	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
+	protected $_userRequiredPermissions = __\User::PERM_SUPER_USER;
 
 	private $_users;
 
 	protected function _prepare()
 	{
-		if (WT\WT()->settings->lockdownUsers) {
+		if (__\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 
@@ -24,18 +24,18 @@ class Users extends WT\AdminPanelPage
 			$this->_deleteUser($_GET['deleteId']);
 		}
 
-		$this->_users = WT\User::getAll();
+		$this->_users = __\User::getAll();
 	}
 
 	private function _deleteUser($userId)
 	{
 		// Important: user with PERM_SUPER_USER permission must not be deleted.
 
-		if ($user = WT\User::getById($userId)) {
+		if ($user = __\User::getById($userId)) {
 			if ($user->id == $this->_currentUser->id) {
 				$this->_HTMLMessage->error('Nie można usunąć własnego konta użytkownika.');
 			}
-			elseif ($user->permissions & WT\User::PERM_SUPER_USER) {
+			elseif ($user->permissions & __\User::PERM_SUPER_USER) {
 				$this->_HTMLMessage->error('Nie można usunąć superużytkownika „%s”.', $user->name);
 			}
 			else {

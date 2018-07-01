@@ -5,17 +5,17 @@
 * Admin page — page settings (uses content type API).
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class PageSettings extends WT\AdminPanelPage
+class PageSettings extends __\AdminPanelPage
 {
 	use PageEditSettingsCommon;
 
 	protected $_pageTitle = 'Ustawienia strony';
-	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_PAGES;
+	protected $_userRequiredPermissions = __\User::PERM_MANAGE_PAGES;
 }
 
-class PageSettingsException extends WT\Exception
+class PageSettingsException extends __\Exception
 {
 	static public function contentTypeNotExists($name)
 	{

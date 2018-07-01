@@ -5,12 +5,12 @@
 * Admin page — website settings.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class WebsiteSettings extends WT\AdminPanelPage
+class WebsiteSettings extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Ustawienia witryny';
-	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_SETTINGS;
+	protected $_userRequiredPermissions = __\User::PERM_WEBSITE_SETTINGS;
 
 	private $_dateTimeFormatCurrent  = '';
 	private $_dateTimeFormatDisable  = false;
@@ -32,7 +32,7 @@ class WebsiteSettings extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
-		$this->_settings = WT\WT()->settings;
+		$this->_settings = __\WT()->settings;
 
 		// Disallow modifying of date time format if settings was changed outside GUI.
 		$this->_dateTimeFormatCurrent = [$this->_settings->dateDateFormat, $this->_settings->dateSeparator,
@@ -99,8 +99,8 @@ class WebsiteSettings extends WT\AdminPanelPage
 		$this->_HTMLTemplate->settings = $this->_settings;
 
 		// "Website homepage" field — titles of public pages.
-		$pagesIds = array_column(WT\Page::getAll(), 'title', 'id');
-		array_walk($pagesIds, function(&$title){ $title = WT\HTML::correctTypography($title); });
+		$pagesIds = array_column(__\Page::getAll(), 'title', 'id');
+		array_walk($pagesIds, function(&$title){ $title = __\HTML::correctTypography($title); });
 		$this->_HTMLTemplate->pagesIds = $pagesIds;
 
 		// "Date/time format" field — current format and list with formats and examples.
@@ -111,7 +111,7 @@ class WebsiteSettings extends WT\AdminPanelPage
 		}
 		else {
 			foreach ($this->_dateTimeDefinedFormats as $key => $format) {
-				$dateTimeFormatList[$key] = (new WT\Text(1472741330))->formatAsDateTime(
+				$dateTimeFormatList[$key] = (new __\Text(1472741330))->formatAsDateTime(
 					join($this->_settings->dateSwapTime ? array_reverse($format) : $format)
 				)->get();
 			}
@@ -152,7 +152,7 @@ HTACCESS;
 			$htaccessContent ? file_put_contents('.htaccess', $htaccessContent) : @unlink('.htaccess');
 		}
 		catch (\ErrorException $e) {
-			WT\WT()->errors->addToLog($e);
+			__\WT()->errors->addToLog($e);
 			return false;
 		}
 

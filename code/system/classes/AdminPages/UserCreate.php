@@ -5,25 +5,25 @@
 * Admin page — create user.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class UserCreate extends WT\AdminPanelPage
+class UserCreate extends __\AdminPanelPage
 {
 	use UserEditCreateCommon;
 
 	protected $_pageTitle = 'Utwórz użytkownika';
-	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
+	protected $_userRequiredPermissions = __\User::PERM_SUPER_USER;
 
 	public function _prepare()
 	{
-		if (WT\WT()->settings->lockdownUsers) {
+		if (__\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 	}
 
 	public function POSTQuery()
 	{
-		$user = new WT\User;
+		$user = new __\User;
 
 		if (!$_POST['name']) {
 			$this->_HTMLMessage->error('Nie określono nazwy użytkownika.');
@@ -33,7 +33,7 @@ class UserCreate extends WT\AdminPanelPage
 			$this->_HTMLMessage->error('Podana nazwa użytkownika jest niepoprawna.');
 			return;
 		}
-		elseif (WT\User::getByName($_POST['name'])) {
+		elseif (__\User::getByName($_POST['name'])) {
 			$this->_HTMLMessage->error('Nazwa użytkownika „%s” jest zajęta.', $_POST['name']);
 			return;
 		}

@@ -5,9 +5,9 @@
 * Admin page — errors page. User is redirected to this page, when error was encountered.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Error extends WT\AdminPanelPage
+class Error extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Wystąpił bląd';
 

@@ -5,15 +5,15 @@
 * Admin page — logout page.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Logout extends WT\AdminPanelPage
+class Logout extends __\AdminPanelPage
 {
 	private $_session;
 
 	protected function _prepare()
 	{
-		$this->_session = WT\WT()->session;
+		$this->_session = __\WT()->session;
 
 		$this->_session->logOut();
 

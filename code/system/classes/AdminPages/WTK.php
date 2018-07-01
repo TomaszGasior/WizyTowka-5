@@ -5,20 +5,20 @@
 * Admin page — system configuration editor.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class WTK extends WT\AdminPanelPage
+class WTK extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Wyjątkowo Trudna Konfiguracja';
-	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
+	protected $_userRequiredPermissions = __\User::PERM_SUPER_USER;
 
 	private $_settings;
 	private $_settingsDefault;
 
 	protected function _prepare()
 	{
-		$this->_settings        = WT\WT()->settings;
-		$this->_settingsDefault = WT\WT()->getDefaultSettings();
+		$this->_settings        = __\WT()->settings;
+		$this->_settingsDefault = __\WT()->getDefaultSettings();
 
 		if ($this->_settings->lockdownWTK) {
 			$this->_redirect('error', ['type' => 'lockdown']);
@@ -42,7 +42,7 @@ class WTK extends WT\AdminPanelPage
 	protected function _output()
 	{
 		$defaults = $this->_settingsDefault;
-		$fields   = new WT\HTMLFormFields;
+		$fields   = new __\HTMLFormFields;
 
 		$prepareArrayFields = function($settings, $group = null) use (&$prepareArrayFields, $fields, $defaults)
 		{

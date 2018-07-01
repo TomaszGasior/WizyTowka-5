@@ -5,12 +5,12 @@
 * Admin page — files.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Files extends WT\AdminPanelPage
+class Files extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Wysłane pliki';
-	protected $_userRequiredPermissions = WT\User::PERM_MANAGE_FILES;
+	protected $_userRequiredPermissions = __\User::PERM_MANAGE_FILES;
 
 	private $_files;
 
@@ -20,12 +20,12 @@ class Files extends WT\AdminPanelPage
 			$this->_deleteFile($_GET['deleteName']);
 		}
 
-		$this->_files = WT\UploadedFile::getAll();
+		$this->_files = __\UploadedFile::getAll();
 	}
 
 	private function _deleteFile($name)
 	{
-		if ($file = WT\UploadedFile::getByName($name)) {
+		if ($file = __\UploadedFile::getByName($name)) {
 			$file->delete();
 			$this->_HTMLMessage->success('Plik „%s” został usunięty.', $name);
 		};
@@ -42,7 +42,7 @@ class Files extends WT\AdminPanelPage
 		$files = [];
 		foreach ($this->_files as $file) {
 			$files[] = (object)[
-				'name'    => WT\HTML::escape($file->getName()),
+				'name'    => __\HTML::escape($file->getName()),
 				'rawName' => $file->getName(), // Raw file name is needed for admin pages URLs.
 				'size'    => $file->getSize(),
 				'url'     => $file->getURL(),

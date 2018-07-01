@@ -5,9 +5,9 @@
 * Admin page — user preferences.
 */
 namespace WizyTowka\AdminPages;
-use WizyTowka as WT;
+use WizyTowka as __;
 
-class Preferences extends WT\AdminPanelPage
+class Preferences extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Preferencje';
 
@@ -15,7 +15,7 @@ class Preferences extends WT\AdminPanelPage
 
 	protected function _prepare()
 	{
-		$this->_session = WT\WT()->session;
+		$this->_session = __\WT()->session;
 
 		if (isset($_GET['closeOtherSessions'])) {
 			$sessionsWereClosed = $this->_session->closeOtherSessions();
