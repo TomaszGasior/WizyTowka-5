@@ -7,6 +7,8 @@ class HooksTest extends TestCase
 {
 	public function testRunAction()
 	{
+		$hooksManager = new WizyTowka\_Private\Hooks;
+
 		$action1 = function($text)
 		{
 			echo 'Function1:', $text;
@@ -21,11 +23,11 @@ class HooksTest extends TestCase
 		};
 		$randomText = uniqid();
 
-		WizyTowka\Hooks::addAction('exampleAction', $action2);
-		WizyTowka\Hooks::addAction('exampleAction', $action3);
-		WizyTowka\Hooks::addAction('exampleAction', $action1);
+		$hooksManager->addAction('exampleAction', $action2);
+		$hooksManager->addAction('exampleAction', $action3);
+		$hooksManager->addAction('exampleAction', $action1);
 
-		WizyTowka\Hooks::runAction('exampleAction', $randomText);
+		$hooksManager->runAction('exampleAction', $randomText);
 
 		$expected = "Function2:$randomText\nFunction1:$randomText";
 		$this->expectOutputString($expected);
@@ -33,6 +35,8 @@ class HooksTest extends TestCase
 
 	public function testApplyFilter()
 	{
+		$hooksManager = new WizyTowka\_Private\Hooks;
+
 		$filter1 = function($text)
 		{
 			return strrev(strtoupper($text));
@@ -52,42 +56,46 @@ class HooksTest extends TestCase
 		};
 		$randomText = uniqid();
 
-		WizyTowka\Hooks::addFilter('exampleFilter', $filter3);
-		WizyTowka\Hooks::addFilter('exampleFilter', $filter2);
-		WizyTowka\Hooks::addFilter('exampleFilter', $filter1);
+		$hooksManager->addFilter('exampleFilter', $filter3);
+		$hooksManager->addFilter('exampleFilter', $filter2);
+		$hooksManager->addFilter('exampleFilter', $filter1);
 
-		$current  = WizyTowka\Hooks::applyFilter('exampleFilter', $randomText);
+		$current  = $hooksManager->applyFilter('exampleFilter', $randomText);
 		$expected = $filter1($filter2($filter3($randomText)));
 		$this->assertEquals($expected, $current);
 	}
 
 	public function testRemoveAction()
 	{
+		$hooksManager = new WizyTowka\_Private\Hooks;
+
 		$function = function()
 		{
 			echo 'I should not be called!';
 		};
 
-		WizyTowka\Hooks::addAction('secondExampleAction', $function);
-		WizyTowka\Hooks::removeAction('secondExampleAction', $function);
+		$hooksManager->addAction('secondExampleAction', $function);
+		$hooksManager->removeAction('secondExampleAction', $function);
 
-		WizyTowka\Hooks::runAction('secondExampleAction');
+		$hooksManager->runAction('secondExampleAction');
 
 		$this->expectOutputString('');
 	}
 
 	/**
-	* @expectedException     WizyTowka\HooksException
+	* @expectedException     WizyTowka\_Private\HooksException
 	* @expectedExceptionCode 1
 	*/
 	public function testInvalidCallbackArguments()
 	{
+		$hooksManager = new WizyTowka\_Private\Hooks;
+
 		$function = function($requiredArgument1, $requiredArgument2, $requiredArgument3)
 		{
 			echo 'This function has 3 required arguments!';
 		};
 
-		WizyTowka\Hooks::addAction('anotherExampleAction', $function);
-		WizyTowka\Hooks::runAction('anotherExampleAction', 'Only one argument given…');
+		$hooksManager->addAction('anotherExampleAction', $function);
+		$hooksManager->runAction('anotherExampleAction', 'Only one argument given…');
 	}
 }

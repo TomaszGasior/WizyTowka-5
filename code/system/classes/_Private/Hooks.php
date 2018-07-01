@@ -4,39 +4,40 @@
 * WizyTówka 5
 * Manager of actions and filters. Concept inspired by WordPress hooks.
 */
-namespace WizyTowka;
+namespace WizyTowka\_Private;
+use WizyTowka as __;
 
-trait Hooks
+class Hooks
 {
-	static private $_actions = [];
-	static private $_filters = [];
+	private $_actions = [];
+	private $_filters = [];
 
-	static public function addAction($name, callable $callback)
+	public function addAction($name, callable $callback)
 	{
-		self::_addHook(self::$_actions, $name, $callback);
+		$this->_addHook($this->_actions, $name, $callback);
 	}
 
-	static public function addFilter($name, callable $callback)
+	public function addFilter($name, callable $callback)
 	{
-		self::_addHook(self::$_filters, $name, $callback);
+		$this->_addHook($this->_filters, $name, $callback);
 	}
 
-	static private function _addHook(array &$hooks, $name, callable $callback)
+	private function _addHook(array &$hooks, $name, callable $callback)
 	{
 		$hooks[$name][] = $callback;
 	}
 
-	static public function removeAction($name, callable $callback)
+	public function removeAction($name, callable $callback)
 	{
-		self::_removeHook(self::$_actions, $name, $callback);
+		$this->_removeHook($this->_actions, $name, $callback);
 	}
 
-	static public function removeFilter($name, callable $callback)
+	public function removeFilter($name, callable $callback)
 	{
-		self::_removeHook(self::$_filters, $name, $callback);
+		$this->_removeHook($this->_filters, $name, $callback);
 	}
 
-	static private function _removeHook(array &$hooks, $name, callable $callback)
+	private function _removeHook(array &$hooks, $name, callable $callback)
 	{
 		if (!isset($hooks[$name])) {
 			throw HooksException::hookDoesNotExist($name);
@@ -49,21 +50,21 @@ trait Hooks
 		}
 	}
 
-	static public function runAction($name, ...$arguments)
+	public function runAction($name, ...$arguments)
 	{
-		self::_runHook(self::$_actions, $name, $arguments);
+		$this->_runHook($this->_actions, $name, $arguments);
 	}
 
-	static public function applyFilter($name, ...$arguments)
+	public function applyFilter($name, ...$arguments)
 	{
 		if (!isset($arguments[0])) {
-			throw HooksException::filterRequiresArgument();
+			throw HooksException::filterRequiresArgument($name);
 		}
 
-		return self::_runHook(self::$_filters, $name, $arguments, true);
+		return $this->_runHook($this->_filters, $name, $arguments, true);
 	}
 
-	static private function _runHook(array &$hooks, $name, array $arguments, $keepFirstArgument = false)
+	private function _runHook(array &$hooks, $name, array $arguments, $keepFirstArgument = false)
 	{
 		if (!isset($hooks[$name])) {
 			return ($keepFirstArgument) ? $arguments[0] : null;
@@ -103,7 +104,7 @@ trait Hooks
 	}
 }
 
-class HooksException extends Exception
+class HooksException extends __\Exception
 {
 	static public function hookWrongArgumentsCount($hookName, $requiredArgsCount, $givenArgsCount)
 	{
@@ -113,8 +114,8 @@ class HooksException extends Exception
 	{
 		return new self('Hook named ' . $hookName . ' does not exists.', 2);
 	}
-	static public function filterRequiresArgument()
+	static public function filterRequiresArgument($hookName)
 	{
-		return new self('Filter always requires one argument at least.', 3);
+		return new self('Filter ' . $hookName . ' always requires one argument at least.', 3);
 	}
 }
