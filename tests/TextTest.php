@@ -189,14 +189,14 @@ TEXT;
 		$textObject1->formatAsFileSize();
 
 		$current  = $textObject1->get();
-		$expected = "872.3\u{00A0}MiB";
+		$expected = "872,3\u{00A0}MiB";
 		$this->assertEquals($expected, $current);
 
 		$textObject2 = new WizyTowka\Text('914695416');
 		$textObject2->formatAsFileSize(false);
 
 		$current  = $textObject2->get();
-		$expected = "914.7\u{00A0}MB";
+		$expected = "914,7\u{00A0}MB";
 		$this->assertEquals($expected, $current);
 
 		$textObject3 = new WizyTowka\Text('1022');
@@ -210,7 +210,7 @@ TEXT;
 		$textObject4->formatAsFileSize();
 
 		$current  = $textObject4->get();
-		$expected = "485.7\u{00A0}KiB";
+		$expected = "485,7\u{00A0}KiB";
 		$this->assertEquals($expected, $current);
 	}
 

@@ -12,8 +12,8 @@ class DatabaseObjectTest extends TestCase
 	static public function setUpBeforeClass()
 	{
 		// Connect to SQLite database in memory. Prepare database structure and content.
-		WizyTowka\Database::connect('sqlite', ':memory:');
-		WizyTowka\Database::executeSQL('
+		$databasePDO = new WizyTowka\_Private\DatabasePDO('sqlite', ':memory:');
+		$databasePDO->exec('
 			CREATE TABLE exampleTable (
 				primaryKey INTEGER PRIMARY KEY AUTOINCREMENT,
 				column1 INTEGER,
@@ -30,6 +30,7 @@ class DatabaseObjectTest extends TestCase
 			);
 			INSERT INTO exampleTable(column1, column2) VALUES (100, "hundred"), (1000, "thousand");
 		');
+		WizyTowka\WT()->overwrite('database', $databasePDO);
 
 		// Example anonymous classes that extend abstract DatabaseObject class. PHP 7 syntax.
 		self::$_exampleDBObj = get_class(new class() extends WizyTowka\DatabaseObject
@@ -67,11 +68,6 @@ class DatabaseObjectTest extends TestCase
 				'updatedAt',
 			];
 		});
-	}
-
-	static public function tearDownAfterClass()
-	{
-		WizyTowka\Database::disconnect();
 	}
 
 	public function testGetAll()
