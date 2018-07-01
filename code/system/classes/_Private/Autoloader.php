@@ -4,42 +4,42 @@
 * WizyTówka 5
 * PHP classes autoloader.
 */
-namespace WizyTowka;
+namespace WizyTowka\_Private;
 
-trait Autoloader
+class Autoloader
 {
-	static private $_directories = [];
+	private $_directories = [];
 
-	static public function addNamespace($namespace, $pathToClasses)
+	public function addNamespace($namespace, $pathToClasses)
 	{
-		if (isset(self::$_directories[$namespace])) {
+		if (isset($this->_directories[$namespace])) {
 			return false;
 		}
 
-		self::$_directories[$namespace] = $pathToClasses;
+		$this->_directories[$namespace] = $pathToClasses;
 		return true;
 	}
 
-	static public function removeNamespace($namespace)
+	public function removeNamespace($namespace)
 	{
-		unset(self::$_directories[$namespace]);
+		unset($this->_directories[$namespace]);
 	}
 
-	static public function namespaceExists($namespace)
+	public function namespaceExists($namespace)
 	{
-		return isset(self::$_directories[$namespace]);
+		return isset($this->_directories[$namespace]);
 	}
 
-	static public function autoload($fullyQualifiedName)
+	public function autoload($fullyQualifiedName)
 	{
 		@list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
 
-		if (!isset(self::$_directories[$namespace])) {
+		if (!isset($this->_directories[$namespace])) {
 			return false;
 		}
 
 		try {
-			include self::$_directories[$namespace] . '/' . $class . '.php';
+			include $this->_directories[$namespace] . '/' . $class . '.php';
 			return true;
 		} catch (\ErrorException $e) {
 			if ($e->getFile() == __FILE__) {
