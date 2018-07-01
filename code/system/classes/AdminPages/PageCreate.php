@@ -12,6 +12,13 @@ class PageCreate extends WT\AdminPanelPage
 	protected $_pageTitle = 'Utwórz stronę';
 	protected $_userRequiredPermissions = WT\User::PERM_CREATE_PAGES;
 
+	private $_settings;
+
+	protected function _prepare()
+	{
+		$this->_settings = WT\WT()->settings;
+	}
+
 	public function POSTQuery()
 	{
 		$_POST['title'] = trim($_POST['title']);
@@ -57,7 +64,7 @@ class PageCreate extends WT\AdminPanelPage
 
 		$page->save();
 
-		if (WT\Settings::get('adminPanelEditAfterCreate')) {
+		if ($this->_settings->adminPanelEditAfterCreate) {
 			$this->_redirect('pageEdit', ['id' => $page->id]);
 		}
 		else {
@@ -76,7 +83,7 @@ class PageCreate extends WT\AdminPanelPage
 		}
 		$this->_HTMLTemplate->contentTypes = $contentTypes;
 
-		$this->_HTMLTemplate->autocheckContentType = WT\Settings::get('adminPanelDefaultContentType');
+		$this->_HTMLTemplate->autocheckContentType = $this->_settings->adminPanelDefaultContentType;
 
 		$this->_HTMLTemplate->autocheckDraft     = true;
 		$this->_HTMLTemplate->disallowPublicPage = true;

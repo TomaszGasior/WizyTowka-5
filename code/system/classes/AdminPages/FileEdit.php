@@ -14,11 +14,15 @@ class FileEdit extends WT\AdminPanelPage
 
 	private $_file;
 
+	private $_settings;
+
 	protected function _prepare()
 	{
 		if (empty($_GET['name']) or !$this->_file = WT\UploadedFile::getByName($_GET['name'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
+
+		$this->_settings = WT\WT()->settings;
 	}
 
 	public function POSTQuery()
@@ -26,7 +30,7 @@ class FileEdit extends WT\AdminPanelPage
 		$newFileName = trim($_POST['newFileName']);
 
 		if ($newFileName and $newFileName != $this->_file->getName()) {
-			$newFileName = (new WT\Text($newFileName))->makeSlug(WT\Settings::get('filesForceLowercaseNames'))->get();
+			$newFileName = (new WT\Text($newFileName))->makeSlug($this->_settings->filesForceLowercaseNames)->get();
 
 			if (WT\UploadedFile::getByName($newFileName)) {
 				$this->_HTMLMessage->error('Plik o nazwie „%s” już istnieje.', $newFileName);
@@ -50,7 +54,7 @@ class FileEdit extends WT\AdminPanelPage
 		$this->_pageTitle = $this->_file->getName() . ' — edycja pliku';
 		$this->_HTMLHead->title('Edycja pliku: „' . $this->_file->getName() . '”');
 
-		$this->_HTMLTemplate->fileFullURL = WT\Settings::get('websiteAddress') . '/' . $this->_file->getURL();
+		$this->_HTMLTemplate->fileFullURL = $this->_settings->websiteAddress . '/' . $this->_file->getURL();
 		$this->_HTMLTemplate->fileName    = $this->_file->getName();
 		$this->_HTMLTemplate->fileSize    = $this->_file->getSize();
 		$this->_HTMLTemplate->fileModTime = $this->_file->getModificationTime();

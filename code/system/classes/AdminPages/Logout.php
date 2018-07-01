@@ -9,9 +9,13 @@ use WizyTowka as WT;
 
 class Logout extends WT\AdminPanelPage
 {
+	private $_session;
+
 	protected function _prepare()
 	{
-		WT\SessionManager::logOut();
+		$this->_session = WT\WT()->session;
+
+		$this->_session->logOut();
 
 		$this->_redirect('login', ['msg' => 1]);
 	}

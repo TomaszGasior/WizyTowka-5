@@ -17,8 +17,12 @@ class Pages extends WT\AdminPanelPage
 	private $_pages;
 	private $_draftsMode = false;
 
+	private $_settings;
+
 	protected function _prepare()
 	{
+		$this->_settings = WT\WT()->settings;
+
 		$this->_draftsMode = isset($_GET['drafts']); // If true, show drafts instead public pages.
 
 		if (!$this->_draftsMode and !empty($_GET['hideId'])) {
@@ -45,7 +49,7 @@ class Pages extends WT\AdminPanelPage
 					               : 'Nie jesteś uprawniony do ukrywania tej strony.'
 				);
 			}
-			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
+			elseif ($page->id == $this->_settings->websiteHomepageId) {
 				$this->_HTMLMessage->error(
 					'Strona „%s” jest stroną główną witryny. Nie ukryto strony.',
 					WT\HTML::correctTypography($page->title)
@@ -74,7 +78,7 @@ class Pages extends WT\AdminPanelPage
 					               : 'Nie jesteś uprawniony do usunięcia tej strony.'
 				);
 			}
-			elseif ($page->id == WT\Settings::get('websiteHomepageId')) {
+			elseif ($page->id == $this->_settings->websiteHomepageId) {
 				$this->_HTMLMessage->error(
 					'Strona „%s” jest stroną główną witryny. Nie usunięto strony.',
 					WT\HTML::correctTypography($page->title)

@@ -12,13 +12,13 @@ class SearchSettings extends WT\AdminPanelPage
 	protected $_pageTitle = 'Informacje wyszukiwarek';
 	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_SETTINGS;
 
-	private $_settings;
-
 	private $_robotsSettings = [];
+
+	private $_settings;
 
 	protected function _prepare()
 	{
-		$this->_settings = WT\Settings::get();
+		$this->_settings = WT\WT()->settings;
 
 		$this->_robotsSettings = array_map('strtolower', array_map('trim',
 			explode(',', $this->_settings->searchEnginesRobots)

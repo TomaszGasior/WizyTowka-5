@@ -18,7 +18,7 @@ class UserEdit extends WT\AdminPanelPage
 
 	public function _prepare()
 	{
-		if (WT\Settings::get('lockdownUsers')) {
+		if (WT\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 

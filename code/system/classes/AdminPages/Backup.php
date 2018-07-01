@@ -12,9 +12,13 @@ class Backup extends WT\AdminPanelPage
 	protected $_pageTitle = 'Kopia zapasowa';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
 
+	private $_settings;
+
 	protected function _prepare()
 	{
-		if (WT\Settings::get('lockdownBackup')) {
+		$this->_settings = WT\WT()->settings;
+
+		if ($this->_settings->lockdownBackup) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 	}

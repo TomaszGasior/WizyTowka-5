@@ -57,7 +57,7 @@ trait FilesSendingCommon
 		foreach ($_FILES['sendingFiles']['name'] as $key => $fileName) {
 			$tempFilePath = $_FILES['sendingFiles']['tmp_name'][$key];
 			$errorCode    = $_FILES['sendingFiles']['error'][$key];
-			$safeFileName = (new WT\Text($fileName))->makeSlug(WT\Settings::get('filesForceLowercaseNames'))->get();
+			$safeFileName = (new WT\Text($fileName))->makeSlug(WT\WT()->settings->filesForceLowercaseNames)->get();
 
 			// Avoid overwriting of existing files. Try to append unix timestamp to file name.
 			if (WT\UploadedFile::getByName($safeFileName)) {
@@ -88,7 +88,7 @@ trait FilesSendingCommon
 				$moveUploadedFileResult = move_uploaded_file($tempFilePath, $desitationFilePath);
 			} catch (\ErrorException $e) {
 				$moveUploadedFileResult = false;
-				WT\ErrorHandler::addToLog($e);
+				WT\WT()->errors->addToLog($e);
 			}
 
 			// Skip if move_uploaded_file() failed.
@@ -124,7 +124,7 @@ trait FilesSendingCommon
 		$possibleValues = array_filter([
 			$parseIniOption('post_max_size'),
 			$parseIniOption('upload_max_filesize'),
-			WT\Settings::get('filesSentMaximumSizeBytes'),
+			WT\WT()->settings->filesSentMaximumSizeBytes,
 		], function($value){ return $value > 0; });
 
 		return $possibleValues ? min($possibleValues) : 0;

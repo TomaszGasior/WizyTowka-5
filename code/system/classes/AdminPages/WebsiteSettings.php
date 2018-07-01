@@ -12,8 +12,6 @@ class WebsiteSettings extends WT\AdminPanelPage
 	protected $_pageTitle = 'Ustawienia witryny';
 	protected $_userRequiredPermissions = WT\User::PERM_WEBSITE_SETTINGS;
 
-	private $_settings;
-
 	private $_dateTimeFormatCurrent  = '';
 	private $_dateTimeFormatDisable  = false;
 	private $_dateTimeDefinedFormats = [
@@ -30,9 +28,11 @@ class WebsiteSettings extends WT\AdminPanelPage
 		['%m/%d/%y'    , ' ' , '%H:%M'   ],
 	];
 
+	private $_settings;
+
 	protected function _prepare()
 	{
-		$this->_settings = WT\Settings::get();
+		$this->_settings = WT\WT()->settings;
 
 		// Disallow modifying of date time format if settings was changed outside GUI.
 		$this->_dateTimeFormatCurrent = [$this->_settings->dateDateFormat, $this->_settings->dateSeparator,
@@ -152,7 +152,7 @@ HTACCESS;
 			$htaccessContent ? file_put_contents('.htaccess', $htaccessContent) : @unlink('.htaccess');
 		}
 		catch (\ErrorException $e) {
-			WT\ErrorHandler::addToLog($e);
+			WT\WT()->errors->addToLog($e);
 			return false;
 		}
 

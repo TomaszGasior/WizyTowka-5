@@ -12,9 +12,13 @@ class DataEditor_Editor extends WT\AdminPanelPage
 	protected $_pageTitle = 'Edytor plików';
 	protected $_userRequiredPermissions = WT\User::PERM_SUPER_USER;
 
+	private $_settings;
+
 	protected function _prepare()
 	{
-		if (WT\Settings::get('lockdownDataEditor')) {
+		$this->_settings = WT\WT()->settings;
+
+		if ($this->_settings->lockdownDataEditor) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 	}

@@ -11,10 +11,14 @@ class Preferences extends WT\AdminPanelPage
 {
 	protected $_pageTitle = 'Preferencje';
 
+	private $_session;
+
 	protected function _prepare()
 	{
+		$this->_session = WT\WT()->session;
+
 		if (isset($_GET['closeOtherSessions'])) {
-			$sessionsWereClosed = WT\SessionManager::closeOtherSessions();
+			$sessionsWereClosed = $this->_session->closeOtherSessions();
 			self::_redirect('preferences', ['msg' => $sessionsWereClosed ? 2 : 1]);
 		}
 	}

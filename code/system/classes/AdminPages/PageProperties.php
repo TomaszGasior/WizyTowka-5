@@ -16,11 +16,15 @@ class PageProperties extends WT\AdminPanelPage
 
 	private $_page;
 
+	private $_settings;
+
 	public function _prepare()
 	{
 		if (empty($_GET['id']) or !$this->_page = WT\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
 		}
+
+		$this->_settings = WT\WT()->settings;
 	}
 
 	public function POSTQuery()
@@ -38,7 +42,7 @@ class PageProperties extends WT\AdminPanelPage
 			$this->_page->title = $_POST['title'];
 		}
 
-		if ($this->_page->id == WT\Settings::get('websiteHomepageId') and (bool)$_POST['isDraft']) {
+		if ($this->_page->id == $this->_settings->websiteHomepageId and (bool)$_POST['isDraft']) {
 			$this->_HTMLMessage->error('Nie można przenieść do szkiców strony głównej witryny.');
 		}
 		elseif ($this->_currentUser->permissions & WT\User::PERM_PUBLISH_PAGES) {
@@ -86,7 +90,7 @@ class PageProperties extends WT\AdminPanelPage
 		$this->_HTMLTemplate->hideUserIdChange = true;
 		$this->_HTMLTemplate->usersIdList      = [];
 
-		if (!WT\Settings::get('lockdownUsers')) {
+		if (!$this->_settings->lockdownUsers) {
 			$this->_HTMLTemplate->hideUserIdChange = false;
 
 			$usersIdList = array_column(WT\User::getAll(), 'name', 'id');
@@ -99,7 +103,7 @@ class PageProperties extends WT\AdminPanelPage
 
 		// "noIndex" property.
 		$this->_HTMLTemplate->disableNoIndex = false;
-		if (strpos(WT\Settings::get('searchEnginesRobots'), 'noindex') !== false) {
+		if (strpos($this->_settings->searchEnginesRobots, 'noindex') !== false) {
 			$this->_page->noIndex = true; // Fake value used to check the checkbox, won't be saved in database.
 			$this->_HTMLTemplate->disableNoIndex = true;
 		}

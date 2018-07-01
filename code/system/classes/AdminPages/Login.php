@@ -11,10 +11,14 @@ class Login extends WT\AdminPanelPage
 {
 	protected $_userMustBeLoggedIn = false;
 
+	private $_session;
+
 	protected function _prepare()
 	{
+		$this->_session = WT\WT()->session;
+
 		// Redirect user to default page of admin panel, when user is already logged in.
-		if (WT\SessionManager::isUserLoggedIn()) {
+		if ($this->_session->isUserLoggedIn()) {
 			$this->_redirect(null);
 		}
 	}
@@ -29,7 +33,7 @@ class Login extends WT\AdminPanelPage
 		$user = WT\User::getByName($_POST['name']);
 
 		if ($user and $user->checkPassword($_POST['password'])) {
-			WT\SessionManager::logIn($user->id, 3600);
+			$this->_session->logIn($user->id, 3600);
 
 			// Update last login time statistics in database.
 			$user->lastLoginTime = time();
