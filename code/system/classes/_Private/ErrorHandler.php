@@ -4,25 +4,32 @@
 * WizyTówka 5
 * Errors handler. Manages error log, shows error page and converts PHP system errors.
 */
-namespace WizyTowka;
+namespace WizyTowka\_Private;
+use WizyTowka as __;
 
-trait ErrorHandler
+class ErrorHandler
 {
 	// Warning: \Throwable type hint in $exception argument must not be used to keep backward compatibility with PHP 5.6.
 	// More here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.set-exception-handler
 
-	static private $_showErrorDetails = true;
+	private $_showErrorDetails = true;
+	private $_logFilePath;
 
-	static public function handleError($number, $message, $file, $line)  // For set_error_handler().
+	public function __construct($logFilePath)
+	{
+		$this->_logFilePath = $logFilePath;
+	}
+
+	public function handleError($number, $message, $file, $line)  // For set_error_handler().
 	{
 		if (error_reporting() !== 0) {   // Ignore error if @ operator was used.
 			throw new \ErrorException($message, 0, $number, $file, $line);
 		}
 	}
 
-	static public function handleException(/*\Throwable*/ $exception)  // For set_exception_handler().
+	public function handleException(/*\Throwable*/ $exception)  // For set_exception_handler().
 	{
-		self::addToLog($exception);
+		$this->addToLog($exception);
 
 		// Use plain text format for error message instead HTML, when 'content-type' HTTP header don't contain 'text/html'.
 		$isPlainText = !empty(array_filter(
@@ -31,34 +38,36 @@ trait ErrorHandler
 		));
 
 		(PHP_SAPI == 'cli' or $isPlainText)
-		? self::_printAsPlainText($exception)
-		: (self::$_showErrorDetails ? self::_printAsHTML($exception) : self::_printAsQuietHTML($exception));
+		? $this->_printAsPlainText($exception)
+		: ($this->_showErrorDetails ? $this->_printAsHTML($exception) : $this->_printAsQuietHTML($exception));
 	}
 
-	static public function addToLog(/*\Throwable*/ $exception)
+	public function addToLog(/*\Throwable*/ $exception)
 	{
-		@file_put_contents(
-			CONFIG_DIR . '/errors.log',
-			date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' . "\n" . self::_prepareMessage($exception) . "\n\n\n" ,
-			FILE_APPEND
-		);
+		if ($this->_logFilePath) {
+			@file_put_contents(
+				$this->_logFilePath,
+				date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' . "\n" . $this->_prepareMessage($exception) . "\n\n\n" ,
+				FILE_APPEND
+			);
+		}
 	}
 
-	static public function showErrorDetails($setting = null)
+	public function showErrorDetails($setting = null)
 	{
 		if ($setting === null) {
-			return self::$_showErrorDetails;
+			return $this->_showErrorDetails;
 		}
-		self::$_showErrorDetails = (bool)$setting;
+		$this->_showErrorDetails = (bool)$setting;
 	}
 
-	static private function _printAsPlainText(/*\Throwable*/ $exception)
+	private function _printAsPlainText(/*\Throwable*/ $exception)
 	{
 		echo "\n\n", 'System encountered fatal error and execution must be interrupted.', "\n\n",
-		     self::_prepareMessage($exception), "\n\n";
+		     $this->_prepareMessage($exception), "\n\n";
 	}
 
-	static private function _printAsHTML(/*\Throwable*/ $exception)
+	private function _printAsHTML(/*\Throwable*/ $exception)
 	{
 		?><!doctype html><meta charset="utf-8">
 <style>
@@ -68,14 +77,14 @@ trait ErrorHandler
 	div.wtErr pre { letter-spacing: -1px; white-space: pre-wrap; overflow-y: auto; max-height: 215px; }
 </style>
 <div class="wtErr"><section>
-	<h1>Błąd krytyczny — WizyTówka <?= VERSION ?></h1>
+	<h1>Błąd krytyczny — WizyTówka <?= __\VERSION ?></h1>
 	<p>Działanie systemu WizyTówka zostało przerwane z powodu krytycznego błędu.</p>
-	<pre><?= htmlspecialchars(self::_prepareMessage($exception)) ?></pre>
+	<pre><?= htmlspecialchars($this->_prepareMessage($exception)) ?></pre>
 </section></div>
 		<?php
 	}
 
-	static private function _printAsQuietHTML(/*\Throwable*/ $exception)
+	private function _printAsQuietHTML(/*\Throwable*/ $exception)
 	{
 		?><!doctype html><meta charset="utf-8">
 <style>
@@ -86,12 +95,12 @@ trait ErrorHandler
 </style>
 <div class="wtQErr">
 	<p><span role="presentation">&#9785;</span>Przepraszamy za usterki.</p>
-	<!-- <?= self::_prepareName($exception) ?> -->
+	<!-- <?= $this->_prepareName($exception) ?> -->
 </div>
 		<?php
 	}
 
-	static private function _prepareName(/*\Throwable*/ $exception)
+	private function _prepareName(/*\Throwable*/ $exception)
 	{
 		$getPHPErrorName = function($code)
 		{
@@ -105,9 +114,9 @@ trait ErrorHandler
 		       : get_class($exception) . ($exception->getCode() ? ' #'.$exception->getCode() : '');
 	}
 
-	static private function _prepareMessage(/*\Throwable*/ $exception)
+	private function _prepareMessage(/*\Throwable*/ $exception)
 	{
-		$exceptionType = self::_prepareName($exception);
+		$exceptionType = $this->_prepareName($exception);
 
 		return <<< TXT
 Type:    $exceptionType
