@@ -42,7 +42,7 @@ class AdminPanelTest extends TestCase
 	 * @expectedException     WizyTowka\AdminPanelException
 	 * @expectedExceptionCode 1
 	 */
-	public function ttestRegisterPageNameAlreadyRegistered()
+	public function testRegisterPageNameAlreadyRegistered()
 	{
 		__\AdminPanel::registerPage(self::$_examplePageName, self::$_examplePageClass);
 	}
