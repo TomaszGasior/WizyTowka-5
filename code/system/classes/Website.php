@@ -14,10 +14,15 @@ class Website extends Controller
 	private $_HTMLTemplate;
 	private $_renderer;
 
+	private $_settings;
+
 	public function __construct()
 	{
+		$this->_settings = WT()->settings;
+
 		// Get current page. If isn't specified, use home page.
-		$this->_page = !empty($_GET['id']) ? Page::getBySlug($_GET['id']) : Page::getById(Settings::get('websiteHomepageId'));
+		$this->_page = !empty($_GET['id']) ? Page::getBySlug($_GET['id'])
+		               : Page::getById($this->_settings->websiteHomepageId);
 
 		// There is 404 error if page doesn't exist or if page is hidden (it's a draft).
 		if (!$this->_page or $this->_page->isDraft) {
@@ -71,7 +76,7 @@ class Website extends Controller
 
 	public function output()
 	{
-		// ContentTypeAPI::HTMLContent() must be called before template preparing by WebsiteRenderer.
+		// ContentTypeAPI::HTMLContent() must be called before WebsiteRenderer::prepareTemplate().
 		if ($this->_page) {
 			$this->_contentTypeAPI->HTMLContent();
 		}
@@ -83,6 +88,8 @@ class Website extends Controller
 
 	static public function URL($target, array $arguments = [])
 	{
+		$settings = WT()->settings;
+
 		$slug = (string)$target;
 
 		if (is_integer($target)) {
@@ -93,12 +100,12 @@ class Website extends Controller
 			$slug = $page->slug;
 
 			// Don't append slug to absolute page URL if it's current home page.
-			if ($page->id == Settings::get('websiteHomepageId') and !Settings::get('websiteAddressRelative')) {
+			if ($page->id == $settings->websiteHomepageId and !$settings->websiteAddressRelative) {
 				$slug = '';
 			}
 		}
 
-		$prettyLinks = Settings::get('websitePrettyLinks');
+		$prettyLinks = $settings->websitePrettyLinks;
 
 		if (isset($arguments['id'])) {
 			throw ControllerException::unallowedKeyInURLArgument('id');
@@ -107,7 +114,7 @@ class Website extends Controller
 			$arguments = ['id' => $slug] + $arguments;   // Adds "id" argument to array beginning for better URL readability.
 		}
 
-		return (Settings::get('websiteAddressRelative') ? '' : Settings::get('websiteAddress') . '/')
+		return ($settings->websiteAddressRelative ? '' : $settings->websiteAddress . '/')
 		       . (($prettyLinks and $slug) ? '/' . $slug : '')
 		       . ($arguments ? '?' . http_build_query($arguments) : '');
 	}

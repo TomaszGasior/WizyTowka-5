@@ -17,14 +17,15 @@ class AdminPanel extends Controller
 
 	public function __construct()
 	{
+		// Add admin pages namespace to autoloader.
+		WT()->autoloader->addNamespace(self::$_systemPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');
+
 		// Force error handler details — only if user is logged in.
-		if (SessionManager::isUserLoggedIn() and Settings::get('adminPanelForceShowErrors')) {
-			ErrorHandler::showErrorDetails(true);
+		if (WT()->session->isUserLoggedIn() and WT()->settings->adminPanelForceShowErrors) {
+			WT()->errors->showErrorDetails(true);
 		}
 
-		self::_prepareAutoloader();
-
-		$pageName   = !empty($_GET['c']) ? $_GET['c'] : Settings::get('adminPanelDefaultPage');
+		$pageName   = !empty($_GET['c']) ? $_GET['c'] : WT()->settings->adminPanelDefaultPage;
 		$controller = isset(self::$_registeredPages[$pageName]) ? self::$_registeredPages[$pageName]
 		              : self::$_systemPagesNamespace . '\\'. ucfirst($pageName);
 
@@ -54,7 +55,7 @@ class AdminPanel extends Controller
 	static public function URL($target, array $arguments = [])
 	{
 		if ($target == null) {
-			$target = Settings::get('adminPanelDefaultPage');
+			$target = WT()->settings->adminPanelDefaultPage;
 		}
 
 		if (isset($arguments['c'])) {
@@ -62,12 +63,13 @@ class AdminPanel extends Controller
 		}
 		$arguments = ['c' => $target] + $arguments;  // Adds "c" argument to array beginning for better URL readability.
 
-		return Settings::get('adminPanelFile') . ($arguments ? '?' . http_build_query($arguments) : '');
+		return WT()->settings->adminPanelFile . ($arguments ? '?' . http_build_query($arguments) : '');
 	}
 
 	static public function registerPage($name, $controller)
 	{
-		self::_prepareAutoloader();
+		// Add admin pages namespace to autoloader, earlier.
+		WT()->autoloader->addNamespace(self::$_systemPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');
 
 		if (isset(self::$_registeredPages[$name])) {
 			throw AdminPanelException::pageNameAlreadyRegistered($name);
@@ -77,14 +79,6 @@ class AdminPanel extends Controller
 		}
 
 		self::$_registeredPages[$name] = $controller;
-	}
-
-	static private function _prepareAutoloader()
-	{
-		// Add admin pages namespace to autoloader.
-		if (!Autoloader::namespaceExists(self::$_systemPagesNamespace)) {
-			Autoloader::addNamespace(self::$_systemPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');
-		}
 	}
 }
 

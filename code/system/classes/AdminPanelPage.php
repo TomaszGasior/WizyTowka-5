@@ -24,8 +24,8 @@ abstract class AdminPanelPage extends Controller
 
 	final public function __construct()
 	{
-		if (SessionManager::isUserLoggedIn()) {
-			$this->_currentUser = User::getById(SessionManager::getUserId());
+		if (WT()->session->isUserLoggedIn()) {
+			$this->_currentUser = User::getById(WT()->session->getUserId());
 
 			// Prevent access to this page of admin panel if user have not required permissions.
 			if ($this->_userRequiredPermissions and !($this->_currentUser->permissions & $this->_userRequiredPermissions)) {
@@ -85,15 +85,15 @@ abstract class AdminPanelPage extends Controller
 		if (false) {
 			$this->_HTMLTopMenu->append('Zaktualizuj', self::URL('systemUpdate'), 'iconUpdates');
 		}
-		$this->_HTMLTopMenu->append('Zobacz witrynę', Settings::get('websiteAddress'), 'iconWebsite', ['target' => '_blank']);
-		$this->_HTMLTopMenu->append('Wyloguj się',    self::URL('logout'),             'iconLogout');
+		$this->_HTMLTopMenu->append('Zobacz witrynę', WT()->settings->websiteAddress, 'iconWebsite', ['target' => '_blank']);
+		$this->_HTMLTopMenu->append('Wyloguj się',    self::URL('logout'),            'iconLogout');
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
 		$add = function($label, $url, $CSSClass, $permission = null, $lockdown = null)
 		{
 			$hasPermission = $permission ? ($this->_currentUser->permissions & $permission) : true;
-			$isLockdowned  = $lockdown   ? Settings::get('lockdown' . $lockdown)            : false;
+			$isLockdowned  = $lockdown   ? WT()->settings->{'lockdown' . $lockdown}         : false;
 			$this->_HTMLMainMenu->append($label, $url, $CSSClass, [], $hasPermission and !$isLockdowned);
 		};
 		$add('Strony',             self::URL('pages'),             'iconPages',           User::PERM_MANAGE_PAGES);

@@ -20,7 +20,7 @@ trait HTML
 
 	static public function correctTypography($text)
 	{
-		$settings = Settings::get();
+		$settings = WT()->settings;
 
 		$flags = ($settings->typographyOther   ? Text::TYPOGRAPHY_OTHER   : 0) |
 		         ($settings->typographyDashes  ? Text::TYPOGRAPHY_DASHES  : 0) |
@@ -40,7 +40,7 @@ trait HTML
 
 	static public function formatDateTime($timestamp)
 	{
-		$settings = Settings::get();
+		$settings = WT()->settings;
 
 		$format = [$settings->dateDateFormat, $settings->dateSeparator, $settings->dateTimeFormat];
 		if ($settings->dateSwapTime) {
@@ -52,16 +52,16 @@ trait HTML
 
 	static public function formatDate($timestamp)
 	{
-		return self::_prepateTimeTag($timestamp, Settings::get('dateDateFormat'), '%F');
+		return self::_prepateTimeTag($timestamp, WT()->settings->dateDateFormat, '%F');
 	}
 
 	static public function formatTime($timestamp)
 	{
-		return self::_prepateTimeTag($timestamp, Settings::get('dateTimeFormat'), '%T%z');
+		return self::_prepateTimeTag($timestamp, WT()->settings->dateTimeFormat, '%T%z');
 	}
 
 	static public function formatFileSize($bytes)
 	{
-		return (new Text((string)$bytes))->formatAsFileSize(Settings::get('filesUseBinaryUnitForSizes'))->get();
+		return (new Text((string)$bytes))->formatAsFileSize(WT()->settings->filesUseBinaryUnitForSizes)->get();
 	}
 }

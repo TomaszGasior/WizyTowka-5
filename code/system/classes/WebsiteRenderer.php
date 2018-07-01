@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Class that contains set of functions used to prepare template variables and render website HTML code.
+* Set of functions used to prepare template variables and render website HTML code.
 */
 namespace WizyTowka;
 
@@ -20,19 +20,21 @@ class WebsiteRenderer
 
 	public function __construct(HTMLTemplate $HTMLLayout, Page $page = null, ContentTypeAPI $contentTypeAPI = null)
 	{
+		$this->_settings = WT()->settings;
+
 		if ($page) {
 			$this->_page = $page;
 		}
 		else {
 			$this->_page = new Page;   // Fake object.
-			$this->_page->title = Settings::get('website404ErrorTitle');
+			$this->_page->title = $this->_settings->website404ErrorTitle;
 
 			$this->_404Error = true;
 		}
 
 		// Load theme.
-		if (!$this->_theme = Theme::getByName(Settings::get('themeName'))) {
-			throw WebsiteRendererException::themeNotExists(Settings::get('themeName'));
+		if (!$this->_theme = Theme::getByName($this->_settings->themeName)) {
+			throw WebsiteRendererException::themeNotExists($this->_settings->themeName);
 		}
 
 		// Prepare HTML layout template.
@@ -58,7 +60,7 @@ class WebsiteRenderer
 	{
 		$layout = $this->_HTMLLayout;
 
-		$layout->lang = Settings::get('websiteLanguage');
+		$layout->lang = $this->_settings->websiteLanguage;
 		$layout->head = $this->_HTMLHead;
 
 		$layout->setRaw('websiteHeader', $this->_variable_websiteHeader());
@@ -90,25 +92,25 @@ class WebsiteRenderer
 	{
 		$head = new HTMLHead;
 
-		if (!Settings::get('websiteAddressRelative')) {
-			$head->setAssetsPathBase(Settings::get('websiteAddress'));
+		if (!$this->_settings->websiteAddressRelative) {
+			$head->setAssetsPathBase($this->_settings->websiteAddress);
 		}
 		$head->setAssetsPath($this->_theme->getURL());
 
 		// Base website information.
-		$head->setTitlePattern(HTML::correctTypography(Settings::get('websiteTitlePattern')));
+		$head->setTitlePattern(HTML::correctTypography($this->_settings->websiteTitlePattern));
 		$head->title(HTML::correctTypography(
 			$this->_page->titleHead ? $this->_page->titleHead : $this->_page->title
 		));
-		if (Settings::get('websiteAuthor')) {
-			$head->meta('author', HTML::correctTypography(Settings::get('websiteAuthor')));
+		if ($this->_settings->websiteAuthor) {
+			$head->meta('author', HTML::correctTypography($this->_settings->websiteAuthor));
 		}
 
 		// Search engines information.
-		if ($description = $this->_page->description ? $this->_page->description : Settings::get('searchEnginesDescription')) {
+		if ($description = $this->_page->description ? $this->_page->description : $this->_settings->searchEnginesDescription) {
 			$head->meta('description', HTML::correctTypography($description));
 		}
-		$robotsTag = explode(',', Settings::get('searchEnginesRobots'));
+		$robotsTag = explode(',', $this->_settings->searchEnginesRobots);
 		if ($this->_page->noIndex) {
 			$robotsTag[] = 'noindex';
 		}
@@ -136,8 +138,8 @@ class WebsiteRenderer
 		$template = new HTMLTemplate('WebsiteHeader');
 		$this->_setupTemplatePath($template);
 
-		$template->websiteTitle       = HTML::correctTypography(Settings::get('websiteTitle'));
-		$template->websiteDescription = HTML::correctTypography(Settings::get('websiteDescription'));
+		$template->websiteTitle       = HTML::correctTypography($this->_settings->websiteTitle);
+		$template->websiteDescription = HTML::correctTypography($this->_settings->websiteDescription);
 
 		return (string)$template;
 	}
@@ -149,7 +151,7 @@ class WebsiteRenderer
 
 		$elements = [
 			0   => '&copy; ' . HTML::correctTypography(
-				Settings::get('websiteAuthor') ? Settings::get('websiteAuthor') : Settings::get('websiteTitle')
+				$this->_settings->websiteAuthor ? $this->_settings->websiteAuthor : $this->_settings->websiteTitle
 			),
 
 			// DO NOT REMOVE THIS LINE.
@@ -172,7 +174,7 @@ class WebsiteRenderer
 		$properties = [];
 
 		if (!$this->_404Error) {
-			if ($user = User::getById($this->_page->userId) and !Settings::get('lockdownUsers')) {
+			if ($user = User::getById($this->_page->userId) and !$this->_settings->lockdownUsers) {
 				$properties['Autor'] = HTML::correctTypography($user->name);
 			}
 			$properties['Data utworzenia']  = HTML::formatDateTime($this->_page->createdTime);
@@ -194,7 +196,7 @@ class WebsiteRenderer
 			$this->_HTMLTemplate->setTemplate('Website404Error');
 			$this->_setupTemplatePath($this->_HTMLTemplate);
 
-			$this->_HTMLTemplate->homePageURL = Website::URL(Settings::get('websiteHomepageId'));
+			$this->_HTMLTemplate->homePageURL = Website::URL($this->_settings->websiteHomepageId);
 		}
 
 		$template->message = HTML::correctTypography($this->_HTMLMessage);
@@ -228,9 +230,9 @@ class WebsiteRenderer
 	private function _function_info($option)
 	{
 		switch ($option) {
-			case 'websiteTitle':       return HTML::correctTypography(Settings::get('websiteTitle'));
-			case 'websiteDescription': return HTML::correctTypography(Settings::get('websiteDescription'));
-			case 'websiteAuthor':      return HTML::correctTypography(Settings::get('websiteAuthor'));
+			case 'websiteTitle':       return HTML::correctTypography($this->_settings->websiteTitle);
+			case 'websiteDescription': return HTML::correctTypography($this->_settings->websiteDescription);
+			case 'websiteAuthor':      return HTML::correctTypography($this->_settings->websiteAuthor);
 			case 'pageTitle':          return HTML::correctTypography($this->_page->title);
 			case 'pageIsDraft':        return $this->_page->isDraft;
 			case 'pageContentType':    return $this->_page->contentType;

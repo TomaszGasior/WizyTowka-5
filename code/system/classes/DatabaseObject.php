@@ -19,14 +19,17 @@ abstract class DatabaseObject implements \IteratorAggregate
 	private $_data = [];
 	private $_dataNewlyCreated;
 
+	private $_PDO;
+
 	public function __construct()
 	{
-		$this->_data[static::$_tablePrimaryKey] = null;
+		$this->_PDO = WT()->database;
+
+		$this->__clone();
+
 		foreach (static::$_tableColumns as $column) {
 			$this->_data[$column] = in_array($column, static::$_tableColumnsJSON) ? new \stdClass : null;
 		}
-
-		$this->_dataNewlyCreated = true;
 	}
 
 	public function __clone()
@@ -121,13 +124,13 @@ abstract class DatabaseObject implements \IteratorAggregate
 			}
 		}
 
-		$statement = Database::pdo()->prepare($sqlQuery);
+		$statement = $this->_PDO->prepare($sqlQuery);
 		$execution = $statement->execute($sqlQueryData);
 
 		if ($execution and $this->_dataNewlyCreated) {
 			// Fill in primary key field after INSERT. PostgreSQL needs different strategy.
-			$this->_data[static::$_tablePrimaryKey] = Database::pdo()->lastInsertId(
-				(Database::pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'pgsql')
+			$this->_data[static::$_tablePrimaryKey] = $this->_PDO->lastInsertId(
+				($this->_PDO->getAttribute(\PDO::ATTR_DRIVER_NAME) == 'pgsql')
 				? (static::$_tableName . '_' . static::$_tablePrimaryKey . '_seq')
 				: static::$_tablePrimaryKey
 			);
@@ -147,7 +150,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 
 		$sqlQuery = 'DELETE FROM ' . static::$_tableName . ' WHERE ' . static::$_tablePrimaryKey . ' = :id';
 
-		$statement = Database::pdo()->prepare($sqlQuery);
+		$statement = $this->_PDO->prepare($sqlQuery);
 		$execution = $statement->execute(['id' => $this->_data[static::$_tablePrimaryKey]]);
 
 		if ($execution) {
@@ -162,6 +165,8 @@ abstract class DatabaseObject implements \IteratorAggregate
 
 	static protected function _getByWhereCondition($sqlQueryWhere = null, array $parameters = [], $onlyOneRecord = false)
 	{
+		$PDO = WT()->database;
+
 		$allColumnsNames = static::$_tableColumns;
 		array_unshift($allColumnsNames, static::$_tablePrimaryKey);  // Add primary key column to the beginning of columns names list.
 
@@ -174,7 +179,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 			$sqlQuery .= ' LIMIT 1';
 		}
 
-		$statement = Database::pdo()->prepare($sqlQuery);
+		$statement = $PDO->prepare($sqlQuery);
 		$statement->setFetchMode(\PDO::FETCH_NUM);   // PDO::FETCH_NUM style is used because values must not be duplicated.
 		$execution = $statement->execute($parameters);
 

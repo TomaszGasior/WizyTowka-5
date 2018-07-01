@@ -121,13 +121,13 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 			}
 			catch (\Throwable $e) {
 				ob_end_clean();
-				ErrorHandler::addToLog($e);
+				WT()->errors->addToLog($e);
 				echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
 					 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';
 			}
 			catch (\Exception $e) { // PHP 5.6 backwards compatibility.
 				ob_end_clean();
-				ErrorHandler::addToLog($e);
+				WT()->errors->addToLog($e);
 				echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
 					 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';
 			}

@@ -19,9 +19,7 @@ class ContentType extends Addon
 	private function _initClass($className)
 	{
 		// Add namespace of content type to autoloader.
-		if (!Autoloader::namespaceExists($this->namespace)) {
-			Autoloader::addNamespace($this->namespace, $this->getPath().'/classes');
-		}
+		WT()->autoloader->addNamespace($this->namespace, $this->getPath() . '/classes');
 
 		// Content type's classes must extend ContentTypeAPI class.
 		$className = $this->namespace . '\\' . $className;
