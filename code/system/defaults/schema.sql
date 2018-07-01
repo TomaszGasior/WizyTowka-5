@@ -1,4 +1,3 @@
--- Database tables schema of WizyTówka CMS.
 -- This file is an template for real schema and it should be parsed before using.
 -- "wt_dbms" symbol means SQL lines used only for specified DBMS.
 

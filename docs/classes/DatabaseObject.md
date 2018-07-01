@@ -16,8 +16,6 @@ Klasy dziedziczące mogą oferować inne sposoby pobierania rekordów z wykorzys
 - `$_tableColumnsTimeAtUpdate` — jak wyżej, ale przy aktualizacji rekordu (operacji `UPDATE`), opcjonalne;
 - `$_tablePrimaryKey` — nazwa kolumny klucza podstawowego, domyślnie `id`, opcjonalnie.
 
-Klasa `DatabaseObject` jest zależna od klasy `Database`. Przed użyciem tej klasy, należy rozpocząć połączenie z bazą danych za pomocą `Database::connect()`.
-
 Klasa `DatabaseObject` implementuje metody magiczne `__get()`, `__set()`, `__isset()`, umożliwiając operowanie na polach rekordu jak na polach obiektu, oraz interfejs `IteratorAggregate`, pozwalając na iterowanie po polach rekordu w pętli. Implementuje również metodę `__debugInfo()` dla funkcji `var_dump()`.
 
 ## `__construct()`
