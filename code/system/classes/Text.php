@@ -155,9 +155,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 			if ($flags & self::TYPOGRAPHY_ORPHANS) {
 				$stringPart = preg_replace(
 					'/(( |\()(o|u|w|z|i|a)) /i',
-					'$1'.(PHP_VERSION_ID < 70000 ? json_decode('"\u00A0"') : "\u{00A0}"), // "No break space" character.
-					// PHP 5.6 backwards compatibility.
-					// More here: http://php.net/manual/en/migration70.new-features.php#migration70.new-features.unicode-codepoint-escape-syntax
+					'$1' . "\u{00A0}", // "No break space" character.
 					$stringPart
 				);
 			}
@@ -307,8 +305,6 @@ class Text implements \ArrayAccess, \IteratorAggregate
 	public function formatAsFileSize($binaryUnits = true)
 	{
 		if (ctype_digit($this->_string)) {
-			$nbsp = PHP_VERSION_ID < 70000 ? json_decode('"\u00A0"') : "\u{00A0}";   // PHP 5.6 backwards compatibility.
-
 			$units = $binaryUnits ? [
 				'GiB' => 1073741824,
 				'MiB' => 1048576,
@@ -321,13 +317,13 @@ class Text implements \ArrayAccess, \IteratorAggregate
 
 			foreach ($units as $unitName => $unitFactor) {
 				if ($this->_string >= $unitFactor) {
-					$fileSizeText = round($this->_string / $unitFactor, 1) . $nbsp . $unitName;
+					$fileSizeText = round($this->_string / $unitFactor, 1) . "\u{00A0}" . $unitName; // "No break space" character.
 					break;
 				}
 			}
 
 			if (empty($fileSizeText)) {
-				$fileSizeText = $this->_string . $nbsp . 'B';
+				$fileSizeText = $this->_string . "\u{00A0}" . 'B';
 			}
 
 			$this->_string = $fileSizeText;

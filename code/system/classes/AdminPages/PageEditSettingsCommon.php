@@ -30,8 +30,7 @@ trait PageEditSettingsCommon
 		}
 
 		if (!$contentType = __\ContentType::getByName($this->_page->contentType)) {
-			$exceptionClass = self::class . 'Exception';  // Syntax for backwards compatibility with PHP 5.6.
-			throw $exceptionClass::contentTypeNotExists($this->_page->contentType);
+			throw (self::class . 'Exception')::contentTypeNotExists($this->_page->contentType);
 		}
 		$this->_contentTypeAPI = $this->_settingsMode ? $contentType->initSettingsPage() : $contentType->initEditorPage();
 		$this->_contentTypeAPI->setPageData($this->_page->contents, $this->_page->settings);

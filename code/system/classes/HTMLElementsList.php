@@ -91,15 +91,14 @@ class HTMLElementsList extends HTMLTag
 			echo '<ul', $this->_CSSClass ? ' class="' . $this->_CSSClass . '">' : '>';
 
 			foreach ($this->_collection as $element) {
-				$title = call_user_func($this->_callbackTitle, $element);
-				// Syntax like ($this->_callbackTitle)($element) cannot be used because of backwards compatibility with PHP 5.6.
+				$title = ($this->_callbackTitle)($element);
 
 				echo '<li>';
 
 				echo '<span>';
 				if ($this->_callbackLink) {
 					$HTMLAttributes = [
-						'href' => call_user_func($this->_callbackLink, $element)
+						'href' => ($this->_callbackLink)($element)
 					] + $this->_HTMLAttributesLink;
 
 					$this->_renderHTMLOpenTag('a', $HTMLAttributes);
@@ -107,7 +106,7 @@ class HTMLElementsList extends HTMLTag
 				}
 				elseif ($this->_callbackRadio) {
 					isset($id) ? ++$id : $id=0;
-					$fieldValue = call_user_func($this->_callbackRadio, $element);
+					$fieldValue = ($this->_callbackRadio)($element);
 
 					$HTMLAttributes = [
 						'type'    => 'radio',
@@ -127,7 +126,7 @@ class HTMLElementsList extends HTMLTag
 
 				if ($this->_callbackMenu) {
 					$menu = new HTMLMenu;
-					foreach (call_user_func($this->_callbackMenu, $element) as $item) {
+					foreach (($this->_callbackMenu)($element) as $item) {
 						// $item[0] — menu item label,
 						// $item[1] — menu item URL address,
 						// $item[2] — optional, menu item CSS class.

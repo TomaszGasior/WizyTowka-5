@@ -20,8 +20,6 @@ class Plugin extends Addon
 		WT()->autoloader->addNamespace($this->namespace, $this->getPath() . '/classes');
 
 		// Init plugin by specified callback.
-		call_user_func($this->namespace . '\\' . $this->init, $this);
-		// Syntax like ($this->namespace . '\\' . $this->init)($this) cannot be used
-		// because of backwards compatibility with PHP 5.6.
+		($this->namespace . '\\' . $this->init)($this);
 	}
 }

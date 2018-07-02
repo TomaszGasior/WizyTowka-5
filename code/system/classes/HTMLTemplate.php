@@ -125,12 +125,6 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 				echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
 					 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';
 			}
-			catch (\Exception $e) { // PHP 5.6 backwards compatibility.
-				ob_end_clean();
-				WT()->errors->addToLog($e);
-				echo '<br><b>Template rendering error.</b><br>', get_class($e), ': ', $e->getMessage(),
-					 '<br>', basename($e->getFile()), ':', $e->getLine(), '<br>';
-			}
 		};
 		$include = $include->bindTo(null);
 		// Anonymous function is used here to isolate $this and local variables.

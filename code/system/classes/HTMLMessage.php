@@ -52,19 +52,9 @@ class HTMLMessage extends HTMLTag
 		return $this->info(...$arguments);
 	}
 
-	private function _default($message, ...$arguments)
+	public function default($message, ...$arguments)
 	{
 		$this->_messageDefaultText = $this->_prepareText($message, ...$arguments);
-	}
-
-	// Dirty hack used to keep compatibility with PHP 5.6, where it's impossible to define method called "default".
-	// More here: https://wiki.php.net/rfc/context_sensitive_lexer
-	public function __call($functionName, $functionArguments)
-	{
-		if ($functionName == 'default') {
-			return $this->_default(...$functionArguments);
-		}
-		trigger_error('Call to undefined method ' . static::class . '::' . $functionName . '().', E_USER_ERROR);
 	}
 
 	public function clear($default = false)

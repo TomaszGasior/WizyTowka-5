@@ -9,9 +9,6 @@ use WizyTowka as __;
 
 class ErrorHandler
 {
-	// Warning: \Throwable type hint in $exception argument must not be used to keep backward compatibility with PHP 5.6.
-	// More here: http://php.net/manual/en/migration70.incompatible.php#migration70.incompatible.error-handling.set-exception-handler
-
 	private $_showErrorDetails = true;
 	private $_logFilePath;
 
@@ -27,7 +24,7 @@ class ErrorHandler
 		}
 	}
 
-	public function handleException(/*\Throwable*/ $exception)  // For set_exception_handler().
+	public function handleException(\Throwable $exception)  // For set_exception_handler().
 	{
 		$this->addToLog($exception);
 
@@ -42,7 +39,7 @@ class ErrorHandler
 		: ($this->_showErrorDetails ? $this->_printAsHTML($exception) : $this->_printAsQuietHTML($exception));
 	}
 
-	public function addToLog(/*\Throwable*/ $exception)
+	public function addToLog(\Throwable $exception)
 	{
 		if ($this->_logFilePath) {
 			@file_put_contents(
@@ -61,13 +58,13 @@ class ErrorHandler
 		$this->_showErrorDetails = (bool)$setting;
 	}
 
-	private function _printAsPlainText(/*\Throwable*/ $exception)
+	private function _printAsPlainText(\Throwable $exception)
 	{
 		echo "\n\n", 'System encountered fatal error and execution must be interrupted.', "\n\n",
 		     $this->_prepareMessage($exception), "\n\n";
 	}
 
-	private function _printAsHTML(/*\Throwable*/ $exception)
+	private function _printAsHTML(\Throwable $exception)
 	{
 		?><!doctype html><meta charset="utf-8">
 <style>
@@ -84,7 +81,7 @@ class ErrorHandler
 		<?php
 	}
 
-	private function _printAsQuietHTML(/*\Throwable*/ $exception)
+	private function _printAsQuietHTML(\Throwable $exception)
 	{
 		?><!doctype html><meta charset="utf-8">
 <style>
@@ -100,7 +97,7 @@ class ErrorHandler
 		<?php
 	}
 
-	private function _prepareName(/*\Throwable*/ $exception)
+	private function _prepareName(\Throwable $exception)
 	{
 		$getPHPErrorName = function($code)
 		{
@@ -114,7 +111,7 @@ class ErrorHandler
 		       : get_class($exception) . ($exception->getCode() ? ' #'.$exception->getCode() : '');
 	}
 
-	private function _prepareMessage(/*\Throwable*/ $exception)
+	private function _prepareMessage(\Throwable $exception)
 	{
 		$exceptionType = $this->_prepareName($exception);
 
