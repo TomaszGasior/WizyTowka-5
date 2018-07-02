@@ -24,7 +24,7 @@ class DatabasePDO extends \PDO
 				parent::__construct('pgsql:host=' . $host . ';dbname=' . $database, $login, $password);
 				break;
 			default:
-				throw DatabaseException::unsupportedDriver($driver);
+				throw DatabasePDOException::unsupportedDriver($driver);
 		}
 
 		$this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
@@ -35,6 +35,6 @@ class DatabasePDOException extends __\Exception
 {
 	static public function unsupportedDriver($driver)
 	{
-		return new self('Unsupported database type: ' . $driver . '.', 1);
+		return new self('Unsupported database type: "' . $driver . '".', 1);
 	}
 }
