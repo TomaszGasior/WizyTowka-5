@@ -63,6 +63,11 @@ CODE_JSON;
 
 		$sessionManager->logIn(self::$_exampleUserId, self::$_exampleSessionDuration);
 
+		// Check expire time of session cookie.
+		$current  = $this->getLastHTTPCookie()['expires'];
+		$expected = time() + self::$_exampleSessionDuration;
+		$this->assertEquals($expected, $current);
+
 		// Check cookie name.
 		$current  = $this->getLastHTTPCookie()['name'];
 		$expected = self::$_sessionsCookieName;
@@ -73,11 +78,6 @@ CODE_JSON;
 		// Check session data in sessions configuration file.
 		$current  = $sessionsConfigFile->$sessionId['userId'];
 		$expected = self::$_exampleUserId;
-		$this->assertEquals($expected, $current);
-
-		// Check expire time of session cookie.
-		$current  = $this->getLastHTTPCookie()['expires'];
-		$expected = time() + self::$_exampleSessionDuration;
 		$this->assertEquals($expected, $current);
 	}
 
