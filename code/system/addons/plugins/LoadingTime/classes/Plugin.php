@@ -5,21 +5,17 @@
 * Example plugin.
 */
 namespace WizyTowka\LoadingTime;
+use WizyTowka as __;
 
 class Plugin
 {
 	static public function init()
 	{
-		new self;
+		__\WT()->hooks->addAction('End', [__CLASS__ , 'output']);
 	}
 
-	private function __construct()
+	static public function output()
 	{
-		register_shutdown_function([$this, '_output']);
-	}
-
-	public function _output()
-	{
-		echo PHP_EOL, '<!-- loading time: ', microtime(1)-$_SERVER['REQUEST_TIME_FLOAT'], ' -->';
+		echo PHP_EOL, '<!-- loading time: ', microtime(1) - $_SERVER['REQUEST_TIME_FLOAT'], ' -->';
 	}
 }
