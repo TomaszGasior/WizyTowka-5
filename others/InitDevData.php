@@ -1,20 +1,22 @@
+#!/usr/bin/php
 <?php
 
 /**
 * WizyTówka 5
 * This script prepares "code/data" directory for developing purposes.
 */
-namespace WizyTowka;
+namespace WizyTowka\Tools;
+use WizyTowka as __;
 
 
 include __DIR__ . '/../code/config.php';
-include SYSTEM_DIR . '/init.php';
+include __\SYSTEM_DIR . '/init.php';
 
 
 // This function will be moved to installer in the future.
 function generateSchemaSQL($driver)
 {
-	$schemaTemplate = explode("\n", file_get_contents(SYSTEM_DIR . '/defaults/schema.sql'));
+	$schemaTemplate = explode("\n", file_get_contents(__\SYSTEM_DIR . '/defaults/schema.sql'));
 	$schema = '';
 
 	foreach ($schemaTemplate as $line) {
@@ -37,7 +39,13 @@ function generateSchemaSQL($driver)
 }
 
 
+// Remove current "data" directory.
+$oldDataDir = __\DATA_DIR . '_' . date('Y-m-d') . '_' . time();
+rename(__\DATA_DIR, $oldDataDir);
+system('gio trash ' . $oldDataDir);
+
 // Create structure of "data" directory.
+mkdir(__\DATA_DIR);
 $dataDirs = [
 	'addons',
 	'addons/plugins',
@@ -47,27 +55,24 @@ $dataDirs = [
 	'files',
 ];
 foreach ($dataDirs as $directory) {
-	$path = DATA_DIR . '/' . $directory;
-	if (!file_exists($path)) {
-		mkdir($path);
-	}
+	mkdir(__\DATA_DIR . '/' . $directory);
 }
 
 // Create new "sessions.conf" config file.
-ConfigurationFile::createNew(CONFIG_DIR . '/sessions.conf');
+__\ConfigurationFile::createNew(__\CONFIG_DIR . '/sessions.conf');
 
 // Copy default "settings.conf" config file to data directory.
 copy(
-	SYSTEM_DIR . '/defaults/settings.conf',
-	CONFIG_DIR . '/settings.conf'
+	__\SYSTEM_DIR . '/defaults/settings.conf',
+	__\CONFIG_DIR . '/settings.conf'
 );
+$settings = new __\ConfigurationFile(__\CONFIG_DIR . '/settings.conf');
 
 // Set various settings.
-$settings = Settings::get();
 $settings->websiteAddress = 'http://wizytowka.localhost';
 $settings->websiteTitle = 'Przykładowa witryna';
 $settings->websiteHomepageId = 1;
-$settings->systemVersion = VERSION;
+$settings->systemVersion = __\VERSION;
 $settings->systemShowErrors = true;
 
 // Set database settings.
@@ -85,11 +90,7 @@ else {
 	die('Wrong database type!' . PHP_EOL);
 }
 
-// Clean up current database and create new.
-$SQLiteDatabaseFile = CONFIG_DIR . '/database.db';
-if (file_exists($SQLiteDatabaseFile)) {
-	unlink($SQLiteDatabaseFile);
-}
+// Clean up current database (if exists) and create new.
 if ($settings->databaseType == 'mysql') {
 	system('mysql -u ' . $settings->databaseUsername . ' -e "DROP DATABASE IF EXISTS ' . $settings->databaseName . '"');
 	system('mysql -u ' . $settings->databaseUsername . ' -e "CREATE DATABASE ' . $settings->databaseName . '"');
@@ -100,28 +101,29 @@ if ($settings->databaseType == 'pgsql') {
 }
 
 // Connect to database.
-Database::connect(
+$databasePDO = new __\_Private\DatabasePDO(
 	$settings->databaseType,
-	($settings->databaseType == 'sqlite') ? $SQLiteDatabaseFile : $settings->databaseName,
+	($settings->databaseType == 'sqlite' ? __\CONFIG_DIR . '/database.db' : $settings->databaseName),
 	$settings->databaseHost, $settings->databaseUsername, $settings->databasePassword
 );
+__\WT()->overwrite('database', $databasePDO);
 
 // Generate database schema.
-Database::executeSQL(generateSchemaSQL($settings->databaseType));
+$databasePDO->exec(generateSchemaSQL($settings->databaseType));
 
 // Example data: users.
 foreach (range(1, 3) as $number) {
-	$user = new User;
+	$user = new __\User;
 	$user->name = 'user_' . $number;
-	$user->permissions = ($number == 1) ? 0b1111111111 : (($number == 2) ? User::PERM_MANAGE_PAGES : User::PERM_CREATE_PAGES);
+	$user->permissions = ($number == 1) ? 0b1111111111 : (($number == 2) ? __\User::PERM_MANAGE_PAGES : __\User::PERM_CREATE_PAGES);
 	$user->setPassword($user->name);
 	$user->save();
 }
 
 // Example data: pages.
-$contentType = ContentType::getByName(Settings::get('adminPanelDefaultContentType'));
+$contentType = __\ContentType::getByName($settings->adminPanelDefaultContentType);
 foreach (range(1, 5) as $number) {
-	$page = new Page;
+	$page = new __\Page;
 	$page->slug = 'example_' . $number;
 	$page->title = 'Przykładowa strona #' . $number;
 	$page->isDraft = !($number % 2);
