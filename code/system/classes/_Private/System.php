@@ -11,10 +11,9 @@ class System
 {
 	const TOPLEVEL_NAMESPACE = 'WizyTowka';
 
-	private $_isInstalled;
 	private $_isInitialized;
 
-	// These field are public and read only, without "__" prefix.
+	// These properties are public and read only, without "__" prefix.
 	private $__autoloader;
 	private $__database;
 	private $__errors;
@@ -22,10 +21,9 @@ class System
 	private $__session;
 	private $__settings;
 
+	// Prepares autoloader and error handler. It's used by WT() function inside "init.php".
 	public function __construct()
 	{
-		$this->_isInstalled = is_file(__\CONFIG_DIR . '/settings.conf');
-
 		require_once __DIR__ . '/Autoloader.php';
 
 		mb_internal_encoding('UTF-8');
@@ -40,33 +38,13 @@ class System
 		spl_autoload_register([$this->__autoloader, 'autoload']);
 
 		// Error handler.
-		$this->__errors = new ErrorHandler(__\CONFIG_DIR . '/errors.log');
+		$this->__errors = new ErrorHandler;
 
 		set_error_handler([$this->__errors, 'handleError']);
 		set_exception_handler([$this->__errors, 'handleException']);
-
-		// Settings.
-		$this->_isInstalled
-		? $this->__settings = new __\ConfigurationFile(__\CONFIG_DIR . '/settings.conf')
-		: $this->__settings = $this->getDefaultSettings();
-
-		// PHP settings.
-		setlocale(LC_ALL, explode('|', $this->__settings->phpLocalesList));
-		date_default_timezone_set($this->__settings->phpTimeZone);
-
-		// Installer.
-		if (!$this->_isInstalled) {
-			$this->_runController(new Installer);
-			return;
-		}
-
-		// Error handler — details setting.
-		$this->__errors->showErrorDetails($this->__settings->systemShowErrors);
-
-		// Hooks manager.
-		$this->__hooks = new Hooks;
 	}
 
+	// This method is used to simulate read only properties.
 	public function __get($name)
 	{
 		if ($this->{'__' . $name}) {
@@ -74,12 +52,22 @@ class System
 		}
 
 		// Following objects are available only in installed system.
-		if (!$this->_isInstalled) {
-			return;
+		if (!$this->_isInitialized) {
+			return null;
 		}
 
 		// Delayed classes initialization.
 		switch ($name) {
+			// Main configuration file.
+			case 'settings':
+				$value = new __\ConfigurationFile(__\CONFIG_DIR . '/settings.conf');
+				break;
+
+			// Hooks manager.
+			case 'hooks':
+				$value = new Hooks;
+				break;
+
 			// Session manager.
 			case 'session':
 				$value = new SessionManager('WTCMSSession', new __\ConfigurationFile(__\CONFIG_DIR . '/sessions.conf'));
@@ -98,21 +86,53 @@ class System
 		return $this->{'__' . $name} = $value;
 	}
 
+	// This method starts system controller and prepares settings needed only in installed system.
+	// It's used by WT() function with argument, inside "admin.php" and "index.php".
+	// Should not be called inside unit tests or utility scripts.
 	public function __invoke($controllerName)
 	{
-		if ($this->_isInitialized) {
-			return;
+		if ($this->_isInitialized) { return; } $this->_isInitialized = true;
+
+		// Installer.
+		$isInstalled = is_file(__\CONFIG_DIR . '/settings.conf');
+		if (!$isInstalled) {
+			$this->_runController(new Installer);
+			exit;
 		}
-		$this->_isInitialized = true;
+
+		// Error handler — log file.
+		$this->__errors->logFilePath(__\CONFIG_DIR . '/errors.log');
+
+		// Apply PHP settings.
+		$settings = $this->settings;
+
+		if ($settings->phpSettingsLocales) {
+			setlocale(LC_ALL, explode('|', $settings->phpSettingsLocales));
+		}
+		if ($settings->phpSettingsTimeZone) {
+			date_default_timezone_set($settings->phpSettingsTimeZone);
+		}
+
+		// Error handler — errors details.
+		if (!$settings->systemShowErrors) {
+			$this->__errors->showErrorDetails(false);
+		}
 
 		// Init plugins.
 		foreach (__\Plugin::getAll() as $plugin) {
 			$plugin->init();
 		}
 
+		// Set up system hooks.
+		$this->hooks->runAction('Init');
+		register_shutdown_function(function(){ $this->hooks->runAction('Shutdown'); });
+
 		// Init controller.
 		$controllerClass = self::TOPLEVEL_NAMESPACE . '\\' . $controllerName;
 		$this->_runController(new $controllerClass);
+
+		// Run closing hook.
+		$this->hooks->runAction('End');
 	}
 
 	private function _runController(__\Controller $controller)
@@ -124,6 +144,7 @@ class System
 		$controller->output();
 	}
 
+	// Replaces read only properties. Intented for unit tests and utility scripts. Don't use it.
 	public function overwrite($name, $value)
 	{
 		if (property_exists($this, '__' . $name)) {

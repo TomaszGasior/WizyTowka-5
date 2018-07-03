@@ -20,6 +20,8 @@ Nie należy tworzyć instancji klasy `System`, jak również instancji klas z pr
 
 Metoda przeznaczona do wewnętrznego użytku systemu. Inicjuje kontroler.
 
+Jeżeli kontroler nie został zainicjowany, większość pól publicznych tylko do odczytu zawiera `null` zamiast instancji klas.
+
 ## `overwrite($name, $value)`
 
 Nadpisuje pole publiczne `$name` klasy `System`, standardowo przeznaczone tylko do odczytu, wartością `$value`. Metoda przeznaczona wyłącznie do wewnętrznego użytku systemu i do testów jednostkowych. Używaj jej jedynie, jeśli dokładnie wiesz, co robisz.
