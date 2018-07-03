@@ -14,6 +14,9 @@ include __DIR__ . '/../code/config.php';
 // Init system without controller.
 include __\SYSTEM_DIR . '/init.php';
 
+// Disable errors log file.
+__\WT()->errors->logFilePath(null);
+
 
 // Improved test case class used by all tests.
 abstract class TestCase extends \PHPUnit\Framework\TestCase
