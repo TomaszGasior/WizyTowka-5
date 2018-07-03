@@ -10,14 +10,15 @@ class ErrorHandlerTest extends TestCase
 {
 	static private $_errorLogPath = __\CONFIG_DIR . '/errors_test.log';
 
-	static public function tearDownAfterClass()
+	public function tearDown()
 	{
 		@unlink(self::$_errorLogPath);
 	}
 
 	public function testErrorHandler()
 	{
-		$errorHandler = new __\_Private\ErrorHandler(self::$_errorLogPath);
+		$errorHandler = new __\_Private\ErrorHandler;
+		$errorHandler->logFilePath(self::$_errorLogPath);
 
 		$exceptionMessage = 'Example exception #' . rand(100,999);
 		$this->expectOutputRegex('/'.$exceptionMessage.'/');
@@ -29,7 +30,8 @@ class ErrorHandlerTest extends TestCase
 
 	public function testAddToLog()
 	{
-		$errorHandler = new __\_Private\ErrorHandler(self::$_errorLogPath);
+		$errorHandler = new __\_Private\ErrorHandler;
+		$errorHandler->logFilePath(self::$_errorLogPath);
 
 		$exceptionMessage = 'Other example exception #' . rand(100,999);
 		$errorHandler->addToLog(new \Exception($exceptionMessage, 8));
@@ -43,7 +45,7 @@ class ErrorHandlerTest extends TestCase
 	*/
 	public function testErrorsConverting()
 	{
-		$errorHandler = new __\_Private\ErrorHandler(self::$_errorLogPath);
+		$errorHandler = new __\_Private\ErrorHandler;
 
 		$errorHandler->handleError(E_WARNING, 'Example error', 'examplefile.php', 1);
 	}

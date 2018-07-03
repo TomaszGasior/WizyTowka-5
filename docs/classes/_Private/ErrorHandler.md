@@ -7,10 +7,6 @@ Mechanizm wychwytujący i obsługujący systemowe błędy PHP oraz niezłapane w
 
 Informacje o błędzie zapisywane są w dzienniku błędów i wyświetlane na ekranie. Obejmują kod błędu (jeśli rzucono wyjątek) lub typ błędu (jeśli wystąpił błąd PHP), wiadomość, ścieżkę do pliku i linię pliku oraz backtrace.
 
-## `__construct($logFilePath)`
-
-W argumencie `$logFilePath` należy określić ścieżkę do pliku, w którym funkcja `addToLog()` ma zapisywać komunikaty do dziennika błędów.
-
 ## `handleException(\Throwable $exception)`
 
 Wychwytuje niezłapany wyjątek. Metoda przeznaczona do zarejestrowania przez `set_exception_handler()`.
@@ -25,10 +21,16 @@ Uwaga: rzucane jako wyjątek są wszystkie błędy, nawet typu `E_NOTICE`. Nie j
 
 ## `addToLog(\Throwable $exception)`
 
-Dopisuje informacje o błędzie do dziennika błędów, do pliku określonego w konstruktorze.
+Dopisuje informacje o błędzie do dziennika błędów, jeśli określono ścieżkę do pliku dziennika błędów za pomocą `logFilePath()`.
 
 ## `showErrorDetails($setting = null)`
 
 Jeśli określono argument `$setting` o wartości logicznej, włącza bądź wyłącza szczegóły w komunikatach błędów HTML. Gdy szczegóły są wyłączone, dla bezpieczeństwa zamiast pełnej informacji o błędzie ukazuje się jedynie komunikat „Przepraszamy za usterki”.
 
 Jeśli argumentu nie określono, zwraca bieżące ustawienie.
+
+## `logFilePath($logFilePath = null)`
+
+Jeśli określono argument `$logFilePath`, określa ścieżkę do pliku, w którym funkcja `addToLog()` ma zapisywać komunikaty do dziennika błędów.
+
+Jeśli argumentu nie określono, zwraca bieżącą ścieżkę.

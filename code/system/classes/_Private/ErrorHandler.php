@@ -12,11 +12,6 @@ class ErrorHandler
 	private $_showErrorDetails = true;
 	private $_logFilePath;
 
-	public function __construct($logFilePath)
-	{
-		$this->_logFilePath = $logFilePath;
-	}
-
 	public function handleError($number, $message, $file, $line)  // For set_error_handler().
 	{
 		if (error_reporting() !== 0) {   // Ignore error if @ operator was used.
@@ -28,7 +23,7 @@ class ErrorHandler
 	{
 		$this->addToLog($exception);
 
-		// Use plain text format for error message instead HTML, when 'content-type' HTTP header don't contain 'text/html'.
+		// Use plain text format for error message instead HTML, when 'content-type' HTTP header does not contain 'text/html'.
 		$isPlainText = !empty(array_filter(
 			headers_list(),
 			function($value){ return stripos($value, 'content-type') !== false and stripos($value, 'text/html') === false; }
@@ -56,6 +51,14 @@ class ErrorHandler
 			return $this->_showErrorDetails;
 		}
 		$this->_showErrorDetails = (bool)$setting;
+	}
+
+	public function logFilePath($logFilePath = null)
+	{
+		if ($logFilePath === null) {
+			return $this->_logFilePath;
+		}
+		$this->_logFilePath = (string)$logFilePath;
 	}
 
 	private function _printAsPlainText(\Throwable $exception)
