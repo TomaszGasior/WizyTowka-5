@@ -15,7 +15,7 @@ include __DIR__ . '/../code/config.php';
 include __\SYSTEM_DIR . '/init.php';
 
 // Disable errors log file.
-__\WT()->errors->logFilePath(null);
+__\WT()->errors->setLogFilePath(null);
 
 
 // Improved test case class used by all tests.

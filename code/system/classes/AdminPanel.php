@@ -22,7 +22,7 @@ class AdminPanel extends Controller
 
 		// Force error handler details — only if user is logged in.
 		if (WT()->session->isUserLoggedIn() and WT()->settings->adminPanelForceShowErrors) {
-			WT()->errors->showErrorDetails(true);
+			WT()->errors->setShowDetails(true);
 		}
 
 		$pageName   = !empty($_GET['c']) ? $_GET['c'] : WT()->settings->adminPanelDefaultPage;
