@@ -13,13 +13,8 @@ class System
 
 	private $_isInitialized;
 
-	// These properties are public and read only, without "__" prefix.
-	private $__autoloader;
-	private $__database;
-	private $__errors;
-	private $__hooks;
-	private $__session;
-	private $__settings;
+	// These array items will accessible as public and read only properties.
+	private $_srv = [];
 
 	// Prepares autoloader and error handler. It's used by WT() function inside "init.php".
 	public function __construct()
@@ -30,61 +25,66 @@ class System
 		mb_regex_encoding('UTF-8');
 
 		// Autoloader.
-		$this->__autoloader = new Autoloader;
+		$this->_srv['autoloader'] = new Autoloader;
 
-		$this->__autoloader->addNamespace(self::TOPLEVEL_NAMESPACE, __\SYSTEM_DIR . '/classes');
-		$this->__autoloader->addNamespace(__NAMESPACE__,            __\SYSTEM_DIR . '/classes/_Private');
+		$this->_srv['autoloader']->addNamespace(self::TOPLEVEL_NAMESPACE, __\SYSTEM_DIR . '/classes');
+		$this->_srv['autoloader']->addNamespace(__NAMESPACE__,            __\SYSTEM_DIR . '/classes/_Private');
 
-		spl_autoload_register([$this->__autoloader, 'autoload']);
+		spl_autoload_register([$this->_srv['autoloader'], 'autoload']);
 
 		// Error handler.
-		$this->__errors = new ErrorHandler;
+		$this->_srv['errors'] = new ErrorHandler;
 
-		set_error_handler([$this->__errors, 'handleError']);
-		set_exception_handler([$this->__errors, 'handleException']);
+		set_error_handler([$this->_srv['errors'], 'handleError']);
+		set_exception_handler([$this->_srv['errors'], 'handleException']);
 	}
 
-	// This method is used to simulate read only properties.
+	// This method is used to simulate read only properties. Redundant syntax is used for better performance.
 	public function __get(string $name) /*: ?object*/   // Backward compatibility with PHP 7.1.
 	{
-		if ($this->{'__' . $name}) {
-			return $this->{'__' . $name};
-		}
-
-		// Following objects are available only in installed system.
-		if (!$this->_isInitialized) {
+		// These properties are available only inside installed and initialized system
+		// or when are overwritten manually inside unit tests or utility scripts.
+		if (!$this->_isInitialized and !isset($this->_srv[$name])) {
 			return null;
 		}
 
-		// Delayed classes initialization.
 		switch ($name) {
 			// Main configuration file.
 			case 'settings':
-				$value = new __\ConfigurationFile(__\CONFIG_DIR . '/settings.conf');
-				break;
+				return $this->_srv[$name] ?? $this->_srv[$name] =
+					new __\ConfigurationFile(__\CONFIG_DIR . '/settings.conf');
 
 			// Hooks manager.
 			case 'hooks':
-				$value = new Hooks;
-				break;
+				return $this->_srv[$name] ?? $this->_srv[$name] =
+					new Hooks;
 
 			// Session manager.
 			case 'session':
-				$value = new SessionManager('WTCMSSession', new __\ConfigurationFile(__\CONFIG_DIR . '/sessions.conf'));
-				break;
+				return $this->_srv[$name] ?? $this->_srv[$name] =
+					new SessionManager('WTCMSSession', new __\ConfigurationFile(__\CONFIG_DIR . '/sessions.conf'));
 
 			// PDO connection.
 			case 'database':
-				$value = new DatabasePDO(
-					$this->__settings->databaseType,
-					($this->__settings->databaseType == 'sqlite') ? __\CONFIG_DIR . '/database.db' : $this->__settings->databaseName,
-					$this->__settings->databaseHost, $this->__settings->databaseUsername, $this->__settings->databasePassword
-				);
-				break;
-		}
+				return $this->_srv[$name] ?? $this->_srv[$name] =
+					new DatabasePDO(
+						($settings = $this->settings)->databaseType,
+						($settings->databaseType == 'sqlite' ? __\CONFIG_DIR . '/database.db' : $settings->databaseName),
+						$settings->databaseHost, $settings->databaseUsername, $settings->databasePassword
+					);
 
-		return $this->{'__' . $name} = $value;
+			case 'autoloader':
+			case 'errors':
+				return $this->_srv[$name];
+
+			default:
+				trigger_error('Undefined property: ' . __CLASS__ . '::$' . $name, E_USER_NOTICE);  // Follow native PHP behavior.
+				return null;
+		}
 	}
+
+	// Don't allow to overwrite read only properties simply by setting new value.
+	public function __set(string $name, $value) : void {}
 
 	// This method starts system controller and prepares settings needed only in installed system.
 	// It's used by WT() function with argument, inside "admin.php" and "index.php".
@@ -95,27 +95,25 @@ class System
 
 		// Installer.
 		$isInstalled = is_file(__\CONFIG_DIR . '/settings.conf');
+
 		if (!$isInstalled) {
 			$this->_runController(new Installer);
 			exit;
 		}
 
-		// Error handler — log file.
-		$this->__errors->setLogFilePath(__\CONFIG_DIR . '/errors.log');
+		// Error handler's log file.
+		$this->_srv['errors']->setLogFilePath(__\CONFIG_DIR . '/errors.log');
 
-		// Apply PHP settings.
+		// Apply settings.
 		$settings = $this->settings;
+
+		$this->_srv['errors']->setShowDetails($settings->systemShowErrors);
 
 		if ($settings->phpSettingsLocales) {
 			setlocale(LC_ALL, explode('|', $settings->phpSettingsLocales));
 		}
 		if ($settings->phpSettingsTimeZone) {
 			date_default_timezone_set($settings->phpSettingsTimeZone);
-		}
-
-		// Error handler — errors details.
-		if (!$settings->systemShowErrors) {
-			$this->__errors->setShowDetails(false);
 		}
 
 		// Init plugins.
@@ -147,9 +145,7 @@ class System
 	// Replaces read only property. Intented for unit tests and utility scripts. Don't use it.
 	public function overwrite(string $name, /*?object*/ $value) : void  // Backward compatibility with PHP 7.1.
 	{
-		if (property_exists($this, '__' . $name)) {
-			$this->{'__' . $name} = $value;
-		}
+		$this->_srv[$name] = $value;
 	}
 
 	public function getDefaultSettings() : __\ConfigurationFile
