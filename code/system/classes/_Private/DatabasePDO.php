@@ -9,7 +9,7 @@ use WizyTowka as __;
 
 class DatabasePDO extends \PDO
 {
-	public function __construct($driver, $database, $host = null, $login = null, $password = null)
+	public function __construct(string $driver, string $database, ?string $host = null, ?string $login = null, ?string $password = null)
 	{
 		switch ($driver) {
 			case 'sqlite':

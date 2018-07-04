@@ -9,17 +9,17 @@ use WizyTowka as __;
 
 class ErrorHandler
 {
-	private $_showErrorDetails = true;
+	private $_showDetails = true;
 	private $_logFilePath;
 
-	public function handleError($number, $message, $file, $line)  // For set_error_handler().
+	public function handleError(int $number, string $message, string $file, int $line) : void  // For set_error_handler().
 	{
 		if (error_reporting() !== 0) {   // Ignore error if @ operator was used.
 			throw new \ErrorException($message, 0, $number, $file, $line);
 		}
 	}
 
-	public function handleException(\Throwable $exception)  // For set_exception_handler().
+	public function handleException(\Throwable $exception) : void  // For set_exception_handler().
 	{
 		$this->addToLog($exception);
 
@@ -31,43 +31,51 @@ class ErrorHandler
 
 		(PHP_SAPI == 'cli' or $isPlainText)
 		? $this->_printAsPlainText($exception)
-		: ($this->_showErrorDetails ? $this->_printAsHTML($exception) : $this->_printAsQuietHTML($exception));
+		: ($this->_showDetails ? $this->_printAsHTML($exception) : $this->_printAsQuietHTML($exception));
 	}
 
-	public function addToLog(\Throwable $exception)
+	public function addToLog(\Throwable $exception) : bool
 	{
 		if ($this->_logFilePath) {
-			@file_put_contents(
+			$result = @file_put_contents(
 				$this->_logFilePath,
 				date('Y-m-d H:i') . '  ~~~~~~~~~~~~~~~~~~~~~~~~~~' . "\n" . $this->_prepareMessage($exception) . "\n\n\n" ,
 				FILE_APPEND
 			);
+
+			return $result !== false;
 		}
+
+		return false;
 	}
 
-	public function showErrorDetails($setting = null)
+	public function setShowDetails(bool $setting) : void
 	{
-		if ($setting === null) {
-			return $this->_showErrorDetails;
-		}
-		$this->_showErrorDetails = (bool)$setting;
+		$this->_showDetails = $setting;
 	}
 
-	public function logFilePath($logFilePath = null)
+	public function getShowDetails() : bool
 	{
-		if ($logFilePath === null) {
-			return $this->_logFilePath;
-		}
-		$this->_logFilePath = (string)$logFilePath;
+		return $this->_showDetails;
 	}
 
-	private function _printAsPlainText(\Throwable $exception)
+	public function setLogFilePath(?string $logFilePath) : void
+	{
+		$this->_logFilePath = $logFilePath;
+	}
+
+	public function getLogFilePath() : ?string
+	{
+		return $this->_logFilePath;
+	}
+
+	private function _printAsPlainText(\Throwable $exception) : void
 	{
 		echo "\n\n", 'System encountered fatal error and execution must be interrupted.', "\n\n",
 		     $this->_prepareMessage($exception), "\n\n";
 	}
 
-	private function _printAsHTML(\Throwable $exception)
+	private function _printAsHTML(\Throwable $exception) : void
 	{
 		?><!doctype html><meta charset="utf-8">
 <style>
@@ -84,7 +92,7 @@ class ErrorHandler
 		<?php
 	}
 
-	private function _printAsQuietHTML(\Throwable $exception)
+	private function _printAsQuietHTML(\Throwable $exception) : void
 	{
 		?><!doctype html><meta charset="utf-8">
 <style>
@@ -100,7 +108,7 @@ class ErrorHandler
 		<?php
 	}
 
-	private function _prepareName(\Throwable $exception)
+	private function _prepareName(\Throwable $exception) : string
 	{
 		$getPHPErrorName = function($code)
 		{
@@ -114,7 +122,7 @@ class ErrorHandler
 		       : get_class($exception) . ($exception->getCode() ? ' #'.$exception->getCode() : '');
 	}
 
-	private function _prepareMessage(\Throwable $exception)
+	private function _prepareMessage(\Throwable $exception) : string
 	{
 		$exceptionType = $this->_prepareName($exception);
 

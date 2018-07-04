@@ -124,7 +124,7 @@ CODE_JSON;
 		$this->assertTrue($cookieExpireTime < time());
 
 		// Current data in SessionManager. User should be corretly logged out immediately.
-		$this->assertFalse($sessionManager->getUserId());
+		$this->assertNull($sessionManager->getUserId());
 		$this->assertFalse($sessionManager->isUserLoggedIn());
 	}
 }

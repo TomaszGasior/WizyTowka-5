@@ -10,13 +10,13 @@ Rozpoczęcie sesji powoduje utworzenie po stronie klienta ciastka HTTP z identyf
 WAI („where am I?”) — to ciąg znaków używany do zidentyfikowania środowiska (przeglądarki internetowej) używanego przy zalogowaniu. Jest to hasz sha512 z ciągu znaków złożonego z informacji o przeglądarce i użytkowniku (m.in. user agent i adres IP).
 
 
-## `__construct($cookieName, ConfigurationFile $config)`
+## `__construct(string $cookieName, ConfigurationFile $config)`
 
 Inicjuje menadżera sesji użytkownika. Jeśli sesja straciła ważność lub WAI jest niewłaściwy, sesja jest niszczona.
 
 Argument `$cookieName` określa nazwę ciasteczka HTTP używanego do przechowywana identyfikatora sesji — nazwa ciasteczka musi być unikalna. Jako argument `$config` należy przekazać instancję klasy `ConfigurationFile` z plikiem konfiguracyjnym sesji użytkowników.
 
-## `logIn($userId, $sessionDuration)`
+## `logIn(int $userId, string $sessionDuration) : void`
 
 Dokonuje zalogowania użytkownika o identyfikatorze określonym w argumencie `$userId`. Argument `$sessionDuration` określa czas trwania sesji użytkownika w sekundach.
 
@@ -24,22 +24,22 @@ Uwaga: użytkownik zostanie zalogowany dopiero przy następnym żądaniu HTTP! W
 
 Jeżeli użytkownik już jest zalogowany, zostanie rzucony wyjątek `SessionManagerException` #2.
 
-## `logOut()`
+## `logOut() : void`
 
 Wylogowuje aktualnie zalogowanego użytkownika oraz usuwa z pliku konfiguracyjnego wszystkie sesje, których ważność upłynęła.
 
 Jeżeli żaden użytkownik nie jest zalogowany, zostanie rzucony wyjątek `SessionManagerException` #1.
 
-## `closeOtherSessions()`
+## `closeOtherSessions() : bool`
 
 Wylogowuje wszystkie pozostałe sesje aktualnie zalogowanego użytkownika. Zwraca prawdę, jeśli istniała choć jedna inna sesja aktualnie zalogowanego użytkownika, która została usunięta; w innym przypadku — zwraca fałsz.
 
 Jeżeli żaden użytkownik nie jest zalogowany, zostanie rzucony wyjątek `SessionManagerException` #1.
 
-## `isUserLoggedIn()`
+## `isUserLoggedIn() : bool`
 
 Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jest.
 
-## `getUserId()`
+## `getUserId() : ?int`
 
-Zwraca identyfikator zalogowanego użytkownika, bądź fałsz, jeśli użytkownik nie jest zalogowany.
+Zwraca identyfikator zalogowanego użytkownika, bądź `null`, jeśli użytkownik nie jest zalogowany.

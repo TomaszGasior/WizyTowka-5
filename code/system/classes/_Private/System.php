@@ -9,7 +9,7 @@ use WizyTowka as __;
 
 class System
 {
-	const TOPLEVEL_NAMESPACE = 'WizyTowka';
+	private const TOPLEVEL_NAMESPACE = 'WizyTowka';
 
 	private $_isInitialized;
 
@@ -45,7 +45,7 @@ class System
 	}
 
 	// This method is used to simulate read only properties.
-	public function __get($name)
+	public function __get(string $name) /*: ?object*/   // Backward compatibility with PHP 7.1.
 	{
 		if ($this->{'__' . $name}) {
 			return $this->{'__' . $name};
@@ -89,7 +89,7 @@ class System
 	// This method starts system controller and prepares settings needed only in installed system.
 	// It's used by WT() function with argument, inside "admin.php" and "index.php".
 	// Should not be called inside unit tests or utility scripts.
-	public function __invoke($controllerName)
+	public function __invoke(string $controllerName) : void
 	{
 		if ($this->_isInitialized) { return; } $this->_isInitialized = true;
 
@@ -101,7 +101,7 @@ class System
 		}
 
 		// Error handler — log file.
-		$this->__errors->logFilePath(__\CONFIG_DIR . '/errors.log');
+		$this->__errors->setLogFilePath(__\CONFIG_DIR . '/errors.log');
 
 		// Apply PHP settings.
 		$settings = $this->settings;
@@ -115,7 +115,7 @@ class System
 
 		// Error handler — errors details.
 		if (!$settings->systemShowErrors) {
-			$this->__errors->showErrorDetails(false);
+			$this->__errors->setShowDetails(false);
 		}
 
 		// Init plugins.
@@ -135,7 +135,7 @@ class System
 		$this->hooks->runAction('End');
 	}
 
-	private function _runController(__\Controller $controller)
+	private function _runController(__\Controller $controller) : void
 	{
 		if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 			$controller->POSTQuery();
@@ -144,15 +144,15 @@ class System
 		$controller->output();
 	}
 
-	// Replaces read only properties. Intented for unit tests and utility scripts. Don't use it.
-	public function overwrite($name, $value)
+	// Replaces read only property. Intented for unit tests and utility scripts. Don't use it.
+	public function overwrite(string $name, /*?object*/ $value) : void  // Backward compatibility with PHP 7.1.
 	{
 		if (property_exists($this, '__' . $name)) {
 			$this->{'__' . $name} = $value;
 		}
 	}
 
-	public function getDefaultSettings()
+	public function getDefaultSettings() : __\ConfigurationFile
 	{
 		return new __\ConfigurationFile(__\SYSTEM_DIR . '/defaults/settings.conf', true); // Read only.
 	}

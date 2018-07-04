@@ -16,16 +16,16 @@ Startowa klasa systemu WizyTówka. Inicjuje system i usługi systemowe, czyli do
 
 Nie należy tworzyć instancji klasy `System`, jak również instancji klas z przestrzeni `_Private`. Aby uzyskać dostęp do powyższych pól, należy wywołać, zdefiniowaną w głównej przestrzeni nazw systemu, funkcję `WT()`. Na przykład, aby uzyskać dostęp do menadżera sesji, należy użyć składni `WT()->session`.
 
-## `__invoke($controllerName)`
+## `__invoke(string $controllerName) : void`
 
 Metoda przeznaczona do wewnętrznego użytku systemu. Inicjuje kontroler.
 
 Jeżeli kontroler nie został zainicjowany, większość pól publicznych tylko do odczytu zawiera `null` zamiast instancji klas.
 
-## `overwrite($name, $value)`
+## `overwrite(string $name, ?object $value) : void`
 
 Nadpisuje pole publiczne `$name` klasy `System`, standardowo przeznaczone tylko do odczytu, wartością `$value`. Metoda przeznaczona wyłącznie do wewnętrznego użytku systemu i do testów jednostkowych. Używaj jej jedynie, jeśli dokładnie wiesz, co robisz.
 
-## `getDefaultSettings()`
+## `getDefaultSettings() : ConfigurationFile`
 
 Zwraca instancję klasy `ConfigurationFile` zawierającą domyślny główny plik konfiguracyjny systemu.

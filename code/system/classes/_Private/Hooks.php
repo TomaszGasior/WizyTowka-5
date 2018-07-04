@@ -12,32 +12,32 @@ class Hooks
 	private $_actions = [];
 	private $_filters = [];
 
-	public function addAction($name, callable $callback)
+	public function addAction(string $name, callable $callback) : void
 	{
 		$this->_addHook($this->_actions, $name, $callback);
 	}
 
-	public function addFilter($name, callable $callback)
+	public function addFilter(string $name, callable $callback) : void
 	{
 		$this->_addHook($this->_filters, $name, $callback);
 	}
 
-	private function _addHook(array &$hooks, $name, callable $callback)
+	private function _addHook(array &$hooks, string $name, callable $callback) : void
 	{
 		$hooks[$name][] = $callback;
 	}
 
-	public function removeAction($name, callable $callback)
+	public function removeAction(string $name, callable $callback) : void
 	{
 		$this->_removeHook($this->_actions, $name, $callback);
 	}
 
-	public function removeFilter($name, callable $callback)
+	public function removeFilter(string $name, callable $callback) : void
 	{
 		$this->_removeHook($this->_filters, $name, $callback);
 	}
 
-	private function _removeHook(array &$hooks, $name, callable $callback)
+	private function _removeHook(array &$hooks, string $name, callable $callback) : void
 	{
 		if (!isset($hooks[$name])) {
 			throw HooksException::hookDoesNotExist($name);
@@ -50,12 +50,12 @@ class Hooks
 		}
 	}
 
-	public function runAction($name, ...$arguments)
+	public function runAction(string $name, ...$arguments) : void
 	{
 		$this->_runHook($this->_actions, $name, $arguments);
 	}
 
-	public function applyFilter($name, ...$arguments)
+	public function applyFilter(string $name, ...$arguments)
 	{
 		if (!isset($arguments[0])) {
 			throw HooksException::filterRequiresArgument($name);
@@ -64,7 +64,7 @@ class Hooks
 		return $this->_runHook($this->_filters, $name, $arguments, true);
 	}
 
-	private function _runHook(array &$hooks, $name, array $arguments, $keepFirstArgument = false)
+	private function _runHook(array &$hooks, string $name, array $arguments, bool $keepFirstArgument = false)
 	{
 		if (!isset($hooks[$name])) {
 			return ($keepFirstArgument) ? $arguments[0] : null;

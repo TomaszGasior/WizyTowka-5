@@ -5,7 +5,7 @@ DatabasePDO
 
 Obwoluta obiektu `\PDO` z konstruktorem dopasowanym do potrzeb systemu WizyTówka. Klasa dziedziczy po klasie `\PDO`.
 
-## `__construct($driver, $database, $host = null, $login = null, $password = null)`
+## `__construct(string $driver, string $database, ?string $host = null, ?string $login = null, ?string $password = null)`
 
 Rozpoczyna połączenie z bazą danych. Argument `$driver` określa typ bazy danych, obsługiwane są: `mysql`, `pgsql`, `sqlite`. Jeśli typ bazy danych będzie nieprawidłowy, zostanie rzucony wyjątek `DatabasePDOException` #1.
 

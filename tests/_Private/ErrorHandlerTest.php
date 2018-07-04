@@ -18,7 +18,7 @@ class ErrorHandlerTest extends TestCase
 	public function testErrorHandler()
 	{
 		$errorHandler = new __\_Private\ErrorHandler;
-		$errorHandler->logFilePath(self::$_errorLogPath);
+		$errorHandler->setLogFilePath(self::$_errorLogPath);
 
 		$exceptionMessage = 'Example exception #' . rand(100,999);
 		$this->expectOutputRegex('/'.$exceptionMessage.'/');
@@ -31,7 +31,7 @@ class ErrorHandlerTest extends TestCase
 	public function testAddToLog()
 	{
 		$errorHandler = new __\_Private\ErrorHandler;
-		$errorHandler->logFilePath(self::$_errorLogPath);
+		$errorHandler->setLogFilePath(self::$_errorLogPath);
 
 		$exceptionMessage = 'Other example exception #' . rand(100,999);
 		$errorHandler->addToLog(new \Exception($exceptionMessage, 8));

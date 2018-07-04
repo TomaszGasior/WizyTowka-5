@@ -13,7 +13,7 @@ class SessionManager
 	private $_sessionsConfig;
 	private $_currentUserId = false;
 
-	public function __construct($cookieName, __\ConfigurationFile $config)
+	public function __construct(string $cookieName, __\ConfigurationFile $config)
 	{
 		$this->_cookieName     = $cookieName;
 		$this->_sessionsConfig = $config;
@@ -40,7 +40,7 @@ class SessionManager
 		}
 	}
 
-	public function logIn($userId, $sessionDuration)
+	public function logIn(int $userId, string $sessionDuration) : void
 	{
 		if ($this->isUserLoggedIn()) {
 			throw SessionManagerException::alreadyUserLoggedIn($this->_currentUserId);
@@ -63,7 +63,7 @@ class SessionManager
 		// User will be logged in next request!
 	}
 
-	public function logOut()
+	public function logOut() : void
 	{
 		if (!$this->isUserLoggedIn()) {
 			throw SessionManagerException::noUserLoggedIn();
@@ -84,7 +84,7 @@ class SessionManager
 		}
 	}
 
-	public function closeOtherSessions()
+	public function closeOtherSessions() : bool
 	{
 		if (!$this->isUserLoggedIn()) {
 			throw SessionManagerException::noUserLoggedIn();
@@ -105,17 +105,17 @@ class SessionManager
 		return $successful;
 	}
 
-	public function isUserLoggedIn()
+	public function isUserLoggedIn() : bool
 	{
 		return (bool)$this->_currentUserId;
 	}
 
-	public function getUserId()
+	public function getUserId() : ?int
 	{
-		return $this->_currentUserId ? $this->_currentUserId : false;
+		return $this->_currentUserId ? $this->_currentUserId : null;
 	}
 
-	private function _generateWAI($userId) // WAI means "where am I?". This string is used to identify user agent.
+	private function _generateWAI(int $userId) : string // WAI means "where am I?". This string is used to identify user agent.
 	{
 		return hash('sha512',
 			$userId . $_SERVER['REMOTE_ADDR']

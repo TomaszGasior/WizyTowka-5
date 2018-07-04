@@ -10,7 +10,7 @@ class Autoloader
 {
 	private $_directories = [];
 
-	public function addNamespace($namespace, $pathToClasses)
+	public function addNamespace(string $namespace, string $pathToClasses) : bool
 	{
 		if (isset($this->_directories[$namespace])) {
 			return false;
@@ -20,19 +20,19 @@ class Autoloader
 		return true;
 	}
 
-	public function removeNamespace($namespace)
+	public function removeNamespace(string $namespace) : void
 	{
 		unset($this->_directories[$namespace]);
 	}
 
-	public function namespaceExists($namespace)
+	public function namespaceExists(string $namespace) : bool
 	{
 		return isset($this->_directories[$namespace]);
 	}
 
-	public function autoload($fullyQualifiedName)
+	public function autoload(string $FQCN) : bool
 	{
-		@list($class, $namespace) = array_map('strrev', explode('\\',strrev($fullyQualifiedName),2));
+		@list($class, $namespace) = array_map('strrev', explode('\\',strrev($FQCN),2));
 
 		if (!isset($this->_directories[$namespace])) {
 			return false;
