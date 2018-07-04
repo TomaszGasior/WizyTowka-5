@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Admin page — errors page. User is redirected to this page, when error was encountered.
+* Admin page — errors page. User is redirected here, when error was encountered.
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as __;
@@ -28,8 +28,12 @@ class Error extends __\AdminPanelPage
 			'lockdown'    => 'Ta funkcja została wyłączona i&nbsp;jest niedostępna.',
 		];
 
+		if ($_GET['type'] == 'permissions') {
+			$this->_pageTitle = 'Brak uprawnień';
+		}
+
 		$this->_HTMLTemplate->setTemplate('Message');
-		$this->_HTMLTemplate->CSSClasses  = 'iconWarning';
-		$this->_HTMLTemplate->messageText = isset($messages[$_GET['type']]) ? $messages[$_GET['type']] : $messages['unknown'];
+		$this->_HTMLTemplate->CSSClasses = 'iconWarning';
+		$this->_HTMLTemplate->setRaw('messageText', $messages[$_GET['type']] ?? $messages['unknown']);
 	}
 }
