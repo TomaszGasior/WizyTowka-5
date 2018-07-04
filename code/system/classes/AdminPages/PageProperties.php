@@ -42,11 +42,13 @@ class PageProperties extends __\AdminPanelPage
 			$this->_page->title = $_POST['title'];
 		}
 
-		if ($this->_page->id == $this->_settings->websiteHomepageId and (bool)$_POST['isDraft']) {
-			$this->_HTMLMessage->error('Nie można przenieść do szkiców strony głównej witryny.');
-		}
-		elseif ($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES) {
-			$this->_page->isDraft = (bool)$_POST['isDraft'];
+		if ($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES) {
+			if ($this->_page->id == $this->_settings->websiteHomepageId and (bool)$_POST['isDraft']) {
+				$this->_HTMLMessage->error('Nie można przenieść do szkiców strony głównej witryny.');
+			}
+			else {
+				$this->_page->isDraft = (bool)$_POST['isDraft'];
+			}
 		}
 
 		if ($_POST['slug'] != $this->_page->slug) {
