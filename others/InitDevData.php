@@ -61,6 +61,9 @@ foreach ($dataDirs as $directory) {
 // Create new "sessions.conf" config file.
 __\ConfigurationFile::createNew(__\CONFIG_DIR . '/sessions.conf');
 
+// Create error log file.
+touch(__\CONFIG_DIR . '/errors.log');
+
 // Copy default "settings.conf" config file to data directory.
 copy(
 	__\SYSTEM_DIR . '/defaults/settings.conf',

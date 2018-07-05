@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Basic configuration and system initialization.
+* Basic configuration and WT() function.
 */
 namespace WizyTowka;
 

@@ -13,7 +13,7 @@ class System
 
 	private $_isInitialized;
 
-	// These array items will accessible as public and read only properties.
+	// These array items will be accessible as public and read only properties.
 	private $_srv = [];
 
 	// Prepares autoloader and error handler. It's used by WT() function inside "init.php".
