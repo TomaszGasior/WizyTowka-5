@@ -11,16 +11,16 @@ class SessionManager
 {
 	private $_cookieName;
 	private $_sessionsConfig;
-	private $_currentUserId = false;
+	private $_currentUserId = null;
 
 	public function __construct(string $cookieName, __\ConfigurationFile $config)
 	{
 		$this->_cookieName     = $cookieName;
 		$this->_sessionsConfig = $config;
 
-		$sessionId = isset($_COOKIE[$this->_cookieName]) ? $_COOKIE[$this->_cookieName] : false;
+		$sessionId = $_COOKIE[$this->_cookieName] ?? false;
 		if ($sessionId) {
-			$session = isset($this->_sessionsConfig->$sessionId) ? $this->_sessionsConfig->$sessionId : false;
+			$session = $this->_sessionsConfig->$sessionId ?? false;
 
 			if ($session and $session['waiString'] == $this->_generateWAI($session['userId']) and time() < $session['expireTime']) {
 				$this->_currentUserId = $session['userId'];
@@ -74,7 +74,7 @@ class SessionManager
 
 		setcookie($this->_cookieName, null, 1);
 
-		$this->_currentUserId = false;
+		$this->_currentUserId = null;
 
 		// Clean up expired sessions.
 		foreach ($this->_sessionsConfig as $sessionId => $session) {
@@ -112,7 +112,7 @@ class SessionManager
 
 	public function getUserId() : ?int
 	{
-		return $this->_currentUserId ? $this->_currentUserId : null;
+		return $this->_currentUserId ?? null;
 	}
 
 	private function _generateWAI(int $userId) : string // WAI means "where am I?". This string is used to identify user agent.

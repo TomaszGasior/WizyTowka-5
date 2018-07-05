@@ -55,7 +55,7 @@ class Login extends __\AdminPanelPage
 			$this->_HTMLMessage->default('Po zalogowaniu nastąpi przekierowanie do właściwej strony.');
 		}
 
-		$this->_HTMLTemplate->lastUsername = empty($_POST['name']) ? '' : $_POST['name'];
+		$this->_HTMLTemplate->lastUsername = $_POST['name'] ?? '';
 	}
 
 	private function _redirectAfterLogIn() : void

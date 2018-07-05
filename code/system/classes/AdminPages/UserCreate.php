@@ -61,7 +61,7 @@ class UserCreate extends __\AdminPanelPage
 			return;
 		}
 
-		$user->permissions = $this->_calculatePermissionValueFromNamesArray(isset($_POST['permissions']) ? $_POST['permissions'] : []);
+		$user->permissions = $this->_calculatePermissionValueFromNamesArray($_POST['permissions'] ?? []);
 
 		$user->save();
 		$this->_redirect('Users', ['msg' => 1]);

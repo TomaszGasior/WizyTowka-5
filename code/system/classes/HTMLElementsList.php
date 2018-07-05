@@ -131,7 +131,7 @@ class HTMLElementsList extends HTMLTag
 						// $item[1] — menu item URL address,
 						// $item[2] — optional, menu item CSS class.
 						$menu->append(
-							$item[0], $item[1], isset($item[2]) ? $item[2] : '',
+							$item[0], $item[1], ($item[2] ?? ''),
 							['aria-label' => $item[0] . ' — ' . strip_tags($title)]
 						);
 					}

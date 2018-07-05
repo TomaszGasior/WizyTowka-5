@@ -67,7 +67,7 @@ class Hooks
 	private function _runHook(array &$hooks, string $name, array $arguments, bool $keepFirstArgument = false)
 	{
 		if (!isset($hooks[$name])) {
-			return ($keepFirstArgument) ? $arguments[0] : null;
+			return $keepFirstArgument ? $arguments[0] : null;
 		}
 
 		foreach ($hooks[$name] as $callback) {
@@ -100,7 +100,7 @@ class Hooks
 			}
 		}
 
-		return ($keepFirstArgument) ? $arguments[0] : null;
+		return $keepFirstArgument ? $arguments[0] : null;
 	}
 }
 

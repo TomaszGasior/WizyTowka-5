@@ -25,9 +25,8 @@ class AdminPanel extends Controller
 			WT()->errors->setShowDetails(true);
 		}
 
-		$pageName   = !empty($_GET['c']) ? $_GET['c'] : WT()->settings->adminPanelDefaultPage;
-		$controller = isset(self::$_registeredPages[$pageName]) ? self::$_registeredPages[$pageName]
-		              : self::$_systemPagesNamespace . '\\'. ucfirst($pageName);
+		$pageName   = $_GET['c'] ?? WT()->settings->adminPanelDefaultPage;
+		$controller = self::$_registeredPages[$pageName] ?? self::$_systemPagesNamespace . '\\'. ucfirst($pageName);
 
 		if (!class_exists($controller)) {
 			$this->_redirect(null);

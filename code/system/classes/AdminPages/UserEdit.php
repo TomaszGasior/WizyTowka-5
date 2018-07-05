@@ -58,7 +58,7 @@ class UserEdit extends __\AdminPanelPage
 			}
 		}
 
-		$permissions = $this->_calculatePermissionValueFromNamesArray(isset($_POST['permissions']) ? $_POST['permissions'] : []);
+		$permissions = $this->_calculatePermissionValueFromNamesArray($_POST['permissions'] ?? []);
 		if ($this->_user->id == $this->_currentUser->id and !($permissions & __\User::PERM_SUPER_USER)) {
 			$this->_HTMLMessage->error('Nie można odebrać samemu sobie uprawnień superużytkownika.');
 		}

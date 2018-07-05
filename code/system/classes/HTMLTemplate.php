@@ -135,7 +135,7 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		);
 	}
 
-	public function _escapeValue($value)
+	private function _escapeValue($value)
 	{
 		switch (gettype($value)) {
 			case 'integer':

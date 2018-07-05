@@ -76,9 +76,8 @@ trait FilesSendingCommon
 			// Skip if PHP encountered error.
 			// Maximum size of file set by CMS settings is handled here by PHP and $_POST['MAX_FILE_SIZE'].
 			if ($errorCode) {
-				$this->_sendingErrors[$safeFileName] = isset($this->_PHPErrorMessages[$errorCode])
-				                                       ? $this->_PHPErrorMessages[$errorCode]
-				                                       : $this->_errorMessages['unknownPHPError'];
+				$this->_sendingErrors[$safeFileName] =
+					$this->_PHPErrorMessages[$errorCode] ?? $this->_errorMessages['unknownPHPError'];
 				continue;
 			}
 
