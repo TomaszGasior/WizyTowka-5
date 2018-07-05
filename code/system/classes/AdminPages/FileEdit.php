@@ -16,7 +16,7 @@ class FileEdit extends __\AdminPanelPage
 
 	private $_settings;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		if (empty($_GET['name']) or !$this->_file = __\UploadedFile::getByName($_GET['name'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
@@ -25,7 +25,7 @@ class FileEdit extends __\AdminPanelPage
 		$this->_settings = __\WT()->settings;
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		$newFileName = trim($_POST['newFileName']);
 
@@ -44,7 +44,7 @@ class FileEdit extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->default('Nazwa pliku została zmieniona.');

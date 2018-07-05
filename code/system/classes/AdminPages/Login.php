@@ -13,7 +13,7 @@ class Login extends __\AdminPanelPage
 
 	private $_session;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_session = __\WT()->session;
 
@@ -23,7 +23,7 @@ class Login extends __\AdminPanelPage
 		}
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		if (!$_POST['name'] or !$_POST['password']) {
 			$this->_HTMLMessage->error('Nie określono danych logowania.');
@@ -46,7 +46,7 @@ class Login extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->default('Wylogowano się z panelu administracyjnego.');
@@ -58,7 +58,7 @@ class Login extends __\AdminPanelPage
 		$this->_HTMLTemplate->lastUsername = empty($_POST['name']) ? '' : $_POST['name'];
 	}
 
-	private function _redirectAfterLogIn()
+	private function _redirectAfterLogIn() : void
 	{
 		if (!empty($_GET['redirect'])) {
 			parse_str($_GET['redirect'], $arguments);

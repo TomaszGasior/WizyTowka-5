@@ -12,7 +12,7 @@ class Menus extends __\AdminPanelPage
 	protected $_pageTitle = 'Menu';
 	protected $_userRequiredPermissions = __\User::PERM_WEBSITE_ELEMENTS;
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->setTemplate('Message');
 

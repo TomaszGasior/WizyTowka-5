@@ -18,7 +18,7 @@ class PageProperties extends __\AdminPanelPage
 
 	private $_settings;
 
-	public function _prepare()
+	protected function _prepare() : void
 	{
 		if (empty($_GET['id']) or !$this->_page = __\Page::getById($_GET['id'])) {
 			$this->_redirect('error', ['type' => 'parameters']);
@@ -27,7 +27,7 @@ class PageProperties extends __\AdminPanelPage
 		$this->_settings = __\WT()->settings;
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		// Redirect user to error page if he is not allowed to edit page.
 		$this->_preventFromAccessIfNotAllowed($this->_page);
@@ -77,7 +77,7 @@ class PageProperties extends __\AdminPanelPage
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		// Replace default admin page title by website page title.
 		$this->_pageTitle = __\HTML::correctTypography($this->_page->title);

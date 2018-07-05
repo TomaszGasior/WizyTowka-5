@@ -14,14 +14,14 @@ class UserCreate extends __\AdminPanelPage
 	protected $_pageTitle = 'Utwórz użytkownika';
 	protected $_userRequiredPermissions = __\User::PERM_SUPER_USER;
 
-	public function _prepare()
+	protected function _prepare() : void
 	{
 		if (__\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		$user = new __\User;
 
@@ -67,7 +67,7 @@ class UserCreate extends __\AdminPanelPage
 		$this->_redirect('Users', ['msg' => 1]);
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->setTemplate('UserEditCreate');
 		$this->_HTMLTemplate->createInsteadEdit = true;

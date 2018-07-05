@@ -16,7 +16,7 @@ trait PageEditSettingsCommon
 
 	private $_settingsMode; // True for PageSettings, false for PageEdit class.
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settingsMode = (self::class == __NAMESPACE__ . '\PageSettings');
 
@@ -37,7 +37,7 @@ trait PageEditSettingsCommon
 		$this->_contentTypeAPI->setHTMLParts($this->_HTMLTemplate, $this->_HTMLHead, $this->_HTMLMessage);
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		// Redirect user to error page if he is not allowed to edit page.
 		$this->_preventFromAccessIfNotAllowed($this->_page);
@@ -52,7 +52,7 @@ trait PageEditSettingsCommon
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		// Replace default admin page title by website page title.
 		$this->_pageTitle = __\HTML::correctTypography($this->_page->title);

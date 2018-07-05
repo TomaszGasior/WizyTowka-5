@@ -30,7 +30,7 @@ class WebsiteSettings extends __\AdminPanelPage
 
 	private $_settings;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settings = __\WT()->settings;
 
@@ -40,7 +40,7 @@ class WebsiteSettings extends __\AdminPanelPage
 		$this->_dateTimeFormatDisable = !in_array($this->_dateTimeFormatCurrent, $this->_dateTimeDefinedFormats);
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		if (!$_POST['websiteTitle'] or !$_POST['websiteTitlePattern'] or !$_POST['websiteAddress']
 			or !$_POST['websiteEmailAddress'] or !$_POST['websiteHomepageId']) {
@@ -92,7 +92,7 @@ class WebsiteSettings extends __\AdminPanelPage
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLContextMenu->append('Informacje wyszukiwarek', self::URL('searchSettings'), 'iconSearch');
 
@@ -122,14 +122,17 @@ class WebsiteSettings extends __\AdminPanelPage
 		$this->_HTMLTemplate->dateTimeFormatDisable  = $this->_dateTimeFormatDisable;
 	}
 
-	private function _updateHtaccess($enablePrettyLinks)
+	// This method tries to prepare ".htaccess" file for "pretty links" feature.
+	// Returns false on failure or when web server is other than Apache, otherwise true.
+	private function _updateHtaccess(bool $enablePrettyLinks) : bool
 	{
 		if (empty($_SERVER['SERVER_SOFTWARE']) or stripos($_SERVER['SERVER_SOFTWARE'], 'Apache') === false) {
 			return false;
 		}
 
 		try {
-			$htaccessContent = file_exists('.htaccess') ? file_get_contents('.htaccess') : '';
+			$htaccessPath    = PUBLIC_DIR . '/.htaccess';
+			$htaccessContent = file_exists($htaccessPath) ? file_get_contents($htaccessPath) : '';
 
 			if ($enablePrettyLinks) {
 				$websiteAddressPath = ($p = parse_url($this->_settings->websiteAddress, PHP_URL_PATH)) ? $p : '/';
@@ -149,7 +152,7 @@ HTACCESS;
 			}
 
 			$htaccessContent = trim($htaccessContent);
-			$htaccessContent ? file_put_contents('.htaccess', $htaccessContent) : @unlink('.htaccess');
+			$htaccessContent ? file_put_contents($htaccessPath, $htaccessContent) : @unlink($htaccessPath);
 		}
 		catch (\ErrorException $e) {
 			__\WT()->errors->addToLog($e);

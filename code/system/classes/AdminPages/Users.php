@@ -14,7 +14,7 @@ class Users extends __\AdminPanelPage
 
 	private $_users;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		if (__\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
@@ -27,7 +27,7 @@ class Users extends __\AdminPanelPage
 		$this->_users = __\User::getAll();
 	}
 
-	private function _deleteUser($userId)
+	private function _deleteUser(int $userId) : void
 	{
 		// Important: user with PERM_SUPER_USER permission must not be deleted.
 
@@ -45,7 +45,7 @@ class Users extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->success('Konto użytkownika zostało utworzone.');

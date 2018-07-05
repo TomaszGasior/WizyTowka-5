@@ -11,7 +11,7 @@ class About extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Informacje o systemie';
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->version            = __\VERSION;
 		$this->_HTMLTemplate->releaseDate        = __\VERSION_DATE;

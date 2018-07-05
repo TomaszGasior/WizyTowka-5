@@ -11,14 +11,14 @@ class Error extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Wystąpił bląd';
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		if (empty($_GET['type'])) {
 			$this->_redirect('error', ['type' => 'unknown']);
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$messages = [
 			'unknown'     => 'Wystąpił błąd, ale nie wiemy jaki… <span style="opacity: 0.5; display: block; font-size: 0.63em">Detektyw Monk powinien się tym zająć.</span>',

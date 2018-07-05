@@ -16,7 +16,7 @@ class UserEdit extends __\AdminPanelPage
 
 	private $_user;
 
-	public function _prepare()
+	protected function _prepare() : void
 	{
 		if (__\WT()->settings->lockdownUsers) {
 			$this->_redirect('error', ['type' => 'lockdown']);
@@ -27,7 +27,7 @@ class UserEdit extends __\AdminPanelPage
 		}
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		if ($_POST['name'] and $this->_user->name != $_POST['name']) {
 			if (!$this->_checkUserName($_POST['name'])) {
@@ -70,7 +70,7 @@ class UserEdit extends __\AdminPanelPage
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->setTemplate('UserEditCreate');
 		$this->_HTMLTemplate->createInsteadEdit = false;

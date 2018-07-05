@@ -16,7 +16,7 @@ class SearchSettings extends __\AdminPanelPage
 
 	private $_settings;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settings = __\WT()->settings;
 
@@ -25,7 +25,7 @@ class SearchSettings extends __\AdminPanelPage
 		));
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		$this->_settings->searchEnginesDescription = str_replace("\n", ' ', $_POST['searchEnginesDescription']);
 
@@ -44,7 +44,7 @@ class SearchSettings extends __\AdminPanelPage
 		$this->_HTMLMessage->default('Zmiany zostały zapisane.');
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->settings = $this->_settings;
 

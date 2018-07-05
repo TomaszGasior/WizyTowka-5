@@ -38,7 +38,7 @@ trait FilesSendingCommon
 	private $_sendingCount = 0;
 
 	// This method should be called inside POSTQuery().
-	private function _handleSentFiles()
+	private function _handleSentFiles() : void
 	{
 		// Stop if POST request is broken. Maybe request size exceeded maximum size allowed in php.ini?
 		if (empty($_FILES['sendingFiles']['name']) or !is_array($_FILES['sendingFiles']['name'])) {
@@ -99,7 +99,7 @@ trait FilesSendingCommon
 	}
 
 	// Returns maximum allowed size of sent files according to php.ini and CMS settings.
-	private function _getMaxFileSize()
+	private function _getMaxFileSize() : ?int
 	{
 		// This function parses PHP's shorthand bytes syntax.
 		// More here: http://php.net/manual/en/faq.using.php#faq.using.shorthandbytes
@@ -127,17 +127,17 @@ trait FilesSendingCommon
 			__\WT()->settings->filesSentMaximumSizeBytes,
 		], function($value){ return $value > 0; });
 
-		return $possibleValues ? min($possibleValues) : 0;
+		return $possibleValues ? (int)min($possibleValues) : null;
 	}
 
 	// Returns maximum amount of sent files.
-	private function _getMaxFilesNumber()
+	private function _getMaxFilesNumber() : ?int
 	{
-		return (ini_get('max_file_uploads') > 0) ? ini_get('max_file_uploads') : 0;
+		return (ini_get('max_file_uploads') > 0) ? (int)ini_get('max_file_uploads') : null;
 	}
 
 	// Returns true if file sending feature is enabled in PHP configuration.
-	private function _isSendingFilesEnabled()
+	private function _isSendingFilesEnabled() : bool
 	{
 		return (ini_get('file_uploads') and ini_get('max_file_uploads') > 0);
 	}

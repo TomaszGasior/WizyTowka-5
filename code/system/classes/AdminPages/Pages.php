@@ -19,7 +19,7 @@ class Pages extends __\AdminPanelPage
 
 	private $_settings;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settings = __\WT()->settings;
 
@@ -38,7 +38,7 @@ class Pages extends __\AdminPanelPage
 		$this->_pages = $this->_draftsMode ? __\Page::getAllDrafts() : __\Page::getAll();
 	}
 
-	private function _setPageIsDraft($pageId, $isDraft)
+	private function _setPageIsDraft(int $pageId, bool $isDraft) : void
 	{
 		// Important: page selected as website homepage must not be moved to drafts.
 
@@ -67,7 +67,7 @@ class Pages extends __\AdminPanelPage
 		}
 	}
 
-	private function _deletePage($pageId)
+	private function _deletePage(int $pageId) : void
 	{
 		// Important: page selected as website homepage must not be deleted.
 
@@ -95,7 +95,7 @@ class Pages extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->success(

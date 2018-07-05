@@ -9,14 +9,14 @@ use WizyTowka as __;
 
 trait UserEditCreateCommon
 {
-	private function _checkUserName($name)
+	private function _checkUserName(string $name) : bool
 	{
 		return preg_match('/^[a-zA-Z0-9_\-.]+$/', $name);
 	}
 
 	// Takes current value of User::$permissions field. Returns array with permissions names (User::PERM_* constants names
 	// without PERM_ prefix) as keys and true or false (which defines whether user has permission) as values.
-	private function _prepareNamesArrayFromPermissionValue($currentPermissionsValue)
+	private function _prepareNamesArrayFromPermissionValue(int $currentPermissionsValue) : array
 	{
 		$possibleUserPermissions = array_filter(
 			(new \ReflectionClass(__\User::class))->getConstants(),
@@ -33,7 +33,7 @@ trait UserEditCreateCommon
 	}
 
 	// Takes array prepared by method above. Returns value for User::$permission field.
-	private function _calculatePermissionValueFromNamesArray(array $currentNamedPermissions)
+	private function _calculatePermissionValueFromNamesArray(array $currentNamedPermissions) : int
 	{
 		$permisionsValue = 0;
 		foreach ($currentNamedPermissions as $constantNamePart => $permissionEnabled) {

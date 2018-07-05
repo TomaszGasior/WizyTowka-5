@@ -12,7 +12,7 @@ class Customization extends __\AdminPanelPage
 	protected $_pageTitle = 'Personalizacja';
 	protected $_userRequiredPermissions = __\User::PERM_WEBSITE_SETTINGS;
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->setTemplate('Message');
 

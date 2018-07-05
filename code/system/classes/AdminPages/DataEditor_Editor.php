@@ -14,7 +14,7 @@ class DataEditor_Editor extends __\AdminPanelPage
 
 	private $_settings;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settings = __\WT()->settings;
 
@@ -23,7 +23,7 @@ class DataEditor_Editor extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->setTemplate('Message');
 

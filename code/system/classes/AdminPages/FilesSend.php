@@ -14,7 +14,7 @@ class FilesSend extends __\AdminPanelPage
 	protected $_pageTitle = 'Wyślij pliki';
 	protected $_userRequiredPermissions = __\User::PERM_MANAGE_FILES;
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		$this->_handleSentFiles();
 
@@ -24,7 +24,7 @@ class FilesSend extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLTemplate->errorsList = [];
 

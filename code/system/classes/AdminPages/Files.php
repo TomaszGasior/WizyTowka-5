@@ -14,7 +14,7 @@ class Files extends __\AdminPanelPage
 
 	private $_files;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		if (!empty($_GET['deleteName'])) {
 			$this->_deleteFile($_GET['deleteName']);
@@ -23,7 +23,7 @@ class Files extends __\AdminPanelPage
 		$this->_files = __\UploadedFile::getAll();
 	}
 
-	private function _deleteFile($name)
+	private function _deleteFile(string $name) : void
 	{
 		if ($file = __\UploadedFile::getByName($name)) {
 			$file->delete();
@@ -31,7 +31,7 @@ class Files extends __\AdminPanelPage
 		};
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		if (isset($_GET['msg'])) {
 			$this->_HTMLMessage->success('Przesyłanie zostało zakończone pomyślnie.');

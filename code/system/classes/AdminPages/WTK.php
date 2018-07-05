@@ -15,7 +15,7 @@ class WTK extends __\AdminPanelPage
 	private $_settings;
 	private $_settingsDefault;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settings        = __\WT()->settings;
 		$this->_settingsDefault = __\WT()->getDefaultSettings();
@@ -25,7 +25,7 @@ class WTK extends __\AdminPanelPage
 		}
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		foreach ($this->_settings as $name => $value) {
 			if (is_bool($value)) {
@@ -39,7 +39,7 @@ class WTK extends __\AdminPanelPage
 		$this->_HTMLMessage->success('Zmiany konfiguracji zostały zapisane.');
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$defaults = $this->_settingsDefault;
 		$fields   = new __\HTMLFormFields;

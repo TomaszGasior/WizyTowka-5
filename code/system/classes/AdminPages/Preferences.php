@@ -13,7 +13,7 @@ class Preferences extends __\AdminPanelPage
 
 	private $_session;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_session = __\WT()->session;
 
@@ -23,7 +23,7 @@ class Preferences extends __\AdminPanelPage
 		}
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		if ($_POST['currentPassword'] and $_POST['passwordText_1'] and $_POST['passwordText_2']) {
 			if (!$this->_currentUser->checkPassword($_POST['currentPassword'])) {
@@ -41,7 +41,7 @@ class Preferences extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$this->_HTMLContextMenu->append('Wyloguj inne sesje', self::URL('preferences', ['closeOtherSessions' => 1]), 'iconLogout');
 

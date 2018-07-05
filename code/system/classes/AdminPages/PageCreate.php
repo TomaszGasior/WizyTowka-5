@@ -14,12 +14,12 @@ class PageCreate extends __\AdminPanelPage
 
 	private $_settings;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_settings = __\WT()->settings;
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		$_POST['title'] = trim($_POST['title']);
 		$_POST['slug']  = trim($_POST['slug']);
@@ -72,7 +72,7 @@ class PageCreate extends __\AdminPanelPage
 		}
 	}
 
-	protected function _output()
+	protected function _output() : void
 	{
 		$contentTypes = [];
 		foreach (__\ContentType::getAll() as $contentType) {

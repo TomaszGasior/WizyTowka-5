@@ -11,7 +11,7 @@ class Logout extends __\AdminPanelPage
 {
 	private $_session;
 
-	protected function _prepare()
+	protected function _prepare() : void
 	{
 		$this->_session = __\WT()->session;
 
