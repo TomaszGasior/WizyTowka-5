@@ -9,5 +9,5 @@ use WizyTowka as __;
 
 class SettingsPage extends __\ContentTypeAPI
 {
-	public function HTMLContent() {}
+	public function HTMLContent() : void {}
 }

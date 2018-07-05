@@ -9,12 +9,12 @@ use WizyTowka as __;
 
 class EditorPage extends __\ContentTypeAPI
 {
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		$this->_contents->html = $_POST['content'];
 	}
 
-	public function HTMLContent()
+	public function HTMLContent() : void
 	{
 		$this->_HTMLHead->stylesheet('AdminPanelFix.css');
 

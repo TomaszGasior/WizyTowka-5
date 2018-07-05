@@ -9,7 +9,7 @@ use WizyTowka as __;
 
 class WebsitePageBox extends __\ContentTypeAPI
 {
-	public function HTMLContent()
+	public function HTMLContent() : void
 	{
 		$this->_HTMLTemplate->setRaw('content', $this->_contents->html);
 	}
