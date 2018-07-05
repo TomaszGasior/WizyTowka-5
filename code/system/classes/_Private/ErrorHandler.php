@@ -29,9 +29,13 @@ class ErrorHandler
 			function($value){ return stripos($value, 'content-type') !== false and stripos($value, 'text/html') === false; }
 		));
 
-		(PHP_SAPI == 'cli' or $isPlainText)
-		? $this->_printAsPlainText($exception)
-		: ($this->_showDetails ? $this->_printAsHTML($exception) : $this->_printAsQuietHTML($exception));
+		if (PHP_SAPI == 'cli' or $isPlainText) {
+			$this->_printAsPlainText($exception);
+		}
+		else {
+			@header('HTTP/1.1 500 Internal Server Error');
+			$this->_showDetails ? $this->_printAsHTML($exception) : $this->_printAsQuietHTML($exception);
+		}
 	}
 
 	public function addToLog(\Throwable $exception) : bool
@@ -77,12 +81,13 @@ class ErrorHandler
 
 	private function _printAsHTML(\Throwable $exception) : void
 	{
-		?><!doctype html><meta charset="utf-8">
+		?><!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <style>
-	div.wtErr { display: flex; align-items: center; justify-content: center; position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0, 0.3); }
-	div.wtErr section { color: #000; font: 16px /1.5em sans-serif; border: 1px solid #f00; padding: 0.4em 1em; background: #fff; box-shadow: 0 0 9px rgba(0,0,0, 0.4); max-width: 700px; min-width: 0; }
-	div.wtErr h1 { font-size: 1.7em; margin-bottom: -0.4em; color: #f00; }
-	div.wtErr pre { letter-spacing: -1px; white-space: pre-wrap; overflow-y: auto; max-height: 215px; }
+	div.wtErr { display: flex; align-items: center; justify-content: center; position: fixed; left: 0; right: 0; top: 0; bottom: 0; background: rgba(0,0,0, 0.3); z-index: 9999; }
+	div.wtErr section { color: #000; font: 15px /1.5em sans-serif; border: 2px solid #f00; padding: 0.4em 1em; background: #fff; box-shadow: 0 0 9px rgba(0,0,0, 0.4); max-width: 700px; min-width: 0; }
+	div.wtErr h1 { font-size: 1.7em; margin: 0.7em 0 -0.4em; color: #f00; }
+	div.wtErr pre { letter-spacing: -1px; white-space: pre-wrap; overflow-y: auto; max-height: 400px; }
+	@media (max-height: 500px), (max-width: 400px) { div.wtErr { align-items: stretch; } }
 </style>
 <div class="wtErr"><section>
 	<h1>Błąd krytyczny — WizyTówka <?= __\VERSION ?></h1>
@@ -94,7 +99,7 @@ class ErrorHandler
 
 	private function _printAsQuietHTML(\Throwable $exception) : void
 	{
-		?><!doctype html><meta charset="utf-8">
+		?><!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <style>
 	div.wtQErr { display: flex; align-items: center; justify-content: center; position: fixed; left: 0; right: 0; top: 0; bottom: 0; }
 	div.wtQErr p { color: #777; font: 30px sans-serif; text-align: center; }
