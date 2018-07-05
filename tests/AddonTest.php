@@ -34,7 +34,7 @@ class AddonTest extends TestCase
 			__\ConfigurationFile::createNew($directory . '/addon.conf');
 		}
 
-		// Example addon class that extends Addon class. PHP 7 syntax.
+		// Example addon class that extends Addon class.
 		self::$_exampleAddonType = get_class(new class() extends __\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';

@@ -12,12 +12,12 @@ class ControllerTest extends TestCase
 
 	static public function setUpBeforeClass()
 	{
-		// Example controller in anonymous class. PHP 7 syntax.
+		// Example controller in anonymous class.
 		self::$_exampleController = get_class(new class() extends __\Controller
 		{
 			// public function POSTQuery() {} // This controller does not support POST queries.
 
-			static public function URL($target, array $arguments = [])
+			static public function URL($target, array $arguments = []) : ?string
 			{
 				return $target . strrev($target) . '?' . http_build_query($arguments);
 			}

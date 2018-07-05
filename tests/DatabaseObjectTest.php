@@ -35,7 +35,7 @@ class DatabaseObjectTest extends TestCase
 		');
 		__\WT()->overwrite('database', $databasePDO);
 
-		// Example anonymous classes that extend abstract DatabaseObject class. PHP 7 syntax.
+		// Example anonymous classes that extend abstract DatabaseObject class.
 		self::$_exampleDBObj = get_class(new class() extends __\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTable';
