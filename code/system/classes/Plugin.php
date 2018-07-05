@@ -14,7 +14,7 @@ class Plugin extends Addon
 		'init'      => '',
 	];
 
-	public function init()
+	public function init() : void
 	{
 		// Add plugin's namespace to autoloader.
 		WT()->autoloader->addNamespace($this->namespace, $this->getPath() . '/classes');

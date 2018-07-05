@@ -43,13 +43,13 @@ Klasa implementuje metodę magiczną `__debugInfo()` dla debugowania przy użyci
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
-## `__construct($disabled = false, $CSSClass = null)`
+## `__construct(bool $disabled = false, string $CSSClass = null)`
 
 Jeśli argument `$disabled` jest prawdą, znacznik `<fieldset>` otrzyma atrybut `disabled`, dzięki czemu wszystkie dodane kontrolki zostaną zablokowane przez przeglądarkę internetową (jakby same oddzielnie otrzymały atrybut `disabled`).
 
 Zobacz `HTMLTag::__construct()`.
 
-## `text($label, $name, $value, array $HTMLAttributes = [])`
+## `text(string $label, string $name, ?string $value, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole `<input type="text">`.
 
@@ -60,7 +60,7 @@ Argument `$name` zawierać powinien nazwę pola (atrybut HTML `name`), która zo
 Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybutów kontrolki formularza w HTML (takich jak `disabled`, `readonly`, `tabindex`, `spellcheck`, `autofocus`, `accesskey` bądź jakichkolwiek innych). Należy podać go jako tablicę — jej klucze zostaną nazwami atrybutów, a wartości ich wartościami. Nie ma możliwości nadpisania atrybutów generowanych przez metodę (takich jak `id`, `value`, `name`).
 Jeżeli atrybut jest typu logicznego i ma wartość prawda, zostanie wygenerowany w kodzie HTML bez żadnej wartości (np. `<input checked>`), jeżeli ma wartość fałsz — zostanie pominięty.
 
-## `number($label, $name, $value, array $HTMLAttributes = [])`
+## `number(string $label, string $name, $value, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole `<input type="number">`
 
@@ -68,7 +68,7 @@ Zobacz opis argumentów metody `text()`.
 
 Wartość `$value` musi być liczbą, inaczej zostanie użyte zero.
 
-## `color($label, $name, $value, array $HTMLAttributes = [])`
+## `color(string $label, string $name, ?string $value, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole `<input type="color">`
 
@@ -76,7 +76,7 @@ Zobacz opis argumentów metody `text()`.
 
 Wartość `$value` musi być kolorem określonym w sześcioznakowym zapisie heksadecymalnym poprzedzonym znakiem krzyżyka — na przykład `#272822`. W wypadku podania nieprawidłowej wartości zostanie użyta wartość `#ffffff`.
 
-## `url($label, $name, $value, array $HTMLAttributes = [])`
+## `url(string $label, string $name, ?string $value, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole `<input type="url">`
 
@@ -84,7 +84,7 @@ Zobacz opis argumentów metody `text()`.
 
 Wartość `$value` musi być poprawnym adresem URL, inaczej zostanie użyty pusty łańcuch.
 
-## `email($label, $name, $value, array $HTMLAttributes = [])`
+## `email(string $label, string $name, ?string $value, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole `<input type="email">`
 
@@ -92,7 +92,7 @@ Zobacz opis argumentów metody `text()`.
 
 Wartość `$value` musi być poprawnym adresem e-mail, inaczej zostanie użyty pusty łańcuch.
 
-## `password($label, $name, array $HTMLAttributes = [])`
+## `password(string $label, string $name, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole `<input type="password">`
 
@@ -100,7 +100,7 @@ Zobacz opis argumentów metody `text()`.
 
 Nie ma możliwości podania wartości dla tego pola.
 
-## `checkbox($label, $name, $currentValue, array $HTMLAttributes = [])`
+## `checkbox(string $label, string $name, $currentValue, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole zaznaczenia `<input type="checkbox">`
 
@@ -110,7 +110,7 @@ Jako `$currentValue` należy podać bieżącą wartość przełącznika. Zostani
 
 Uwaga: jeśli w tablicy `$HTMLAttributes` określono dodatkowy atrybut `title`, zostanie on także dodany do etykiety `<label>`.
 
-## `radio($label, $name, $fieldValue, $currentValue, array $HTMLAttributes = [])`
+## `radio(string $label, string $name, $fieldValue, $currentValue, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole wyboru `<input type="radio">`
 
@@ -124,7 +124,7 @@ Uwaga: jeśli w tablicy `$HTMLAttributes` określono dodatkowy atrybut `title`, 
 
 Alias dla metody `radio()`.
 
-## `textarea($label, $name, $content, array $HTMLAttributes = [])`
+## `textarea(string $label, string $name, ?string $content, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje pole wieloliniowe `<textarea>`.
 
@@ -132,7 +132,7 @@ Zobacz opis argumentów metody `text()`.
 
 Argument `$content` (nazwany inaczej dla rozróżnienia od atrybutu HTML `value`) przyjmuje jako wartość treść umieszczaną wewnątrz znacznika `<textarea>`. W przeciwieństwie to pola tekstowego można w niej użyć przełamania wierszy.
 
-## `select($label, $name, $selected, array $valuesList, array $HTMLAttributes = [])`
+## `select(string $label, string $name, ?string $selected, array $valuesList, array $HTMLAttributes = []) : HTMLFormFields`
 
 Dodaje listę wyboru `<select>`.
 
@@ -142,19 +142,19 @@ Argument `$valueList` jest tablicą zawierającą opcje możliwe do wybrania z l
 
 Argument `$selected` określa wartość aktualnie zaznaczonej opcji.
 
-## `textWithHints($label, $name, $value, array $hints, array $HTMLAttributes = [])`
+## `textWithHints(string $label, string $name, ?string $value, array $hints, array $HTMLAttributes = []) : HTMLFormFields`
 
 Działa dokładnie tak samo jak `text()` z tą różnicą, że umożliwia dodanie do pola tekstowego podpowiedzi (znacznik HTML `<datalist>`) określonych w argumencie `$hints`.
 
-## `skip()`
+## `skip() : HTMLFormFields`
 
 Metoda nie robi nic, jedynie zwraca `$this`. Użyteczna przy tworzeniu łańcuchów poleceń, przy konieczności warunkowego wyświetlenia jednego z pól.
 
-## `remove($name)`
+## `remove($name) : HTMLFormFields`
 
 Usuwa wszystkie pola o nazwie (atrybucie HTML `name`) określonym w argumencie `$name`.
 
-## `output()`
+## `output() : void`
 
 Renderuje kod HTML pól formularza.
 

@@ -37,26 +37,28 @@ class AdminPanel extends Controller
 		$this->_realAdminPanelPage = new $controller;
 	}
 
-	public function POSTQuery(...$arguments)
+	public function POSTQuery(...$arguments) : void
 	{
-		return $this->__call(__FUNCTION__, $arguments);
+		$this->__call(__FUNCTION__, $arguments);
 	}
 
-	public function output(...$arguments)
+	public function output(...$arguments) : void
 	{
-		return $this->__call(__FUNCTION__, $arguments);
+		$this->__call(__FUNCTION__, $arguments);
 	}
 
-	public function __call($function, $arguments)
+	public function __call(string $function, array $arguments)
 	{
 		return $this->_realAdminPanelPage->$function(...$arguments);
 	}
 
-	static public function URL($target, array $arguments = [])
+	static public function URL($target, array $arguments = []) : string
 	{
 		if ($target == null) {
 			$target = WT()->settings->adminPanelDefaultPage;
 		}
+
+		$target = (string)$target;
 
 		if (isset($arguments['c'])) {
 			throw ControllerException::unallowedKeyInURLArgument('c');
@@ -66,7 +68,7 @@ class AdminPanel extends Controller
 		return WT()->settings->adminPanelFile . ($arguments ? '?' . http_build_query($arguments) : '');
 	}
 
-	static public function registerPage($name, $controller)
+	static public function registerPage(string $name, string $controller) : void
 	{
 		// Add admin pages namespace to autoloader, earlier.
 		WT()->autoloader->addNamespace(self::$_systemPagesNamespace, SYSTEM_DIR . '/classes/AdminPages');

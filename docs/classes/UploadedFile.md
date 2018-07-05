@@ -13,45 +13,45 @@ Konstruktor jest prywatny — nie można tworzyć nowych plików w ten sposób. 
 
 Nie można klonować obiektu pliku. Aby skopiować plik, należy dokonać tego ręcznie z użyciem funkcji operujących na systemie plików.
 
-## `getName()`
+## `getName() : string`
 
 Zwraca nazwę pliku.
 
-## `getPath()`
+## `getPath() : string`
 
 Zwraca pełną bezwzględną ścieżkę do pliku w systemie plików.
 
-## `getURL()`
+## `getURL() : string`
 
 Zwraca pełen adres URL pliku.
 
-## `getSize()`
+## `getSize() : ?int`
 
-Zwraca rozmiar pliku w bajtach formie liczby całkowitej. Jeśli plik jest pusty, bądź nie istnieje, zwraca liczbę zero.
+Zwraca rozmiar pliku w bajtach formie liczby całkowitej. Jeśli plik jest pusty, bądź nie istnieje, zwraca `null`.
 
-## `getModificationTime()`
+## `getModificationTime() : ?int`
 
-Zwraca czas ostatniej modyfikacji pliku jako uniksowy znacznik czasu w formie liczby całkowitej. Jeśli plik nie istnieje, zwraca liczbę zero.
+Zwraca czas ostatniej modyfikacji pliku jako uniksowy znacznik czasu w formie liczby całkowitej. Jeśli plik nie istnieje, zwraca `null`.
 
-## `rename($newFileName)`
+## `rename(string $newFileName) : bool`
 
 Zmienia nazwę pliku na nazwę określoną w argumencie `$newFileName`. Plik o nazwie `$newFileName` nie może istnieć. Argument `$newFileName` nie może zawierać ukośnika bądź ukośnika wstecznego.
 
 Jeżeli zmiana nazwy się powiedzie, zwraca prawdę, inaczej — zwraca fałsz.
 
-## `delete()`
+## `delete() : bool`
 
 Usuwa plik.
 
 Jeżeli operacja się powiedzie, zwraca prawdę, inaczej — zwraca fałsz.
 
-## *static* `getByName($fileName)`
+## *static* `getByName(string $fileName) : ?UploadedFile`
 
 Zwraca wysłany plik (instancję klasy) o nazwie `$fileName` bądź `null`, jeśli plik o takiej nazwie nie istnieje w folderze przesłanych plików. Nazwa `$fileName` nie może zawierać ukośnika bądź ukośnika wstecznego.
 
 Uwaga: nie są uwzględniane podfoldery folderu wysłanych plików bądź znajdujące się w nich pliki.
 
-## *static* `getAll()`
+## *static* `getAll() : array`
 
 Zwraca tablicę zawierającą wszystkie przesłane pliki (instancje klasy). Jeśli nie przesłano jeszcze żadnych plików, zwracana jest pusta tablica. Tablica sortowana jest alfabetycznie według nazw plików.
 

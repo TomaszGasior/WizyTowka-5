@@ -18,19 +18,19 @@ Typ zawartości musi składać się z trzech klas dziedziczących po klasie `Con
 - `EditorPage` — klasa obsługująca stronę panelu administracyjnego służącą do edycji treści strony w witrynie;
 - `SettingsPage` — klasa obsługująca stronę panelu administracyjnego służącą do zmiany ustawień strony w witrynie.
 
-## `initWebsitePageBox()`
+## `initWebsitePageBox() : ContentTypeAPI`
 
 Inicjuje i zwraca instancję klasy `WebsitePageBox`. Metoda używana wewnętrznie przez system.
 
 Jeżeli klasa nie dziedziczy po klasie `ContentTypeAPI`, zostanie rzucony wyjątek `ContentTypeException` #1.
 
-## `initEditorPage()`
+## `initEditorPage() : ContentTypeAPI`
 
 Inicjuje i zwraca instancję klasy `EditorPage`. Metoda używana wewnętrznie przez system.
 
 Jeżeli klasa nie dziedziczy po klasie `ContentTypeAPI`, zostanie rzucony wyjątek `ContentTypeException` #1.
 
-## `initSettingsPage()`
+## `initSettingsPage() : ContentTypeAPI`
 
 Inicjuje i zwraca instancję klasy `SettingsPage`. Metoda używana wewnętrznie przez system.
 

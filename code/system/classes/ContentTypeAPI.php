@@ -26,23 +26,23 @@ abstract class ContentTypeAPI
 		$this->_contentTypeURL  = $myContentTypeInstance->getURL();
 	}
 
-	final protected function _getPath()
+	final protected function _getPath() : string
 	{
 		return $this->_contentTypePath;
 	}
 
-	final protected function _getURL()
+	final protected function _getURL() : string
 	{
 		return $this->_contentTypeURL;
 	}
 
-	final public function setPageData(\stdClass $contents, \stdClass $settings)
+	final public function setPageData(\stdClass $contents, \stdClass $settings) : void
 	{
 		$this->_contents = $contents;
 		$this->_settings = $settings;
 	}
 
-	final public function setHTMLParts(HTMLTemplate $template, HTMLHead $head, HTMLMessage $message)
+	final public function setHTMLParts(HTMLTemplate $template, HTMLHead $head, HTMLMessage $message) : void
 	{
 		$className = substr(strrchr(static::class, '\\'), 1);  // "WizyTowka\PlainText\SettingsPage" --> "SettingsPage".
 
@@ -56,12 +56,12 @@ abstract class ContentTypeAPI
 		$this->_HTMLMessage = $message;
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		throw ContentTypeAPIException::withoutPOSTQueries(static::class);
 	}
 
-	abstract public function HTMLContent();
+	abstract public function HTMLContent() : void;
 }
 
 class ContentTypeAPIException extends Exception

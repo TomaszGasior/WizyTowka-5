@@ -15,7 +15,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 	private $_wasChanged = false;
 	private $_readOnly = false;
 
-	public function __construct($fileName, $readOnly = false)
+	public function __construct(string $fileName, bool $readOnly = false)
 	{
 		$this->_fileName = (string)$fileName;
 		$this->_readOnly = (boolean)$readOnly;
@@ -45,12 +45,12 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		$this->save();
 	}
 
-	public function __get($key)
+	public function __get(string $key)
 	{
 		return $this->_configuration[$key];
 	}
 
-	public function __set($key, $value)
+	public function __set(string $key, $value) : void
 	{
 		if ($this->_readOnly) {
 			throw ConfigurationFileException::writingWhenReadOnly($this->_fileName);
@@ -60,12 +60,12 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		$this->_configuration[$key] = $value;
 	}
 
-	public function __isset($key)
+	public function __isset(string $key) : bool
 	{
 		return isset($this->_configuration[$key]);
 	}
 
-	public function __unset($key)
+	public function __unset(string $key) : void
 	{
 		if ($this->_readOnly) {
 			throw ConfigurationFileException::writingWhenReadOnly($this->_fileName);
@@ -75,24 +75,24 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		unset($this->_configuration[$key]);
 	}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return $this->_configuration;
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function getIterator() : iterable // For IteratorAggregate interface.
 	{
 		foreach ($this->_configuration as $key => $value) {
 			yield $key => $value;
 		}
 	}
 
-	public function count()  // For Countable interface.
+	public function count() : int  // For Countable interface.
 	{
 		return count($this->_configuration);
 	}
 
-	public function refresh()
+	public function refresh() : void
 	{
 		$configuration = json_decode(file_get_contents($this->_fileName), true);  // "true" means associative array.
 
@@ -106,7 +106,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		$this->_configuration = $configuration;
 	}
 
-	public function save()
+	public function save() : void
 	{
 		if ($this->_wasChanged) {
 			file_put_contents(
@@ -124,7 +124,7 @@ class ConfigurationFile implements \IteratorAggregate, \Countable
 		}
 	}
 
-	static public function createNew($fileName)
+	static public function createNew(string $fileName) : void
 	{
 		file_put_contents($fileName, json_encode([]));
 	}

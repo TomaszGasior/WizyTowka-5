@@ -37,17 +37,17 @@ class Page extends DatabaseObject
 
 	// This method overwrites DatabaseObject::getAll().
 	// Page::getAll() returns public pages, Page::getAllDrafts() returns pages with draft status.
-	static public function getAll()
+	static public function getAll() : array
 	{
 		return static::_getByWhereCondition('isDraft = 0');
 	}
 
-	static public function getAllDrafts()
+	static public function getAllDrafts() : array
 	{
 		return static::_getByWhereCondition('isDraft = 1');
 	}
 
-	static public function getBySlug($slug)
+	static public function getBySlug(string $slug) : ?self
 	{
 		return static::_getByWhereCondition('slug = :slug', ['slug' => $slug], true);
 	}

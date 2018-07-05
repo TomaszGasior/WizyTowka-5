@@ -56,7 +56,7 @@ class WebsiteRenderer
 		}
 	}
 
-	public function prepareTemplate()
+	public function prepareTemplate() : void
 	{
 		$layout = $this->_HTMLLayout;
 
@@ -79,7 +79,7 @@ class WebsiteRenderer
 		$this->_HTMLHead->setAssetsPath($this->_theme->getURL());
 	}
 
-	private function _setupTemplatePath(HTMLTemplate $template)
+	private function _setupTemplatePath(HTMLTemplate $template) : void
 	{
 		// Themes can override HTML templates of website layout if it's specified in addon.conf.
 		$template->setTemplatePath(
@@ -88,7 +88,7 @@ class WebsiteRenderer
 		);
 	}
 
-	private function _prepareHead()
+	private function _prepareHead() : HTMLHead
 	{
 		$head = new HTMLHead;
 
@@ -133,7 +133,7 @@ class WebsiteRenderer
 		return $head;
 	}
 
-	private function _variable_websiteHeader()
+	private function _variable_websiteHeader() : string
 	{
 		$template = new HTMLTemplate('WebsiteHeader');
 		$this->_setupTemplatePath($template);
@@ -144,7 +144,7 @@ class WebsiteRenderer
 		return (string)$template;
 	}
 
-	private function _variable_websiteFooter()
+	private function _variable_websiteFooter() : string
 	{
 		$template = new HTMLTemplate('WebsiteFooter');
 		$this->_setupTemplatePath($template);
@@ -164,7 +164,7 @@ class WebsiteRenderer
 		return (string)$template;
 	}
 
-	private function _variable_pageHeader()
+	private function _variable_pageHeader() : string
 	{
 		$template = new HTMLTemplate('WebsitePageHeader');
 		$this->_setupTemplatePath($template);
@@ -186,7 +186,7 @@ class WebsiteRenderer
 		return (string)$template;
 	}
 
-	private function _variable_pageContent()
+	private function _variable_pageContent() : string
 	{
 		$template = new HTMLTemplate('WebsitePageContent');
 		$this->_setupTemplatePath($template);
@@ -206,7 +206,7 @@ class WebsiteRenderer
 	}
 
 
-	private function _function_menu($menuPositionNumber)
+	private function _function_menu(int $menuPositionNumber) : string
 	{
 		// More comming soon.
 		$pages = Page::getAll();
@@ -222,12 +222,12 @@ class WebsiteRenderer
 		return (string)$menu;
 	}
 
-	private function _function_area($areaPositionNumber)
+	private function _function_area(int $areaPositionNumber) : string
 	{
 		return '<!-- area ' . $areaPositionNumber . ' comming soon -->';
 	}
 
-	private function _function_info($option)
+	private function _function_info(string $option)
 	{
 		switch ($option) {
 			case 'websiteTitle':       return HTML::correctTypography($this->_settings->websiteTitle);

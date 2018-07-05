@@ -8,17 +8,17 @@ namespace WizyTowka;
 
 trait HTML
 {
-	static public function escape($text)
+	static public function escape(?string $text) : string
 	{
 		return htmlspecialchars($text, ENT_QUOTES | ENT_HTML5, 'UTF-8', false);
 	}
 
-	static public function unescape($text)
+	static public function unescape(?string $text) : string
 	{
 		return htmlspecialchars_decode($text, ENT_QUOTES | ENT_HTML5);
 	}
 
-	static public function correctTypography($text)
+	static public function correctTypography(?string $text) : string
 	{
 		$settings = WT()->settings;
 
@@ -30,7 +30,7 @@ trait HTML
 		return $flags ? (new Text($text))->correctTypography($flags)->get() : $text;
 	}
 
-	static private function _prepateTimeTag($timestamp, $visibleFormat, $HTMLFormat)
+	static private function _prepateTimeTag(int $timestamp, string $visibleFormat, string $HTMLFormat) : string
 	{
 		$value     = (new Text($timestamp))->formatAsDateTime($visibleFormat);
 		$HTMLValue = (new Text($timestamp))->formatAsDateTime($HTMLFormat);
@@ -38,7 +38,7 @@ trait HTML
 		return '<time datetime="' . $HTMLValue . '">' . $value . '</time>';
 	}
 
-	static public function formatDateTime($timestamp)
+	static public function formatDateTime(int $timestamp) : string
 	{
 		$settings = WT()->settings;
 
@@ -50,17 +50,17 @@ trait HTML
 		return self::_prepateTimeTag($timestamp, join($format), '%FT%T%z');
 	}
 
-	static public function formatDate($timestamp)
+	static public function formatDate(int $timestamp) : string
 	{
 		return self::_prepateTimeTag($timestamp, WT()->settings->dateDateFormat, '%F');
 	}
 
-	static public function formatTime($timestamp)
+	static public function formatTime(int $timestamp) : string
 	{
 		return self::_prepateTimeTag($timestamp, WT()->settings->dateTimeFormat, '%T%z');
 	}
 
-	static public function formatFileSize($bytes)
+	static public function formatFileSize(int $bytes) : string
 	{
 		return (new Text((string)$bytes))->formatAsFileSize(WT()->settings->filesUseBinaryUnitForSizes)->get();
 	}

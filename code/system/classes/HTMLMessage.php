@@ -14,7 +14,7 @@ class HTMLMessage extends HTMLTag
 	private $_messageText;
 	private $_messageType;
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return [
 			'type'    => $this->_messageType,
@@ -23,41 +23,41 @@ class HTMLMessage extends HTMLTag
 		];
 	}
 
-	private function _prepareText($message, ...$arguments)
+	private function _prepareText(string $message, ...$arguments) : string
 	{
 		$arguments = array_map(__NAMESPACE__ . '\HTML::escape', $arguments);
 		return $arguments ? sprintf($message, ...$arguments) : $message;
 	}
 
-	public function success($message, ...$arguments)
+	public function success(string $message, ...$arguments) : void
 	{
 		$this->_messageText = $this->_prepareText($message, ...$arguments);
 		$this->_messageType = __FUNCTION__;
 	}
 
-	public function error($message, ...$arguments)
+	public function error(string $message, ...$arguments) : void
 	{
 		$this->_messageText = $this->_prepareText($message, ...$arguments);
 		$this->_messageType = __FUNCTION__;
 	}
 
-	public function info($message, ...$arguments)
+	public function info(string $message, ...$arguments) : void
 	{
 		$this->_messageText = $this->_prepareText($message, ...$arguments);
 		$this->_messageType = __FUNCTION__;
 	}
 
-	public function information(...$arguments)
+	public function information(...$arguments) : void
 	{
-		return $this->info(...$arguments);
+		$this->info(...$arguments);
 	}
 
-	public function default($message, ...$arguments)
+	public function default(string $message, ...$arguments) : void
 	{
 		$this->_messageDefaultText = $this->_prepareText($message, ...$arguments);
 	}
 
-	public function clear($default = false)
+	public function clear(bool $default = false) : void
 	{
 		$this->_messageText = null;
 		$this->_messageType = null;
@@ -67,7 +67,7 @@ class HTMLMessage extends HTMLTag
 		}
 	}
 
-	public function output()
+	public function output() : void
 	{
 		if (!$this->_messageText and $this->_messageDefaultText) {
 			$this->success($this->_messageDefaultText);

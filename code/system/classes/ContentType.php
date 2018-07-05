@@ -8,6 +8,8 @@ namespace WizyTowka;
 
 class ContentType extends Addon
 {
+	private const API_CLASS = __NAMESPACE__ . '\ContentTypeAPI';
+
 	static protected $_addonsSubdir = 'types';
 	static protected $_defaultConfig = [
 		'namespace' => '',
@@ -16,15 +18,14 @@ class ContentType extends Addon
 		'settings'  => [],
 	];
 
-	private function _initClass($className)
+	private function _initClass(string $className) : ContentTypeAPI
 	{
 		// Add namespace of content type to autoloader.
 		WT()->autoloader->addNamespace($this->namespace, $this->getPath() . '/classes');
 
 		// Content type's classes must extend ContentTypeAPI class.
 		$className = $this->namespace . '\\' . $className;
-		$APIClass  = __NAMESPACE__ . '\ContentTypeAPI';
-		if (!is_subclass_of($className, $APIClass)) {
+		if (!is_subclass_of($className, self::API_CLASS)) {
 			ContentTypeException::invalidClass($className, $APIClass);
 		}
 
@@ -32,17 +33,17 @@ class ContentType extends Addon
 		return new $className($this);
 	}
 
-	public function initWebsitePageBox()
+	public function initWebsitePageBox() : ContentTypeAPI
 	{
 		return $this->_initClass('WebsitePageBox');
 	}
 
-	public function initEditorPage()
+	public function initEditorPage() : ContentTypeAPI
 	{
 		return $this->_initClass('EditorPage');
 	}
 
-	public function initSettingsPage()
+	public function initSettingsPage() : ContentTypeAPI
 	{
 		return $this->_initClass('SettingsPage');
 	}

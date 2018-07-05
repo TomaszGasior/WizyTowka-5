@@ -7,13 +7,13 @@ Lista umieszczana jest w znaczniku `<ul>`, a poszczególne jej elementy w znaczn
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, umożliwiając stworzenie łańcucha poleceń.
 
-## `collection(array &$collection)`
+## `collection(array &$collection) : HTMLElementsList`
 
 Służy do określenia kolekcji danych. Kolekcja danych test tablicą zawierającą poszczególne elementy, po których generator będzie iterował. Callbacki określone przy użyciu opisanych niżej metod będą otrzymywać każdy z elementów kolekcji danych jako argument.
 
 Określenie kolekcji danych jest obowiązkowe. Argument przyjmowany jest jako referencja.
 
-## `title(callable $callback)`
+## `title(callable $callback) : HTMLElementsList`
 
 Umożliwia określenie w argumencie `$callback` callbacka, który jako argument otrzyma element kolekcji danych, a zwrócić ma tytuł danego elementu listy.
 
@@ -21,7 +21,7 @@ Określenie callbacka tytułów elementów jest obowiązkowe.
 
 Uwaga: tytuł elementu listy nie jest escapowany — niepożądane znaczniki HTML muszą zostać usunięte ręcznie.
 
-## `link(callable $callback, array $HTMLAttributes = [])`
+## `link(callable $callback, array $HTMLAttributes = []) : HTMLElementsList`
 
 Dodaje do tytułów elementów odnośnik. W argumencie `$callback` należy wskazać callback, który jako argument otrzyma element kolekcji danych, a zwróci adres URL odnośnika.
 
@@ -29,7 +29,7 @@ Opcjonalny argument `$HTMLAttributes` umożliwia określenie dodatkowych atrybut
 
 Nie można dla tytułu elementu określić jednocześnie pola radio i odnośnika. W takim wypadku zostanie rzucony wyjątek `HTMLElementsListException` #2.
 
-## `radio($name, callable $fieldValueCallback, $currentValue, array $HTMLAttributes = [])`
+## `radio(string $name, callable $fieldValueCallback, $currentValue, array $HTMLAttributes = []) : HTMLElementsList`
 
 Dodaje do tytułów elementów pole wyboru radio.
 
@@ -43,7 +43,7 @@ Nie można dla tytułu elementu określić jednocześnie pola radio i odnośnika
 
 Alias dla metody `radio()`.
 
-## `menu(callable $callback)`
+## `menu(callable $callback) : HTMLElementsList`
 
 Dodaje do elementów listy menu nawigacyjne. Argument `$callback` służy do określenia callbacka, który jako argument otrzyma element kolekcji danych, a zwróci tablicę z elementami menu.
 
@@ -55,11 +55,11 @@ Tablica elementów menu zawierać powinna tablice zagnieżdżone określające w
 * adres URL odnośnika menu, wymagane,
 * klasa CSS dla elementu menu (znacznika `<li>`), opcjonalnie.
 
-## `emptyMessage($text)`
+## `emptyMessage(string $text) : HTMLElementsList`
 
 Służy do określenia w argumencie `$text` komunikatu generowanego zamiast listy elementów, jeśli kolekcja danych jest pusta.
 
-## `output()`
+## `output() : void`
 
 Generuje kod HTML listy elementów. Jeśli kolekcja nie jest pusta, generowana jest lista `<ul>`. Jeżeli jednak kolekcja danych jest pusta, a określono komunikat poprzez `emptyMessage()`, generowany jest akapit `<p>` z dodatkową klasą CSS `emptyMessage` i określonym komunikatem.
 

@@ -19,16 +19,16 @@ Posiada następujące pola:
 - `updatedTime` — data i czas ostatniej aktualizacji strony w formie uniksowego znacznika czasu;
 - `createdTime` — data i czas utworzenia strony w formie uniksowego znacznika czasu.
 
-## *static* `getAll()`
+## *static* `getAll() : array`
 
 Zwraca tablicę stron publicznych (dostępnych publicznie, niebędących szkicami). Jeśli brak takich stron, zwracana jest pusta tablica.
 
 **Uwaga: ta metoda nadpisuje metodę o tej samej nazwie z klasy `DatabaseObject`. Intencja jest następująca: `getAll()` w przypadku klasy `Pages` zwraca tablicę stron publicznie dostępnych, zaś `getAllDrafts()` zwraca tablicę stron będących szkicami.**
 
-## *static* `getAllDrafts()`
+## *static* `getAllDrafts() : array`
 
 Zwraca tablicę stron o statusie szkicu (niedostępnych publicznie). Jeśli brak takich stron, zwracana jest pusta tablica.
 
-## *static* `getBySlug($slug)`
+## *static* `getBySlug($slug) : ?Page`
 
 Zwraca stronę z nazwą uproszczoną (slugiem) równą podanej w argumencie `$slug` lub fałsz, jeśli brak takiej strony.

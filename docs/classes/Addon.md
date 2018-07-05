@@ -18,29 +18,29 @@ Konstruktor jest prywatny — nie można tworzyć nowych dodatków z wnętrza ko
 
 Nie można klonować obiektu dodatku — jest to pozbawione sensu, bowiem dodatek nie ma wielu kopii w systemie plików.
 
-## `getName()`
+## `getName() : string`
 
 Zwraca nazwę dodatku (dokładniej: nazwę podfolderu danego dodatku znajdującego się w katalogu określonym w `$_addonsSubdir`).
 
-## `getPath()`
+## `getPath() : string`
 
 Zwraca pełną bezwzględną ścieżkę do katalogu dodatku, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
 
-## `getURL()`
+## `getURL() : string`
 
 Zwraca adres URL — ścieżkę do katalogu dodatku, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
 
-## `isFromSystem()`
+## `isFromSystem() : bool`
 
 Zwraca prawdę, jeśli dodatek jest integralnym elementem systemu WizyTówka i znajduje się w folderze systemu (domyślnie `system`; pełna ścieżka to `(katalog systemu)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `system/addons/themes/exampletheme`).
 
 Zwraca fałsz, jeśli dodatek nie jest elementem systemu WizyTówka i znajduje się w folderze danych witryny (domyślnie `data`; pełna ścieżka to `(katalog danych)/addons/(folder typu dodatków)/(folder dodatku)`, na przykład `data/addons/themes/exampletheme`).
 
-## `isFromUser()`
+## `isFromUser() : bool`
 
 Zwraca odwrotność wartości z metody `isFromSystem()`.
 
-## *static* `getByName($name)`
+## *static* `getByName($name) : ?Addon`
 
 Zwraca dodatek (instancję klasy) o nazwie `$name` bądź `null`, jeśli dodatek o takiej nazwie nie istnieje.
 
@@ -48,7 +48,7 @@ Nazwa dodatku określona w argumencie `$name` jest w rzeczywistości nazwą podf
 
 Jeżeli dodatek o tej samej nazwie i typie znajduje się jednocześnie i w katalogu systemu (domyślnie `system`), i w katalogu danych witryny (domyślnie `data`), dodatek z katalogu danych witryny jest zwracany. Innymi słowy: dodatki z katalogu danych witryny nadpisują systemowe dodatki.
 
-## *static* `getAll()`
+## *static* `getAll() : array`
 
 Zwraca tablicę zawierającą wszystkie dodatki (instancje klasy) danego typu. Jeśli dodatków danego typu brak, zwracana jest pusta tablica.
 

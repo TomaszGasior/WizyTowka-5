@@ -21,35 +21,35 @@ Klasa implementuje metody magiczne `__get()`, `__set()`, `__isset()`, `__unset()
 
 Aby ustawić zmienną szablonu, należy stworzyć nową zmienną w obiekcie szablonu. **Zmienne szablonu są automatycznie escapowane za pomocą `HTML::escape()`.** Tablice są escapowane rekurencyjnie. Instancje klasy `stdClass` i iteratory (obiekty klas implementujących interfejs `Traversable`) są konwertowane do tablic, escapowane, a następnie konwertowane do obiektów `stdClass`. Instancje klas `HTMLTemplate` i `HTMLTag` nie są escapowane. Zostanie rzucony wyjątek `HTMLTemplateException` #2, jeśli podana dla zmiennej wartość będzie nieoczekiwanego typu. Aby uniknąć escapowania, należy użyć metody `setRaw()`.
 
-## `__construct($templateName = null, $templatePath = null)`
+## `__construct(string $templateName = null, string $templatePath = null)`
 
 Konstruktor klasy umożliwia określenie globalnej nazwy szablonu (argument `$templateName`) oraz ścieżki do katalogu gromadzącego szablony (argument `$templatePath`).
 
-## `__toString()`
+## `__toString() : string`
 
 Jeśli zostanie dokonane rzutowanie obiektu na ciąg znaków, wykonana zostanie metoda `render()`. Wyrenderowany szablon jest wtedy zwracany, nie wyświetlany.
 
-## `setRaw($variable, $value)`
+## `setRaw(string $variable, $value) : void`
 
 Ustawia zmienną szablonu `$variable` o wartości `$value` podobnie jak zwyczajnie utworzenie zmiennej na obiekcie, ale **z pominięciem escapowania**. Używając tej metody, jesteś odpowiedzialny za prawidłowe zabezpieczenie wartości zmiennej przed niechcianym kodem HTML.
 
-## `setTemplate($templateName)`
+## `setTemplate(?string $templateName) : void`
 
 Metoda umożliwia określenie globalnej nazwy szablonu. Nazwa szablonu nie powinna zawierać rozszerzenia pliku. Jeśli nazwa nie zostanie określona przy wywołaniu metody `render()`, zostanie użyta globalna nazwa szablonu.
 
-## `getTemplate()`
+## `getTemplate() : ?string`
 
 Metoda zwraca globalną nazwę szablonu określoną przez `setTemplate()` bądź w konstruktorze.
 
-## `setTemplatePath($templatePath)`
+## `setTemplatePath(?string $templatePath) : void`
 
 Metoda umożliwia określenie ścieżki do katalogu gromadzącego pliki szablonów.
 
-## `getTemplatePath()`
+## `getTemplatePath() : ?string`
 
 Metoda zwraca ścieżkę do katalogu szablonów określoną przez `setTemplatePath()` bądź w konstruktorze.
 
-## `render($templateName = null)`
+## `render(string $templateName = null) : void`
 
 Metoda renderuje szablon — eksportuje zmienne do skryptu PHP szablonu, uruchamia go, kierując go na wyjście. Aby zwrócić wyrenderowany szablon np. celem zapisania go do zmiennej, należy zamiast wywołania metody `render()`, rzutować obiekt na ciąg znaków.
 

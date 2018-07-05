@@ -11,17 +11,17 @@ Ostatnia klasa CSS zależna jest od typu komunikatu, pierwsza zaś wskazywana je
 
 Klasa implementuje metodę magiczną `__debugInfo()` w celu debugowania przy użyciu funkcji `var_dump()`.
 
-## `success($message, $arg1, $arg2, …)`
+## `success(string $message, $arg1, $arg2, …) : void`
 
 Określa komunikat o powodzeniu (klasa CSS: `success`) o treści `$message`. Jeżeli określono wcześniej inny komunikat, zostaje on nadpisany.
 
 Opcjonalnie można przekazać dodatkowe argumenty `$arg1`, `$arg2` i kolejne. W przypadku, gdy zostaną podane, zostaną wyescapowane za pośrednictwem `HTML::escape()`, a wynikowy komunikat zostanie spreparowany za pomocą funkcji wbudowanej `sprintf()`, do której argumenty zostaną przekazane razem z treścią komunikatu `$message` — musi być ona sformatowana zgodnie z [dokumentacją funkcji `sprintf()`](http://php.net/manual/en/function.sprintf.php), inaczej wystąpi błąd.
 
-## `error($message, $arg1, $arg2, …)`
+## `error(string $message, $arg1, $arg2, …) : void`
 
 Określa komunikat o błędzie (klasa CSS: `error`) o treści `$message`. Zobacz opis metody `success()`.
 
-## `info($message, $arg1, $arg2, …)`
+## `info(string $message, $arg1, $arg2, …) : void`
 
 Określa neutralny komunikat (klasa CSS: `info`) o treści `$message`. Zobacz opis metody `success()`.
 
@@ -29,16 +29,16 @@ Określa neutralny komunikat (klasa CSS: `info`) o treści `$message`. Zobacz op
 
 Alias dla metody `info()`.
 
-## `default($message, $arg1, $arg2, …)`
+## `default(string $message, $arg1, $arg2, …) : void`
 
 Działa jak metoda `success()` z tą różnicą, że nie nadpisuje określonego wcześniej komunikatu. Określony przez tę metodę komunikat o powodzeniu zostanie wyrenderowany wyłącznie, jeśli nie określono żadnego innego komunikatu.
 
-## `clear($default = false)`
+## `clear(bool $default = false) : void`
 
 Czyści komunikat błędu, jeśli został określony.
 
 Należy określić argument `$default` o wartości prawda, jeśli oczekiwane jest także wyczyszczenie komunikatu ustawionego przez metodę `default()`.
 
-## `output()`
+## `output() : void`
 
 Renderuje kod HTML komunikatu.

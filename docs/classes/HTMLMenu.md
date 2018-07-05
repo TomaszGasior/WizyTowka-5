@@ -9,7 +9,7 @@ Klasa implementuje interfejsy `Countable` i `IteratorAggregate`, by umożliwiać
 
 Jeśli nie wskazano inaczej, każda metoda zwraca `$this`, co umożliwia tworzenie łańcucha poleceń.
 
-## `append($label, $content, $CSSClass = null, array $HTMLAttributes = [], $visible = true)`
+## `append(string $label, $content, ?string $CSSClass = null, array $HTMLAttributes = [], bool $visible = true) : HTMLMenu`
 
 Dodaje element na koniec menu.
 
@@ -21,11 +21,11 @@ Opcjonalny argument `$CSSClass` umożliwia wskazanie klasy CSS przypisywanej do 
 
 Opcjonalny argument `$visible` o wartości logicznej będącej fałszem ukrywa element menu (nie będzie on w ogóle renderowany w kodzie HTML). Dzięki jego zastosowaniu można uniknąć przesunięcia numeracji pozostałych elementów menu.
 
-## `prepend(...)`
+## `prepend(...) : HTMLMenu`
 
 Dodaje element na początek menu. Przyjmuje argumenty jak `append()`.
 
-## `insert($position, ...)`
+## `insert($position, ...) : HTMLMenu`
 
 Dodaje element menu na pozycję określoną argumentem `$position`. Pozostałe argumenty przyjmuje jak `append()`.
 
@@ -35,27 +35,27 @@ Jeśli wystąpi kilka elementów menu z określoną tą samą pozycją, zostaną
 
 Uwaga: pozycje elementów menu dodanych za pomocą metod `append()` i `prepend()` są automatyczne. Może dojść do sytuacji, że elementy dodane za pośrednictwem `prepend()` otrzymają pozycje o wartości ujemnej.
 
-## `replace($position, ...)`
+## `replace($position, ...) : HTMLMenu`
 
 Usuwa z menu wszystkie elementy z pozycją `$position`, a następnie dodaje element menu w tej pozycji. Pozostałe argumenty przyjmuje jak `append()`.
 
 Alias dla wywołania metod `removeByPosition($position)` i `insert($position, ...)`.
 
-## `removeByPosition($position)`
+## `removeByPosition($position) : HTMLMenu`
 
 Usuwa z menu wszystkie elementy z pozycją określoną jako `$position`.
 
 Argument `$position` musi być liczbą całkowitą lub zmiennoprzecinkową. W innym wypadku zostanie rzucony wyjątek `HTMLMenuException` #3.
 
-## `removeByContent($content)`
+## `removeByContent($content) : HTMLMenu`
 
 Usuwa z menu wszystkie elementy z inną instancją klasy bądź adresem URL `$content`.
 
-## `removeByLabel($label)`
+## `removeByLabel(string $label) : HTMLMenu`
 
 Usuwa z menu wszystkie elementy z etykietą `$label`.
 
-## `output()`
+## `output() : void`
 
 Jeśli menu nie jest puste, generuje kod HTML menu — listę `<ul>` z elementami `<li>`.
 

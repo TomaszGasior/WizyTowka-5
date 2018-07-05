@@ -12,14 +12,14 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 
 	private $_items = [];
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		sort($this->_items);
 
 		return $this->_items;
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function getIterator() : iterable  // For IteratorAggregate interface.
 	{
 		sort($this->_items);
 
@@ -29,12 +29,12 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 		}
 	}
 
-	public function count()  // For Countable interface.
+	public function count() : int  // For Countable interface.
 	{
 		return count($this->_items);
 	}
 
-	public function prepend(...$arguments)
+	public function prepend(...$arguments) : self
 	{
 		$position = $this->_items ? (min($this->_items)['position'] - 1) : 1;
 		$this->_addItem(true, $position, ...$arguments);
@@ -42,7 +42,7 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 		return $this;
 	}
 
-	public function append(...$arguments)
+	public function append(...$arguments) : self
 	{
 		$position = $this->_items ? (max($this->_items)['position'] + 1) : 1;
 		$this->_addItem(true, $position, ...$arguments);
@@ -50,14 +50,14 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 		return $this;
 	}
 
-	public function insert(...$arguments)
+	public function insert(...$arguments) : self
 	{
 		$this->_addItem(false, ...$arguments);
 
 		return $this;
 	}
 
-	public function _addItem($_auto, $position, $label, $content, $CSSClass = null, array $HTMLAttributes = [], $visible = true)
+	public function _addItem(bool $_auto, $position, string $label, $content, ?string $CSSClass = null, array $HTMLAttributes = [], bool $visible = true) : void
 	{
 		if (!is_string($content) and (!is_object($content) or !($content instanceof $this))) {
 			throw HTMLMenuException::invalidContentValue();
@@ -70,7 +70,7 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 		$this->_items[] = compact('position', '_auto', 'label', 'content', 'CSSClass', 'HTMLAttributes', 'visible');
 	}
 
-	public function replace($position, ...$arguments)
+	public function replace($position, ...$arguments) : self
 	{
 		$this->removeByPosition($position);
 		$this->insert($position, ...$arguments);
@@ -78,21 +78,21 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 		return $this;
 	}
 
-	public function removeByContent($content)
+	public function removeByContent($content) : self
 	{
 		$this->_removeItem('content', $content);
 
 		return $this;
 	}
 
-	public function removeByLabel($label)
+	public function removeByLabel(string $label) : self
 	{
 		$this->_removeItem('label', $label);
 
 		return $this;
 	}
 
-	public function removeByPosition($position)
+	public function removeByPosition($position) : self
 	{
 		if (!is_int($position) and !is_float($position)) {
 			throw HTMLMenuException::invalidPositionValue();
@@ -102,14 +102,14 @@ class HTMLMenu extends HTMLTag implements \IteratorAggregate, \Countable
 		return $this;
 	}
 
-	private function _removeItem($key, $value)
+	private function _removeItem(string $key, $value) : void
 	{
 		$this->_items = array_filter($this->_items, function($item) use ($key, $value){
 			return $item[$key] != $value;
 		});
 	}
 
-	public function output()
+	public function output() : void
 	{
 		if ($this->_renderingInProgress) {
 			throw HTMLMenuException::renderingInProgress();

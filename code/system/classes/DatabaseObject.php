@@ -38,12 +38,12 @@ abstract class DatabaseObject implements \IteratorAggregate
 		$this->_dataNewlyCreated = true;
 	}
 
-	public function __get($column)
+	public function __get(string $column)
 	{
 		return $this->_data[$column];
 	}
 
-	public function __set($column, $value)
+	public function __set(string $column, $value) : void
 	{
 		if ($column == static::$_tablePrimaryKey) {
 			throw DatabaseObjectException::setterPrimaryKeyReadOnly($column);
@@ -58,24 +58,24 @@ abstract class DatabaseObject implements \IteratorAggregate
 		$this->_data[$column] = $value;
 	}
 
-	public function __isset($column)
+	public function __isset(string $column) : bool
 	{
 		return isset($this->_data[$column]);
 	}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return $this->_data;
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function getIterator() : iterable // For IteratorAggregate interface.
 	{
 		foreach ($this->_data as $key => $value) {
 			yield $key => $value;
 		}
 	}
 
-	public function save()
+	public function save() : bool
 	{
 		if ($this->_dataNewlyCreated) {
 			foreach (static::$_tableColumnsTimeAtInsert as $column) {
@@ -142,7 +142,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return $execution;
 	}
 
-	public function delete()
+	public function delete() : bool
 	{
 		if ($this->_dataNewlyCreated) {
 			return false;
@@ -163,7 +163,7 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return $execution;
 	}
 
-	static protected function _getByWhereCondition($sqlQueryWhere = null, array $parameters = [], $onlyOneRecord = false)
+	static protected function _getByWhereCondition(string $sqlQueryWhere = null, array $parameters = [], bool $onlyOneRecord = false)
 	{
 		$PDO = WT()->database;
 
@@ -211,12 +211,12 @@ abstract class DatabaseObject implements \IteratorAggregate
 		return $elementsToReturn;
 	}
 
-	static public function getById($id)
+	static public function getById($id) : ?self
 	{
 		return static::_getByWhereCondition(static::$_tablePrimaryKey.' = :id', ['id' => $id], true);
 	}
 
-	static public function getAll()
+	static public function getAll() : array
 	{
 		return static::_getByWhereCondition();
 	}

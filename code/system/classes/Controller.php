@@ -8,14 +8,14 @@ namespace WizyTowka;
 
 abstract class Controller
 {
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		throw ControllerException::withoutPOSTQueries(static::class);
 	}
 
-	public function output() {}
+	public function output() : void {}
 
-	protected function _redirect($target, array $arguments = [])
+	protected function _redirect($target, array $arguments = []) : void
 	{
 		$url = (strpos($target, '/') === false and strpos($target, '?') === false)
 			 ? static::URL($target, $arguments)
@@ -28,7 +28,7 @@ abstract class Controller
 	}
 
 	// This method should return URL to specified target (page of site or page of admin panel).
-	abstract static public function URL($target, array $arguments = []);
+	abstract static public function URL($target, array $arguments = []) : ?string;
 }
 
 class ControllerException extends Exception

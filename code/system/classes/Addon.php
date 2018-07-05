@@ -19,17 +19,17 @@ abstract class Addon implements \IteratorAggregate
 
 	private function __clone() {}
 
-	public function __get($name)
+	public function __get(string $name)
 	{
 		return $this->_config[$name];
 	}
 
-	public function __isset($name)
+	public function __isset(string $name) : bool
 	{
 		return isset($this->_config[$name]);
 	}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return [
 			'name'   => $this->_name,
@@ -38,39 +38,39 @@ abstract class Addon implements \IteratorAggregate
 		];
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function getIterator() : iterable // For IteratorAggregate interface.
 	{
 		foreach ($this->_config as $key => $value) {
 			yield $key => $value;
 		}
 	}
 
-	public function getName()
+	public function getName() : string
 	{
 		return $this->_name;
 	}
 
-	public function getPath()
+	public function getPath() : string
 	{
 		return ($this->_isFromSystem ? SYSTEM_DIR : DATA_DIR) . '/addons/' . static::$_addonsSubdir . '/' . $this->_name;
 	}
 
-	public function getURL()
+	public function getURL() : string
 	{
 		return ($this->_isFromSystem ? SYSTEM_URL : DATA_URL) . '/addons/' . static::$_addonsSubdir . '/' . $this->_name;
 	}
 
-	public function isFromUser()
+	public function isFromUser() : bool
 	{
 		return !$this->_isFromSystem;
 	}
 
-	public function isFromSystem()
+	public function isFromSystem() : bool
 	{
 		return $this->_isFromSystem;
 	}
 
-	static public function getByName($name)
+	static public function getByName(string $name) : ?self
 	{
 		$configPath = '/addons/' . static::$_addonsSubdir . '/' . $name . '/addon.conf';
 
@@ -91,7 +91,7 @@ abstract class Addon implements \IteratorAggregate
 		return null;
 	}
 
-	static public function getAll()
+	static public function getAll() : array
 	{
 		$addons = glob(
 			'{' . DATA_DIR . ',' . SYSTEM_DIR . '}/addons/' . static::$_addonsSubdir . '/*/addon.conf',

@@ -22,14 +22,14 @@ W klasie zdefiniowane zostały stałe służące do określania poziomu uprawnie
 - `PERM_WEBSITE_SETTINGS` — uprawnienie do zarządzania konfiguracją witryny i systemu;
 - `PERM_SUPER_USER` — uprawnienie do zarządzania kontami użytkowników oraz korzystania z edytora konfiguracji, edytora plików i innych elementów systemu.
 
-## *static* `getByName($name)`
+## *static* `getByName(string $name) : ?User`
 
 Zwraca użytkownika o nazwie `$name` lub fałsz, jeśli brak takiego użytkownika.
 
-## `setPassword($givenPassword)`
+## `setPassword(string $givenPassword) : void`
 
 Ustawia hasło użytkownika na podane w argumencie `$givenPassword` z wykorzystaniem wbudowanych w PHP funkcji do obsługi haseł. Po wywołaniu tej metody w polu `password` zostanie umieszczony hasz hasła.
 
-## `checkPassword($givenPassword)`
+## `checkPassword(string $givenPassword) : bool`
 
 Porównuje hasło podane w argumencie `$givenPassword` z haszem hasła zapisanym w bazie danych w polu `password` z wykorzystaniem wbudowanych w PHP funkcji do obsługi haseł. Zwraca prawdę, jeśli podane hasło jest poprawne, inaczej fałsz.

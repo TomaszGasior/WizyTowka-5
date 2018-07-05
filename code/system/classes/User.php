@@ -30,17 +30,17 @@ class User extends DatabaseObject
 		'createdTime',
 	];
 
-	static public function getByName($name)
+	static public function getByName($name) : ?self
 	{
 		return static::_getByWhereCondition('name = :name', ['name' => $name], true);
 	}
 
-	public function setPassword($givenPassword)
+	public function setPassword(string $givenPassword) : void
 	{
 		$this->password = password_hash($givenPassword, PASSWORD_BCRYPT, ['cost' => 13]);
 	}
 
-	public function checkPassword($givenPassword)
+	public function checkPassword(string $givenPassword) : bool
 	{
 		return password_verify($givenPassword, $this->password);
 	}

@@ -14,39 +14,39 @@ class UploadedFile
 
 	private function __clone() {}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return [
 			'name' => $this->_fileName,
 		];
 	}
 
-	public function getName()
+	public function getName() : string
 	{
 		return $this->_fileName;
 	}
 
-	public function getPath()
+	public function getPath() : string
 	{
 		return FILES_DIR . '/' . $this->_fileName;
 	}
 
-	public function getURL()
+	public function getURL() : string
 	{
 		return FILES_URL . '/' . $this->_fileName;
 	}
 
-	public function getSize()
+	public function getSize() : ?int
 	{
-		return is_file($this->getPath()) ? (int)filesize($this->getPath()) : 0;
+		return is_file($this->getPath()) ? filesize($this->getPath()) : null;
 	}
 
-	public function getModificationTime()
+	public function getModificationTime() : ?int
 	{
-		return is_file($this->getPath()) ? (int)filemtime($this->getPath()) : 0;
+		return is_file($this->getPath()) ? filemtime($this->getPath()) : null;
 	}
 
-	public function rename($newFileName)
+	public function rename(string $newFileName) : bool
 	{
 		// Avoid creating subdirectories.
 		if (strpos($newFileName, '/') !== false or strpos($newFileName, '\\') !== false) {
@@ -63,12 +63,12 @@ class UploadedFile
 		return false;
 	}
 
-	public function delete()
+	public function delete() : bool
 	{
 		return (is_file($this->getPath()) and unlink($this->getPath()));
 	}
 
-	static public function getByName($fileName)
+	static public function getByName(string $fileName) : ?self
 	{
 		// Avoid reading from subdirectories.
 		if (strpos($fileName, '/') !== false or strpos($fileName, '\\') !== false) {
@@ -85,7 +85,7 @@ class UploadedFile
 		return null;
 	}
 
-	static public function getAll()
+	static public function getAll() : array
 	{
 		$uploadedFiles = glob(FILES_DIR . '/*');
 		if ($uploadedFiles === false) {

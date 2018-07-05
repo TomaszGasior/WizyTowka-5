@@ -11,41 +11,41 @@ Każda metoda, chyba że wskazano inaczej, zwraca instancję klasy (`$this` z wn
 
 Konstruktor jako argument przyjmuje przechowywany ciąg znaków. Jeśli zawartość zmiennej `$string` nie jest typu `string`, następuje konwersja do tego typu.
 
-## `get()`
+## `get() : string`
 
 Zwraca przechowywany ciąg znaków.
 
 Zamiast tej metody można rzutować obiekt na typ `string` lub użyć względem obiektu polecenia `echo`.
 
-## `getChar($position)`
+## `getChar(int $position) : ?string`
 
 Zwraca jeden znak na pozycji określonej argumentem `$position`. Pozycje są numerowane od zera. Jeśli zostanie podana liczba ujemna, znak będzie liczony od końca. Jeżeli znak nie istnieje, zostanie zwrócone `null`.
 
 Argument `$position` musi być liczbą całkowitą.
 
-## `getLength()`
+## `getLength() : int`
 
 Zwraca długość przechowywanego ciągu znaków.
 
-## `lowercase()`
+## `lowercase() : Text`
 
 Zmienia wielkość liter przechowywanego tekstu na małe.
 
-## `uppercase()`
+## `uppercase() : Text`
 
 Zmienia wielkość liter przechowywanego tekstu na duże.
 
-## `cut($from, $length)`
+## `cut(int $from, int $length = null) : Text`
 
 Ucina przechowywany ciąg znaków. Argument `$from` określa numer znaku rozpoczynającego wynikowy ciąg znaków. Znaki numerowane są od zera. Jeśli liczba jest ujemna, znak jest określany od końca. Argument `$length` określa długość wynikowego ciągu znaków. Jeśli jest dodatni, wynikowy ciąg będzie miał tyle znaków. Jeśli jest ujemny, o tyle znaków będzie krótszy.
 
 Argumenty `$from` i `$length` muszą być liczbami całkowitymi.
 
-## `replace(array $replacements, $caseInsensitive = false)`
+## `replace(array $replacements, bool $caseInsensitive = false) : Text`
 
 Zamienia w przechowywanym ciągu znaków teksty określone w tablicy `$replacements`: poszczególne klucze tablicy są zamieniane na odpowiadające im wartości. Jeżeli argument `$caseInsensitive` jest prawdą, nie jest uwzględniana przy zamianie wielkość znaków.
 
-## `correctTypography($flags)`
+## `correctTypography(int $flags) : Text`
 
 Modyfikuje przechowywany ciąg znaków, dokonując poprawek typograficznych, aby poprawić zgodność z polskimi zasadami typografii. Zakres aplikowanych poprawek należy określić, podając flagi w argumencie `$flags` w formie stałych klasy `Text`:
 
@@ -56,7 +56,7 @@ Modyfikuje przechowywany ciąg znaków, dokonując poprawek typograficznych, aby
 
 Metoda jest przystosowana do pracy z kodem HTML. Korekty nie są dokonywane w znacznikach otwierających HTML oraz we wnętrzu znaczników `<pre>` i `<code>`. Nie są używane encje HTML, zamiast nich odpowiednie znaki są wstawiane bezpośrednio.
 
-## `makeFragment($maxLength, $dots = '…')`
+## `makeFragment(int $maxLength, string $dots = '…') : Text`
 
 Zamienia przechowywany ciąg znaków na wycinek zawierający fragment oryginalnego ciągu znaków o długości nieprzekraczającej `$maxLength` oraz doklejoną po nim zawartość argumentu `$dots`.
 
@@ -64,7 +64,7 @@ Jeżeli podczas odcinania fragmentu ostatnie słowo zostanie uszkodzone, zostani
 
 Argument `$maxLength` musi być dodatnią liczbą całkowitą.
 
-## `makeMiddleFragment($maxLength, $dots = ' … ')`
+## `makeMiddleFragment(int $maxLength, string $dots = ' … ') : Text`
 
 Zamienia przechowywany ciąg znaków na wycinek zawierający początkowy fragment oryginalnego ciągu znaków o długości nieprzekraczającej połowy `$maxLength`, końcowy fragment oryginalnego ciągu znaków o długości nieprzekraczającej połowy `$maxLength` oraz doklejoną pomiędzy tymi fragmentami zawartość argumentu `$dots`.
 
@@ -72,13 +72,13 @@ Jeżeli podczas odcinania fragmentu graniczne słowo zostanie uszkodzone, zostan
 
 Argument `$maxLength` musi być dodatnią liczbą całkowitą.
 
-## `makeSlug($lowercase = true)`
+## `makeSlug(bool $lowercase = true) : Text`
 
 Zamienia przechowywany ciąg znaków na identyfikator, który może zostać bezpiecznie użyty jako nazwa pliku w systemie plików bądź fragment adresu URL. Jeżeli argument `$lowercase` jest prawdą, znaki zamieniane są na małe.
 
 Spacje są zamieniane na minusy, ich duplikaty są usuwane. Polskie znaki diakrytyczne są zamieniane na ich odpowiedniki z tablicy ASCII. Wszystkie niepożądane znaki są usuwane.
 
-## `formatAsDateTime($format = '%Y-%m-%d %H:%M:%S')`
+## `formatAsDateTime(string $format = '%Y-%m-%d %H:%M:%S') : Text`
 
 Zamienia przechowywany ciąg znaków na datę i godzinę w formacie określonym w argumencie `$format`.
 
@@ -86,7 +86,7 @@ Ciąg znaków jest najpierw konwertowany do uniksowego znacznika czasu za pomoc�
 
 Format określony w argumencie `$format` musi być zatem zgodny ze [składnią formatu funkcji `strftime()`](http://php.net/manual/en/function.strftime.php#refsect1-function.strftime-parameters).
 
-## `formatAsFileSize($binaryUnits = true)`
+## `formatAsFileSize(bool $binaryUnits = true) : Text`
 
 Zamienia przechowywany ciąg znaków na tekst określający rozmiar pliku w czytelnym dla użytkownika formacie.
 

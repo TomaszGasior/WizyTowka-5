@@ -19,29 +19,29 @@ Klasa dziedziczące otrzymuje następujące pola chronione:
 
 Konstruktor wymaga określenia w argumencie `$myContentTypeInstance` instancji klasy `ContentType`, wewnątrz której instancja klasy dziedziczącej po klasie `ContentTypeAPI` jest tworzona.
 
-## *final* `setPageData(\stdClass $contents, \stdClass $settings)`
+## *final* `setPageData(\stdClass $contents, \stdClass $settings) : void`
 
 Setter używany wewnętrznie przez system, ustawiający pola `$_settings` i `$_contents`.
 
-## *final* `setHTMLParts(HTMLTemplate $template, HTMLHead $head, HTMLMessage $message)`
+## *final* `setHTMLParts(HTMLTemplate $template, HTMLHead $head, HTMLMessage $message) : void`
 
 Setter używany wewnętrznie przez system, ustawiający pola `$_template`, `$_head`, `$_message`.
 
-## *final protected* `_getPath()`
+## *final protected* `_getPath() : string`
 
 Zwraca pełną ścieżkę bezwzględną w systemie plików serwera do katalogu typu zawartości, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
 
-## *final protected* `_getURL()`
+## *final protected* `_getURL() : string`
 
 Zwraca adres URL — ścieżkę do katalogu typu zawartości, z uwzględnieniem źródła dodatku (z systemu bądź użytkownika).
 
-## `POSTQuery()`
+## `POSTQuery() : void`
 
 Obsługuje żądania POST. Nie powinna być wywoływana poza nimi.
 
 Domyślnie metoda rzuca wyjątek `ContentTypeAPIException` #1, co oznacza, że dana klasa zapytań POST nie obsługuje.
 
-## *abstract* `HTMLContent()`
+## *abstract* `HTMLContent() : void`
 
 Miejsce na wykonywanie operacji związanych z szablonem HTML. Klasa dziedzicząca określa tutaj sposób renderowania typu zawartości. Żaden tekst nie powinien być kierowany tutaj na wyjście, należy operować na szablonie `$_HTMLTemplate`, nagłówku `<head>` `$_HTMLHead` i komunikacie `$_HTMLMessage`.
 

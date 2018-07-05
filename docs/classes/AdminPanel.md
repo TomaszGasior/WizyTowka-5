@@ -7,13 +7,13 @@ Klasa `AdminPanel` w rzeczywistości nie jest kontrolerem poszczególnych stron 
 
 Kontrolery stron panelu znajdują się w zagnieżdżonej przestrzeni nazw `AdminPages`. Każdy z nich musi dziedziczyć po klasie `AdminPanelPage`. Klasa `AdminPanel` umożliwia dla wtyczek rejestrowanie z zewnątrz dodatkowych stron panelu administracyjnego oraz nadpisywanie systemowych stron.
 
-## *static* `URL($target, $arguments = [])`
+## *static* `URL($target, array $arguments = []) : string`
 
 Zwraca adres URL kierujący do strony panelu administracyjnego określonej w argumencie `$target`. Jeżeli argument `$target` ma wartość `null`, adres URL kieruje do domyślnej strony panelu. Argument `$arguments` określa parametry dodane do query stringa odnośnika.
 
 Nie należy określać w query stringu argumentu o kluczu `c`, gdyż nazwa ta jest używana wewnętrznie przez panel administracyjny. W wypadku takiego użycia, zostanie rzucony wyjątek `ControllerException` #2.
 
-## *static* `registerPage($name, $controller)`
+## *static* `registerPage(string $name, string $controller) : void`
 
 Umożliwia zarejestrowanie w panelu administracyjnym dodatkowej strony bądź nadpisanie systemowej strony. Argument `$name` określa nazwę strony — jest ona używana w adresie URL (atrybut `$tagret` metody `URL()`). Argument `$controller` określa pełną nazwę kwalifikowaną klasy kontrolera rejestrowanej strony. **Klasa ta musi dziedziczyć po klasie `AdminPanelPage`.**
 

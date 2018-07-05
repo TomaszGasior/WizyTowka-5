@@ -14,7 +14,7 @@ class HTMLTagTest extends TestCase
 	{
 		self::$_exampleClass = get_class(new class() extends __\HTMLTag
 		{
-			public function output()
+			public function output() : void
 			{
 				$attributes = [
 					'type'      => 'text',

@@ -47,7 +47,7 @@ class Website extends Controller
 		$this->_renderer = new WebsiteRenderer($this->_HTMLTemplate, $this->_page, $this->_contentTypeAPI);
 	}
 
-	private function _sendHTTPHeaders()
+	private function _sendHTTPHeaders() : void
 	{
 		// 404 error header.
 		if (!$this->_page) {
@@ -63,7 +63,7 @@ class Website extends Controller
 		header('X-Powered-By: WizyTowka CMS');
 	}
 
-	public function POSTQuery()
+	public function POSTQuery() : void
 	{
 		if ($this->_page) {
 			try {
@@ -74,7 +74,7 @@ class Website extends Controller
 		}
 	}
 
-	public function output()
+	public function output() : void
 	{
 		// ContentTypeAPI::HTMLContent() must be called before WebsiteRenderer::prepareTemplate().
 		if ($this->_page) {
@@ -86,7 +86,7 @@ class Website extends Controller
 		$this->_HTMLTemplate->render();
 	}
 
-	static public function URL($target, array $arguments = [])
+	static public function URL($target, array $arguments = []) : ?string
 	{
 		$settings = WT()->settings;
 

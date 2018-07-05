@@ -11,19 +11,19 @@ class HTMLFormFields extends HTMLTag
 	private $_fields = [];
 	private $_disabled;
 
-	public function __construct($disabled = false, ...$arguments)
+	public function __construct(bool $disabled = false, ...$arguments)
 	{
 		$this->_disabled = (bool)$disabled;
 
 		parent::__construct(...$arguments);
 	}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return $this->_fields;
 	}
 
-	public function text($label, $name, $value, array $HTMLAttributes = [])
+	public function text(string $label, string $name, ?string $value, array $HTMLAttributes = []) : self
 	{
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
@@ -34,7 +34,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function number($label, $name, $value, array $HTMLAttributes = [])
+	public function number(string $label, string $name, $value, array $HTMLAttributes = []) : self
 	{
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
@@ -46,7 +46,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function color($label, $name, $value, array $HTMLAttributes = [])
+	public function color(string $label, string $name, ?string $value, array $HTMLAttributes = []) : self
 	{
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
@@ -57,7 +57,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function url($label, $name, $value, array $HTMLAttributes = [])
+	public function url(string $label, string $name, ?string $value, array $HTMLAttributes = []) : self
 	{
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
@@ -68,7 +68,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function email($label, $name, $value, array $HTMLAttributes = [])
+	public function email(string $label, string $name, ?string $value, array $HTMLAttributes = []) : self
 	{
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
@@ -79,7 +79,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function password($label, $name, array $HTMLAttributes = [])
+	public function password(string $label, string $name, array $HTMLAttributes = []) : self
 	{
 		$type = 'simple';
 		$HTMLAttributes['type']  = __FUNCTION__;
@@ -91,7 +91,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function checkbox($label, $name, $currentValue, array $HTMLAttributes = [])
+	public function checkbox(string $label, string $name, $currentValue, array $HTMLAttributes = []) : self
 	{
 		$type = 'checkable';
 		$HTMLAttributes['type']    = __FUNCTION__;
@@ -102,24 +102,24 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function radio($label, $name, $fieldValue, $currentValue, array $HTMLAttributes = [])
+	public function radio(string $label, string $name, $fieldValue, $currentValue, array $HTMLAttributes = []) : self
 	{
 		$type = 'checkable';
 		$HTMLAttributes['type']    = __FUNCTION__;
 		$HTMLAttributes['name']    = $name;
-		$HTMLAttributes['value']   = $fieldValue;
-		$HTMLAttributes['checked'] = ($currentValue == $fieldValue);
+		$HTMLAttributes['value']   = is_scalar($fieldValue) ? $fieldValue : '';
+		$HTMLAttributes['checked'] = (is_scalar($fieldValue) and ($currentValue == $fieldValue));
 
 		$this->_fields[] = compact('type', 'HTMLAttributes', 'label');
 		return $this;
 	}
 
-	public function option(...$arguments)
+	public function option(...$arguments) : self
 	{
 		return $this->radio(...$arguments);
 	}
 
-	public function textarea($label, $name, $content, array $HTMLAttributes = [])
+	public function textarea(string $label, string $name, ?string $content, array $HTMLAttributes = []) : self
 	{
 		$type = __FUNCTION__;
 		$HTMLAttributes['name'] = $name;
@@ -128,7 +128,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function select($label, $name, $selected, array $valuesList, array $HTMLAttributes = [])
+	public function select(string $label, string $name, ?string $selected, array $valuesList, array $HTMLAttributes = []) : self
 	{
 		$type = __FUNCTION__;
 		$HTMLAttributes['name']  = $name;
@@ -137,7 +137,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function textWithHints($label, $name, $value, array $hints, array $HTMLAttributes = [])
+	public function textWithHints(string $label, string $name, ?string $value, array $hints, array $HTMLAttributes = []) : self
 	{
 		$type = __FUNCTION__;
 		$HTMLAttributes['type']  = 'text';
@@ -148,12 +148,12 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function skip()
+	public function skip() : self
 	{
 		return $this;
 	}
 
-	public function remove($name)
+	public function remove(string $name) : self
 	{
 		foreach ($this->_fields as $key => $field) {
 			if ($field['HTMLAttributes']['name'] == $name) {
@@ -164,7 +164,7 @@ class HTMLFormFields extends HTMLTag
 		return $this;
 	}
 
-	public function output()
+	public function output() : void
 	{
 		echo '<fieldset', $this->_CSSClass ? ' class="' . $this->_CSSClass . '"' : '',
 		     $this->_disabled ? ' disabled>' : '>';

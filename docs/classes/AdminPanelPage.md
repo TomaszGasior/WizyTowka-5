@@ -25,7 +25,7 @@ Konstruktor przekierowuje do strony logowania panelu administracyjnego, jeśli w
 
 Tutaj jest wywoływana metoda `_prepare()`.
 
-## `output()`
+## `output() : void`
 
 Metoda generuje nagłówek strony HTML, menu główne, menu dodatkowe oraz ładuje główny szablon panelu administracyjnego, a także szablon strony panelu.
 
@@ -33,11 +33,11 @@ Szablon strony ładowany jest z folderu `system/templates/adminPages`, nazwa pli
 
 Tutaj jest wywoływana metoda `_output()`.
 
-## *protected* `_prepare()`
+## *protected* `_prepare() : void`
 
 Ekwiwalent dla metody `__construct()` dla klas dziedziczących. Metoda jest domyślnie pusta.
 
-## *protected* `_output()`
+## *protected* `_output() : void`
 
 Ekwiwalent dla metody `output()` (z klasy `Controller`) dla klas dziedziczących. Metoda jest domyślnie pusta.
 

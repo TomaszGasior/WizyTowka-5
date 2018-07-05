@@ -26,27 +26,27 @@ Tworzy nowy rekord tabeli. Wszystkie pola rekordu otrzymują domyślną wartoś�
 
 Tworzy nowy rekord tabeli z dotychczasowymi danymi. Innymi słowy, przy klonowaniu obiektu jego kopia jest traktowana jako nowo utworzony rekord (kasowana jest wartość klucza podstawowego).
 
-## `save()`
+## `save() : bool`
 
 Zapisuje rekord. Jeśli rekord jest nowo utworzonym rekordem, używane jest zapytanie SQL `INSERT`, a po pomyślnym dodaniu wartość klucza podstawowego jest uzupełniana. Jeśli rekord już istnieje, jest aktualizowany przy użyciu zapytania `UPDATE`.
 
 Przed zapisem wartości kolumn zdefiniowanych w polu `$_tableColumnsJSON` zamieniane są na ciąg w formacie JSON, a do pól określonych w `$_tableColumnsTimeAtInsert` lub `$_tableColumnsTimeAtUpdate`, w zależności od kontekstu, zapisywany jest aktualny uniksowy znacznik czasu. Jeśli przy zapisie kodu JSON wystąpi błąd, zostanie rzucony wyjątek `DatabaseObjectException` #3.
 
-## `delete()`
+## `delete() : bool`
 
 Usuwa rekord. Po pomyślnym usunięciu z tabeli bazy danych, zachowując aktualne wartości pól (za wyjątkiem klucza podstawowego), staje się nowo utworzonym rekordem (jak za pomocą konstruktora; można go zapisać, by dodać go na nowo do tabeli z inną wartością klucza podstawowego).
 
 Nie można usunąć rekordu, jeśli jest nowo utworzony (jeszcze nie zapisany w bazie danych).
 
-## *static* `getAll()`
+## *static* `getAll() : array`
 
 Zwraca tablicę gromadzącą wszystkie rekordy tabeli (każdy rekord jest indywidualną instancją klasy).
 
-## *static* `getById($id)`
+## *static* `getById($id) : ?DatabaseObject`
 
 Zwraca rekord o wartości klucza podstawowego podanej w argumencie `$id` (instancję klasy). Jeśli taki rekord nie istnieje, zwraca `null`.
 
-## *static protected* `_getByWhereCondition($sqlQueryWhere = null, $parameters = [], $onlyOneRecord = false)`
+## *static protected* `_getByWhereCondition(string $sqlQueryWhere = null, array $parameters = [], bool $onlyOneRecord = false)`
 
 Metoda stanowiąca podstawę dla innych metod pobierających istniejące rekordy. Wykonuje zapytanie `SELECT` w celu pobrania rekordów, wykorzystując przy tym [przypinanie parametrów wejściowych PDO](http://php.net/manual/en/pdo.prepared-statements.php).
 

@@ -17,20 +17,20 @@ class Text implements \ArrayAccess, \IteratorAggregate
 
 	public function __construct($string)
 	{
-		$this->_string = (string)$string;    // See comment in formatAsDateTime().
+		$this->_string = (string)$string;
 	}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return [$this->_string];
 	}
 
-	public function __toString()
+	public function __toString() : string
 	{
 		return $this->_string;
 	}
 
-	public function offsetExists($offset)   // ArrayAccess interface.
+	public function offsetExists($offset) : bool   // ArrayAccess interface.
 	{
 		return ($this->getChar($offset) !== null);
 	}
@@ -44,7 +44,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $char;
 	}
 
-	public function offsetSet($offset, $char)   // ArrayAccess interface.
+	public function offsetSet($offset, $char) : void   // ArrayAccess interface.
 	{
 		if ($this->getChar($offset) === null) {
 			trigger_error('Illegal string offset: ' . $offset, E_USER_NOTICE);
@@ -67,56 +67,54 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		$this->_string = $before . $char . $after;
 	}
 
-	public function offsetUnset($offset)   // ArrayAccess interface.
+	public function offsetUnset($offset) : void   // ArrayAccess interface.
 	{
 		trigger_error('Cannot unset string offsets', E_USER_NOTICE);    // Match PHP native behavior.
 	}
 
-	public function getIterator()   // IteratorAggregate interface.
+	public function getIterator() : iterable   // IteratorAggregate interface.
 	{
 		for ($offset = 0; $offset < $this->getLength(); $offset++) {
 			yield $this[$offset];
 		}
 	}
 
-	public function get()
+	public function get() : string
 	{
 		return $this->_string;
 	}
 
-	public function getChar($position)
+	public function getChar(int $position) : ?string
 	{
-		if (is_integer($position)) {
-			$testNumber = ($position < 0) ? (abs($position) - 1) : $position;
+		$testNumber = ($position < 0) ? (abs($position) - 1) : $position;
 
-			if ($testNumber < $this->getLength()) {
-				return mb_substr($this->_string, $position, 1);
-			}
+		if ($testNumber < $this->getLength()) {
+			return mb_substr($this->_string, $position, 1);
 		}
 
 		return null;
 	}
 
-	public function getLength()
+	public function getLength() : int
 	{
 		return mb_strlen($this->_string);
 	}
 
-	public function lowercase()
+	public function lowercase() : self
 	{
 		$this->_string = mb_strtolower($this->_string);
 
 		return $this;
 	}
 
-	public function uppercase()
+	public function uppercase() : self
 	{
 		$this->_string = mb_strtoupper($this->_string);
 
 		return $this;
 	}
 
-	public function cut($from, $length = null)
+	public function cut(int $from, int $length = null) : self
 	{
 		if (is_integer($from)) {
 			$this->_string = is_integer($length) ? mb_substr($this->_string, $from, $length) : mb_substr($this->_string, $from);
@@ -125,7 +123,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function replace(array $replacements, $caseInsensitive = false)
+	public function replace(array $replacements, bool $caseInsensitive = false) : self
 	{
 		if ($caseInsensitive) {
 			foreach ($replacements as $from => $to) {
@@ -139,7 +137,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function correctTypography($flags)
+	public function correctTypography(int $flags) : self
 	{
 		// Do not correct typography in contents of <code> and <pre> HTML tags.
 		$partsPreCode = preg_split('/(<\/{0,1}(?:pre|code)(?: [^<>]*|)>)/', $this->_string, -1,  PREG_SPLIT_DELIM_CAPTURE);
@@ -212,7 +210,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function makeFragment($maxLength, $dots = '…')
+	public function makeFragment(int $maxLength, string $dots = '…') : self
 	{
 		if ($maxLength > 0 and $maxLength < $this->getLength()) {
 			$removeBrokenWord = ($this->getChar($maxLength) != ' ');
@@ -228,7 +226,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function makeMiddleFragment($maxLength, $dots = ' … ')
+	public function makeMiddleFragment(int $maxLength, string $dots = ' … ') : self
 	{
 		if ($maxLength > 0) {
 			if ($maxLength % 2 != 0) {
@@ -248,7 +246,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function makeSlug($lowercase = true)
+	public function makeSlug(bool $lowercase = true) : self
 	{
 		if ($lowercase) {
 			$this->lowercase();
@@ -263,7 +261,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function formatAsDateTime($format = '%Y-%m-%d %H:%M:%S')
+	public function formatAsDateTime(string $format = '%Y-%m-%d %H:%M:%S') : self
 	{
 		if ($format) {
 			$isWindowsOS = !strncasecmp(PHP_OS, 'win', 3);
@@ -302,7 +300,7 @@ class Text implements \ArrayAccess, \IteratorAggregate
 		return $this;
 	}
 
-	public function formatAsFileSize($binaryUnits = true)
+	public function formatAsFileSize(bool $binaryUnits = true) : self
 	{
 		if (ctype_digit($this->_string)) {
 			$units = $binaryUnits ? [

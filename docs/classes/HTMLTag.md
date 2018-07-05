@@ -9,29 +9,29 @@ Niektóre metody klas dziedziczących umożliwiają określenie dodatkowych atry
 
 Uwaga: treści przekazywane klasom dziedziczącym umieszczane w kodzie HTML, jeśli nie wskazano inaczej, zazwyczaj nie są filtrowane — należy je przefiltrować przez `HTML::escape()`.
 
-## `__construct($CSSClass = null)`
+## `__construct(string $CSSClass = null)`
 
 Konstruktor umożliwia określenie klasy CSS dla głównego znacznika HTML generowanego przez klasę.
 
-## `__toString()`
+## `__toString() : string`
 
 Klasa umożliwia rzutowanie swoich instancji na ciąg znaków w celu zapisania bądź wyświetlenia kodu HTML. Metoda zwraca tekst kierowany na wyjście przez metodę `output()`.
 
-## `getCSSClass()`
+## `getCSSClass() : string`
 
 Zwraca określoną klasę CSS głównego znacznika HTML.
 
-## `setCSSClass($CSSClass)`
+## `setCSSClass(string $CSSClass) : void`
 
 Ustawia klasę CSS głównego znacznika HTML na `$CSSClass`.
 
-## *abstract* `output()`
+## *abstract* `output() : void`
 
 Generuje kod HTML i kieruje go na wyjście.
 
 Klasa dziedzicząca powinna w tym miejscu zaimplementować wyświetlanie elementu, renderowanie poprzez kod HTML.
 
-## *protected* `_renderHTMLOpenTag($tagName, array $HTMLAttributes = [])`
+## *protected* `_renderHTMLOpenTag(string $tagName, array $HTMLAttributes = []) : void`
 
 Metoda używana wewnętrznie przez klasy dziedziczące przeznaczona do generowania kodu HTML znacznika otwierającego `$tagName` wraz z atrybutami wskazanymi w tablicy `$HTMLAttributes`. Na przykład: `<input type="text" name="field_1" disabled>`. Kod HTML jest kierowany na wyjście, nie — zwracany.
 

@@ -22,21 +22,21 @@ class HTMLElementsList extends HTMLTag
 	private $_HTMLAttributesLink = [];
 	private $_HTMLAttributesRadio = [];
 
-	public function collection(array &$collection)
+	public function collection(array &$collection) : self
 	{
 		$this->_collection = &$collection;
 
 		return $this;
 	}
 
-	public function title(callable $callback)
+	public function title(callable $callback) : self
 	{
 		$this->_callbackTitle = $callback;
 
 		return $this;
 	}
 
-	public function link(callable $callback, array $HTMLAttributes = [])
+	public function link(callable $callback, array $HTMLAttributes = []) : self
 	{
 		if ($this->_callbackRadio) {
 			throw HTMLElementsListException::radioOrLink();
@@ -48,7 +48,7 @@ class HTMLElementsList extends HTMLTag
 		return $this;
 	}
 
-	public function radio($name, callable $fieldValueCallback, $currentValue, array $HTMLAttributes = [])
+	public function radio(string $name, callable $fieldValueCallback, $currentValue, array $HTMLAttributes = []) : self
 	{
 		if ($this->_callbackLink) {
 			throw HTMLElementsListException::radioOrLink();
@@ -62,26 +62,26 @@ class HTMLElementsList extends HTMLTag
 		return $this;
 	}
 
-	public function option(...$arguments)
+	public function option(...$arguments) : self
 	{
 		return $this->radio(...$arguments);
 	}
 
-	public function menu(callable $callback)
+	public function menu(callable $callback) : self
 	{
 		$this->_callbackMenu = $callback;
 
 		return $this;
 	}
 
-	public function emptyMessage($text)
+	public function emptyMessage(string $text) : self
 	{
-		$this->_emptyMessage = (string)$text;
+		$this->_emptyMessage = $text;
 
 		return $this;
 	}
 
-	public function output()
+	public function output() : void
 	{
 		if (is_null($this->_collection) or empty($this->_callbackTitle)) {
 			throw HTMLElementsListException::missingInformation();

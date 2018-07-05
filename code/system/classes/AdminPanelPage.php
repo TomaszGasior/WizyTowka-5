@@ -47,7 +47,7 @@ abstract class AdminPanelPage extends Controller
 	}
 
 	// This method sets up HTML layout parts needed by child class.
-	private function _setupHTMLParts()
+	private function _setupHTMLParts() : void
 	{
 		// HTML <head>.
 		$this->_HTMLHead = new HTMLHead;
@@ -77,7 +77,7 @@ abstract class AdminPanelPage extends Controller
 	}
 
 	// This method sets up admin panel main menu elements according to current user permissions.
-	private function _setupMenus()
+	private function _setupMenus() : void
 	{
 		// Top navigation menu.
 		$this->_HTMLTopMenu = new HTMLMenu;
@@ -117,7 +117,7 @@ abstract class AdminPanelPage extends Controller
 		$add('Informacje',         self::URL('about'),             'iconAbout');
 	}
 
-	final public function output()
+	final public function output() : void
 	{
 		// Run _output() method. Child class can specify additional template variables and context menu here.
 		$this->_output();
@@ -141,12 +141,12 @@ abstract class AdminPanelPage extends Controller
 	}
 
 	// Equivalent of Controller::__construct() method for AdminPanel child classes.
-	protected function _prepare() {}
+	protected function _prepare() : void {}
 
 	// Equivalent of Controller::output() method for AdminPanel child classes.
-	protected function _output() {}
+	protected function _output() : void {}
 
-	static public function URL($target, array $arguments = [])
+	static public function URL($target, array $arguments = []) : string
 	{
 		return AdminPanel::URL(...func_get_args());
 	}

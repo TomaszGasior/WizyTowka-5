@@ -13,18 +13,18 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 	private $_variables = [];
 
-	public function __construct($templateName = null, $templatePath = null)
+	public function __construct(string $templateName = null, string $templatePath = null)
 	{
 		$this->_templateName  = (string)$templateName;
 		$this->_templatesPath = (string)$templatePath;
 	}
 
-	public function __get($variable)
+	public function __get(string $variable)
 	{
 		return $this->_variables[$variable];
 	}
 
-	public function __set($variable, $value)
+	public function __set(string $variable, $value) : void
 	{
 		try {
 			$this->_variables[$variable] = $this->_escapeValue($value);
@@ -33,66 +33,66 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 		}
 	}
 
-	public function setRaw($variable, $value)
+	public function setRaw(string $variable, $value) : void
 	{
 		$this->_variables[$variable] = $value;  // Don't escape value.
 	}
 
-	public function __isset($variable)
+	public function __isset(string $variable) : bool
 	{
 		return isset($this->_variables[$variable]);
 	}
 
-	public function __unset($variable)
+	public function __unset(string $variable) : void
 	{
 		unset($this->_variables[$variable]);
 	}
 
-	public function __debugInfo()
+	public function __debugInfo() : array
 	{
 		return $this->_variables;
 	}
 
-	public function __toString()
+	public function __toString() : string
 	{
 		ob_start();
 		$this->render();
 		return ob_get_clean();
 	}
 
-	public function getIterator() // For IteratorAggregate interface.
+	public function getIterator() : iterable // For IteratorAggregate interface.
 	{
 		foreach ($this->_variables as $key => $value) {
 			yield $key => $value;
 		}
 	}
 
-	public function count() // For Countable interface.
+	public function count() : int // For Countable interface.
 	{
 		return count($this->_variables);
 	}
 
-	public function getTemplate()
+	public function getTemplate() : ?string
 	{
 		return $this->_templateName;
 	}
 
-	public function setTemplate($templateName)
+	public function setTemplate(?string $templateName) : void
 	{
 		$this->_templateName = $templateName;
 	}
 
-	public function getTemplatePath()
+	public function getTemplatePath() : ?string
 	{
 		return $this->_templatesPath;
 	}
 
-	public function setTemplatePath($templatePath)
+	public function setTemplatePath(?string $templatePath) : void
 	{
 		$this->_templatesPath = $templatePath;
 	}
 
-	public function render($templateName = null)
+	public function render(string $templateName = null) : void
 	{
 		static $autoloaderAdded = false;
 		if (!$autoloaderAdded) {
@@ -168,7 +168,7 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 	// This autoloader is used to make creating new classes easier in templates code.
 	// Instead of `new WizyTowka\HTMLFormFields()` it's possible to use shorter `new HTMLFormFields()` syntax.
-	private function _systemNamespaceAlias($classNamePart)
+	private function _systemNamespaceAlias(string $classNamePart) : bool
 	{
 		static $inProgress;  // Avoid endless loop while calling class_exists().
 
