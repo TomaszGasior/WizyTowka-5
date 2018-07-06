@@ -29,6 +29,11 @@ abstract class AdminPanelPage extends Controller
 
 			// Prevent access to this page of admin panel if user have not required permissions.
 			if ($this->_userRequiredPermissions and !($this->_currentUser->permissions & $this->_userRequiredPermissions)) {
+				// Fallback used if current user have not permission to see default page.
+				if ($_GET['c'] ?? '' == WT()->settings->adminPanelDefaultPage) {
+					$this->_redirect('about');
+				}
+
 				$this->_redirect('error', ['type' => 'permissions']);
 			}
 		}
