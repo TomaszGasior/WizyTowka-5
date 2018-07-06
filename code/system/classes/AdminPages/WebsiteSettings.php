@@ -14,7 +14,8 @@ class WebsiteSettings extends __\AdminPanelPage
 
 	private $_dateTimeFormatCurrent  = '';
 	private $_dateTimeFormatDisable  = false;
-	private $_dateTimeDefinedFormats = [
+
+	private const DATE_TIME_FORMATS = [
 		// Order: date format, separator, time format.
 		['%Y-%m-%d'    , ' ' , '%H:%M:%S'],
 		['%Y-%m-%d'    , ' ' , '%H:%M'   ],
@@ -37,7 +38,7 @@ class WebsiteSettings extends __\AdminPanelPage
 		// Disallow modifying of date time format if settings was changed outside GUI.
 		$this->_dateTimeFormatCurrent = [$this->_settings->dateDateFormat, $this->_settings->dateSeparator,
 		                                 $this->_settings->dateTimeFormat];
-		$this->_dateTimeFormatDisable = !in_array($this->_dateTimeFormatCurrent, $this->_dateTimeDefinedFormats);
+		$this->_dateTimeFormatDisable = !in_array($this->_dateTimeFormatCurrent, self::DATE_TIME_FORMATS);
 	}
 
 	public function POSTQuery() : void
@@ -58,8 +59,8 @@ class WebsiteSettings extends __\AdminPanelPage
 
 		// Date/time format can be changed in configuration file. In this case form field will be disabled.
 		if (!$this->_dateTimeFormatDisable and isset($_POST['dateTimeFormat'])
-			and isset($this->_dateTimeDefinedFormats[$_POST['dateTimeFormat']])) {
-			$this->_dateTimeFormatCurrent    = $this->_dateTimeDefinedFormats[$_POST['dateTimeFormat']];
+			and isset(self::DATE_TIME_FORMATS[$_POST['dateTimeFormat']])) {
+			$this->_dateTimeFormatCurrent    = self::DATE_TIME_FORMATS[$_POST['dateTimeFormat']];
 			$this->_settings->dateDateFormat = $this->_dateTimeFormatCurrent[0];
 			$this->_settings->dateSeparator  = $this->_dateTimeFormatCurrent[1];
 			$this->_settings->dateTimeFormat = $this->_dateTimeFormatCurrent[2];
@@ -110,12 +111,12 @@ class WebsiteSettings extends __\AdminPanelPage
 			$dateTimeFormatSelected = '';
 		}
 		else {
-			foreach ($this->_dateTimeDefinedFormats as $key => $format) {
-				$dateTimeFormatList[$key] = (new __\Text(1472741330))->formatAsDateTime(
+			foreach (self::DATE_TIME_FORMATS as $key => $format) {
+				$dateTimeFormatList[$key] = (new __\Text(1472705330))->formatAsDateTime(
 					join($this->_settings->dateSwapTime ? array_reverse($format) : $format)
 				)->get();
 			}
-			$dateTimeFormatSelected = array_search($this->_dateTimeFormatCurrent, $this->_dateTimeDefinedFormats);
+			$dateTimeFormatSelected = array_search($this->_dateTimeFormatCurrent, self::DATE_TIME_FORMATS);
 		}
 		$this->_HTMLTemplate->dateTimeFormatList     = $dateTimeFormatList;
 		$this->_HTMLTemplate->dateTimeFormatSelected = $dateTimeFormatSelected;
