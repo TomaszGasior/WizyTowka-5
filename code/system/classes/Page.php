@@ -6,6 +6,21 @@
 */
 namespace WizyTowka;
 
+/**
+* @property $id
+* @property $slug
+* @property $title
+* @property $titleHead
+* @property $description
+* @property $noIndex
+* @property $isDraft
+* @property $contentType
+* @property $contents
+* @property $settings
+* @property $userId
+* @property $updatedTime
+* @property $createdTime
+*/
 class Page extends DatabaseObject
 {
 	static protected $_tableName = 'Pages';

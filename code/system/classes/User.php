@@ -6,6 +6,15 @@
 */
 namespace WizyTowka;
 
+/**
+* @property $id
+* @property $name
+* @property $password
+* @property $email
+* @property $permissions
+* @property $lastLoginTime
+* @property $createdTime
+*/
 class User extends DatabaseObject
 {
 	const PERM_CREATE_PAGES     = 0b00000001;

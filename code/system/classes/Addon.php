@@ -24,6 +24,8 @@ abstract class Addon implements \IteratorAggregate
 		return $this->_config[$name];
 	}
 
+	public function __set(string $name, $value) : void {}  // Overwriting properties is impossible.
+
 	public function __isset(string $name) : bool
 	{
 		return isset($this->_config[$name]);
