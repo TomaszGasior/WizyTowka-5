@@ -39,7 +39,7 @@ class User extends DatabaseObject
 		'createdTime',
 	];
 
-	static public function getByName($name) : ?self
+	static public function getByName(string $name) : ?self
 	{
 		return static::_getByWhereCondition('name = :name', ['name' => $name], true);
 	}

@@ -8,11 +8,11 @@ namespace WizyTowka\_Private;
 use WizyTowka as __;
 
 /**
-* @property Autoloader $autoloader
-* @property DatabasePDO $database
-* @property ErrorHandler $errors
-* @property Hooks $hooks
-* @property SessionManager $session
+* @property Autoloader           $autoloader
+* @property DatabasePDO          $database
+* @property ErrorHandler         $errors
+* @property Hooks                $hooks
+* @property SessionManager       $session
 * @property __\ConfigurationFile $settings
 */
 class System

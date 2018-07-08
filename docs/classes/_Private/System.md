@@ -20,7 +20,7 @@ Nie należy tworzyć instancji klasy `System`, jak również instancji klas z pr
 
 Metoda przeznaczona do wewnętrznego użytku systemu. Inicjuje kontroler.
 
-Jeżeli kontroler nie został zainicjowany, większość pól publicznych tylko do odczytu zawiera `null` zamiast instancji klas.
+Jeżeli kontroler nie został zainicjowany, większość pól publicznych tylko do odczytu zawiera `null` zamiast instancji klas, dostępne są jedynie `$autoloader` i `$errors`.
 
 ## `overwrite(string $name, ?object $value) : void`
 
