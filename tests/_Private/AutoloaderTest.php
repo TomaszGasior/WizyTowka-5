@@ -8,43 +8,43 @@ use WizyTowka as __;
 
 class AutoloaderTest extends TestCase
 {
-	static private $_exampleNamespace = 'Example\SubExample';
-	static private $_examplePath = './path/to/classes';
+	private const EXAMPLE_NAMESPACE = 'Example\SubExample';
+	private const EXAMPLE_PATH      = '/path/to/classes';
 
-	public function testAddNamespace()
+	public function testAddNamespace() : void
 	{
 		$autoloader = new __\_Private\Autoloader;
 
 		$this->assertFalse(
-			$autoloader->namespaceExists(self::$_exampleNamespace)
+			$autoloader->namespaceExists(self::EXAMPLE_NAMESPACE)
 		);
 
 		$this->assertTrue(
-			$autoloader->addNamespace(self::$_exampleNamespace, self::$_examplePath)
+			$autoloader->addNamespace(self::EXAMPLE_NAMESPACE, self::EXAMPLE_PATH)
 		);
 		$this->assertFalse(
-			$autoloader->addNamespace(self::$_exampleNamespace, self::$_examplePath)
+			$autoloader->addNamespace(self::EXAMPLE_NAMESPACE, self::EXAMPLE_PATH)
 			// addNamespace() returns false, if namespace is already registered.
 		);
 
 		$this->assertTrue(
-			$autoloader->namespaceExists(self::$_exampleNamespace)
+			$autoloader->namespaceExists(self::EXAMPLE_NAMESPACE)
 		);
 	}
 
-	public function testRemoveNamespace()
+	public function testRemoveNamespace() : void
 	{
 		$autoloader = new __\_Private\Autoloader;
-		$autoloader->addNamespace(self::$_exampleNamespace, self::$_examplePath);
+		$autoloader->addNamespace(self::EXAMPLE_NAMESPACE, self::EXAMPLE_PATH);
 
 		$this->assertTrue(
-			$autoloader->namespaceExists(self::$_exampleNamespace)
+			$autoloader->namespaceExists(self::EXAMPLE_NAMESPACE)
 		);
 
-		$autoloader->removeNamespace(self::$_exampleNamespace, self::$_examplePath);
+		$autoloader->removeNamespace(self::EXAMPLE_NAMESPACE, self::EXAMPLE_PATH);
 
 		$this->assertFalse(
-			$autoloader->namespaceExists(self::$_exampleNamespace)
+			$autoloader->namespaceExists(self::EXAMPLE_NAMESPACE)
 		);
 	}
 }

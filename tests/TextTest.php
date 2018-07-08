@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class TextTest extends TestCase
 {
-	public function testGetChar()
+	public function testGetChar() : void
 	{
 		$textObject = new __\Text('Zażółć gęślą jaźń');
 
@@ -24,7 +24,7 @@ class TextTest extends TestCase
 		$this->assertNull($textObject->getChar(-18));
 	}
 
-	public function testGetLength()
+	public function testGetLength() : void
 	{
 		$textObject = new __\Text('Zażółć gęślą jaźń');
 
@@ -33,7 +33,7 @@ class TextTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testLowercase()
+	public function testLowercase() : void
 	{
 		$textObject = new __\Text('Zażółć gęślą jaźń');
 		$textObject->lowercase();
@@ -43,7 +43,7 @@ class TextTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testUppercase()
+	public function testUppercase() : void
 	{
 		$textObject = new __\Text('Zażółć gęślą jaźń');
 		$textObject->uppercase();
@@ -53,7 +53,7 @@ class TextTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testCut()
+	public function testCut() : void
 	{
 		$textObject1 = new __\Text('Zażółć gęślą jaźń');
 		$textObject1->cut(1, 5);
@@ -70,7 +70,7 @@ class TextTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testReplace()
+	public function testReplace() : void
 	{
 		// https://pl.wikipedia.org/wiki/Pangram#j%C4%99zyk_polski
 		$textObject = new __\Text('Myślę: Fruń z płacht gąsko, jedź wbić nóż');
@@ -96,7 +96,7 @@ class TextTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testCorrectTypography()
+	public function testCorrectTypography() : void
 	{
 		// Examples sources: https://pl.wikipedia.org, https://sjp.pwn.pl, https://encyklopedia.pwn.pl.
 		$exampleCodeBefore = <<< TEXT
@@ -131,7 +131,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testMakeFragment()
+	public function testMakeFragment() : void
 	{
 		$textObject1 = new __\Text('Zażółć gęślą jaźń');
 		$textObject1->makeFragment(12, '…');
@@ -148,7 +148,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testMakeMiddleFragment()
+	public function testMakeMiddleFragment() : void
 	{
 		$textObject = new __\Text('Zażółć gęślą jaźń');
 		$textObject->makeMiddleFragment(12, ' (...) ');
@@ -158,7 +158,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testMakeSlug()
+	public function testMakeSlug() : void
 	{
 		$textObject = new __\Text('Zażółć  gęślą _ jaźń');
 		$textObject->makeSlug();
@@ -168,7 +168,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testFormatAsDateTime()
+	public function testFormatAsDateTime() : void
 	{
 		$textObject1 = new __\Text('1997-06-03 16:30');
 		$textObject1->formatAsDateTime('%R %d.%m.%Y');
@@ -186,7 +186,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testFormatAsFileSize()
+	public function testFormatAsFileSize() : void
 	{
 		$textObject1 = new __\Text('914695416');
 		$textObject1->formatAsFileSize();
@@ -217,7 +217,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testArrayAccess()
+	public function testArrayAccess() : void
 	{
 		$textObject = new __\Text('Zazółć gęślą jaźń');
 
@@ -238,7 +238,7 @@ TEXT;
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testIterator()
+	public function testIterator() : void
 	{
 		$textObject = new __\Text('Zazółć gęślą jaźń');
 

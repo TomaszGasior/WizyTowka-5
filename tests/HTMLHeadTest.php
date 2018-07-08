@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class HTMLHeadTest extends TestCase
 {
-	public function testBaseAndTitle()
+	public function testBaseAndTitle() : void
 	{
 		$object = new __\HTMLHead;
 
@@ -25,7 +25,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testScripts()
+	public function testScripts() : void
 	{
 		$object = new __\HTMLHead;
 
@@ -43,7 +43,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testStyles()
+	public function testStyles() : void
 	{
 		$object = new __\HTMLHead;
 
@@ -71,7 +71,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testMeta()
+	public function testMeta() : void
 	{
 		$object = new __\HTMLHead;
 
@@ -107,7 +107,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testAssetsPath()
+	public function testAssetsPath() : void
 	{
 		$object = new __\HTMLHead;
 

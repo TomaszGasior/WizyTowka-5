@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class HTMLMessageTest extends TestCase
 {
-	public function testSuccess()
+	public function testSuccess() : void
 	{
 		$object = new __\HTMLMessage('pageMessage');
 		$object->success('Example success message.');
@@ -20,7 +20,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testError()
+	public function testError() : void
 	{
 		$object = new __\HTMLMessage();
 		$object->error('Example error message.');
@@ -32,7 +32,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testInfo()
+	public function testInfo() : void
 	{
 		$object = new __\HTMLMessage();
 		$object->information('Example neutral message.');  // information() is an alias of info().
@@ -44,7 +44,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testArguments()
+	public function testArguments() : void
 	{
 		$object = new __\HTMLMessage();
 		$object->success('These files were removed: "%s", "%s".', 'example".jpg', 'example<br>.png');
@@ -56,7 +56,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testOverwriting()
+	public function testOverwriting() : void
 	{
 		$object = new __\HTMLMessage();
 		$object->info('Example neutral message.');
@@ -69,7 +69,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testDefault()
+	public function testDefault() : void
 	{
 		$object1 = new __\HTMLMessage();
 		$object1->error('Example error message.');
@@ -91,7 +91,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testClear()
+	public function testClear() : void
 	{
 		$object = new __\HTMLMessage();
 		$object->error('Example error message.');

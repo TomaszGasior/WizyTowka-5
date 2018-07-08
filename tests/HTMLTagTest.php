@@ -8,11 +8,11 @@ use WizyTowka as __;
 
 class HTMLTagTest extends TestCase
 {
-	static private $_exampleClass;
+	static private $_exampleTagClass;
 
-	static public function setUpBeforeClass()
+	static public function setUpBeforeClass() : void
 	{
-		self::$_exampleClass = get_class(new class() extends __\HTMLTag
+		self::$_exampleTagClass = get_class(new class() extends __\HTMLTag
 		{
 			public function output() : void
 			{
@@ -28,9 +28,9 @@ class HTMLTagTest extends TestCase
 		});
 	}
 
-	public function testOutput()
+	public function testOutput() : void
 	{
-		$object = new self::$_exampleClass;
+		$object = new self::$_exampleTagClass;
 
 		$object->setCSSClass('mark-required-field');
 

@@ -8,77 +8,67 @@ use WizyTowka as __;
 
 class PluginTest extends TestCase
 {
-	static private $_pluginsDirectory = __\SYSTEM_DIR . '/addons/plugins';
-	static private $_pluginPathPart   = __\SYSTEM_DIR . '/addons/plugins/examplePlugin_';
+	private const PLUGIN_NAME_PATTERN     = 'examplePlugin_%d';
+	private const PLUGIN_DIR_PATH_PATTERN = __\DATA_DIR . '/addons/plugins/' . self::PLUGIN_NAME_PATTERN;
 
-	static private $_plugin1_addonConf = <<< 'JSON'
+	private const PLUGIN_1_CONF = <<< 'JSON'
 {
-	"namespace": "__\\ExamplePlugin_1",
+	"namespace": "WizyTowka\\ExamplePlugin_1",
 	"init": "PluginClass::init"
 }
 JSON;
-	static private $_plugin1_pluginClass = <<< 'PHP'
+	private const PLUGIN_1_CLASS = <<< 'PHP'
 <?php
-namespace __\ExamplePlugin_1;
+namespace WizyTowka\ExamplePlugin_1;
 class PluginClass
 {
-	static public function init()
+	static public function init() : void
 	{
 		echo "I'm first plugin!\n";
 	}
 }
 PHP;
 
-	static private $_plugin2_addonConf = <<< 'JSON'
+	private const PLUGIN_2_CONF = <<< 'JSON'
 {
-	"namespace": "__\\ExamplePlugin_2",
+	"namespace": "WizyTowka\\ExamplePlugin_2",
 	"init": "PluginClass::run"
 }
 JSON;
-	static private $_plugin2_pluginClass = <<< 'PHP'
+	private const PLUGIN_2_CLASS = <<< 'PHP'
 <?php
-namespace __\ExamplePlugin_2;
+namespace WizyTowka\ExamplePlugin_2;
 class PluginClass
 {
-	static public function run()
+	static public function run() : void
 	{
 		echo "I'm second plugin!\n";
 	}
 }
 PHP;
 
-	static public function setUpBeforeClass()
+	static public function setUpBeforeClass() : void
 	{
-		@rename(self::$_pluginsDirectory, self::$_pluginsDirectory.'.bak');
-		@mkdir(self::$_pluginsDirectory);
-
 		foreach ([1, 2] as $number) {
-			@mkdir(self::$_pluginPathPart . $number);
-			@mkdir(self::$_pluginPathPart . $number. '/classes');
-	//
-			file_put_contents(self::$_pluginPathPart.$number.'/addon.conf', self::${'_plugin'.$number.'_addonConf'});
-			file_put_contents(self::$_pluginPathPart.$number.'/classes/PluginClass.php', self::${'_plugin'.$number.'_pluginClass'});
+			$pluginPath = sprintf(self::PLUGIN_DIR_PATH_PATTERN, $number);
+
+			self::makeDirRecursive($pluginPath . '/classes');
+			file_put_contents($pluginPath . '/addon.conf',              constant("self::PLUGIN_{$number}_CONF"));
+			file_put_contents($pluginPath . '/classes/PluginClass.php', constant("self::PLUGIN_{$number}_CLASS"));
 		}
 	}
 
-	static public function tearDownAfterClass()
+	static public function tearDownAfterClass() : void
 	{
-		foreach ([1, 2] as $number) {
-			@unlink(self::$_pluginPathPart.$number.'/addon.conf');
-			@unlink(self::$_pluginPathPart.$number.'/classes/PluginClass.php');
-
-			@rmdir(self::$_pluginPathPart.$number.'/classes');
-			@rmdir(self::$_pluginPathPart.$number);
-		}
-
-		@rmdir(self::$_pluginsDirectory);
-		@rename(self::$_pluginsDirectory.'.bak', self::$_pluginsDirectory);
+		self::removeDirRecursive(__\DATA_DIR);
 	}
 
-	public function testInit()
+	public function testInit() : void
 	{
-		foreach (__\Plugin::getAll() as $plugin) {
-			$plugin->init();
+		foreach ([1, 2] as $number) {
+			$pluginName = sprintf(self::PLUGIN_NAME_PATTERN, $number);
+
+			__\Plugin::getByName($pluginName)->init();
 		}
 
 		$expected = "I'm first plugin!\nI'm second plugin!\n";

@@ -8,10 +8,29 @@ use WizyTowka as __;
 
 class SessionManagerTest extends TestCase
 {
-	static private $_sessionsCookieName = 'ExampleSessionInstance';
-	static private $_sessionsConfigFilePath = __\CONFIG_DIR . '/sessions_test.conf';
+	private const INSTANCE_COOKIE_NAME = 'ExampleSessionInstance';
+	private const INSTANCE_CONFIG_FILE = TEMP_FILES_DIR . '/SessionManager_sessions.conf';
 
-	static private $_sessionsConfigFileContent = <<< 'CODE_JSON'
+	private const EXAMPLE_USER_ID          = 678;
+	private const EXAMPLE_SESSION_ID       = '52e91938219800668c14859e756cfc87c61c92f2aeeafe412444455af9c4e3a9b8d2cfcac84f86ad2f55e88c266a67f7db86e1112e2f46ee13fe968b3ec8acb6';
+	private const EXAMPLE_SESSION_DURATION = 3600;
+
+	public function setUp() : void
+	{
+		// $_SERVER values undefined in CLI.
+		$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
+		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0';
+	}
+
+	public function tearDown() : void
+	{
+		unlink(self::INSTANCE_CONFIG_FILE);
+	}
+
+	// Prepares sessions config file and HTTP cookie needed by SessionManager.
+	private function _prepareFakeSession()
+	{
+		$sessionsConfigFile = <<< 'JSON'
 {
     "%s": {
         "userId": 678,
@@ -20,80 +39,61 @@ class SessionManagerTest extends TestCase
         "reloginTime": %d
     }
 }
-CODE_JSON;
-
-	static private $_exampleUserId = 678;
-	static private $_exampleSessionId = '52e91938219800668c14859e756cfc87c61c92f2aeeafe412444455af9c4e3a9b8d2cfcac84f86ad2f55e88c266a67f7db86e1112e2f46ee13fe968b3ec8acb6';
-	static private $_exampleSessionDuration = 3600;
-
-	public function setUp()
-	{
-		// $_SERVER values undefined in CLI.
-		$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
-		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0';
-	}
-
-	public function tearDown()
-	{
-		@unlink(self::$_sessionsConfigFilePath);
-	}
-
-	private function _prepareFakeSession()
-	{
+JSON;
 		file_put_contents(
-			self::$_sessionsConfigFilePath,
+			self::INSTANCE_CONFIG_FILE,
 			sprintf(
-				self::$_sessionsConfigFileContent,
-				self::$_exampleSessionId, time() + self::$_exampleSessionDuration, time() + 120
+				$sessionsConfigFile,
+				self::EXAMPLE_SESSION_ID, time() + self::EXAMPLE_SESSION_DURATION, time() + 120
 			)
 		);
 
-		$_COOKIE[self::$_sessionsCookieName] = self::$_exampleSessionId;
+		$_COOKIE[self::INSTANCE_COOKIE_NAME] = self::EXAMPLE_SESSION_ID;
 	}
 
 	/**
 	* @runInSeparateProcess
 	*/
-	public function testLogIn()
+	public function testLogIn() : void
 	{
-		__\ConfigurationFile::createNew(self::$_sessionsConfigFilePath);
-		$sessionsConfigFile = new __\ConfigurationFile(self::$_sessionsConfigFilePath);
+		__\ConfigurationFile::createNew(self::INSTANCE_CONFIG_FILE);
+		$sessionsConfigFile = new __\ConfigurationFile(self::INSTANCE_CONFIG_FILE);
 
-		$sessionManager = new __\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
+		$sessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 
-		$sessionManager->logIn(self::$_exampleUserId, self::$_exampleSessionDuration);
+		$sessionManager->logIn(self::EXAMPLE_USER_ID, self::EXAMPLE_SESSION_DURATION);
 
 		// Check expire time of session cookie.
 		$current  = $this->getLastHTTPCookie()['expires'];
-		$expected = time() + self::$_exampleSessionDuration;
+		$expected = time() + self::EXAMPLE_SESSION_DURATION;
 		$this->assertEquals($expected, $current);
 
 		// Check cookie name.
 		$current  = $this->getLastHTTPCookie()['name'];
-		$expected = self::$_sessionsCookieName;
+		$expected = self::INSTANCE_COOKIE_NAME;
 		$this->assertEquals($expected, $current);
 
 		$sessionId = $this->getLastHTTPCookie()['value'];
 
 		// Check session data in sessions configuration file.
 		$current  = $sessionsConfigFile->$sessionId['userId'];
-		$expected = self::$_exampleUserId;
+		$expected = self::EXAMPLE_USER_ID;
 		$this->assertEquals($expected, $current);
 	}
 
 	/**
 	* @runInSeparateProcess
 	*/
-	public function testIsUserLoggedIn()
+	public function testIsUserLoggedIn() : void
 	{
 		$this->_prepareFakeSession();
-		$sessionsConfigFile = new __\ConfigurationFile(self::$_sessionsConfigFilePath);
+		$sessionsConfigFile = new __\ConfigurationFile(self::INSTANCE_CONFIG_FILE);
 
-		$sessionManager = new __\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
+		$sessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 
 		// Check current user ID.
 		$current  = $sessionManager->getUserId();
-		$expected = self::$_exampleUserId;
+		$expected = self::EXAMPLE_USER_ID;
 		$this->assertEquals($expected, $current);
 
 		$this->assertTrue($sessionManager->isUserLoggedIn());
@@ -102,21 +102,21 @@ CODE_JSON;
 	/**
 	* @runInSeparateProcess
 	*/
-	public function testLogOut()
+	public function testLogOut() : void
 	{
 		$this->_prepareFakeSession();
-		$sessionsConfigFile = new __\ConfigurationFile(self::$_sessionsConfigFilePath);
+		$sessionsConfigFile = new __\ConfigurationFile(self::INSTANCE_CONFIG_FILE);
 
-		$sessionManager = new __\_Private\SessionManager(self::$_sessionsCookieName, $sessionsConfigFile);
+		$sessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 
 		$sessionManager->logOut();
 
 		// Check whether session data was removed from sessions configuration file.
-		$this->assertFalse(isset($sessionsConfigFile->{self::$_exampleSessionId}));
+		$this->assertFalse(isset($sessionsConfigFile->{self::EXAMPLE_SESSION_ID}));
 
 		// Check whether session ID was removed from cookie.
 		$current     = $this->getLastHTTPCookie()['value'];
-		$notExpected = self::$_exampleSessionId;
+		$notExpected = self::EXAMPLE_SESSION_ID;
 		$this->assertNotEquals($notExpected, $current);
 
 		// Check whether cookie is expired.

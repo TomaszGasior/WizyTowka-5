@@ -8,13 +8,12 @@ use WizyTowka as __;
 
 class UploadedFileTest extends TestCase
 {
-	static private $_uploadsDir = __\FILES_DIR;
+	private const UPLOADS_DIR = __\FILES_DIR;
 
-	static public function setUpBeforeClass()
+	static public function setUpBeforeClass() : void
 	{
-		@rename(self::$_uploadsDir, self::$_uploadsDir.'.bak');
-		@mkdir(self::$_uploadsDir);
-		@mkdir(self::$_uploadsDir . '/subdir');  // Files placed here won't be discoverable for class.
+		self::makeDirRecursive(self::UPLOADS_DIR);
+		self::makeDirRecursive(self::UPLOADS_DIR . '/subdir');  // Files placed here won't be discoverable for class.
 
 		// Prepare example files.
 		$files = [
@@ -24,29 +23,19 @@ class UploadedFileTest extends TestCase
 			'file_to_rename'   => 'Name of this file will be changed.',
 		];
 		foreach ($files as $file => $contents) {
-			file_put_contents(self::$_uploadsDir . '/' . $file, $contents);
+			file_put_contents(self::UPLOADS_DIR . '/' . $file, $contents);
 		}
 		foreach ($files as $file => $contents) {
-			file_put_contents(self::$_uploadsDir . '/subdir/' . $file, $contents);
+			file_put_contents(self::UPLOADS_DIR . '/subdir/' . $file, $contents);
 		}
 	}
 
-	static public function tearDownAfterClass()
+	static public function tearDownAfterClass() : void
 	{
-		foreach (glob(self::$_uploadsDir . '/subdir/*') as $file) {
-			@unlink($file);
-		}
-		@rmdir(self::$_uploadsDir . '/subdir');
-
-		foreach (glob(self::$_uploadsDir . '/*') as $file) {
-			@unlink($file);
-		}
-		@rmdir(self::$_uploadsDir);
-
-		@rename(self::$_uploadsDir.'.bak', self::$_uploadsDir);
+		self::removeDirRecursive(__\DATA_DIR);
 	}
 
-	public function testGetAll()
+	public function testGetAll() : void
 	{
 		$current  = __\UploadedFile::getAll();
 		$expected = [
@@ -58,16 +47,16 @@ class UploadedFileTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testGetPath()
+	public function testGetPath() : void
 	{
 		$file = __\UploadedFile::getByName('file_2048_bytes');
 
 		$current  = $file->getPath();
-		$expected = self::$_uploadsDir . '/file_2048_bytes';
+		$expected = self::UPLOADS_DIR . '/file_2048_bytes';
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testGetURL()
+	public function testGetURL() : void
 	{
 		$file = __\UploadedFile::getByName('file_2048_bytes');
 
@@ -76,7 +65,7 @@ class UploadedFileTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testGetSize()
+	public function testGetSize() : void
 	{
 		$file = __\UploadedFile::getByName('file_2048_bytes');
 
@@ -85,7 +74,7 @@ class UploadedFileTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testGetModificationTime()
+	public function testGetModificationTime() : void
 	{
 		$file = __\UploadedFile::getByName('file_to_change');
 
@@ -96,32 +85,32 @@ class UploadedFileTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testRename()
+	public function testRename() : void
 	{
 		$file = __\UploadedFile::getByName('file_to_rename');
 
 		$this->assertTrue($file->rename('successfully_renamed_file'));
 
-		$this->assertFileNotExists(self::$_uploadsDir . '/file_to_rename');
-		$this->assertFileExists(self::$_uploadsDir . '/successfully_renamed_file');
+		$this->assertFileNotExists(self::UPLOADS_DIR . '/file_to_rename');
+		$this->assertFileExists(self::UPLOADS_DIR . '/successfully_renamed_file');
 	}
 
-	public function testRenameNotOverwrite()
+	public function testRenameNotOverwrite() : void
 	{
 		$file = __\UploadedFile::getByName('successfully_renamed_file');
 
 		$this->assertFalse($file->rename('file_2048_bytes'));
 
-		$this->assertFileExists(self::$_uploadsDir . '/file_2048_bytes');
-		$this->assertFileExists(self::$_uploadsDir . '/successfully_renamed_file');
+		$this->assertFileExists(self::UPLOADS_DIR . '/file_2048_bytes');
+		$this->assertFileExists(self::UPLOADS_DIR . '/successfully_renamed_file');
 	}
 
-	public function testDelete()
+	public function testDelete() : void
 	{
 		$file = __\UploadedFile::getByName('file_to_delete');
 
 		$this->assertTrue($file->delete());
 
-		$this->assertFileNotExists(self::$_uploadsDir . '/file_to_delete');
+		$this->assertFileNotExists(self::UPLOADS_DIR . '/file_to_delete');
 	}
 }

@@ -8,34 +8,17 @@ use WizyTowka as __;
 
 class AddonTest extends TestCase
 {
-	static private $_addonsDirectorySystem = __\SYSTEM_DIR . '/addons/exampleAddonType';
-	static private $_addonsDirectoryData   = __\DATA_DIR   . '/addons/exampleAddonType';
-	static private $_addonsURLPathSystem   = __\SYSTEM_URL . '/addons/exampleAddonType';
-	static private $_addonsURLPathData     = __\DATA_URL   . '/addons/exampleAddonType';
+	private const EXAMPLE_TYPE_DIR_SYSTEM = __\SYSTEM_DIR . '/addons/exampleAddonType';
+	private const EXAMPLE_TYPE_DIR_DATA   = __\DATA_DIR   . '/addons/exampleAddonType';
+	private const EXAMPLE_TYPE_URL_SYSTEM = __\SYSTEM_URL . '/addons/exampleAddonType';
+	private const EXAMPLE_TYPE_URL_DATA   = __\DATA_URL   . '/addons/exampleAddonType';
 
-	static private $_exampleAddonsSubdirs = [];
-	static private $_exampleAddonType;
+	static private $_exampleTypeClass;
 
-	static public function setUpBeforeClass()
+	static public function setUpBeforeClass() : void
 	{
-		// Example addons directories.
-		@mkdir(self::$_addonsDirectoryData);
-		@mkdir(self::$_addonsDirectorySystem);
-
-		// Example addons subdirectories and "addon.conf" files.
-		self::$_exampleAddonsSubdirs = [
-			self::$_addonsDirectoryData   . '/dataAddon',
-			self::$_addonsDirectorySystem . '/systemAddon',
-			self::$_addonsDirectoryData   . '/nameCollision',
-			self::$_addonsDirectorySystem . '/nameCollision',
-		];
-		foreach (self::$_exampleAddonsSubdirs as $directory) {
-			@mkdir($directory);
-			__\ConfigurationFile::createNew($directory . '/addon.conf');
-		}
-
-		// Example addon class that extends Addon class.
-		self::$_exampleAddonType = get_class(new class() extends __\Addon
+		// Class of example addon type extending Addon class.
+		self::$_exampleTypeClass = get_class(new class() extends __\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
 			static protected $_defaultConfig = [
@@ -44,97 +27,113 @@ class AddonTest extends TestCase
 				'setting_3' => 3,
 			];
 
-			// Addon class has private constructor. Costructor must be public to create anonymous class.
+			// Dirty hack. Addon class has private constructor but it must be public to create anonymous class.
 			public function __construct() {}
 		});
+	}
 
-		// Example "addon.conf" settings for "systemAddon" addon.
+	public function setUp() : void
+	{
+		// Example addons subdirectories and "addon.conf" files.
+		$exampleAddonsSubdirs = [
+			self::EXAMPLE_TYPE_DIR_DATA   . '/dataAddon',
+			self::EXAMPLE_TYPE_DIR_SYSTEM . '/systemAddon',
+			self::EXAMPLE_TYPE_DIR_DATA   . '/nameCollision',
+			self::EXAMPLE_TYPE_DIR_SYSTEM . '/nameCollision',
+		];
+		foreach ($exampleAddonsSubdirs as $directory) {
+			self::makeDirRecursive($directory);
+			__\ConfigurationFile::createNew($directory . '/addon.conf');
+		}
+	}
+
+	public function tearDown() : void
+	{
+		self::removeDirRecursive(self::EXAMPLE_TYPE_DIR_SYSTEM);
+		self::removeDirRecursive(__\DATA_DIR);
+	}
+
+	public function testGetByName() : void
+	{
+		$dataAddon     = self::$_exampleTypeClass::getByName('dataAddon');
+		$systemAddon   = self::$_exampleTypeClass::getByName('systemAddon');
+		$nameCollision = self::$_exampleTypeClass::getByName('nameCollision');
+
+		// Addon from user addons directory.
+		$this->assertInstanceOf(self::$_exampleTypeClass, $dataAddon);
+		$this->assertEquals('dataAddon', $dataAddon->getName());
+		$this->assertTrue($dataAddon->isFromUser());
+
+		// Addon from system addons directory.
+		$this->assertInstanceOf(self::$_exampleTypeClass, $systemAddon);
+		$this->assertEquals('systemAddon', $systemAddon->getName());
+		$this->assertTrue($systemAddon->isFromSystem());
+
+		// Name collision: addon "nameCollision" exists in user addons directory and in system addons directory.
+		// User addon has higher priority.
+		$this->assertInstanceOf(self::$_exampleTypeClass, $nameCollision);
+		$this->assertEquals('nameCollision', $nameCollision->getName());
+		$this->assertFalse($nameCollision->isFromSystem());
+		$this->assertTrue($nameCollision->isFromUser());
+	}
+
+	public function testGetAll() : void
+	{
+		$current = self::$_exampleTypeClass::getAll();
+		$expected = [
+			self::$_exampleTypeClass::getByName('dataAddon'),
+			self::$_exampleTypeClass::getByName('nameCollision'),
+			self::$_exampleTypeClass::getByName('systemAddon'),
+		];
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testGetPath() : void
+	{
+		$dataAddon   = self::$_exampleTypeClass::getByName('dataAddon');
+		$systemAddon = self::$_exampleTypeClass::getByName('systemAddon');
+
+		$current  = $dataAddon->getPath();
+		$expected = self::EXAMPLE_TYPE_DIR_DATA . '/dataAddon';
+		$this->assertEquals($expected, $current);
+
+		$current  = $systemAddon->getPath();
+		$expected = self::EXAMPLE_TYPE_DIR_SYSTEM . '/systemAddon';
+		$this->assertEquals($expected, $current);
+	}
+
+	public function testGetURL() : void
+	{
+		$dataAddon   = self::$_exampleTypeClass::getByName('dataAddon');
+		$systemAddon = self::$_exampleTypeClass::getByName('systemAddon');
+
+		$current  = $dataAddon->getURL();
+		$expected = self::EXAMPLE_TYPE_URL_DATA . '/dataAddon';
+		$this->assertEquals($expected, $current);
+
+		$current  = $systemAddon->getURL();
+		$expected = self::EXAMPLE_TYPE_URL_SYSTEM . '/systemAddon';
+		$this->assertEquals($expected, $current);
+	}
+
+	/**
+	* @runInSeparateProcess
+	*/
+	public function testAddonSettings() : void
+	{
+		// This test needs to me run in separate process because ConfigurationFile class
+		// (which is used by Addon class) uses its own cache for JSON files.
+
+		// Settings of "systemAddon" addon overwriting defaults of example addon type.
 		$addonConfFile = <<< 'JSON'
 {
 	"setting_1": 10,
 	"setting_3": 30
 }
 JSON;
-		file_put_contents(self::$_addonsDirectorySystem . '/systemAddon/addon.conf', $addonConfFile);
-	}
+		file_put_contents(self::EXAMPLE_TYPE_DIR_SYSTEM . '/systemAddon/addon.conf', $addonConfFile);
 
-	static public function tearDownAfterClass()
-	{
-		foreach (self::$_exampleAddonsSubdirs as $directory) {
-			@unlink($directory . '/addon.conf');
-			@rmdir($directory);
-		}
-
-		@rmdir(self::$_addonsDirectoryData);
-		@rmdir(self::$_addonsDirectorySystem);
-	}
-
-	public function testGetByName()
-	{
-		$dataAddon     = self::$_exampleAddonType::getByName('dataAddon');
-		$systemAddon   = self::$_exampleAddonType::getByName('systemAddon');
-		$nameCollision = self::$_exampleAddonType::getByName('nameCollision');
-
-		// Addon from user addons directory.
-		$this->assertInstanceOf(self::$_exampleAddonType, $dataAddon);
-		$this->assertEquals('dataAddon', $dataAddon->getName());
-		$this->assertTrue($dataAddon->isFromUser());
-
-		// Addon from system addons directory.
-		$this->assertInstanceOf(self::$_exampleAddonType, $systemAddon);
-		$this->assertEquals('systemAddon', $systemAddon->getName());
-		$this->assertTrue($systemAddon->isFromSystem());
-
-		// Name collision: addon "nameCollision" exists in user addons directory and in system addons directory.
-		// If the same name is in user addons and system addons, user addon has higher priority.
-		$this->assertInstanceOf(self::$_exampleAddonType, $nameCollision);
-		$this->assertEquals('nameCollision', $nameCollision->getName());
-		$this->assertFalse($nameCollision->isFromSystem());
-		$this->assertTrue($nameCollision->isFromUser());
-	}
-
-	public function testGetAll()
-	{
-		$current = self::$_exampleAddonType::getAll();
-		$expected = [
-			self::$_exampleAddonType::getByName('dataAddon'),
-			self::$_exampleAddonType::getByName('nameCollision'),
-			self::$_exampleAddonType::getByName('systemAddon'),
-		];
-		$this->assertEquals($expected, $current);
-	}
-
-	public function testGetPath()
-	{
-		$dataAddon   = self::$_exampleAddonType::getByName('dataAddon');
-		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
-
-		$current  = $dataAddon->getPath();
-		$expected = self::$_addonsDirectoryData . '/dataAddon';
-		$this->assertEquals($expected, $current);
-
-		$current  = $systemAddon->getPath();
-		$expected = self::$_addonsDirectorySystem . '/systemAddon';
-		$this->assertEquals($expected, $current);
-	}
-
-	public function testGetURL()
-	{
-		$dataAddon   = self::$_exampleAddonType::getByName('dataAddon');
-		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
-
-		$current  = $dataAddon->getURL();
-		$expected = self::$_addonsURLPathData . '/dataAddon';
-		$this->assertEquals($expected, $current);
-
-		$current  = $systemAddon->getURL();
-		$expected = self::$_addonsURLPathSystem . '/systemAddon';
-		$this->assertEquals($expected, $current);
-	}
-
-	public function testAddonSettings()
-	{
-		$systemAddon = self::$_exampleAddonType::getByName('systemAddon');
+		$systemAddon = self::$_exampleTypeClass::getByName('systemAddon');
 
 		$current  = iterator_to_array($systemAddon);
 		$expected = [

@@ -1,7 +1,7 @@
 <phpunit bootstrap="tests/bootstrap.php" columns="max" colors="true" verbose="true">
 	<testsuites>
 		<testsuite name="WizyTówka">
-			<directory phpVersion="7">tests</directory>
+			<directory phpVersion="7.1">tests</directory>
 		</testsuite>
 	</testsuites>
 	<filter>

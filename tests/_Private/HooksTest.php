@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class HooksTest extends TestCase
 {
-	public function testRunAction()
+	public function testRunAction() : void
 	{
 		$hooksManager = new __\_Private\Hooks;
 
@@ -36,7 +36,7 @@ class HooksTest extends TestCase
 		$this->expectOutputString($expected);
 	}
 
-	public function testApplyFilter()
+	public function testApplyFilter() : void
 	{
 		$hooksManager = new __\_Private\Hooks;
 
@@ -68,7 +68,7 @@ class HooksTest extends TestCase
 		$this->assertEquals($expected, $current);
 	}
 
-	public function testRemoveAction()
+	public function testRemoveAction() : void
 	{
 		$hooksManager = new __\_Private\Hooks;
 
@@ -89,7 +89,7 @@ class HooksTest extends TestCase
 	* @expectedException     WizyTowka\_Private\HooksException
 	* @expectedExceptionCode 1
 	*/
-	public function testInvalidCallbackArguments()
+	public function testInvalidCallbackArguments() : void
 	{
 		$hooksManager = new __\_Private\Hooks;
 

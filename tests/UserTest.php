@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class UserTest extends TestCase
 {
-	public function testCheckPassword()
+	public function testCheckPassword() : void
 	{
 		$examplePassword = uniqid();
 		$exampleUser     = new __\User;

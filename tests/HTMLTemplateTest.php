@@ -8,11 +8,11 @@ use WizyTowka as __;
 
 class HTMLTemplateTest extends TestCase
 {
-	static private $_exampleTemplateName = 'exampleTemplate';
-	static private $_exampleTemplateFile = 'exampleTemplate.php';
-	static private $_exampleTemplatePath = '.';
+	private const EXAMPLE_TEMPLATE_NAME = 'exampleTemplate';
+	private const EXAMPLE_TEMPLATE_FILE = 'exampleTemplate.php';
+	private const EXAMPLE_TEMPLATE_PATH = TEMP_FILES_DIR;
 
-	static private $_exampleTemplateCode = <<< 'HTML'
+	private const EXAMPLE_TEMPLATE_CODE = <<< 'HTML'
 <!doctype html>
 <meta charset="utf-8">
 <title><?= $title ?></title>
@@ -20,15 +20,20 @@ class HTMLTemplateTest extends TestCase
 <p><?= $content ?></p>
 HTML;
 
-	static private $_expectedOutput = <<< 'HTML'
+	private const EXAMPLE_VARIABLES = [
+		'title'   => 'Example title',
+		'header'  => '"Header of page"',
+		'content' => 'Content <br> of page',
+	];
+
+	private const EXPECTED_OUTPUT = <<< 'HTML'
 <!doctype html>
 <meta charset="utf-8">
 <title>Example title</title>
 <h1>&quot;Header of page&quot;</h1>
 <p>Content &lt;br&gt; of page</p>
 HTML;
-
-	static private $_expectedOutputRaw = <<< 'HTML'
+	private const EXPECTED_OUTPUT_RAW = <<< 'HTML'
 <!doctype html>
 <meta charset="utf-8">
 <title>Example title</title>
@@ -36,100 +41,97 @@ HTML;
 <p>Content <br> of page</p>
 HTML;
 
-	static private $_exampleVariables = [
-		'title'   => 'Example title',
-		'header'  => '"Header of page"',
-		'content' => 'Content <br> of page',
-	];
-
-	static public function setUpBeforeClass()
+	static public function setUpBeforeClass() : void
 	{
-		file_put_contents(self::$_exampleTemplateFile, self::$_exampleTemplateCode);
+		file_put_contents(
+			self::EXAMPLE_TEMPLATE_PATH . '/' . self::EXAMPLE_TEMPLATE_FILE,
+			self::EXAMPLE_TEMPLATE_CODE
+		);
 	}
 
-	static public function tearDownAfterClass()
+	static public function tearDownAfterClass() : void
 	{
-		@unlink(self::$_exampleTemplateFile);
+		unlink(self::EXAMPLE_TEMPLATE_PATH . '/' . self::EXAMPLE_TEMPLATE_FILE);
 	}
 
-	public function testRenderWithLocalName()
+	public function testRenderWithLocalName() : void
 	{
 		$object = new __\HTMLTemplate;
-		$object->setTemplatePath('.');
+		$object->setTemplatePath(self::EXAMPLE_TEMPLATE_PATH);
 
-		foreach (self::$_exampleVariables as $variable => $value) {
+		foreach (self::EXAMPLE_VARIABLES as $variable => $value) {
 			$object->$variable = $value;
 		}
 
-		$object->render(self::$_exampleTemplateName);
+		$object->render(self::EXAMPLE_TEMPLATE_NAME);
 
-		$this->expectOutputString(self::$_expectedOutput);
+		$this->expectOutputString(self::EXPECTED_OUTPUT);
 	}
 
-	public function testRenderWithGlobalName()
+	public function testRenderWithGlobalName() : void
 	{
 		$object = new __\HTMLTemplate;
-		$object->setTemplate(self::$_exampleTemplateName);
-		$object->setTemplatePath('.');
+		$object->setTemplate(self::EXAMPLE_TEMPLATE_NAME);
+		$object->setTemplatePath(self::EXAMPLE_TEMPLATE_PATH);
 
-		foreach (self::$_exampleVariables as $variable => $value) {
+		foreach (self::EXAMPLE_VARIABLES as $variable => $value) {
 			$object->$variable = $value;
 		}
 
 		$object->render();
 
-		$this->expectOutputString(self::$_expectedOutput);
+		$this->expectOutputString(self::EXPECTED_OUTPUT);
 	}
 
-	public function testRenderWithGlobalNameInConstructor()
+	public function testRenderWithGlobalNameInConstructor() : void
 	{
-		$object = new __\HTMLTemplate(self::$_exampleTemplateName, '.');
+		$object = new __\HTMLTemplate(self::EXAMPLE_TEMPLATE_NAME, self::EXAMPLE_TEMPLATE_PATH);
 
-		foreach (self::$_exampleVariables as $variable => $value) {
+		foreach (self::EXAMPLE_VARIABLES as $variable => $value) {
 			$object->$variable = $value;
 		}
 
 		$object->render();
 
-		$this->expectOutputString(self::$_expectedOutput);
+		$this->expectOutputString(self::EXPECTED_OUTPUT);
 	}
 
-	public function testRenderWithOverwrittenName()
+	public function testRenderWithOverwrittenName() : void
 	{
-		$object = new __\HTMLTemplate('nonexistentTemplate', '.');
+		$object = new __\HTMLTemplate('nonexistentTemplate', self::EXAMPLE_TEMPLATE_PATH);
 
-		foreach (self::$_exampleVariables as $variable => $value) {
+		foreach (self::EXAMPLE_VARIABLES as $variable => $value) {
 			$object->$variable = $value;
 		}
 
-		$object->render(self::$_exampleTemplateName);
+		$object->render(self::EXAMPLE_TEMPLATE_NAME);
 
-		$this->expectOutputString(self::$_expectedOutput);
+		$this->expectOutputString(self::EXPECTED_OUTPUT);
 	}
 
 	/**
 	* @expectedException     WizyTowka\HTMLTemplateException
 	* @expectedExceptionCode 1
 	*/
-	public function testRenderWithoutName()
+	public function testRenderWithoutName() : void
 	{
 		$object = new __\HTMLTemplate;
 
 		$object->render();
 	}
 
-	public function testSetRaw()
+	public function testSetRaw() : void
 	{
 		$object = new __\HTMLTemplate;
-		$object->setTemplatePath('.');
+		$object->setTemplatePath(self::EXAMPLE_TEMPLATE_PATH);
 
-		foreach (self::$_exampleVariables as $variable => $value) {
+		foreach (self::EXAMPLE_VARIABLES as $variable => $value) {
 			$object->setRaw($variable, $value);
 		}
 
-		$object->render(self::$_exampleTemplateName);
+		$object->render(self::EXAMPLE_TEMPLATE_NAME);
 
-		$this->expectOutputString(self::$_expectedOutputRaw);
+		$this->expectOutputString(self::EXPECTED_OUTPUT_RAW);
 	}
 
 	/**
@@ -137,7 +139,7 @@ HTML;
 	* @expectedExceptionCode          2
 	* @expectedExceptionMessageRegExp /wrongVariablePhpTempStream/
 	*/
-	public function testSetEscapedWithWrongType()
+	public function testSetEscapedWithWrongType() : void
 	{
 		$object = new __\HTMLTemplate;
 
@@ -153,7 +155,7 @@ HTML;
 		$object->stdClass = new \stdClass;
 		$object->iterator = new class() implements \IteratorAggregate
 		{
-			public function getIterator()
+			public function getIterator() : iterable
 			{
 				yield true;
 			}

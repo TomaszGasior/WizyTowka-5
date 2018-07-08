@@ -8,16 +8,17 @@ use WizyTowka as __;
 
 class HTMLElementsListTest extends TestCase
 {
-	private $_data = [
+	// Don't use constant for fake data here. HTMLElementsList::collection() wants reference.
+	private $_exampleData = [
 		[ 'id' => 1, 'title' => 'Title 1', 'url' => 'http://example.org/e_1', ],
 		[ 'id' => 2, 'title' => 'Title 2', 'url' => 'http://example.org/e_2', ],
 		[ 'id' => 3, 'title' => 'Title 3', 'url' => 'http://example.org/e_3', ],
 	];
 
-	public function testSimpleList()
+	public function testSimpleList() : void
 	{
 		$object = new __\HTMLElementsList('exampleClass');
-		$object->collection($this->_data)
+		$object->collection($this->_exampleData)
 			->title(function($row){ return strtoupper($row['title']); })
 			->emptyMessage('Empty.');
 
@@ -32,7 +33,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testEmptyList()
+	public function testEmptyList() : void
 	{
 		$emptyArray = [];
 
@@ -48,10 +49,10 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testListWithLink()
+	public function testListWithLink() : void
 	{
 		$object = new __\HTMLElementsList;
-		$object->collection($this->_data)
+		$object->collection($this->_exampleData)
 			->title(function($row){ return $row['title']; })
 			->link(function($row){ return $row['url']; }, ['target' => '_blank'])
 			->emptyMessage('Empty.');
@@ -67,10 +68,10 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testListWithRadio()
+	public function testListWithRadio() : void
 	{
 		$object = new __\HTMLElementsList;
-		$object->collection($this->_data)
+		$object->collection($this->_exampleData)
 			->title(function($row){ return $row['title']; })
 			->radio('field_name', function($row){ return $row['id']; }, 2)
 			->emptyMessage('Empty.');
@@ -92,10 +93,10 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testListWithMenu()
+	public function testListWithMenu() : void
 	{
 		$object = new __\HTMLElementsList;
-		$object->collection($this->_data)
+		$object->collection($this->_exampleData)
 			->title(function($row){ return $row['title']; })
 			->menu(function($row){ return [
 				['Preview', '?action=preview&id=' . $row['id']          ],

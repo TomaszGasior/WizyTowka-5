@@ -8,21 +8,42 @@ namespace WizyTowka\UnitTests;
 use WizyTowka as __;
 
 
+// Don't do it inside nested process (when @runInSeparateProcess annotation is used).
+if ($_SERVER['SCRIPT_FILENAME'] ?? false) {
+	// Prepare directory for temporary files.
+	define('TEMP_FILES_DIR', __DIR__ . '/../TEMP_TESTS_' . time());
+	mkdir(TEMP_FILES_DIR);
+
+	// Copy "config.php" file to make defined paths relative to temporary directory.
+	copy(__DIR__ . '/../code/config.php', TEMP_FILES_DIR . '/config.php');
+
+	// Make symlink for "system" directory inside temporary directory.
+	symlink(__DIR__ . '/../code/system', TEMP_FILES_DIR . '/system');
+
+	// Clean up on shutdown.
+	register_shutdown_function(function(){
+		unlink(TEMP_FILES_DIR . "/config.php");
+		unlink(TEMP_FILES_DIR . "/system");
+		rmdir(TEMP_FILES_DIR);
+	});
+}
+
 // Load config with system constants.
-include __DIR__ . '/../code/config.php';
+include TEMP_FILES_DIR . '/config.php';
 
 // Init system without controller.
 include __\SYSTEM_DIR . '/init.php';
 
-// Disable errors log file.
-__\WT()->errors->setLogFilePath(null);
+// Leave error handling to PHPUnit.
+restore_error_handler();
+restore_exception_handler();
 
 
 // Improved test case class used by all tests.
 abstract class TestCase extends \PHPUnit\Framework\TestCase
 {
 	// Assertion of HTML code. Needed in tests of HTML classes like HTMLMenu or HTMLHead.
-	protected function assertHTMLEquals($expected, $current, ...$arguments)
+	protected function assertHTMLEquals($expected, $current, ...$arguments) : void
 	{
 		$this->assertXmlStringEqualsXmlString(
 			(@\DOMDocument::loadHTML($expected, LIBXML_HTML_NOIMPLIED|LIBXML_HTML_NODEFDTD))->saveXML(),
@@ -61,10 +82,10 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
 	// Get last HTTP header sent by header() function using Xdebug extension.
 	// @runInSeparateProcess annotation is required.
-	protected function getLastHTTPHeader()
+	protected function getLastHTTPHeader() : string
 	{
 		if (!function_exists('xdebug_get_headers')) {
-			exit('Xdebug extension is required.');
+			throw new \Exception('Xdebug extension is required.');
 		}
 
 		return array_reverse(xdebug_get_headers())[0];
@@ -72,7 +93,7 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 
 	// Get properties of last HTTP cookie sent by setcookie() function.
 	// @runInSeparateProcess annotation is required.
-	protected function getLastHTTPCookie()
+	protected function getLastHTTPCookie() : ?array
 	{
 		$found = preg_match(
 			'/^Set-Cookie: (?<name>[^= ]+)=(?<value>[^ ;]+)(?:; expires=(?<expires>[^;]*))?/i',
@@ -87,6 +108,27 @@ abstract class TestCase extends \PHPUnit\Framework\TestCase
 			];
 		}
 
-		return false;
+		return null;
+	}
+
+	// Creates directory recursively with all parents.
+	static protected function makeDirRecursive($directory) : void
+	{
+		mkdir($directory, 0777, true);
+	}
+
+	// Removes directory recursively with all contents.
+	static protected function removeDirRecursive($directory) : void
+	{
+		$directoryContents = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS),
+			\RecursiveIteratorIterator::CHILD_FIRST
+		);
+
+		foreach ($directoryContents as $file) {
+			$file->isDir() ? rmdir($file) : unlink($file);
+		}
+
+		rmdir($directory);
 	}
 }

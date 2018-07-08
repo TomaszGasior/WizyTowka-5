@@ -8,18 +8,18 @@ use WizyTowka as __;
 
 class DatabasePDOTest extends TestCase
 {
-	static private $_exampleDatabaseFile = 'exampleSQLiteDatabase.db';
+	private const DATABASE_FILE = TEMP_FILES_DIR . '/DatabasePDO_database.db';
 
-	static public function tearDownAfterClass()
+	static public function tearDownAfterClass() : void
 	{
-		@unlink(self::$_exampleDatabaseFile);
+		unlink(self::DATABASE_FILE);
 	}
 
-	public function testWrapper()
+	public function testWrapper() : void
 	{
-		$databasePDO = new __\_Private\DatabasePDO('sqlite', self::$_exampleDatabaseFile);
+		$databasePDO = new __\_Private\DatabasePDO('sqlite', self::DATABASE_FILE);
 
-		$this->assertFileExists(self::$_exampleDatabaseFile);
+		$this->assertFileExists(self::DATABASE_FILE);
 
 		$databasePDO->exec('CREATE TABLE exampleTable(column1 INTEGER); INSERT INTO exampleTable(column1) VALUES (45);');
 

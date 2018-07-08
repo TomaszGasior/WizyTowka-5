@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class HTMLMenuTest extends TestCase
 {
-	public function testAdd()
+	public function testAdd() : void
 	{
 		$object = new __\HTMLMenu('exampleCSSClass');
 		$object->append('Yahoo', 'http://yahoo.com', null, ['target' => '_blank']);
@@ -29,7 +29,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testAddNested()
+	public function testAddNested() : void
 	{
 		$objectNested = new __\HTMLMenu;
 		$objectNested->prepend('File 3', 'file3.html');
@@ -60,13 +60,13 @@ HTML;
 	* @expectedException     WizyTowka\HTMLMenuException
 	* @expectedExceptionCode 2
 	*/
-	public function testAddWrongObject()
+	public function testAddWrongObject() : void
 	{
 		$object = new __\HTMLMenu;
 		$object->prepend('Element', new \stdClass);
 	}
 
-	public function testReplace()
+	public function testReplace() : void
 	{
 		$object = new __\HTMLMenu;
 		$object->insert(5, 'File 5', 'file5.html');
@@ -85,7 +85,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testRemoveByPosition()
+	public function testRemoveByPosition() : void
 	{
 		$object = new __\HTMLMenu;
 		$object->insert(7, 'File 7', 'file7.html');
@@ -107,7 +107,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testRemoveByContent()
+	public function testRemoveByContent() : void
 	{
 		$object = new __\HTMLMenu;
 		$object->append('File 1', 'file1.html');
@@ -126,7 +126,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testRemoveByLabel()
+	public function testRemoveByLabel() : void
 	{
 		$object = new __\HTMLMenu;
 		$object->append('File 1', 'file1.html');

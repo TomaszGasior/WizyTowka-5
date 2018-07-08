@@ -8,7 +8,7 @@ use WizyTowka as __;
 
 class HTMLFormFieldsTest extends TestCase
 {
-	public function testText()
+	public function testText() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->text('Example field', 'name', 'value " value');
@@ -25,7 +25,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testNumber()
+	public function testNumber() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->number('Example field', 'name', 8.5, ['min' => 5, 'max' => '10']);
@@ -42,7 +42,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testColor()
+	public function testColor() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->color('Example field', 'name', '#00ff00');
@@ -59,7 +59,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testUrl()
+	public function testUrl() : void
 	{
 		$object1 = new __\HTMLFormFields;
 		$object1->url('Example field', 'name', 'https://example.com');
@@ -90,7 +90,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testEmail()
+	public function testEmail() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->email('Example field', 'name', 'email@example.com');
@@ -107,7 +107,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testPassword()
+	public function testPassword() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->password('Example field', 'name', ['required' => true, 'disabled' => false]);
@@ -124,7 +124,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testCheckbox()
+	public function testCheckbox() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->checkbox('Example checkbox', 'name_1', true);
@@ -146,7 +146,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testRadio()
+	public function testRadio() : void
 	{
 		$selectedValue = 'linux';
 		$object = new __\HTMLFormFields;
@@ -174,7 +174,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testTextarea()
+	public function testTextarea() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->textarea('Example field', 'name', "Line 1.\nLine 2.\nLine 3.");
@@ -193,7 +193,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testSelect()
+	public function testSelect() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->select('Select your OS', 'operating_system', 'linux', [
@@ -220,7 +220,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testTextWithHints()
+	public function testTextWithHints() : void
 	{
 		$object = new __\HTMLFormFields;
 		$object->textWithHints('Select your OS', 'operating_system', '', [
@@ -248,7 +248,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testRemove()
+	public function testRemove() : void
 	{
 		$object = new __\HTMLFormFields(false, 'exampleCSSClass');
 		$object->text('Example field 1.', 'name_1', 'value');
@@ -273,7 +273,7 @@ HTML;
 		$this->assertHTMLEquals($expected, $current);
 	}
 
-	public function testDisabled()
+	public function testDisabled() : void
 	{
 		$object = new __\HTMLFormFields(true, 'exampleCSSClass');
 		$object->text('Example field 1.', 'name_1', 'value');
