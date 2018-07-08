@@ -40,9 +40,11 @@ function generateSchemaSQL($driver)
 
 
 // Remove current "data" directory.
-$oldDataDir = __\DATA_DIR . '_' . date('Y-m-d') . '_' . time();
-rename(__\DATA_DIR, $oldDataDir);
-system('gio trash ' . $oldDataDir);
+if (file_exists(__\DATA_DIR)) {
+	$oldDataDir = __\DATA_DIR . '_' . date('Y-m-d') . '_' . time();
+	rename(__\DATA_DIR, $oldDataDir);
+	system('gio trash ' . $oldDataDir);
+}
 
 // Create structure of "data" directory.
 mkdir(__\DATA_DIR);
