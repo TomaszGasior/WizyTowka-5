@@ -8,8 +8,8 @@ use WizyTowka as __;
 
 class HTMLTemplateTest extends TestCase
 {
-	private const EXAMPLE_TEMPLATE_NAME = 'exampleTemplate';
-	private const EXAMPLE_TEMPLATE_FILE = 'exampleTemplate.php';
+	private const EXAMPLE_TEMPLATE_NAME = 'HTMLTemplate_exampleTemplate';
+	private const EXAMPLE_TEMPLATE_FILE = self::EXAMPLE_TEMPLATE_NAME . '.php';
 	private const EXAMPLE_TEMPLATE_PATH = TEMP_FILES_DIR;
 
 	private const EXAMPLE_TEMPLATE_CODE = <<< 'HTML'
