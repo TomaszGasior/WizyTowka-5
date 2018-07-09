@@ -16,6 +16,14 @@ Inicjuje menadżera sesji użytkownika. Jeśli sesja straciła ważność lub WA
 
 Argument `$cookieName` określa nazwę ciasteczka HTTP używanego do przechowywana identyfikatora sesji — nazwa ciasteczka musi być unikalna. Jako argument `$config` należy przekazać instancję klasy `ConfigurationFile` z plikiem konfiguracyjnym sesji użytkowników.
 
+## `isUserLoggedIn() : bool`
+
+Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jest.
+
+## `getUserId() : ?int`
+
+Zwraca identyfikator zalogowanego użytkownika, bądź `null`, jeśli użytkownik nie jest zalogowany.
+
 ## `logIn(int $userId, string $sessionDuration) : void`
 
 Dokonuje zalogowania użytkownika o identyfikatorze określonym w argumencie `$userId`. Argument `$sessionDuration` określa czas trwania sesji użytkownika w sekundach.
@@ -36,10 +44,15 @@ Wylogowuje wszystkie pozostałe sesje aktualnie zalogowanego użytkownika. Zwrac
 
 Jeżeli żaden użytkownik nie jest zalogowany, zostanie rzucony wyjątek `SessionManagerException` #1.
 
-## `isUserLoggedIn() : bool`
+## `setExtraData(string $name, $value) : void`
 
-Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jest.
+Zapisuje w bieżącej sesji dodatkowe dane o wartości `$value` możliwe do późniejszego odczytania pod nazwą `$name`.
+Wartość `$value` musi być wartością skalarną lub tablicą, inaczej rzucony zostanie wyjątek `SessionManagerException` #3. Aby usunąć klucz z dodatkowych danych, należy jako wartość `$value` podać `null`.
 
-## `getUserId() : ?int`
+Jeżeli żaden użytkownik nie jest zalogowany, zostanie rzucony wyjątek `SessionManagerException` #1.
 
-Zwraca identyfikator zalogowanego użytkownika, bądź `null`, jeśli użytkownik nie jest zalogowany.
+## `getExtraData(string $name)`
+
+Zwraca dodatkowe dane zapisane pod nazwą `$name` przy użyciu metody `setExtraData()`. Jeżeli pod nazwą `$name` nie zostało nic zapisane, zwraca `null`.
+
+Jeżeli żaden użytkownik nie jest zalogowany, zostanie rzucony wyjątek `SessionManagerException` #1.
