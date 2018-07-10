@@ -23,7 +23,7 @@ class Pages extends __\AdminPanelPage
 	{
 		$this->_settings = __\WT()->settings;
 
-		$this->_draftsMode = isset($_GET['drafts']); // If true, show drafts instead public pages.
+		$this->_draftsMode = (bool)($_GET['drafts'] ?? '');  // If true, show drafts instead public pages.
 
 		if (!$this->_draftsMode and !empty($_GET['hideId'])) {
 			$this->_setPageIsDraft($_GET['hideId'], true);
@@ -97,12 +97,6 @@ class Pages extends __\AdminPanelPage
 
 	protected function _output() : void
 	{
-		if (isset($_GET['msg'])) {
-			$this->_HTMLMessage->success(
-				$this->_draftsMode ? 'Szkic strony został utworzony.' : 'Strona została utworzona.'
-			);
-		}
-
 		if ($this->_draftsMode) {
 			$this->_pageTitle = 'Szkice stron';
 			$this->_HTMLHead->title($this->_pageTitle);

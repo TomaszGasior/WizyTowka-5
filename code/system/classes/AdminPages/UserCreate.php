@@ -64,7 +64,9 @@ class UserCreate extends __\AdminPanelPage
 		$user->permissions = $this->_calculatePermissionValueFromNamesArray($_POST['permissions'] ?? []);
 
 		$user->save();
-		$this->_redirect('Users', ['msg' => 1]);
+		$this->_HTMLMessage->success('Konto użytkownika zostało utworzone.');
+
+		$this->_redirect('users');
 	}
 
 	protected function _output() : void

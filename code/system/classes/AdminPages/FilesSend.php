@@ -20,7 +20,8 @@ class FilesSend extends __\AdminPanelPage
 
 		// Redirect to sent files list only when sending operation was without problems.
 		if (!$this->_sendingErrors) {
-			$this->_redirect('files', ['msg' => 1]);
+			$this->_HTMLMessage->success('Przesyłanie zostało zakończone pomyślnie.');
+			$this->_redirect('files');
 		}
 	}
 

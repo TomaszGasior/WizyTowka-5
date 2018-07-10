@@ -11,16 +11,22 @@ class Preferences extends __\AdminPanelPage
 {
 	protected $_pageTitle = 'Preferencje';
 
-	private $_session;
-
 	protected function _prepare() : void
 	{
-		$this->_session = __\WT()->session;
-
 		if (isset($_GET['closeOtherSessions'])) {
-			$sessionsWereClosed = $this->_session->closeOtherSessions();
-			self::_redirect('preferences', ['msg' => $sessionsWereClosed ? 2 : 1]);
+			$this->_closeOtherUserSessions();
 		}
+	}
+
+	private function _closeOtherUserSessions()
+	{
+		$sessionsWereClosed = __\WT()->session->closeOtherSessions();
+
+		$this->_HTMLMessage->success(
+			$sessionsWereClosed ? 'Inne sesje twojego konta użytkownika zostały wylogowane.'
+			                    : 'Nie istnieją żadne inne sesje twojego konta użytkownika.'
+		);
+		self::_redirect('preferences');
 	}
 
 	public function POSTQuery() : void
@@ -44,12 +50,5 @@ class Preferences extends __\AdminPanelPage
 	protected function _output() : void
 	{
 		$this->_HTMLContextMenu->append('Wyloguj inne sesje', self::URL('preferences', ['closeOtherSessions' => 1]), 'iconLogout');
-
-		if (isset($_GET['msg'])) {
-			$this->_HTMLMessage->success(
-				$_GET['msg'] == 2 ? 'Inne sesje twojego konta użytkownika zostały wylogowane.'
-				                  : 'Nie istnieją żadne inne sesje twojego konta użytkownika.'
-			);
-		}
 	}
 }

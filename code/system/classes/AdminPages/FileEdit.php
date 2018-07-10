@@ -36,7 +36,8 @@ class FileEdit extends __\AdminPanelPage
 				$this->_HTMLMessage->error('Plik o nazwie „%s” już istnieje.', $newFileName);
 			}
 			elseif ($this->_file->rename($newFileName)) {
-				$this->_redirect('fileEdit', ['name' => $newFileName, 'msg' => 1]);
+				$this->_HTMLMessage->default('Nazwa pliku została zmieniona.');
+				$this->_redirect('fileEdit', ['name' => $newFileName]);
 			}
 			else {
 				$this->_HTMLMessage->error('Podana nazwa pliku jest niepoprawna.');
@@ -46,10 +47,6 @@ class FileEdit extends __\AdminPanelPage
 
 	protected function _output() : void
 	{
-		if (isset($_GET['msg'])) {
-			$this->_HTMLMessage->default('Nazwa pliku została zmieniona.');
-		}
-
 		// Replace default admin page title by file name.
 		$this->_pageTitle = $this->_file->getName() . ' — edycja pliku';
 		$this->_HTMLHead->title('Edycja pliku: „' . $this->_file->getName() . '”');

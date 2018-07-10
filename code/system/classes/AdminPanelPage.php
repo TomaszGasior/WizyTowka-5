@@ -73,7 +73,7 @@ abstract class AdminPanelPage extends Controller
 		$this->_HTMLContextMenu = new HTMLMenu;
 
 		// HTML message box.
-		$this->_HTMLMessage = new HTMLMessage;
+		$this->_HTMLMessage = new HTMLMessage(null, 'AdminPanel');
 
 		// Top navigation menu and main navigation menu. Only for logged in users.
 		if ($this->_userMustBeLoggedIn) {

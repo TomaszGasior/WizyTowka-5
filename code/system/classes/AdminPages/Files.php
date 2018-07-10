@@ -33,10 +33,6 @@ class Files extends __\AdminPanelPage
 
 	protected function _output() : void
 	{
-		if (isset($_GET['msg'])) {
-			$this->_HTMLMessage->success('Przesyłanie zostało zakończone pomyślnie.');
-		}
-
 		$this->_HTMLContextMenu->append('Wyślij pliki', self::URL('filesSend'), 'iconAdd');
 
 		$files = [];

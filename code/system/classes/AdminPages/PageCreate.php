@@ -64,12 +64,13 @@ class PageCreate extends __\AdminPanelPage
 
 		$page->save();
 
-		if ($this->_settings->adminPanelEditAfterCreate) {
-			$this->_redirect('pageEdit', ['id' => $page->id]);
-		}
-		else {
-			$this->_redirect('pages', $page->isDraft ? ['drafts' => true, 'msg' => 1] : ['msg' => 1]);
-		}
+		$this->_HTMLMessage->success(
+			$page->isDraft ? 'Szkic strony został utworzony.' : 'Strona została utworzona.'
+		);
+
+		$this->_settings->adminPanelEditAfterCreate
+		? $this->_redirect('pageEdit', ['id' => $page->id])
+		: $this->_redirect('pages',    ['drafts' => $page->isDraft]);
 	}
 
 	protected function _output() : void

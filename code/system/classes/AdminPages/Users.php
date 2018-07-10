@@ -47,10 +47,6 @@ class Users extends __\AdminPanelPage
 
 	protected function _output() : void
 	{
-		if (isset($_GET['msg'])) {
-			$this->_HTMLMessage->success('Konto użytkownika zostało utworzone.');
-		}
-
 		$this->_HTMLContextMenu->append('Utwórz użytkownika', self::URL('userCreate'), 'iconAdd');
 
 		$this->_HTMLTemplate->users = $this->_users;
