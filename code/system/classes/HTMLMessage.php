@@ -14,6 +14,50 @@ class HTMLMessage extends HTMLTag
 	private $_messageText;
 	private $_messageType;
 
+	private $_messageWasShown = false;
+
+	public function __construct(string $CSSClass = null, ?string $messageBoxName = null, ...$arguments)
+	{
+		parent::__construct($CSSClass, ...$arguments);
+
+		if ($messageBoxName != '') {
+			// If $messageBoxName is present and user is logged in, HTMLMessage will try to save
+			// not shown message text inside user session data and restore it in next request.
+			// This is useful when message have to be shown after redirection.
+			$this->_restorePreviousMessage($messageBoxName);
+		}
+	}
+
+	private function _restorePreviousMessage(string $messageBoxName) : void
+	{
+		$session  = WT()->session;
+		$dataName = 'HTMLMessage_' . $messageBoxName;
+
+		if (!$session->isUserLoggedIn()) {
+			return;
+		}
+
+		if ($data = $session->getExtraData($dataName)) {
+			list($this->_messageType, $this->_messageText, $this->_messageDefaultText) = $data;
+			$session->setExtraData($dataName, null);
+		}
+
+		$keepNotShownMessageForNextRequest = function() use ($session, $dataName)
+		{
+			if (!$this->_messageWasShown and $session->isUserLoggedIn()) {
+				$data = [$this->_messageType, $this->_messageText, $this->_messageDefaultText];
+
+				if (array_filter($data)) {
+					$session->setExtraData($dataName, $data);
+				}
+			}
+		};
+
+		WT()->hooks->addAction('Shutdown', $keepNotShownMessageForNextRequest);
+		// Don't try to use __destruct() instead. Order in which destructors are run is inconsistent,
+		// especially when HTTP redirection is needed — sometimes session extra data is not saved properly.
+	}
+
 	public function __debugInfo() : array
 	{
 		return [
@@ -69,6 +113,8 @@ class HTMLMessage extends HTMLTag
 
 	public function output() : void
 	{
+		$this->_messageWasShown = true;
+
 		if (!$this->_messageText and $this->_messageDefaultText) {
 			$this->success($this->_messageDefaultText);
 		}
