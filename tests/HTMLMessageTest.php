@@ -104,7 +104,7 @@ HTML;
 	public function testRestorePreviousInNextRequest() : void
 	{
 		// Fake session manager.
-		__\WT()->overwrite('session', new class()
+		__\WT()->overwrite('session', new class
 		{
 			private $_extraData = [];
 

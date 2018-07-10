@@ -12,7 +12,7 @@ class HTMLTagTest extends TestCase
 
 	static public function setUpBeforeClass() : void
 	{
-		self::$_exampleTagClass = get_class(new class() extends __\HTMLTag
+		self::$_exampleTagClass = get_class(new class extends __\HTMLTag
 		{
 			public function output() : void
 			{

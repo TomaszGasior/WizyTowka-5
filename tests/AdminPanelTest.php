@@ -15,7 +15,7 @@ class AdminPanelTest extends TestCase
 	static public function setUpBeforeClass() : void
 	{
 		// Fake session manager. isUserLoggedIn() is needed by AdminPanelPage's constructor.
-		__\WT()->overwrite('session', new class()
+		__\WT()->overwrite('session', new class
 		{
 			public function isUserLoggedIn() : bool
 			{
@@ -24,7 +24,7 @@ class AdminPanelTest extends TestCase
 		});
 
 		// Class of example admin panel page.
-		self::$_examplePageClass = get_class(new class() extends __\AdminPanelPage
+		self::$_examplePageClass = get_class(new class extends __\AdminPanelPage
 		{
 			// It's needed to run test. Otherwise AdminPanelPage's constructor redirects to login screen.
 			protected $_userMustBeLoggedIn = false;

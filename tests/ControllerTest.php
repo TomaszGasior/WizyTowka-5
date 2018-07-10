@@ -13,7 +13,7 @@ class ControllerTest extends TestCase
 	static public function setUpBeforeClass() : void
 	{
 		// Example controller extending Controller class.
-		self::$_exampleControllerClass = get_class(new class() extends __\Controller
+		self::$_exampleControllerClass = get_class(new class extends __\Controller
 		{
 			static public function URL($target, array $arguments = []) : ?string
 			{

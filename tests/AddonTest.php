@@ -18,7 +18,7 @@ class AddonTest extends TestCase
 	static public function setUpBeforeClass() : void
 	{
 		// Class of example addon type extending Addon class.
-		self::$_exampleTypeClass = get_class(new class() extends __\Addon
+		self::$_exampleTypeClass = get_class(new class extends __\Addon
 		{
 			static protected $_addonsSubdir = 'exampleAddonType';
 			static protected $_defaultConfig = [

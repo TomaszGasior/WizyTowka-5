@@ -32,7 +32,7 @@ class DatabaseObjectTest extends TestCase
 		__\WT()->overwrite('database', $databasePDO);   // DatabaseObject needs WT()->database.
 
 		// Example class extending abstract DatabaseObject class.
-		self::$_exampleClass = get_class(new class() extends __\DatabaseObject
+		self::$_exampleClass = get_class(new class extends __\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTable';
 			static protected $_tablePrimaryKey = 'primaryKey';
@@ -43,7 +43,7 @@ class DatabaseObjectTest extends TestCase
 		});
 
 		// Second example class with extra features like JSON data encoding.
-		self::$_exampleClassExtra = get_class(new class() extends __\DatabaseObject
+		self::$_exampleClassExtra = get_class(new class extends __\DatabaseObject
 		{
 			static protected $_tableName = 'exampleTableExtra';
 			static protected $_tablePrimaryKey = 'primaryKey';

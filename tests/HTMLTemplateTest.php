@@ -153,7 +153,7 @@ HTML;
 		$object->null    = null;
 
 		$object->stdClass = new \stdClass;
-		$object->iterator = new class() implements \IteratorAggregate
+		$object->iterator = new class implements \IteratorAggregate
 		{
 			public function getIterator() : iterable
 			{
