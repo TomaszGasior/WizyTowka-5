@@ -11,6 +11,12 @@ Ostatnia klasa CSS zależna jest od typu komunikatu, pierwsza zaś wskazywana je
 
 Klasa implementuje metodę magiczną `__debugInfo()` w celu debugowania przy użyciu funkcji `var_dump()`.
 
+## `__construct(string $CSSClass = null, ?string $messageBoxName = null)`
+
+Jeżeli argument `$messageBoxName` określa unikalną nazwę, niewyświetlony w bieżącym żądaniu komunikat zostanie zachowany i przywrócony przy kolejnym żądaniu HTTP. Funkcja ta jest użyteczna, jeśli po wykonanej operacji ma zostać wykonane przekierowanie pod inny adres, gdzie powinien ukazać się określony przez przekierowaniem komunikat. Funkcja działa jedynie, jeśli użytkownik jest zalogowany w menadżerze sesji.
+
+Zobacz `HTMLTag::__construct()`.
+
 ## `success(string $message, $arg1, $arg2, …) : void`
 
 Określa komunikat o powodzeniu (klasa CSS: `success`) o treści `$message`. Jeżeli określono wcześniej inny komunikat, zostaje on nadpisany.

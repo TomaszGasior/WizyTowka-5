@@ -100,4 +100,57 @@ HTML;
 		$current = (string)$object;
 		$this->assertEmpty($current);
 	}
+
+	public function testRestorePreviousInNextRequest() : void
+	{
+		// Fake session manager.
+		__\WT()->overwrite('session', new class()
+		{
+			private $_extraData = [];
+
+			public function isUserLoggedIn() : bool
+			{
+				return true;
+			}
+
+			public function getExtraData(string $name)
+			{
+				return $this->_extraData[$name] ?? null;
+			}
+
+			public function setExtraData(string $name, $value) : void
+			{
+				$this->_extraData[$name] = $value;
+			}
+		});
+
+		// Fake hooks manager.
+		__\WT()->overwrite('hooks', new __\_Private\Hooks);
+
+		$messageName = 'ExampleMessageName';
+
+		// Simulate first request when message is specified but won't be shown (output() won't be called).
+		$object = new __\HTMLMessage(null, $messageName);
+		$object->success('Example success message from previous request.');
+		__\WT()->hooks->runAction('Shutdown');  // Here HTMLMessage saves not shown message inside session manager.
+
+		// Then create new instance and try to print message without specifying it.
+		$object = new __\HTMLMessage(null, $messageName);
+
+		$current  = (string)$object;
+		$expected = <<< 'HTML'
+<div class="message success" role="alert">Example success message from previous request.</div>
+HTML;
+		$this->assertHTMLEquals($expected, $current);
+
+		// Next, create third instance and check whether message from first instance is lost.
+		$object = new __\HTMLMessage(null, $messageName);
+
+		$current  = (string)$object;
+		$this->assertEmpty($current);
+
+		// Clean up.
+		__\WT()->overwrite('session', null);
+		__\WT()->overwrite('hooks',   null);
+	}
 }
