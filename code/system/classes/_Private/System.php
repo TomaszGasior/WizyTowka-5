@@ -70,7 +70,10 @@ class System
 			// Session manager.
 			case 'session':
 				return $this->_srv[$name] ?? $this->_srv[$name] =
-					new SessionManager('WTCMSSession', new __\ConfigurationFile(__\CONFIG_DIR . '/sessions.conf'));
+					new SessionManager(
+						'WTCMS__' . $this->settings->sessionCookiePart,
+						new __\ConfigurationFile(__\CONFIG_DIR . '/sessions.conf')
+					);
 
 			// PDO connection.
 			case 'database':
