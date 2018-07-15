@@ -125,7 +125,7 @@ HTML;
 		});
 
 		// Fake hooks manager.
-		__\WT()->overwrite('hooks', new __\_Private\Hooks);
+		__\WT()->overwrite('hooks', new __\_Private\HooksManager);
 
 		$messageName = 'ExampleMessageName';
 

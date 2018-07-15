@@ -6,11 +6,11 @@
 namespace WizyTowka\UnitTests;
 use WizyTowka as __;
 
-class HooksTest extends TestCase
+class HooksManagerTest extends TestCase
 {
 	public function testRunAction() : void
 	{
-		$hooksManager = new __\_Private\Hooks;
+		$hooksManager = new __\_Private\HooksManager;
 
 		$action1 = function($text)
 		{
@@ -38,7 +38,7 @@ class HooksTest extends TestCase
 
 	public function testApplyFilter() : void
 	{
-		$hooksManager = new __\_Private\Hooks;
+		$hooksManager = new __\_Private\HooksManager;
 
 		$filter1 = function($text)
 		{
@@ -70,7 +70,7 @@ class HooksTest extends TestCase
 
 	public function testRemoveAction() : void
 	{
-		$hooksManager = new __\_Private\Hooks;
+		$hooksManager = new __\_Private\HooksManager;
 
 		$function = function()
 		{
@@ -86,12 +86,12 @@ class HooksTest extends TestCase
 	}
 
 	/**
-	* @expectedException     WizyTowka\_Private\HooksException
+	* @expectedException     WizyTowka\_Private\HooksManagerException
 	* @expectedExceptionCode 1
 	*/
 	public function testInvalidCallbackArguments() : void
 	{
-		$hooksManager = new __\_Private\Hooks;
+		$hooksManager = new __\_Private\HooksManager;
 
 		$function = function($requiredArgument1, $requiredArgument2, $requiredArgument3)
 		{

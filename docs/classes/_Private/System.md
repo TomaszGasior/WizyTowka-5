@@ -10,7 +10,7 @@ Startowa klasa systemu WizyTówka. Inicjuje system i usługi systemowe, czyli do
 - `$autoloader` — instancja klasy `_Private\Autoloader`, automatycznej ładowarki klas;
 - `$database` — instancja klasy `_Private\DatabasePDO` dziedziczącej po klasie `\PDO`;
 - `$errors` — instancja klasy `_Private\ErrorHandler`;
-- `$hooks` — instancja klasy `_Private\Hooks`, menadżera akcji i filtrów;
+- `$hooks` — instancja klasy `_Private\HooksManager`, menadżera akcji i filtrów;
 - `$session` — instancja klasy `_Private\SessionManager`, menadżera sesji użytkownika;
 - `$settings` — instancja klasy `ConfigurationFile` zawierająca główny plik konfiguracyjny systemu.
 

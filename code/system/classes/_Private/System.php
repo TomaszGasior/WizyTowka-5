@@ -11,7 +11,7 @@ use WizyTowka as __;
 * @property Autoloader           $autoloader
 * @property DatabasePDO          $database
 * @property ErrorHandler         $errors
-* @property Hooks                $hooks
+* @property HooksManager         $hooks
 * @property SessionManager       $session
 * @property __\ConfigurationFile $settings
 */
@@ -65,7 +65,7 @@ class System
 			// Hooks manager.
 			case 'hooks':
 				return $this->_srv[$name] ?? $this->_srv[$name] =
-					new Hooks;
+					new HooksManager;
 
 			// Session manager.
 			case 'session':

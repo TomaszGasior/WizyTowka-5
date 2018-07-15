@@ -7,7 +7,7 @@
 namespace WizyTowka\_Private;
 use WizyTowka as __;
 
-class Hooks
+class HooksManager
 {
 	private $_actions = [];
 	private $_filters = [];
@@ -40,7 +40,7 @@ class Hooks
 	private function _removeHook(array &$hooks, string $name, callable $callback) : void
 	{
 		if (!isset($hooks[$name])) {
-			throw HooksException::hookDoesNotExist($name);
+			throw HooksManagerException::hookDoesNotExist($name);
 		}
 
 		foreach ($hooks[$name] as $key => $iteratedCallback) {
@@ -58,7 +58,7 @@ class Hooks
 	public function applyFilter(string $name, ...$arguments)
 	{
 		if (!isset($arguments[0])) {
-			throw HooksException::filterRequiresArgument($name);
+			throw HooksManagerException::filterRequiresArgument($name);
 		}
 
 		return $this->_runHook($this->_filters, $name, $arguments, true);
@@ -81,7 +81,7 @@ class Hooks
 			}
 			// If hook callback is called without required number of arguments, hooks exception is thrown for more accurate information.
 			catch (\ArgumentCountError $e) {
-				throw HooksException::hookWrongArgumentsCount(
+				throw HooksManagerException::hookWrongArgumentsCount(
 					$name, (new \ReflectionFunction($callback))->getNumberOfRequiredParameters(), count($arguments)
 				);
 			}
@@ -91,7 +91,7 @@ class Hooks
 				$requiredArgsCount = (new \ReflectionFunction($callback))->getNumberOfRequiredParameters();
 				$givenArgsCount = count($arguments);
 				if ($requiredArgsCount > $givenArgsCount) {
-					throw HooksException::hookWrongArgumentsCount($name, $requiredArgsCount, $givenArgsCount);
+					throw HooksManagerException::hookWrongArgumentsCount($name, $requiredArgsCount, $givenArgsCount);
 				}
 				// When error is different, throw it again to default exception handler.
 				else {
@@ -104,7 +104,7 @@ class Hooks
 	}
 }
 
-class HooksException extends __\Exception
+class HooksManagerException extends __\Exception
 {
 	static public function hookWrongArgumentsCount($hookName, $requiredArgsCount, $givenArgsCount)
 	{
