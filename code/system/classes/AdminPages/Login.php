@@ -12,10 +12,12 @@ class Login extends __\AdminPanelPage
 	protected $_userMustBeLoggedIn = false;
 
 	private $_session;
+	private $_settings;
 
 	protected function _prepare() : void
 	{
-		$this->_session = __\WT()->session;
+		$this->_session  = __\WT()->session;
+		$this->_settings = __\WT()->settings;
 
 		// Redirect user to default page of admin panel, when user is already logged in.
 		if ($this->_session->isUserLoggedIn()) {
@@ -33,7 +35,7 @@ class Login extends __\AdminPanelPage
 		$user = __\User::getByName($_POST['name']);
 
 		if ($user and $user->checkPassword($_POST['password'])) {
-			$this->_session->logIn($user->id, 3600);
+			$this->_session->logIn($user->id, $this->_settings->sessionDurationSeconds);
 
 			// Update last login time statistics in database.
 			$user->lastLoginTime = time();
@@ -66,6 +68,7 @@ class Login extends __\AdminPanelPage
 			if (!empty($arguments['c'])) {
 				$target = $arguments['c'];
 				unset($arguments['c']);
+
 				$this->_redirect($target, $arguments);
 			}
 		}
