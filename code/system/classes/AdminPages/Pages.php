@@ -23,16 +23,16 @@ class Pages extends __\AdminPanelPage
 	{
 		$this->_settings = __\WT()->settings;
 
-		$this->_draftsMode = (bool)($_GET['drafts'] ?? '');  // If true, show drafts instead public pages.
+		$this->_draftsMode = (bool)($_GET['drafts'] ?? null);  // If true, show drafts instead public pages.
 
-		if (!$this->_draftsMode and !empty($_GET['hideId'])) {
-			$this->_setPageIsDraft($_GET['hideId'], true);
+		if (!$this->_draftsMode and is_numeric($_GET['hideId'] ?? null)) {
+			$this->_setPageIsDraft((int)$_GET['hideId'], true);
 		}
-		elseif ($this->_draftsMode and !empty($_GET['publishId'])) {
-			$this->_setPageIsDraft($_GET['publishId'], false);
+		elseif ($this->_draftsMode and is_numeric($_GET['publishId'] ?? null)) {
+			$this->_setPageIsDraft((int)$_GET['publishId'], false);
 		}
-		elseif (!empty($_GET['deleteId'])) {
-			$this->_deletePage($_GET['deleteId']);
+		elseif (is_numeric($_GET['deleteId'] ?? null)) {
+			$this->_deletePage((int)$_GET['deleteId']);
 		}
 
 		$this->_pages = $this->_draftsMode ? __\Page::getAllDrafts() : __\Page::getAll();

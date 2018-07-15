@@ -20,8 +20,8 @@ class Users extends __\AdminPanelPage
 			$this->_redirect('error', ['type' => 'lockdown']);
 		}
 
-		if (!empty($_GET['deleteId'])) {
-			$this->_deleteUser($_GET['deleteId']);
+		if (is_numeric($_GET['deleteId'] ?? null)) {
+			$this->_deleteUser((int)$_GET['deleteId']);
 		}
 
 		$this->_users = __\User::getAll();

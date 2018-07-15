@@ -2,7 +2,7 @@
 
 /**
 * WizyTówka 5
-* Common code for PageEdit, PageSettings, PageProperties, Pages, Drafts controllers.
+* Common code for PageEdit, PageSettings, PageProperties, Pages controllers.
 */
 namespace WizyTowka\AdminPages;
 use WizyTowka as __;

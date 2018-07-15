@@ -18,7 +18,7 @@ class Preferences extends __\AdminPanelPage
 		}
 	}
 
-	private function _closeOtherUserSessions()
+	private function _closeOtherUserSessions() : void
 	{
 		$sessionsWereClosed = __\WT()->session->closeOtherSessions();
 
@@ -26,7 +26,7 @@ class Preferences extends __\AdminPanelPage
 			$sessionsWereClosed ? 'Inne sesje twojego konta użytkownika zostały wylogowane.'
 			                    : 'Nie istnieją żadne inne sesje twojego konta użytkownika.'
 		);
-		self::_redirect('preferences');
+		$this->_redirect('preferences');
 	}
 
 	public function POSTQuery() : void
