@@ -77,6 +77,7 @@ $settings = new __\ConfigurationFile(__\CONFIG_DIR . '/settings.conf');
 $settings->websiteAddress = 'http://wizytowka.localhost';
 $settings->websiteTitle = 'Przykładowa witryna';
 $settings->websiteHomepageId = 1;
+$settings->sessionCookiePart = rand(10000, 99999);
 $settings->systemVersion = __\VERSION;
 $settings->systemShowErrors = true;
 
