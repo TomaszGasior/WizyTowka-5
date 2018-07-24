@@ -139,9 +139,13 @@ class SessionManager
 			unset($session['extraData'][$name]);
 		}
 		else {
-			if (!is_scalar($value) and !is_array($value)) {
-				throw SessionManagerException::invalidExtraDataValue($name);
-			}
+			$checkType = function($value) use ($name)
+			{
+				if (!is_scalar($value) and !is_null($value)) {
+					throw SessionManagerException::invalidExtraDataValue($name);
+				}
+			};
+			is_array($value) ? array_walk_recursive($value, $checkType) : $checkType($value);
 
 			$session['extraData'][$name] = $value;
 		}

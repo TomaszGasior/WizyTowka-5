@@ -138,7 +138,11 @@ class SessionManagerTest extends TestCase
 		$sessionsConfigFile = new __\ConfigurationFile(self::INSTANCE_CONFIG_FILE);
 		$sessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 
-		$sessionManager->setExtraData('invalid', new \stdClass);
+		$data = [
+			'something',
+			new \stdClass,
+		];
+		$sessionManager->setExtraData('invalid', $data);
 	}
 
 	/**
