@@ -8,7 +8,7 @@
 <?php } ?>
 
 <form method="post" enctype="multipart/form-data">
-	<fieldset>
+	<fieldset <?= $featureDisabled ? 'disabled' : '' ?>>
 		<input type="hidden" name="MAX_FILE_SIZE" value="<?= $maxFileSize ?>">
 
 		<div>
@@ -29,5 +29,5 @@
 		<p class="information">Jednocześnie można przesłać <?= $maxFilesNumber ?> plików. W&nbsp;celu wskazania kilku plików należy przeciągnąć zaznaczenie myszką lub wskazywać każdy oddzielnie, trzymając wciśnięty przycisk <code>Ctrl</code>.</p>
 	<?php } ?>
 
-	<button>Wyślij pliki</button>
+	<button <?= $featureDisabled ? 'disabled' : '' ?>>Wyślij pliki</button>
 </form>

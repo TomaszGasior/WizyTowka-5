@@ -25,6 +25,10 @@ class FilesSend extends __\AdminPanelPage
 
 	public function POSTQuery() : void
 	{
+		if (!$this->_handler->isSendingFilesEnabled()) {
+			$this->_HTMLMessage->error('Wysyłanie plików jest wyłączone w konfiguracji PHP.');
+			return;
+		}
 		if (!is_array($_FILES['sendingFiles'] ?? null)) {
 			$this->_HTMLMessage->error('Przesyłanie nie powiodło się (prawdopodobne błędne żądanie POST).');
 			return;
