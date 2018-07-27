@@ -55,6 +55,4 @@ Metoda renderuje szablon — eksportuje zmienne do skryptu PHP szablonu, urucham
 
 Jeśli argument `$templateName` jest określony, używany jest szablon o wskazanej nazwie. W innym wypadku używany jest globalny szablon, którego nazwę określa się za pośrednictwem konstruktora bądź metody `setTemplate()`. Nazwa nie powinna zawierać rozszerzenia `.php`. Jeśli nazwa szablonu nie zostanie w ogóle określona, zostanie rzucony wyjątek `HTMLTemplateException` #1.
 
-Wszelkie klasy wbudowane w system WizyTówka (np. `HTMLFormFields`, `HTMLMessage`, `HTMLElementsList`) mogą być wywoływane w formie skróconej — bez podawania przestrzeni nazw. Na przykład zamiast `WizyTowka\HTMLFormFields` można stworzyć instancję klasy `HTMLFormFields`.
-
 Uwaga: jeśli wewnątrz kodu szablonu zostanie rzucony wyjątek, zostanie on obsłużony wewnętrznie przez metodę. Szablon nie zostanie wtedy w ogóle wyrenderowany, a w jego miejscu pojawi się uproszczony komunikat o błędzie.

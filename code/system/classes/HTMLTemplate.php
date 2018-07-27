@@ -94,12 +94,6 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 
 	public function render(string $templateName = null) : void
 	{
-		static $autoloaderAdded = false;
-		if (!$autoloaderAdded) {
-			spl_autoload_register([$this, '_systemNamespaceAlias']);
-			$autoloaderAdded = true;
-		}
-
 		if (empty($templateName)) {
 			if (empty($this->_templateName)) {
 				throw HTMLTemplateException::templateNotSpecified();
@@ -111,7 +105,7 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 			header('Content-type: text/html; charset=UTF-8');
 		}
 
-		$include = function(&$___variables___, $___template___)
+		$include = function($___variables___, $___template___)
 		{
 			try {
 				ob_start();
@@ -165,29 +159,6 @@ class HTMLTemplate implements \IteratorAggregate, \Countable
 				throw new \UnexpectedValueException;
 		}
 	}
-
-	// This autoloader is used to make creating new classes easier in templates code.
-	// Instead of `new WizyTowka\HTMLFormFields()` it's possible to use shorter `new HTMLFormFields()` syntax.
-	private function _systemNamespaceAlias(string $classNamePart) : bool
-	{
-		static $inProgress;  // Avoid endless loop while calling class_exists().
-
-		if ($inProgress) {
-			return false;
-		}
-
-		$potentialClass = '\\' . __NAMESPACE__ . '\\' . $classNamePart;
-
-		$inProgress  = true;
-		$classExists = (class_exists($potentialClass) or trait_exists($potentialClass));
-		$inProgress  = false;
-
-		if ($classExists) {
-			class_alias($potentialClass, $classNamePart);
-		}
-
-		return $classExists;
-	}
 }
 
 class HTMLTemplateException extends Exception
@@ -198,6 +169,6 @@ class HTMLTemplateException extends Exception
 	}
 	static public function valueCantBeEscaped($variable)
 	{
-		return new self('Value of "' . $variable . '" variable cannot be escaped. Allowed types: integer, float, boolean, array, template instance, iterator, stdClass. Convert variable value or escape it and use setRaw() instead.', 2);
+		return new self('Value of "' . $variable . '" variable cannot be escaped. Allowed types: integer, float, boolean, array, template instance, iterator, stdClass. Convert variable value or use setRaw() instead.', 2);
 	}
 }
