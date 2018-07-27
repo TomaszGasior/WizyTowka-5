@@ -13,14 +13,14 @@
 
 	<dl>
 		<dt>Data modyfikacji pliku</dt>
-		<dd><?= HTML::formatDateTime($fileModTime) ?>
+		<dd><?= $utils::formatDateTime($fileModTime) ?>
 		<dt>Rozmiar pliku</dt>
-		<dd><?= HTML::formatFileSize($fileSize) ?>
+		<dd><?= $utils::formatFileSize($fileSize) ?>
 	</dl>
 
 	<h3>Zmiana nazwy pliku</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->text('Nowa nazwa pliku', 'newFileName', $fileName, ['placeholder' => '(pozostaw dotychczasową nazwę)'])
 	?>
 

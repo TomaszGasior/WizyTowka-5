@@ -1,7 +1,7 @@
 <form method="post">
 	<h3>Dane użytkownika</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->text('Nazwa użytkownika', 'name', $createInsteadEdit ? '' : $user->name,
 			['required' => $createInsteadEdit, 'pattern' => '[a-zA-Z0-9_\-.]*', 'title' => 'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
 		)
@@ -10,8 +10,8 @@
 
 	<?php if (!$createInsteadEdit) { ?>
 		<dl>
-			<dt>Data ostatniego zalogowania</dt><dd><?= $user->lastLoginTime ? HTML::formatDateTime($user->lastLoginTime) : 'nigdy' ?></dd>
-			<dt>Data utworzenia</dt><dd><?= HTML::formatDateTime($user->createdTime) ?></dd>
+			<dt>Data ostatniego zalogowania</dt><dd><?= $user->lastLoginTime ? $utils::formatDateTime($user->lastLoginTime) : 'nigdy' ?></dd>
+			<dt>Data utworzenia</dt><dd><?= $utils::formatDateTime($user->createdTime) ?></dd>
 		</dl>
 	<?php } ?>
 
@@ -19,7 +19,7 @@
 
 	<h3>Hasło</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->password('Hasło', 'passwordText_1', ['required' => $createInsteadEdit])
 		->password('Ponownie hasło', 'passwordText_2', ['required' => $createInsteadEdit])
 	?>
@@ -30,7 +30,7 @@
 
 	<h3>Uprawnienia</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->checkbox('Tworzenie szkiców stron oraz edycja stron i&nbsp;szkiców należących do użytkownika',
 			'permissions[CREATE_PAGES]',     $permissions['CREATE_PAGES'])
 		->checkbox('Publikowanie tych szkiców i&nbsp;ukrywanie tych stron, które użytkownik może edytować',

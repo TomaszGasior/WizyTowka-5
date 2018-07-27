@@ -5,7 +5,7 @@
 
 	<h3>Dane strony</h3>
 
-	<?= (new HTMLFormFields($disallowModifications))
+	<?= (new $formFields($disallowModifications))
 		->text('Tytuł', 'title', $page->title, ['required' => true])
 		->text('Identyfikator', 'slug', $page->slug)
 		->{$hideUserIdChange ? 'skip' : 'select'}
@@ -15,15 +15,15 @@
 	?>
 
 	<dl>
-		<dt>Data modyfikacji</dt><dd><?= HTML::formatDateTime($page->updatedTime) ?></dd>
-		<dt>Data utworzenia</dt><dd><?= HTML::formatDateTime($page->createdTime) ?></dd>
+		<dt>Data modyfikacji</dt><dd><?= $utils::formatDateTime($page->updatedTime) ?></dd>
+		<dt>Data utworzenia</dt><dd><?= $utils::formatDateTime($page->createdTime) ?></dd>
 	</dl>
 
 	<p class="information">Identyfikator to uproszczona nazwa widoczna w&nbsp;adresie strony w&nbsp;pasku adresu przeglądarki. Nie może zawierać spacji, polskich znaków i&nbsp;niestandardowych symboli.</p>
 
 	<h3>Informacje wyszukiwarek</h3>
 
-	<?= (new HTMLFormFields($disallowModifications))
+	<?= (new $formFields($disallowModifications))
 		->text('Tytuł w pasku przeglądarki', 'titleHead', $page->titleHead,
 			['placeholder' => '(użyj domyślnego tytułu)'])
 		->textarea('Opis dla wyszukiwarek', 'description', $page->description,

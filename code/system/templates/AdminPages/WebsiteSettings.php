@@ -1,7 +1,7 @@
 <form method="post">
 	<h3>Ustawienia główne</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->text('Tytuł witryny', 'websiteTitle', $settings->websiteTitle, ['required' => true])
 		->text('Autor witryny', 'websiteAuthor', $settings->websiteAuthor)
 		->text('Układ tytułu witryny', 'websiteTitlePattern', $settings->websiteTitlePattern,
@@ -13,7 +13,7 @@
 
 	<h3>Typografia</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->checkbox('Przenoś jednoliterowe wyrazy z&nbsp;końca wiersza na początek następnego', 'typographyOrphans', $settings->typographyOrphans)
 		->checkbox('Automatycznie zamieniaj cudzysłowy uproszczone na cudzysłowy polskie', 'typographyQuotes', $settings->typographyQuotes)
 		->checkbox('Automatycznie zamieniaj minusy otoczone spacjami na długie pauzy', 'typographyDashes', $settings->typographyDashes)
@@ -22,7 +22,7 @@
 
 	<h3>Pozostałe ustawienia</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->text('Adres e-mail', 'websiteEmailAddress', $settings->websiteEmailAddress, ['required' => true])
 		->select('Format daty i godziny', 'dateTimeFormat', $dateTimeFormatSelected, $dateTimeFormatList,
 			['disabled' => $dateTimeFormatDisable]

@@ -1,7 +1,7 @@
 <form method="post">
 	<h3>Dane strony</h3>
 
-	<?= (new HTMLFormFields)
+	<?= (new $formFields)
 		->text('Tytuł', 'title', '', ['required' => true])
 		->text('Identyfikator', 'slug', '')
 		->option('Strona dostępna publicznie', 'isDraft', '0', $autocheckDraft, ['disabled' => $disallowPublicPage])
@@ -12,7 +12,7 @@
 
 	<h3>Typ zawartości</h3>
 
-	<?= (new HTMLElementsList('elementsList'))
+	<?= (new $elementsList('elementsList'))
 		->collection($contentTypes)
 		->title(function($type){ return $type->label; })
 		->option('type', function($type){ return $type->name; }, $autocheckContentType)

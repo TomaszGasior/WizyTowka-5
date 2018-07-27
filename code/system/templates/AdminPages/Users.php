@@ -1,8 +1,8 @@
-<?= (new HTMLElementsList('elementsList'))
+<?= (new $elementsList('elementsList'))
 	->collection($users)
 	->title(function($user){ return $user->name; })
-	->menu(function($user){ return [
-		['Edytuj', AdminPanel::URL('userEdit', ['id' => $user->id]),    'iconEdit'],
-		['Usuń',   AdminPanel::URL('users', ['deleteId' => $user->id]), 'iconDelete deleteConfirmAlert'],
+	->menu(function($user) use ($adminPanelURL){ return [
+		['Edytuj', $adminPanelURL('userEdit', ['id' => $user->id]),    'iconEdit'],
+		['Usuń',   $adminPanelURL('users', ['deleteId' => $user->id]), 'iconDelete deleteConfirmAlert'],
 	]; })
 ?>

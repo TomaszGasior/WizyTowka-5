@@ -22,7 +22,7 @@
 	<?php } ?>
 
 	<?php if ($maxFileSize) { ?>
-		<p class="information">Maksymalna wielkość jednego pliku to <?= HTML::formatFileSize($maxFileSize) ?>.</p>
+		<p class="information">Maksymalna wielkość jednego pliku to <?= $utils::formatFileSize($maxFileSize) ?>.</p>
 	<?php } ?>
 
 	<?php if ($maxFilesNumber > 1) { ?>
