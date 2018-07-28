@@ -45,6 +45,13 @@ class System
 
 		set_error_handler([$this->_srv['errors'], 'handleError']);
 		set_exception_handler([$this->_srv['errors'], 'handleException']);
+
+		// Make globals read only.
+		$_GET    = new ReadOnlyArray($_GET,    '_GET');
+		$_POST   = new ReadOnlyArray($_POST,   '_POST');
+		$_FILES  = new ReadOnlyArray($_FILES,  '_FILES');
+		$_SERVER = new ReadOnlyArray($_SERVER, '_SERVER');
+		$_COOKIE = new ReadOnlyArray($_COOKIE, '_COOKIE');
 	}
 
 	// This method is used to simulate read only properties. Redundant syntax is used for better performance.
