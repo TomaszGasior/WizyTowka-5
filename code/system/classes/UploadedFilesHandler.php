@@ -42,7 +42,7 @@ class UploadedFilesHandler
 
 		// Stop when structure of $_FILES item is wrong.
 		foreach (['name', 'tmp_name', 'size', 'error'] as $key) {
-			if (!is_array($_FILESField[$key]) or count($_FILESField[$key]) != count($_FILESField['name'])) {
+			if (!is_array($_FILESField[$key] ?? null) or count($_FILESField[$key]) != count($_FILESField['name'])) {
 				throw UploadedFilesHandlerException::wrongFILESVariable();
 			}
 		}
