@@ -21,16 +21,16 @@ class PageCreate extends __\AdminPanelPage
 
 	public function POSTQuery() : void
 	{
-		$_POST['title'] = trim($_POST['title']);
-		$_POST['slug']  = trim($_POST['slug']);
+		$title = trim($_POST['title']);
+		$slug  = trim($_POST['slug']);
 
-		if (!$_POST['title']) {
+		if (!$title) {
 			$this->_HTMLMessage->error('Nie określono tytułu strony.');
 			return;
 		}
 
 		$slug = (new __\Text(
-			!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
+			!empty($slug) ? $slug : $title)
 		)->makeSlug()->get();
 
 		if (__\Page::getBySlug($slug)) {
@@ -48,7 +48,7 @@ class PageCreate extends __\AdminPanelPage
 
 		$page = new __\Page;
 
-		$page->title   = $_POST['title'];
+		$page->title   = $title;
 		$page->slug    = $slug;
 		$page->noIndex = false;
 		$page->userId  = $this->_currentUser->id;

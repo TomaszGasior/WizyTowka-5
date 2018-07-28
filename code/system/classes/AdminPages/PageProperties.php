@@ -32,14 +32,14 @@ class PageProperties extends __\AdminPanelPage
 		// Redirect user to error page if he is not allowed to edit page.
 		$this->_preventFromAccessIfNotAllowed($this->_page);
 
-		$_POST['title'] = trim($_POST['title']);
-		$_POST['slug']  = trim($_POST['slug']);
+		$title = trim($_POST['title']);
+		$slug  = trim($_POST['slug']);
 
-		if (!$_POST['title']) {
+		if (!$title) {
 			$this->_HTMLMessage->error('Nie określono tytułu strony.');
 		}
 		else {
-			$this->_page->title = $_POST['title'];
+			$this->_page->title = $title;
 		}
 
 		if ($this->_currentUser->permissions & __\User::PERM_PUBLISH_PAGES) {
@@ -51,9 +51,9 @@ class PageProperties extends __\AdminPanelPage
 			}
 		}
 
-		if ($_POST['slug'] != $this->_page->slug) {
+		if ($slug != $this->_page->slug) {
 			$newSlug = (new __\Text(
-				!empty($_POST['slug']) ? $_POST['slug'] : $_POST['title'])
+				!empty($slug) ? $slug : $title)
 			)->makeSlug()->get();
 
 			if (__\Page::getBySlug($newSlug)) {
