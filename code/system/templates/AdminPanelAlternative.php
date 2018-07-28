@@ -9,7 +9,7 @@
 <body>
 	<div class="adminPanelAlternative">
 		<header id="header">
-			<h1>WizyTówka — panel administracyjny</h1>
+			<h1>WizyTówka — system CMS</h1>
 		</header>
 
 		<main id="main">
