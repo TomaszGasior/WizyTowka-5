@@ -46,7 +46,7 @@ class AdminPanelTest extends TestCase
 		__\AdminPanel::registerPage(self::EXAMPLE_PAGE_NAME, self::$_examplePageClass);
 
 		// AdminPanel reads name of admin panel page from "c" parameter of URL address.
-		$_GET['c'] = self::EXAMPLE_PAGE_NAME;
+		$_GET->overwrite('c', self::EXAMPLE_PAGE_NAME);
 
 		// AdminPanel isn't real controller of admin panel. It works as proxy for real class of
 		// proper admin panel page controller, which inherits from AdminPanelPage class (not AdminPanel).

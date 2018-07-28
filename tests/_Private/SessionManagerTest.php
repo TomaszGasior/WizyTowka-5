@@ -20,15 +20,15 @@ class SessionManagerTest extends TestCase
 		$sessionsConfigFile = new __\ConfigurationFile(self::INSTANCE_CONFIG_FILE);
 
 		// $_SERVER elements undefined in CLI.
-		$_SERVER['REMOTE_ADDR']     = '127.0.0.1';
-		$_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0';
+		$_SERVER->overwrite('REMOTE_ADDR', '127.0.0.1');
+		$_SERVER->overwrite('HTTP_USER_AGENT', 'Mozilla/5.0 (X11; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0');
 
 		// Start user session to prepare SessionManager's configuration file.
 		$sessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 		$sessionManager->logIn(self::EXAMPLE_USER_ID, self::EXAMPLE_SESSION_DURATION);
 
 		// Get session ID from newly created "Set-Cookie" HTTP header and simulate "next request" when cookie is present.
-		$_COOKIE[self::INSTANCE_COOKIE_NAME] = $this->getLastHTTPCookie()['value'];
+		$_COOKIE->overwrite(self::INSTANCE_COOKIE_NAME, $this->getLastHTTPCookie()['value']);
 	}
 
 	public function tearDown() : void
@@ -163,12 +163,12 @@ class SessionManagerTest extends TestCase
 		$userAgent_third  = 'Mozilla/5.0 (Windows NT 6.3; WOW64; Trident/7.0; rv:11.0) like Gecko';
 
 		// First it's needed to add second and third user sessions to configuration file and get session IDs.
-		$_SERVER['HTTP_USER_AGENT'] = $userAgent_second;
+		$_SERVER->overwrite('HTTP_USER_AGENT', $userAgent_second);
 		$tmpSessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 		$tmpSessionManager->logIn(self::EXAMPLE_USER_ID, time() + 120);
 		$sessionId_second = $this->getLastHTTPCookie()['value'];
 
-		$_SERVER['HTTP_USER_AGENT'] = $userAgent_third;
+		$_SERVER->overwrite('HTTP_USER_AGENT', $userAgent_third);
 		$tmpSessionManager = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 		$tmpSessionManager->logIn(self::EXAMPLE_USER_ID + rand(10, 99), time() + 120);  // Different user ID.
 		$sessionId_third = $this->getLastHTTPCookie()['value'];
@@ -185,12 +185,12 @@ class SessionManagerTest extends TestCase
 		$this->assertTrue(isset($sessionsConfigFile->$sessionId_third));
 
 		// Create SessionManager instances for second and third user sessions.
-		$_SERVER['HTTP_USER_AGENT'] = $userAgent_second;
-		$_COOKIE[self::INSTANCE_COOKIE_NAME] = $sessionId_second;
+		$_SERVER->overwrite('HTTP_USER_AGENT', $userAgent_second);
+		$_COOKIE->overwrite(self::INSTANCE_COOKIE_NAME, $sessionId_second);
 		$sessionManager_second = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 
-		$_SERVER['HTTP_USER_AGENT'] = $userAgent_third;
-		$_COOKIE[self::INSTANCE_COOKIE_NAME] = $sessionId_third;
+		$_SERVER->overwrite('HTTP_USER_AGENT', $userAgent_third);
+		$_COOKIE->overwrite(self::INSTANCE_COOKIE_NAME, $sessionId_third);
 		$sessionManager_third = new __\_Private\SessionManager(self::INSTANCE_COOKIE_NAME, $sessionsConfigFile);
 
 		$this->assertFalse($sessionManager_second->isUserLoggedIn());

@@ -14,7 +14,7 @@ class UploadedFilesHandlerTest extends TestCase
 	{
 		self::makeDirRecursive(self::UPLOADS_DIR);
 
-		$_FILES['sent_files'] = [
+		$_FILES->overwrite('sent_files', [
 			'name' => [
 				0 => 'appearance__file-chooser.patch',
 				1 => 'Exception.php',
@@ -50,7 +50,7 @@ class UploadedFilesHandlerTest extends TestCase
 				3 => '2162324',
 				4 => '31022',
 			],
-		];
+		]);
 	}
 
 	public function tearDown() : void
@@ -85,7 +85,9 @@ class UploadedFilesHandlerTest extends TestCase
 	{
 		$handler = new __\UploadedFilesHandler(31022, false);
 
-		$_FILES['sent_files']['tmp_name'] = null;
+		$array = $_FILES['sent_files'];
+		unset($array['tmp_name']);
+		$_FILES->overwrite('sent_files', $array);
 
 		$handler->handleSentFiles($_FILES['sent_files']);
 	}
