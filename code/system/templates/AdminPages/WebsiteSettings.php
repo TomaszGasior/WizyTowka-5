@@ -23,7 +23,7 @@
 	<h3>Pozostałe ustawienia</h3>
 
 	<?= (new $formFields)
-		->text('Adres e-mail', 'websiteEmailAddress', $settings->websiteEmailAddress, ['required' => true])
+		->email('Adres e-mail', 'websiteEmailAddress', $settings->websiteEmailAddress, ['required' => true])
 		->select('Format daty i godziny', 'dateTimeFormat', $dateTimeFormatSelected, $dateTimeFormatList,
 			['disabled' => $dateTimeFormatDisable]
 		)
