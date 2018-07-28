@@ -52,7 +52,7 @@ class SessionManager
 		return $this->_sessionsConfig->{$this->_currentSessionId}['userId'] ?? null;
 	}
 
-	public function logIn(int $userId, string $sessionDuration) : void
+	public function logIn(int $userId, int $sessionDuration) : void
 	{
 		if ($this->isUserLoggedIn()) {
 			throw SessionManagerException::alreadyUserLoggedIn($this->_currentUserId);
@@ -61,7 +61,7 @@ class SessionManager
 		$session = [
 			'userId'      => $userId,
 			'waiString'   => $this->_generateWAI($userId),
-			'expireTime'  => time() + (integer)$sessionDuration,
+			'expireTime'  => time() + $sessionDuration,
 			'reloginTime' => time() + 120,
 			'extraData'   => [],
 		];

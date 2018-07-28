@@ -24,7 +24,7 @@ Zwraca prawdę, jeśli użytkownik jest zalogowany bądź fałsz, jeśli nie jes
 
 Zwraca identyfikator zalogowanego użytkownika, bądź `null`, jeśli użytkownik nie jest zalogowany.
 
-## `logIn(int $userId, string $sessionDuration) : void`
+## `logIn(int $userId, int $sessionDuration) : void`
 
 Dokonuje zalogowania użytkownika o identyfikatorze określonym w argumencie `$userId`. Argument `$sessionDuration` określa czas trwania sesji użytkownika w sekundach.
 
