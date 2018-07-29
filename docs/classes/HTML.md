@@ -15,15 +15,15 @@ Zwraca tekst `$text` z cofniętymi zmianami wprowadzonymi przez metodę `escape(
 
 Zwraca tekst `$text`, aplikując nań poprawki typograficzne zgodnie z ustawieniami systemu.
 
-## *static* `formatDateTime(int $timestamp) : string`
+## *static* `formatDateTime($timestamp) : string`
 
 Zwraca znacznik HTML `<time>` zawierający, sformatowaną zgodnie z ustawieniami systemu, datę i godzinę określoną w argumencie `$timestamp` jako uniksowy znacznik czasu bądź jako format zrozumiały dla funkcji [`strtotime()`](http://php.net/manual/en/datetime.formats.php).
 
-## *static* `formatDate(int $timestamp) : string`
+## *static* `formatDate($timestamp) : string`
 
 Działa jak `formatDateTime()`, ale zwraca tylko datę.
 
-## *static* `formatTime(int $timestamp) : string`
+## *static* `formatTime($timestamp) : string`
 
 Działa jak `formatDateTime()`, ale zwraca tylko godzinę.
 

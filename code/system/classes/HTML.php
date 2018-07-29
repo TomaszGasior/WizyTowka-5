@@ -30,7 +30,7 @@ trait HTML
 		return $flags ? (new Text($text))->correctTypography($flags)->get() : $text;
 	}
 
-	static private function _prepateTimeTag(int $timestamp, string $visibleFormat, string $HTMLFormat) : string
+	static private function _prepateTimeTag($timestamp, string $visibleFormat, string $HTMLFormat) : string
 	{
 		$value     = (new Text($timestamp))->formatAsDateTime($visibleFormat);
 		$HTMLValue = (new Text($timestamp))->formatAsDateTime($HTMLFormat);
@@ -38,7 +38,7 @@ trait HTML
 		return '<time datetime="' . $HTMLValue . '">' . $value . '</time>';
 	}
 
-	static public function formatDateTime(int $timestamp) : string
+	static public function formatDateTime($timestamp) : string
 	{
 		$settings = WT()->settings;
 
@@ -50,12 +50,12 @@ trait HTML
 		return self::_prepateTimeTag($timestamp, join($format), '%FT%T%z');
 	}
 
-	static public function formatDate(int $timestamp) : string
+	static public function formatDate($timestamp) : string
 	{
 		return self::_prepateTimeTag($timestamp, WT()->settings->dateDateFormat, '%F');
 	}
 
-	static public function formatTime(int $timestamp) : string
+	static public function formatTime($timestamp) : string
 	{
 		return self::_prepateTimeTag($timestamp, WT()->settings->dateTimeFormat, '%T%z');
 	}
