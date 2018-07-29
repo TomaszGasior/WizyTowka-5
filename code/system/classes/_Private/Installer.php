@@ -216,8 +216,9 @@ HTML_TEXT;
 
 		try {
 			file_get_contents(
-				'https://wizytowka.tomaszgasior.pl/installation?' . http_build_query([
-					'address' => $this->_settings['websiteAddress'],
+				'http://wizytowka.tomaszgasior.pl/tracker.php?' . http_build_query([
+					'address' => $this->_settings['websiteAddress'] ?? '',
+					'dbtype'  => $this->_settings['databaseType'] ?? '',
 					'version' => __\VERSION,
 					'failed'  => (int)$withFail,
 				])
