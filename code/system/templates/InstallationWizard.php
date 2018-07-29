@@ -62,7 +62,7 @@
 	</table>
 
 	<?php if ($betaVersionWarning) { ?>
-		<p class="warning">Używana wersja systemu jest wersją testową, może zawierać błędy. Nie należy używać jej do celów produkcyjnych, budować przy jej pomocy dostępnych publicznie witryn.</p>
+		<p class="warning">Używana wersja systemu jest wersją testową, może zawierać błędy. Nie należy używać jej do celów produkcyjnych.</p>
 	<?php } ?>
 
 	<?php if (!$isDirWritable) { ?>
@@ -152,8 +152,8 @@
 			<h3>Komunikaty błędów</h3>
 
 			<?= (new $formFields)
-				->option('Nie wyświetlaj błędów, jedynie zapisuj w dzienniku', 'errorsVisibility', 'none', 'none')
-				->option('Wyświetlaj błędy wyłącznie w panelu administracyjnym', 'errorsVisibility', 'admin', 'none')
+				->option('Nie wyświetlaj błędów, jedynie zapisuj w&nbsp;dzienniku', 'errorsVisibility', 'none', 'none')
+				->option('Wyświetlaj błędy wyłącznie w&nbsp;panelu administracyjnym', 'errorsVisibility', 'admin', 'none')
 				->option('Zawsze wyświetlaj szczegółowe komunikaty błędów', 'errorsVisibility', 'always', 'none')
 			?>
 		</details>
