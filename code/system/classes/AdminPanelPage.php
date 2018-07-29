@@ -142,11 +142,11 @@ abstract class AdminPanelPage extends Controller
 		$this->_HTMLLayout->id           = lcfirst($_GET['c'] ?? '');
 
 		// Functions and classes used inside page template.
-		$this->_HTMLTemplate->utils         = __NAMESPACE__ . '\HTML';
-		$this->_HTMLTemplate->formFields    = __NAMESPACE__ . '\HTMLFormFields';
-		$this->_HTMLTemplate->elementsList  = __NAMESPACE__ . '\HTMLElementsList';
-		$this->_HTMLTemplate->adminPanelURL = __NAMESPACE__ . '\AdminPanel::URL';
-		$this->_HTMLTemplate->websiteURL    = __NAMESPACE__ . '\Website::URL';
+		$this->_HTMLTemplate->utils         = HTML::class;
+		$this->_HTMLTemplate->formFields    = HTMLFormFields::class;
+		$this->_HTMLTemplate->elementsList  = HTMLElementsList::class;
+		$this->_HTMLTemplate->adminPanelURL = [AdminPanel::class, 'URL'];
+		$this->_HTMLTemplate->websiteURL    = [Website::class,    'URL'];
 
 		// Recursively render all HTML elements and whole layout.
 		$this->_HTMLLayout->render();
