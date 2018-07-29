@@ -1,1 +1,1 @@
-<?= HTML::correctTypography($content) ?>
+<?= $content ?>

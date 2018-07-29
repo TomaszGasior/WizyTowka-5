@@ -11,6 +11,6 @@ class WebsitePageBox extends __\ContentTypeAPI
 {
 	public function HTMLContent() : void
 	{
-		$this->_HTMLTemplate->setRaw('content', $this->_contents->html);
+		$this->_HTMLTemplate->setRaw('content', __\HTML::correctTypography($this->_contents->html));
 	}
 }
