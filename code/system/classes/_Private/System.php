@@ -115,7 +115,7 @@ class System
 		$isInstalled = is_file(__\CONFIG_DIR . '/settings.conf');
 
 		if (!$isInstalled) {
-			$this->_runController(new Installer);
+			$this->_runController(new InstallationWizard);
 			exit;
 		}
 
