@@ -98,9 +98,10 @@ class InstallationWizard extends __\Controller
 		$HTMLTemplate->formFields = __\HTMLFormFields::class;
 		$HTMLTemplate->step = $this->_currentStep;
 
-		$HTMLTemplate->PHPVersion     = \PHP_VERSION;
-		$HTMLTemplate->serverSoftware = $_SERVER['SERVER_SOFTWARE'] ?? '';
-		$HTMLTemplate->isDirWritable  = is_writable(__\PUBLIC_DIR);
+		$HTMLTemplate->PHPVersion         = \PHP_VERSION;
+		$HTMLTemplate->serverSoftware     = $_SERVER['SERVER_SOFTWARE'] ?? '';
+		$HTMLTemplate->isDirWritable      = is_writable(__\PUBLIC_DIR);
+		$HTMLTemplate->betaVersionWarning = !__\VERSION_STABLE;
 
 		$HTMLTemplate->licenseText = new __\HTMLTemplate('License', __\SYSTEM_DIR . '/templates');
 

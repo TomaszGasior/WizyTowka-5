@@ -61,6 +61,10 @@
 		</tr>
 	</table>
 
+	<?php if ($betaVersionWarning) { ?>
+		<p class="warning">Używana wersja systemu jest wersją testową, może zawierać błędy. Nie należy używać jej do celów produkcyjnych, budować przy jej pomocy dostępnych publicznie witryn.</p>
+	<?php } ?>
+
 	<?php if (!$isDirWritable) { ?>
 		<p class="warning">Brak uprawnień do zapisu w głównym katalogu. Nie&nbsp;można zainstalować systemu WizyTówka. Aby naprawić problem, nadaj katalogowi głównemu uprawnienia <code>775</code> lub <code>777</code> poleceniem <code>chmod</code>.</p>
 	<?php } ?>
