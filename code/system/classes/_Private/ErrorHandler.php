@@ -26,7 +26,7 @@ class ErrorHandler
 		// Use plain text format for error message instead HTML, when 'content-type' HTTP header does not contain 'text/html'.
 		$isPlainText = !empty(array_filter(
 			headers_list(),
-			function($value){ return stripos($value, 'content-type') !== false and stripos($value, 'text/html') === false; }
+			function($value){ return stripos($value, 'content-type:') !== false and stripos($value, 'text/html') === false; }
 		));
 
 		if (PHP_SAPI == 'cli' or $isPlainText) {
