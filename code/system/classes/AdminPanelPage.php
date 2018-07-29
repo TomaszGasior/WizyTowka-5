@@ -57,7 +57,7 @@ abstract class AdminPanelPage extends Controller
 		// HTML <head>.
 		$this->_HTMLHead = new HTMLHead;
 		$this->_HTMLHead->setAssetsPath(SYSTEM_URL . '/assets');
-		$this->_HTMLHead->setTitlePattern('%s — WizyTówka');
+		$this->_HTMLHead->setTitlePattern('%s — ' . VERSION_NAME);
 		$this->_HTMLHead->title($this->_pageTitle);
 		$this->_HTMLHead->meta('viewport', 'width=device-width');
 		$this->_HTMLHead->meta('theme-color', '#232323');

@@ -13,7 +13,7 @@ class About extends __\AdminPanelPage
 
 	protected function _output() : void
 	{
-		$this->_HTMLTemplate->version            = __\VERSION;
+		$this->_HTMLTemplate->versionName        = __\VERSION_NAME;
 		$this->_HTMLTemplate->releaseDate        = __\VERSION_DATE;
 		$this->_HTMLTemplate->betaVersionWarning = !__\VERSION_STABLE;
 	}

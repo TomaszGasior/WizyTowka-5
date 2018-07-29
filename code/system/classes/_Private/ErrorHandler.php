@@ -90,7 +90,7 @@ class ErrorHandler
 	@media (max-height: 500px), (max-width: 400px) { div.wtErr { align-items: stretch; } }
 </style>
 <div class="wtErr"><section>
-	<h1>Błąd krytyczny — WizyTówka <?= __\VERSION ?></h1>
+	<h1>Błąd krytyczny — <?= __\VERSION_NAME ?></h1>
 	<p>Działanie systemu WizyTówka zostało przerwane z powodu krytycznego błędu.</p>
 	<pre><?= htmlspecialchars($this->_prepareMessage($exception)) ?></pre>
 </section></div>
