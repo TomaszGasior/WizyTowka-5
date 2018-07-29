@@ -60,6 +60,7 @@ $installer = new __\_Private\Installer;
 $installer->setUser('user_1', 'user_1');
 $installer->appendSettings($settings);
 
+define('WizyTowka\_Private\INSTALLER_DONT_SEND_ADDRESS', 1);
 $installer->install();
 
 
