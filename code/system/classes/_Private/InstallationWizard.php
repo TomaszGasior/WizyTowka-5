@@ -57,7 +57,10 @@ class InstallationWizard extends __\Controller
 			// After installation settings.
 			case 3:
 				// Check whether all form fields are filled in.
-				$requiredFields = ['websiteTitle', 'websiteAddress', 'userName', 'userPassword', 'userEmail', 'databaseType', 'errorsVisibility'];
+				$requiredFields = [
+					'websiteTitle', 'websiteAddress', 'userName', 'userPasswordText_1', 'userPasswordText_2', 'userEmail',
+					'databaseType', 'errorsVisibility'
+				];
 				if (($_POST['databaseType'] ?? null) != 'sqlite') {
 					$requiredFields = array_merge($requiredFields, ['databaseHost', 'databaseName', 'databaseUsername']);
 				}
@@ -68,7 +71,26 @@ class InstallationWizard extends __\Controller
 					}
 				}
 
-				// Do the right job!
+				// Is password correct?
+				if ($_POST['userPasswordText_1'] !== $_POST['userPasswordText_2']) {
+					$this->_HTMLMessage->error('Podane hasła nie są identyczne.');
+					return;
+				}
+
+				// Try to connect to database service.
+				if ($_POST['databaseType'] != 'sqlite') {
+					try {
+						new DatabasePDO(
+							$_POST['databaseType'], $_POST['databaseName'],
+							$_POST['databaseHost'], $_POST['databaseUsername'], $_POST['databasePassword']
+						);
+					} catch (\PDOException $e) {
+						$this->_HTMLMessage->error('Błąd połączenia z usługą bazy danych:<br> „%s”.', $e->getMessage());
+						return;
+					}
+				}
+
+				// If everything is checked, do the right job!
 				$this->_doInstallation();
 				break;
 
@@ -98,14 +120,37 @@ class InstallationWizard extends __\Controller
 		$HTMLTemplate->formFields = __\HTMLFormFields::class;
 		$HTMLTemplate->step = $this->_currentStep;
 
-		$HTMLTemplate->PHPVersion         = \PHP_VERSION;
-		$HTMLTemplate->serverSoftware     = $_SERVER['SERVER_SOFTWARE'] ?? '';
-		$HTMLTemplate->isDirWritable      = is_writable(__\PUBLIC_DIR);
-		$HTMLTemplate->betaVersionWarning = !__\VERSION_STABLE;
+		switch ($this->_currentStep) {
+			// Welcome message.
+			case 1:
+				$HTMLTemplate->PHPVersion         = \PHP_VERSION;
+				$HTMLTemplate->serverSoftware     = $_SERVER['SERVER_SOFTWARE'] ?? '';
+				$HTMLTemplate->isDirWritable      = is_writable(__\PUBLIC_DIR);
+				$HTMLTemplate->betaVersionWarning = !__\VERSION_STABLE;
+				break;
 
-		$HTMLTemplate->licenseText = new __\HTMLTemplate('License', __\SYSTEM_DIR . '/templates');
+			// License agreement.
+			case 2:
+				$HTMLTemplate->licenseText = new __\HTMLTemplate('License', __\SYSTEM_DIR . '/templates');
+				break;
 
-		$HTMLTemplate->defaultWebsiteAddress = $this->_getDefaultWebsiteAddress();
+			// Installation settings.
+			case 3:
+				$HTMLTemplate->websiteTitle     = $_POST['websiteTitle']     ?? '';
+				$HTMLTemplate->websiteAddress   = $_POST['websiteAddress']   ?? $this->_getDefaultWebsiteAddress();
+				$HTMLTemplate->userName         = $_POST['userName']         ?? '';
+				$HTMLTemplate->userEmail        = $_POST['userEmail']        ?? '';
+				$HTMLTemplate->databaseType     = $_POST['databaseType']     ?? 'sqlite';
+				$HTMLTemplate->databaseHost     = $_POST['databaseHost']     ?? 'localhost';
+				$HTMLTemplate->databaseName     = $_POST['databaseName']     ?? '';
+				$HTMLTemplate->databaseUsername = $_POST['databaseUsername'] ?? '';
+				$HTMLTemplate->errorsVisibility = $_POST['errorsVisibility'] ?? 'none';
+				break;
+
+			// Ending message.
+			case 4:
+				break;
+		}
 
 		// Main HTML layout.
 		$HTMLLayout = new __\HTMLTemplate('AdminPanelAlternative', __\SYSTEM_DIR . '/templates');
@@ -143,7 +188,6 @@ class InstallationWizard extends __\Controller
 				'databaseUsername' => $_POST['databaseUsername'],
 			]);
 		}
-
 		if ($_POST['errorsVisibility'] == 'always') {
 			$installer->appendSettings(['systemShowErrors' => true]);
 		}
@@ -151,7 +195,7 @@ class InstallationWizard extends __\Controller
 			$installer->appendSettings(['adminPanelForceShowErrors' => true]);
 		}
 
-		$installer->setUser($_POST['userName'], $_POST['userPassword'], $_POST['userEmail']);
+		$installer->setUser($_POST['userName'], $_POST['userPasswordText_1'], $_POST['userEmail']);
 
 		$installer->install();
 	}

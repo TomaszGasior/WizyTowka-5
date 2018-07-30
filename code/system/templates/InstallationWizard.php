@@ -70,7 +70,7 @@
 	<?php } ?>
 
 	<form method="post">
-		<button <?= !$isDirWritable ? 'disabled' : 'autofocus' ?>>Kontynuuj</button>
+		<button <?= !$isDirWritable ? 'disabled' : '' ?>>Kontynuuj</button>
 		<input type="hidden" name="step" value="1">
 	</form>
 
@@ -89,7 +89,7 @@
 			)
 		?>
 
-		<button <?= $isDirWritable ? '' : 'disabled' ?>>Kontynuuj</button>
+		<button>Kontynuuj</button>
 		<input type="hidden" name="step" value="2">
 	</form>
 
@@ -99,16 +99,17 @@
 		<h3>Podstawowe ustawienia</h3>
 
 		<?= (new $formFields)
-			->text('Tytuł witryny', 'websiteTitle', '', ['required' => true, 'autofocus' => true])
-			->text('Adres witryny', 'websiteAddress', $defaultWebsiteAddress, ['required' => true])
+			->text('Tytuł witryny', 'websiteTitle', $websiteTitle, ['required' => true, 'autofocus' => true])
+			->text('Adres witryny', 'websiteAddress', $websiteAddress, ['required' => true])
 		?>
 
 		<h3>Dane użytkownika</h3>
 
 		<?= (new $formFields)
-			->text('Nazwa użytkownika', 'userName', '', ['required' => true])
-			->password('Hasło użytkownika', 'userPassword', ['required' => true])
-			->email('Adres e-mail', 'userEmail', '')
+			->text('Nazwa użytkownika', 'userName', $userName, ['required' => true])
+			->password('Hasło użytkownika', 'userPasswordText_1', ['required' => true])
+			->password('Hasło ponownie', 'userPasswordText_2', ['required' => true])
+			->email('Adres e-mail', 'userEmail', $userEmail)
 		?>
 
 		<details>
@@ -117,14 +118,14 @@
 			<h3>Baza danych</h3>
 
 			<?= (new $formFields)
-				->option('Użyj pliku bazy danych SQLite — opcja domyślna', 'databaseType', 'sqlite', 'sqlite')
-				->option('Użyj bazy danych MySQL', 'databaseType', 'mysql', 'sqlite')
-				->option('Użyj bazy danych PostgreSQL', 'databaseType', 'pgsql', 'sqlite')
+				->option('Użyj pliku bazy danych SQLite — opcja domyślna', 'databaseType', 'sqlite', $databaseType)
+				->option('Użyj bazy danych MySQL', 'databaseType', 'mysql', $databaseType)
+				->option('Użyj bazy danych PostgreSQL', 'databaseType', 'pgsql', $databaseType)
 			?>
 			<?= (new $formFields(false, 'databaseServiceDetails'))
-				->text('Adres serwera', 'databaseHost', 'localhost', ['required' => true])
-				->text('Nazwa bazy danych', 'databaseName', '', ['required' => true])
-				->text('Nazwa użytkownika', 'databaseUsername', '', ['required' => true])
+				->text('Adres serwera', 'databaseHost', $databaseHost, ['required' => true])
+				->text('Nazwa bazy danych', 'databaseName', $databaseName, ['required' => true])
+				->text('Nazwa użytkownika', 'databaseUsername', $databaseUsername, ['required' => true])
 				->text('Hasło', 'databasePassword', '')
 			?>
 
@@ -139,22 +140,24 @@
 					detailsFieldset.disabled = !visible;
 				}
 
-				radioFields.forEach(function(element){
+				Array.prototype.forEach.call(radioFields, function(element){ // With <3 for Internet Explorer.
 					element.addEventListener('click', function(event){
 						setDetailsVisibility(event.target.value != 'sqlite');
 					});
-				});
 
-				setDetailsVisibility(false);
+					if (element.checked) {
+						setDetailsVisibility(element.value != 'sqlite');
+					}
+				});
 			})();
 			</script>
 
 			<h3>Komunikaty błędów</h3>
 
 			<?= (new $formFields)
-				->option('Nie wyświetlaj błędów, jedynie zapisuj w&nbsp;dzienniku', 'errorsVisibility', 'none', 'none')
-				->option('Wyświetlaj błędy wyłącznie w&nbsp;panelu administracyjnym', 'errorsVisibility', 'admin', 'none')
-				->option('Zawsze wyświetlaj szczegółowe komunikaty błędów', 'errorsVisibility', 'always', 'none')
+				->option('Nie wyświetlaj błędów, jedynie zapisuj w&nbsp;dzienniku', 'errorsVisibility', 'none', $errorsVisibility)
+				->option('Wyświetlaj błędy wyłącznie w&nbsp;panelu administracyjnym', 'errorsVisibility', 'admin', $errorsVisibility)
+				->option('Zawsze wyświetlaj szczegółowe komunikaty błędów', 'errorsVisibility', 'always', $errorsVisibility)
 			?>
 		</details>
 
