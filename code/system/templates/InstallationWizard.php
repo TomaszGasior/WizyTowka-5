@@ -14,7 +14,7 @@
 		font-size: 0.95em;
 		padding: 0 1em;
 		overflow-y: auto;
-		max-height: 300px;
+		max-height: 230px;
 	}
 	label span {
 		font-size: 0.8em;
