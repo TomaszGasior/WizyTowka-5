@@ -3,7 +3,7 @@
 
 	<?= (new $formFields)
 		->text('Nazwa użytkownika', 'name', $createInsteadEdit ? '' : $user->name,
-			['required' => $createInsteadEdit, 'pattern' => '[a-zA-Z0-9_\-.]*', 'title' => 'Dozwolone znaki: litery, cyfry, minus, kropka, podkreślnik.']
+			['required' => $createInsteadEdit, 'pattern' => '[a-zA-Z0-9_\-.]*', 'title' => 'Dozwolone znaki: litery A-Z, cyfry, minus, kropka, podkreślnik.']
 		)
 		->email('Adres e-mail', 'email', $createInsteadEdit ? '' : $user->email)
 	?>
