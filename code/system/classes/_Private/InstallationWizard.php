@@ -71,6 +71,13 @@ class InstallationWizard extends __\Controller
 					}
 				}
 
+				// Is username correct?
+				// Keep in sync with AdminPages\UserEditCreateCommon::_checkUserName().
+				if (!preg_match('/^[a-zA-Z0-9_\-.]+$/', $_POST['userName'])) {
+					$this->_HTMLMessage->error('Nazwa użytkownika jest niepoprawna.');
+					return;
+				}
+
 				// Is password correct?
 				if ($_POST['userPasswordText_1'] !== $_POST['userPasswordText_2']) {
 					$this->_HTMLMessage->error('Podane hasła nie są identyczne.');

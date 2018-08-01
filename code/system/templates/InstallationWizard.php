@@ -106,7 +106,9 @@
 		<h3>Dane użytkownika</h3>
 
 		<?= (new $formFields)
-			->text('Nazwa użytkownika', 'userName', $userName, ['required' => true])
+			->text('Nazwa użytkownika', 'userName', $userName,
+				['required' => true, 'pattern' => '[a-zA-Z0-9_\-.]*', 'title' => 'Dozwolone znaki: litery A-Z, cyfry, minus, kropka, podkreślnik.']
+			)
 			->password('Hasło użytkownika', 'userPasswordText_1', ['required' => true])
 			->password('Hasło ponownie', 'userPasswordText_2', ['required' => true])
 			->email('Adres e-mail', 'userEmail', $userEmail)
