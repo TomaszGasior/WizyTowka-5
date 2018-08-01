@@ -142,7 +142,7 @@
 					detailsFieldset.disabled = !visible;
 				}
 
-				Array.prototype.forEach.call(radioFields, function(element){ // With <3 for Internet Explorer.
+				Array.prototype.forEach.call(radioFields, function(element){
 					element.addEventListener('click', function(event){
 						setDetailsVisibility(event.target.value != 'sqlite');
 					});

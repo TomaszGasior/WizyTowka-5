@@ -384,6 +384,7 @@ div.adminPanelAlternative main header {
 /* Main block. */
 
 main {
+	display: block;  /* Needed for MSIE 11. */
 	padding: 0 1.5em 1.5em;
 }
 

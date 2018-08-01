@@ -35,12 +35,12 @@
 		var replaceFrom = isDraft ? titlePage : titleDraft,
 		    replaceTo   = !isDraft ? titlePage : titleDraft;
 
-		elements.forEach(function(element){
+		Array.prototype.forEach.call(elements, function(element){
 			element.innerHTML = element.innerHTML.replace(replaceFrom, replaceTo);
-		})
+		});
 	}
 
-	radioFields.forEach(function(element){
+	Array.prototype.forEach.call(radioFields, function(element){
 		element.addEventListener('click', function(event){
 			updateTitle(event.target.value == 1);
 		});
