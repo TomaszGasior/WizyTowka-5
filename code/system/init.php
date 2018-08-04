@@ -13,7 +13,7 @@ const VERSION_STABLE = false;
 const VERSION_NAME   = 'WizyTówka ' . VERSION . ' ALFA';
 
 if (PHP_VERSION_ID < 70100) {
-	exit('Nie można uruchomić systemu WizyTówka. Wymagana wersja PHP to 7.1. Używana wersja PHP jest przestarzała.');
+	include __DIR__ . '/defaults/incompatible.php';
 }
 
 require SYSTEM_DIR . '/classes/_Private/System.php';
