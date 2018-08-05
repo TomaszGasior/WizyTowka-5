@@ -95,16 +95,13 @@ abstract class Addon implements \IteratorAggregate
 
 	static public function getAll() : array
 	{
-		$addons = glob(
-			'{' . DATA_DIR . ',' . SYSTEM_DIR . '}/addons/' . static::$_addonsSubdir . '/*/addon.conf',
-			GLOB_BRACE
-		);
-		if ($addons === false) {
-			// Notice: if directory is empty, glob() should return empty array,
-			// but it is possible to return false on some operating systems.
-			// More here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
-			return [];
-		}
+		$systemAddons = glob(SYSTEM_DIR . '/addons/' . static::$_addonsSubdir . '/*/addon.conf');
+		$dataAddons   = glob(DATA_DIR   . '/addons/' . static::$_addonsSubdir . '/*/addon.conf');
+
+		// Notice: if directory is empty, glob() should return empty array,
+		// but it is possible to return false on some operating systems.
+		// More here: http://php.net/manual/en/function.glob.php#refsect1-function.glob-returnvalues
+		$addons = array_merge((array)$systemAddons, (array)$dataAddons);
 		$addons = array_unique(array_map(function($var){ return basename(dirname($var)); }, $addons));
 
 		$elementsToReturn = [];
