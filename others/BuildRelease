@@ -1,0 +1,118 @@
+#!/usr/bin/php
+<?php
+
+/**
+* WizyTówka 5
+* This script builds archive of new release.
+*/
+namespace WizyTowka\Tools;
+use WizyTowka as __;
+
+const CODE_DIR = __DIR__ . '/../code';
+
+include CODE_DIR . '/config.php';
+include __\SYSTEM_DIR . '/init.php';
+
+
+// Function used to iterate recursively over file system.
+function listFiles(string $directory, bool $childFirst = false) : iterable
+{
+	return new \RecursiveIteratorIterator(
+		new \RecursiveDirectoryIterator($directory, \FilesystemIterator::SKIP_DOTS | \FilesystemIterator::UNIX_PATHS),
+		$childFirst ? \RecursiveIteratorIterator::CHILD_FIRST : \RecursiveIteratorIterator::SELF_FIRST
+	);
+}
+
+// Do basic checks before work.
+if (__\VERSION_DATE != date('Y-m-d')) {
+	die('Release date "' . __\VERSION_DATE . '" is incorrect!' . PHP_EOL);
+}
+foreach (['7z', 'cleancss'] as $command) {
+	if (!shell_exec('which ' . $command . ' 2> /dev/null')) {
+		die('"' . $command . '" command is not installed!' . PHP_EOL);
+	}
+}
+
+// Prepare directory for temporary files.
+define('TEMP_FILES_DIR', __DIR__ . '/../TEMP_BUILD_' . time());
+mkdir(TEMP_FILES_DIR);
+
+// Clean up on shutdown.
+register_shutdown_function(function(){
+	foreach (listFiles(TEMP_FILES_DIR, true) as $file) {
+		$file->isDir() ? rmdir($file) : unlink($file);
+	}
+	rmdir(TEMP_FILES_DIR);
+});
+
+// Copy files from "code" directory.
+$files = [
+	'admin.php',
+	'index.php',
+	'config.php',
+];
+foreach ($files as $file) {
+	copy(
+		CODE_DIR       . '/' . $file,
+		TEMP_FILES_DIR . '/' . $file
+	);
+}
+
+// Copy system files. Create additional files.
+$systemDirPath = TEMP_FILES_DIR . '/' . basename(__\SYSTEM_DIR);
+mkdir($systemDirPath);
+
+// Try to make system files invisible.
+touch($systemDirPath . '/index.html');
+file_put_contents($systemDirPath . '/.htaccess', 'deny from all');
+
+foreach (listFiles(__\SYSTEM_DIR) as $file) {
+	$targetPath = $systemDirPath . '/' . str_replace(__\SYSTEM_DIR . '/', null, $file);
+
+	if ($file->isDir()) {
+		mkdir($targetPath, 0777, true);
+
+		// Create "index.html" inside this directory.
+		touch($targetPath . '/index.html');
+
+		// Create ".htaccess" if directory is used for files such as CSS or JavaScript.
+		if ($file->getFilename() == 'assets') {
+			file_put_contents($targetPath . '/.htaccess', 'allow from all');
+		}
+	}
+	else {
+		// Skip GIT files.
+		if ($file->getFilename() == '.gitkeep') {
+			continue;
+		}
+
+		copy($file, $targetPath);
+
+		// Minify system files.
+		switch ($file->getExtension()) {
+			case 'php':
+				file_put_contents($targetPath, php_strip_whitespace($targetPath));
+				break;
+
+			case 'css':
+				system('cleancss "' . $targetPath . '" -o "' . $targetPath . '"');
+				break;
+		}
+	}
+}
+
+// Copy "README.txt" file.
+file_put_contents(
+	TEMP_FILES_DIR . '/README.txt',
+	sprintf(file_get_contents(__DIR__ . '/README.txt.template'), __\VERSION_NAME)
+);
+
+// Compress project files to ZIP archive using 7-zip.
+$archiveFile = CODE_DIR . '/../' . str_replace('ó', 'o', __\VERSION_NAME) . '.zip';
+
+ob_start();
+system(
+	'7z -mpass=50 -mx=9 -tzip a "' . $archiveFile . '" "' . TEMP_FILES_DIR . '/."',
+	$returnCode
+);
+$returnCode == 0 ? ob_end_clean() : ob_end_flush();

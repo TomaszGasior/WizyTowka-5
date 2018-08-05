@@ -1,0 +1,41 @@
+%s
+
+---
+
+NINIEJSZA WERSJA SYSTEMU JEST WERSJĄ TESTOWĄ, JEST PRODUKTEM NIEDOKOŃCZONYM
+I MOŻE ZAWIERAĆ BŁĘDY. NIE NALEŻY UŻYWAĆ JEJ DO CELÓW PRODUKCYJNYCH,
+BUDOWAĆ PRZY JEJ POMOCY DOSTĘPNYCH PUBLICZNIE WITRYN.
+
+Wszelkie błędy w testowej wersji systemu proszę zgłaszać tutaj:
+	https://github.com/TomaszGasior/WizyTowka/issues
+
+Aktualna stabilna wersja systemu dostępna jest tutaj:
+	https://wizytowka.tomaszgasior.pl
+
+---
+
+WizyTówka to niewielki system zarządzania treścią napisany w PHP, stworzony
+dla małych witryn internetowych. Idealnie nadaje się do strony małej firmy
+czy dla portfolio początkującego twórcy.
+
+Aby zainstalować WizyTówkę, musisz przesłać zawartość tej paczki ZIP na serwer,
+a następnie wejść na swoją stronę przez przeglądarkę internetową — wtedy
+zobaczysz instalator, który w kilku prostych krokach przeprowadzi cię
+przez proces instalacji.
+
+Jeżeli wystąpią problemy podczas instalacji, upewnij się, że na serwerze
+jest zainstalowany interpreter PHP w wersji 7.1 lub nowszej. Nie ma możliwości
+uruchomienia WizyTówki na starszych wersjach PHP.
+Główny katalog musi być zapisywalny. Jeśli nie jest, musisz nadać mu uprawnienia
+(poleceniem chmod) 775 lub 777, korzystając z klienta FTP.
+
+Aby zaktualizować już zainstalowaną WizyTówkę, należy usunąć folder „system”
+i wysłać na serwer nową wersję folderu „system” znajdującą się w tej paczce ZIP.
+Po przesłaniu WSZYSTKICH plików musisz wejść na swoją stronę przez
+przeglądarkę — wtedy aktualizator dokona niezbędnych zmian i po chwili
+wyświetli się właściwa treść twojej witryny.
+
+---
+
+https://wizytowka.tomaszgasior.pl
+https://github.com/TomaszGasior/wizytowka
