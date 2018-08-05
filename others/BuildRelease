@@ -76,7 +76,7 @@ foreach (listFiles(__\SYSTEM_DIR) as $file) {
 		touch($targetPath . '/index.html');
 
 		// Create ".htaccess" if directory is used for files such as CSS or JavaScript.
-		if ($file->getFilename() == 'assets') {
+		if ($file->getFilename() == 'assets' or $file->getFilename() == 'themes') {
 			file_put_contents($targetPath . '/.htaccess', 'allow from all');
 		}
 	}
