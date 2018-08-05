@@ -113,7 +113,7 @@ file_put_contents(
 );
 
 // Compress project files to ZIP archive using 7-zip.
-$archiveFile = CODE_DIR . '/../' . str_replace('ó', 'o', __\VERSION_NAME) . '.zip';
+$archiveFile = CODE_DIR . '/../' . str_replace([' ', 'ó'], ['_', 'o'], __\VERSION_NAME) . '.zip';
 
 ob_start();
 system(
