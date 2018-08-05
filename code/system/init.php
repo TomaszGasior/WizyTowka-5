@@ -8,7 +8,7 @@ namespace WizyTowka;
 
 
 const VERSION        = '5.00';
-const VERSION_DATE   = '2016-09-01';
+const VERSION_DATE   = '2018-08-05';
 const VERSION_STABLE = false;
 const VERSION_NAME   = 'WizyTówka ' . VERSION . ' ALFA';
 
