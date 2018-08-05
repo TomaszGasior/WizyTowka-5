@@ -10,4 +10,6 @@ The repository is divided into four separate directories:
 * `docs` — documentation files, written in Polish using Markdown files; there is no inline code documentation;
 * `others` — additional files: command line utility scripts, some configuration files, artworks.
 
-The user interface uses Polish as one supported language as this project is indented to be used by Polish websites.
+The user interface supports Polish only as this project is indented to be used by Polish websites.
+
+The application requires PHP 7.1 or newer. SQLite, MySQL and PostgreSQL databases are supported. Tested on Linux and FreeBSD, with Apache and nginx. Other parts of this repository can require the newest PHP version. Unit tests require xdebug extension.
