@@ -11,3 +11,7 @@ code/system/assets/thirdparty/*
 # Private files.
 code/tests.php
 others/TODO.txt
+
+# Temporary files.
+*.zip
+TEMP_*
