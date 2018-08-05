@@ -101,10 +101,15 @@ foreach (listFiles(__\SYSTEM_DIR) as $file) {
 	}
 }
 
-// Copy "README.txt" file.
+// Copy "README.txt" file. Convert line endings to Windows style.
 file_put_contents(
 	TEMP_FILES_DIR . '/README.txt',
-	sprintf(file_get_contents(__DIR__ . '/README.txt.template'), __\VERSION_NAME)
+	sprintf(
+		str_replace("\n", "\r\n", str_replace("\r", '',
+			file_get_contents(__DIR__ . '/README.txt.template')
+		)),
+		__\VERSION_NAME
+	)
 );
 
 // Compress project files to ZIP archive using 7-zip.
