@@ -24,24 +24,34 @@ abstract class AdminPanelPage extends Controller
 
 	final public function __construct()
 	{
-		if (WT()->session->isUserLoggedIn()) {
-			$this->_currentUser = User::getById(WT()->session->getUserId());
+		$session  = WT()->session;
+		$settings = WT()->settings;
+
+		// If user is logged in, check his permissions.
+		if ($session->isUserLoggedIn()) {
+			$this->_currentUser = User::getById($session->getUserId());
 
 			// Prevent access to this page of admin panel if user have not required permissions.
 			if ($this->_userRequiredPermissions and !($this->_currentUser->permissions & $this->_userRequiredPermissions)) {
 				// Fallback used if current user have not permission to see default page.
-				if ($_GET['c'] ?? '' == WT()->settings->adminPanelDefaultPage) {
+				if (($_GET['c'] ?? '') == $settings->adminPanelDefaultPage) {
 					$this->_redirect('about');
 				}
 
 				$this->_redirect('error', ['type' => 'permissions']);
 			}
 		}
+		// If user isn't logged in and admin page requires session, redirect to login screen.
 		elseif ($this->_userMustBeLoggedIn) {
-			$this->_redirect(
-				'login',
-				!empty($_SERVER['QUERY_STRING']) ? ['redirect' => $_SERVER['QUERY_STRING']] : []
-			);
+			// Append destination URL data to login screen URL to redirect user after successful login.
+			$redirect = $_SERVER['QUERY_STRING'] ?? '';
+
+			// Don't do it if requested URL is equal to URL of default admin panel page.
+			if (($_GET['c'] ?? '') == $settings->adminPanelDefaultPage and count($_GET) == 1) {
+				$redirect = '';
+			}
+
+			$this->_redirect('login', $redirect ? ['redirect' => $redirect] : []);
 		}
 
 		// Prepare HTML parts here for child class.
@@ -84,21 +94,23 @@ abstract class AdminPanelPage extends Controller
 	// This method sets up admin panel main menu elements according to current user permissions.
 	private function _setupMenus() : void
 	{
+		$settings = WT()->settings;
+
 		// Top navigation menu.
 		$this->_HTMLTopMenu = new HTMLMenu;
 		$this->_HTMLTopMenu->append($this->_currentUser->name, self::URL('preferences'), 'iconUser');
 		if (false) {
 			$this->_HTMLTopMenu->append('Zaktualizuj', self::URL('systemUpdate'), 'iconUpdates');
 		}
-		$this->_HTMLTopMenu->append('Zobacz witrynę', WT()->settings->websiteAddress, 'iconWebsite', ['target' => '_blank']);
-		$this->_HTMLTopMenu->append('Wyloguj się',    self::URL('logout'),            'iconLogout');
+		$this->_HTMLTopMenu->append('Zobacz witrynę', $settings->websiteAddress, 'iconWebsite', ['target' => '_blank']);
+		$this->_HTMLTopMenu->append('Wyloguj się',    self::URL('logout'),       'iconLogout');
 
 		// Main navigation menu.
 		$this->_HTMLMainMenu = new HTMLMenu;
-		$add = function($label, $url, $CSSClass, $permission = null, $lockdown = null)
+		$add = function($label, $url, $CSSClass, $permission = null, $lockdown = null) use ($settings)
 		{
 			$hasPermission = $permission ? ($this->_currentUser->permissions & $permission) : true;
-			$isLockdowned  = $lockdown   ? WT()->settings->{'lockdown' . $lockdown}         : false;
+			$isLockdowned  = $lockdown   ? $settings->{'lockdown' . $lockdown}              : false;
 			$this->_HTMLMainMenu->append($label, $url, $CSSClass, [], $hasPermission and !$isLockdowned);
 		};
 		$add('Strony',             self::URL('pages'),             'iconPages',           User::PERM_MANAGE_PAGES);
