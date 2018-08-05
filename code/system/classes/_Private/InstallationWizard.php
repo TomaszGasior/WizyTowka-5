@@ -221,7 +221,7 @@ class InstallationWizard extends __\Controller
 			$address .= ':' . $_SERVER['SERVER_PORT'];
 		}
 
-		if (dirname($_SERVER['SCRIPT_NAME']) != '/') {
+		if (dirname($_SERVER['SCRIPT_NAME']) != '/' and dirname($_SERVER['SCRIPT_NAME']) != '\\') {
 			$address .= dirname($_SERVER['SCRIPT_NAME']);
 		}
 
